@@ -36,7 +36,7 @@ function getDashboardData(req, res, next) {
       byTime[source][hour]++;
     });
 
-    res.send({ totalOrders, bySource, byTime });
+    res.send({data: { totalOrders, bySource, byTime }});
   });
 }
 
