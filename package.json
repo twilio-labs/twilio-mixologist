@@ -6,6 +6,7 @@
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
+    "moment": "^2.18.1",
     "pg": "^6.1.5",
     "pg-hstore": "^2.3.2",
     "pug": "^2.0.0-rc.1",

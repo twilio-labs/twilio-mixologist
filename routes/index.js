@@ -2,8 +2,16 @@ const express = require('express');
 
 const router = express.Router();
 
+function enableCors(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+}
+
 router.use('/orders', require('./orders'));
 router.use('/incoming', require('./incoming'));
+
+router.get('/api/dashboard', enableCors, require('./dashboard'));
 
 router.get('/setup', (req, res, next) => {
   const webhookurl = req.protocol + '://' + req.get('host') + '/incoming';
