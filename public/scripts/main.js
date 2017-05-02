@@ -1,4 +1,4 @@
-var pusher = new Pusher('TODO');
+var pusher = new Pusher(window.PUSHER_APP_KEY);
 var channel = pusher.subscribe('orders');
 channel.bind('order', function(data) {
   title = document.createElement('div');

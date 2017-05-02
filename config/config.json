@@ -1,0 +1,19 @@
+{
+  "development": {
+    "username": "root",
+    "password": null,
+    "database": "database_development",
+    "dialect": "sqlite",
+    "storage": "mydatabase.sqlite"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "dialect": "sqlite",
+    "storage": "mydatabase.sqlite"
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL"
+  }
+}
