@@ -1,0 +1,40 @@
+{
+  "name": "Twilio Barista Node.js",
+  "description": "A Node.js application that allows users ",
+  "logo": "https://avatars2.githubusercontent.com/u/109142?v=3&s=200",
+  "keywords": ["node", "express", "twilio", "coffee", "barista", "facebook", "messenger"],
+  "website": "https://github.com/dkundel",
+  "repository": "https://github.com/dkundel/twilio-barista-node",
+  "success_url": "/setup",
+  "addons": ["heroku-postgresql"],
+  "env": {
+    "LOGIN_USERNAME": {
+      "description": "Username to gain access to the service.",
+      "required": true
+    },
+    "LOGIN_PASSWORD": {
+      "description": "Password to gain access to the service.",
+      "required": true
+    },
+    "TWILIO_ACCOUNT_SID": {
+      "description": "Your Twilio Account SID",
+      "required": true
+    },
+    "TWILIO_AUTH_TOKEN": {
+      "description": "Your Twilio Auth Token",
+      "required": true
+    },
+    "PUSHER_APP_ID": {
+      "description": "App ID of your Pusher Application",
+      "required": true
+    },
+    "PUSHER_APP_KEY": {
+      "description": "App Key to identify with the Pusher Application",
+      "required": true
+    },
+    "PUSHER_APP_SECRET": {
+      "description": "Secret to identify with the Pusher API",
+      "required": true
+    }
+  }
+}
