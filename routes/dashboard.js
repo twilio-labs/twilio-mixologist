@@ -7,9 +7,9 @@ function getDashboardData(req, res, next) {
   Order.findAll({
     include: [{ model: Source, attributes: ['name'] }]
   }).then(orders => {
-    let totalOrders = {};
+    let ordersByType = {};
     AVAILABLE_OPTIONS.forEach(option => {
-      totalOrders[option] = 0;
+      ordersByType[option] = 0;
     });
 
     let bySource = {
@@ -22,7 +22,7 @@ function getDashboardData(req, res, next) {
     };
 
     orders.forEach(order => {
-      totalOrders[order.name]++;
+      ordersByType[order.name]++;
       bySource[order.Source.name]++;
     });
 
@@ -35,6 +35,11 @@ function getDashboardData(req, res, next) {
       let source = order.Source.name;
       byTime[source][hour]++;
     });
+
+    let totalOrders = [];
+    for (let type of Object.keys(ordersByType)) {
+      totalOrders.push({ name: type, count: ordersByType[type]});
+    }
 
     res.send({data: { totalOrders, bySource, byTime }});
   });
