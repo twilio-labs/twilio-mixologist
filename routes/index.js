@@ -1,5 +1,7 @@
 const express = require('express');
 
+const auth = require('../utils/auth');
+
 const router = express.Router();
 
 function enableCors(req, res, next) {
@@ -8,7 +10,7 @@ function enableCors(req, res, next) {
   next();
 }
 
-router.use('/orders', require('./orders'));
+router.use('/orders', auth, require('./orders'));
 router.use('/incoming', require('./incoming'));
 
 router.get('/api/dashboard', enableCors, require('./dashboard'));
