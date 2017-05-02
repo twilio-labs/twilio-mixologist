@@ -3,6 +3,7 @@ const Pusher = require('pusher');
 const bodyParser = require('body-parser');
 
 const { Order, Source } = require('../models');
+const { AVAILABLE_OPTIONS, determineCoffeeFromMessage } = require('../data/coffee-options');
 
 const twilioClient = twilio();
 const pusherClient = new Pusher({
@@ -14,18 +15,12 @@ const pusherClient = new Pusher({
 });
 const parsePostBody = bodyParser.urlencoded({ extended: false });
 
-const POSSIBLE_OPTIONS = ['Espresso'];
-
-function determineCoffeeOrder(messageBody) {
-  return 'Espresso';
-}
-
 function sendMessage(source, msg) {
-  // return twilioClient.messages.create({
-  //   from: source.contactAddress,
-  //   to: source.customerAddress,
-  //   body: msg
-  // });
+  return twilioClient.messages.create({
+    from: source.contactAddress,
+    to: source.customerAddress,
+    body: msg
+  });
 }
 
 function handleIncomingMessage(req, res, next) {
@@ -36,10 +31,10 @@ function handleIncomingMessage(req, res, next) {
     customerAddress: req.body.From,
     contactAddress: req.body.To
   };
-  const coffeeOrder = determineCoffeeOrder(req.body.Body);
+  const coffeeOrder = determineCoffeeFromMessage(req.body.Body);
 
   if (!coffeeOrder) {
-    let responseMessage = `Seems like your order of ${req.body.Body} is not something we can serve. Possible orders are ${POSSIBLE_OPTIONS.join(', ')}.`;
+    let responseMessage = `Seems like your order of "${req.body.Body}" is not something we can serve. Possible orders are ${AVAILABLE_OPTIONS.join(', ')}.`;
     sendMessage(source, responseMessage);
     return;
   }
@@ -62,7 +57,7 @@ function handleIncomingMessage(req, res, next) {
       }
 
       sourceId = sourceInstance.get('id');
-      return sourceInstance.getOrders();
+      return sourceInstance.getOrders().filter(o => !o.get('fulfilled'));
     })
     .then(orders => {
       if (orders && orders.length > 0) {

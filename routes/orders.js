@@ -76,8 +76,9 @@ function deleteOrder(req, res, next) {
 }
 
 function completeOrder(req, res, next) {
+  console.log(req);
   const id = req.params.orderId;
-  const status = req.body.status;
+  const status = req.params.status;
 
   Order.findOne({
     where: { id }
@@ -101,11 +102,13 @@ function completeOrder(req, res, next) {
       } else {
         responseMessage = `Your ${order.get('name')} order has been cancelled. Please check with the barista if you think something is wrong.`;
       }
-      // return twilioClient.messages.create({
-      //   from: source.contactAddress,
-      //   to: source.customerAddress,
-      //   body: responseMessage
-      // });
+      
+      twilioClient.messages.create({
+        from: source.contactAddress,
+        to: source.customerAddress,
+        body: responseMessage
+      });
+      res.send(`Order ${status}ed`);
     });
   }).catch(err => {
     res.status(500).send(err.message);
@@ -122,6 +125,6 @@ router.post('/:orderId/edit', editOrder);
 router.get('/:orderId/delete', getDeleteOrderPage);
 router.post('/:orderId/delete', deleteOrder);
 router.delete('/:orderId', deleteOrder);
-router.post('/complete/:orderId', bodyParser.json(), completeOrder);
+router.post('/complete/:orderId/:status', completeOrder);
 
 module.exports = router;

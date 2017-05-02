@@ -1,4 +1,7 @@
-var pusher = new Pusher(window.PUSHER_APP_KEY);
+var pusher = new Pusher(window.PUSHER_APP_KEY, {
+  cluster: 'eu',
+  encrypted: true
+});
 var channel = pusher.subscribe('orders');
 channel.bind('order', function(data) {
   title = document.createElement('div');
@@ -53,7 +56,7 @@ function order_cancel(id) {
   $('#al_' + id).toggle();
   $('#rb_' + id).toggle();
   $('#cb_' + id).toggle();
-  $.post('/orders/complete/' + id, { status: 'cancel' }).fail(function() {
+  $.post('/orders/complete/' + id + '/cancel').fail(function() {
     $('#al_' + id).toggle();
     $('#rb_' + id).toggle();
     $('#cb_' + id).toggle();
@@ -64,7 +67,7 @@ function order_ready(id) {
   $('#al_' + id).toggle();
   $('#rb_' + id).toggle();
   $('#cb_' + id).toggle();
-  $.post('/orders/complete/' + id, { status: 'accept' }).fail(function() {
+  $.post('/orders/complete/' + id + '/accept').fail(function() {
     $('#al_' + id).toggle();
     $('#rb_' + id).toggle();
     $('#cb_' + id).toggle();
