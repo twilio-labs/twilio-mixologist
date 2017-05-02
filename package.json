@@ -1,0 +1,23 @@
+{
+  "devDependencies": {
+    "node-env-run": "^1.0.0--alpha2"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "pug": "^2.0.0-rc.1",
+    "twilio": "^2.11.1"
+  },
+  "name": "twilio-barista-node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "url": "git@github.com:dkundel/twilio-barista-node.git",
+    "type": "git"
+  },
+  "author": "Dominik Kundel <dominik.kundel@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "node-env-run . -f"
+  }
+}

@@ -1,0 +1,18 @@
+extends _layout.pug
+
+block scripts
+  script(src='//js.pusher.com/2.2/pusher.min.js', type='text/javascript')
+  script(type='text/javascript', src="/scripts/main.js")
+
+block body
+  //- each item in orders
+  article(id="ar_someid")
+    .title
+      | orderId: name
+    .message name
+    .buttons
+      img.invis(id='al_someid', src='/styles/images/ajax-loader.gif')
+      |  
+      button.ready(id='rb_someid', name='ready', value='ready', onclick='this.disabled=true;order_ready("someid");') Ready
+      |  
+      button.cancel(id='cb_someid', name='cancel', value='cancel', onclick='this.disabled=true;order_cancel("someid");') Cancel

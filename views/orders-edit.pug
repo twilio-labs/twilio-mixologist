@@ -1,0 +1,34 @@
+extends _layout.pug
+
+block body
+  h2 Edit
+  p TODO add form later
+  //- form
+  //-   .form-horizontal
+  //-     h4 Order
+  //-     hr
+  //-     |  @Html.ValidationSummary(true, &quot;&quot;, new { @class = &quot;text-danger&quot; }) @Html.HiddenFor(model =&gt; model.Id)
+  //-     .form-group
+  //-       | @Html.LabelFor(model =&gt; model.Time, htmlAttributes: new { @class = &quot;control-label col-md-2&quot; })
+  //-       .col-md-10
+  //-         | @Html.EditorFor(model =&gt; model.Time, new { htmlAttributes = new { @class = &quot;form-control&quot; } }) @Html.ValidationMessageFor(model =&gt; model.Time, &quot;&quot;, new { @class = &quot;text-danger&quot; })
+  //-     .form-group
+  //-       | @Html.LabelFor(model =&gt; model.Name, htmlAttributes: new { @class = &quot;control-label col-md-2&quot; })
+  //-       .col-md-10
+  //-         | @Html.EditorFor(model =&gt; model.Name, new { htmlAttributes = new { @class = &quot;form-control&quot; } }) @Html.ValidationMessageFor(model =&gt; model.Name, &quot;&quot;, new { @class = &quot;text-danger&quot; })
+  //-     .form-group
+  //-       | @Html.LabelFor(model =&gt; model.Fulfilled, htmlAttributes: new { @class = &quot;control-label col-md-2&quot; })
+  //-       .col-md-10
+  //-         .checkbox
+  //-           | @Html.EditorFor(model =&gt; model.Fulfilled) @Html.ValidationMessageFor(model =&gt; model.Fulfilled, &quot;&quot;, new { @class = &quot;text-danger&quot; })
+  //-     .form-group
+  //-       .col-md-offset-2.col-md-10
+  //-         input.btn.btn-default(type='submit', value='Save')
+
+div  
+  a(href="/orders") Back to List
+
+block scripts
+  script(src='/scripts/jquery-1.10.2.min.js')
+  script(src='/scripts/jquery.validate.min.js')
+  script(src='/scripts/jquery.validate.unobtrusive.min.js')

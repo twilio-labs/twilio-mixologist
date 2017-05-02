@@ -1,0 +1,102 @@
+﻿* { 
+  margin: 0 0 0 0;
+	padding: 0 0 0 0;
+	border: 0 0 0 0;
+	font-family: helvetica;
+  background-color: #FFF8E7;
+}
+
+article { 
+  width: 100%;
+	height: 85px;
+  display: table;
+	overflow: hidden;
+  border-bottom: 1px solid #e2dccd;
+}
+
+article div.title {
+  font-size: 3em;
+  width: 30%;
+	padding: 5px 20px 20px 5px;
+	display: table-cell;
+  vertical-align: middle;
+}
+
+article div.message {
+	width: 35%;
+	padding: 10px 10px 10px 10px;
+	text-align: center;
+	vertical-align: middle;
+	display: table-cell; 
+	height: 75px;
+}
+
+article div.buttons {
+  width: 30%; 
+	display: table-cell;
+	vertical-align: middle;
+}
+
+article div.buttons button {
+  border-top-left-radius:20px;
+  border-top-right-radius:20px;
+  border-bottom-right-radius:20px;
+  border-bottom-left-radius:20px;
+  border-radius: 20px;
+	text-indent:0;
+  border: none;
+	display:inline-block;
+  color:#ffffff;
+  font-family:Arial;
+  font-size:15px;
+  font-weight:bold;
+  font-style:normal;
+  text-decoration:none;
+  text-align:center;
+  text-shadow:1px 1px 0px #000000;
+}
+
+button.ready {
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #4dfa70), color-stop(1,#40d55f ) );
+	height:65px;
+  line-height:65px;
+  width:100px;
+	margin-right: 50px;
+}
+
+button.cancel {
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ff271f), color-stop(1,#d81516 ) );
+  height:45px;
+  line-height:34px;
+  width:86px;
+}
+
+
+
+.invis {
+	display: none;
+}
+
+
+
+
+/****************************************/
+/****************************************/
+/****************************************/
+/****************************************/
+/****************************************/
+/* This is specific for the status page */
+
+div.stat {
+  width: 100%;
+	text-align: center;
+}
+
+div.stat span.number {
+  color: #32a7f5;
+	font-size: 10em;
+}
+
+div.stat p {
+	font-size: 0.8em;
+}

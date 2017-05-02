@@ -1,0 +1,18 @@
+extends _layout.pug
+
+block body
+  h2 Details
+  div
+    h4 Order
+    hr
+    dl.dl-horizontal
+      dt  model.Time
+      dd  model.Time
+      dt  model.Name
+      dd  model.Name
+      dt  model.Fulfilled
+      dd  model.Fulfilled
+  p
+    a(href="/orders/edit/someid") Edit
+    | |
+    a(href="/orders") Back to List
