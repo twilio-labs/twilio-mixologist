@@ -4,6 +4,7 @@ const AVAILABLE_OPTIONS = [
   'Latte',
   'Americano',
   'Mocha',
+  'Flat White'
 ]
 
 const POSSIBLE_OPTIONS = {
@@ -37,6 +38,10 @@ const POSSIBLE_OPTIONS = {
   'moca': 'Mocha',
   'mocacino': 'Mocha',
   'mochaccino': 'Mocha',
+  'flat white': 'Flat White',
+  'flatwhite': 'Flat White',
+  'flat-white': 'Flat White',
+  'flatt white': 'Flat White'
 }
 
 function determineCoffeeFromMessage(messageBody) {
