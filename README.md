@@ -45,6 +45,8 @@ PUSHER_APP_SECRET=
 
 Alternatively you can store these directly in [environment variables](https://www.twilio.com/blog/2017/01/how-to-set-environment-variables.html).
 
+Start of the server with `npm run dev` to load the configuration from the `.env` file and `npm start` to start it normally without the values from `.env`.
+
 Twilio Barista is now ready to accept coffee orders, but before we can do that we need to configure Twilio to send incoming text and Facebook messages to our app.  Lets do that next.
 
 ## Configuring Twilio 
