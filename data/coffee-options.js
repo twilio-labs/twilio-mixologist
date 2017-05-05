@@ -6,8 +6,8 @@ const AVAILABLE_OPTIONS = [
   'Cappuccino',
   'Latte',
   'Americano',
-  'Mocha',
-  'Flat White'
+  'Flat White',
+  'Filter Coffee'
 ];
 
 /**
@@ -40,15 +40,13 @@ const POSSIBLE_OPTIONS = {
   americano: 'Americano',
   'white americano': 'Americano',
   'caff�': 'Americano',
-  mocha: 'Mocha',
-  mocca: 'Mocha',
-  moca: 'Mocha',
-  mocacino: 'Mocha',
-  mochaccino: 'Mocha',
   'flat white': 'Flat White',
   flatwhite: 'Flat White',
   'flat-white': 'Flat White',
-  'flatt white': 'Flat White'
+  'flatt white': 'Flat White',
+  'filter coffee': 'Filter Coffee',
+  'coffee': 'Filter Coffee',
+  'fliter coffee': 'Filter Coffee'
 };
 
 /**
