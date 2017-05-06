@@ -7,6 +7,9 @@ block scripts
 
 block body
   //- each item in orders
+  p Reloading in&nbsp; 
+    span#secondsLeft
+    span &nbsp; seconds
   each item in orders
     article(id=`ar_${item.orderId}`)
       .title= `${item.orderId}: ${item.name}`

@@ -56,21 +56,43 @@ function order_cancel(id) {
   $('#al_' + id).toggle();
   $('#rb_' + id).toggle();
   $('#cb_' + id).toggle();
-  $.post('/orders/complete/' + id + '/cancel').fail(function() {
-    $('#al_' + id).toggle();
-    $('#rb_' + id).toggle();
-    $('#cb_' + id).toggle();
-    alert('Unable to send Cancellation. Please Retry.');
-  });
+  $.post('/orders/complete/' + id + '/cancel')
+    .success(function () {
+      $('#ar_' + id).hide('fast', function() {
+        $('#ar_' + id).remove();
+      });
+    })
+    .fail(function() {
+      $('#al_' + id).toggle();
+      $('#rb_' + id).toggle();
+      $('#cb_' + id).toggle();
+      console.log('Unable to send Cancellation. Please Retry.');
+    });
 }
 function order_ready(id) {
   $('#al_' + id).toggle();
   $('#rb_' + id).toggle();
   $('#cb_' + id).toggle();
-  $.post('/orders/complete/' + id + '/accept').fail(function() {
-    $('#al_' + id).toggle();
-    $('#rb_' + id).toggle();
-    $('#cb_' + id).toggle();
-    alert('Unable to tell customer their drink is ready. Please Retry.');
-  });
+  $.post('/orders/complete/' + id + '/accept')
+    .success(function () {
+      $('#ar_' + data.id).hide('fast', function() {
+        $('#ar_' + data.id).remove();
+      });
+    })
+    .fail(function() {
+      $('#al_' + id).toggle();
+      $('#rb_' + id).toggle();
+      $('#cb_' + id).toggle();
+      console.log('Unable to tell customer their drink is ready. Please Retry.');
+    });
 }
+
+var count = 30;
+var reloadTime = count * 1000;
+setInterval(function () {
+  document.getElementById('secondsLeft').innerText = count;
+  count--;
+}, 1000);
+setTimeout(() => {
+  window.location.reload();
+}, reloadTime);
