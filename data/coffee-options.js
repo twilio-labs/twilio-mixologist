@@ -3,10 +3,10 @@
  */
 const AVAILABLE_OPTIONS = [
   'Espresso',
-  // 'Cappuccino',
-  // 'Latte',
+  'Cappuccino',
+  'Latte',
   'Americano',
-  // 'Flat White',
+  'Flat White',
   'Filter Coffee'
 ];
 
