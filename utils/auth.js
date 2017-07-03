@@ -1,12 +1,11 @@
 const basicAuth = require('basic-auth');
 
-const USERNAME = process.env.LOGIN_USERNAME;
-const PASSWORD = process.env.LOGIN_PASSWORD;
+const LOGINS = processLogins(process.env.LOGINS);
 
-module.exports = function(req, res, next) {
+const availableUsers = (module.exports = function(req, res, next) {
   function unauthorized(res) {
     res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
-    return res.send(401);
+    return res.sendStatus(401);
   }
 
   const user = basicAuth(req);
@@ -15,9 +14,24 @@ module.exports = function(req, res, next) {
     return unauthorized(res);
   }
 
-  if (user.name === USERNAME && user.pass === PASSWORD) {
+  const [foundUser] = LOGINS.filter(login => login.username === user.name);
+
+  if (
+    foundUser &&
+    foundUser.username === user.name &&
+    foundUser.password === user.pass
+  ) {
+    req.user = foundUser.role;
     return next();
   } else {
     return unauthorized(res);
   }
-};
+});
+
+function processLogins(loginString) {
+  const users = loginString.split(';').map(s => s.trim());
+  return users.map(userString => {
+    const [username, password, role] = userString.split(',').map(s => s.trim());
+    return { username, password, role };
+  });
+}

@@ -1,8 +1,6 @@
 const express = require('express');
 const path = require('path');
 
-const { sequelize } = require('./models');
-
 const PORT = process.env.PORT || 3000;
 
 const app = express();
@@ -15,10 +13,8 @@ app.use((req, res, next) => {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(require('./routes'));
+app.use('/api', require('./api'));
 
-sequelize.sync({ force: false }).then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
-  });
+app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
 });
