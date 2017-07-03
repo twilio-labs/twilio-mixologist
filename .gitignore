@@ -39,3 +39,7 @@ jspm_packages
 .env
 
 mydatabase.sqlite
+
+node_modules
+/build
+/*.log
