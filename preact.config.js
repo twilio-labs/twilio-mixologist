@@ -8,6 +8,9 @@
  **/
 export default function(config, env, helpers) {
   if (!env.ssr) {
+    const plugins = helpers.getPluginsByName(config, 'HtmlWebpackPlugin');
+    const htmlPluginOptions = plugins[0].plugin.options;
+    htmlPluginOptions.excludeChunks.push('debug');
     config.entry['debug'] = './debug.js';
   }
 }
