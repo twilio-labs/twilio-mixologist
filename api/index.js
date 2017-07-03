@@ -1,3 +1,4 @@
+const path = require('path');
 const router = require('express').Router();
 const bodyParser = require('body-parser');
 
@@ -15,7 +16,11 @@ router.post('/webhook/sync', parseBody, require('./sync').handler);
 router.post('/setup', require('./setup').handler);
 
 router.get('/debug', authenticate, (req, res, next) => {
-  res.render('debug-godmode');
+  if (req.user === 'admin') {
+    res.sendFile(path.resolve(__dirname, '../utils/debug.html'));
+  } else {
+    res.sendStatus(403);
+  }
 });
 
 module.exports = router;
