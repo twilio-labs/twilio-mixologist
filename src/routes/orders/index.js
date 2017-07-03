@@ -2,7 +2,7 @@ import { h, Component } from 'preact';
 import OrderList from '../../components/order-list';
 import style from './style';
 
-export default class Home extends Component {
+export default class Orders extends Component {
   constructor() {
     super();
     this.state.orders = [
