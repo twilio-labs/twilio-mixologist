@@ -37,11 +37,13 @@
   "dependencies": {
     "basic-auth": "^1.1.0",
     "body-parser": "^1.17.2",
+    "classnames": "^2.2.5",
     "express": "^4.15.3",
     "moment": "^2.18.1",
     "preact": "^8.1.0",
     "preact-compat": "^3.16.0",
     "preact-router": "^2.5.2",
-    "twilio": "^3.4.0-alpha-2"
+    "twilio": "^3.4.0-alpha-2",
+    "twilio-sync": "^0.5.8"
   }
 }

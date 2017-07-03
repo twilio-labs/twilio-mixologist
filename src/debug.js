@@ -1,3 +1,5 @@
+import { SyncClient } from 'twilio-sync';
+
 var client;
 
 var orderQueue;
@@ -11,7 +13,7 @@ fetch('/api/token', {
   .then(resp => resp.json())
   .then(({ token }) => {
     console.log(token);
-    client = new Twilio.Sync.Client(token);
+    client = new SyncClient(token);
     return client;
   })
   .then(client => {
