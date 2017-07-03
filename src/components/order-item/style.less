@@ -1,0 +1,60 @@
+@import '~style/helpers';
+
+.orderItem {
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  > * {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .number {
+    font-weight: bold;
+    font-size: 1.5em;
+  }
+
+  .product {
+  }
+
+  .message {
+    flex: 1;
+  }
+
+  button {
+    font-size: 1em;
+    border-radius: 0;
+    border: 0;
+    padding: 10px 20px;
+    background: transparent;
+    color: @twilioBlue;
+    cursor: pointer;
+  }
+
+  .cancel {
+    color: @twilioRed;
+    font-weight: bold;
+  }
+
+  .finish {
+    background: @twilioGreen;
+    color: #fff;
+  }
+}
+
+.done::after {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  content: "DONE";
+  text-align: center;
+  line-height: 78px;
+  font-size: 2em;
+  left: 0;
+  color: #fff;
+}
