@@ -15,13 +15,14 @@
   "author": "Dominik Kundel <dominik.kundel@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "postinstall": "npm run build",
     "start": "node .",
-    "dev": "node-env-run . -f",
     "test": "eslint src && preact test",
     "build:preact": "preact build",
     "build": "npm-run-all -p build:*",
     "serve": "preact build && preact serve",
-    "dev:preact": "preact watch",
+    "dev": "npm-run-all -p dev:*",
+    "dev:preact": "watch 'npm run build:preact' src/",
     "dev:api": "node-env-run . -f"
   },
   "devDependencies": {
@@ -30,7 +31,8 @@
     "if-env": "^1.0.0",
     "node-env-run": "^1.0.1",
     "npm-run-all": "^4.0.2",
-    "preact-cli": "^1.3.0"
+    "preact-cli": "^1.3.0",
+    "watch": "^1.0.2"
   },
   "dependencies": {
     "basic-auth": "^1.1.0",
