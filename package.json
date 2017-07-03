@@ -15,7 +15,7 @@
     "pusher": "^1.5.1",
     "sequelize": "^3.30.4",
     "sqlite3": "^3.1.8",
-    "twilio": "^2.11.1"
+    "twilio": "^3.4.0-alpha-2"
   },
   "name": "twilio-barista-node",
   "version": "1.0.0",
