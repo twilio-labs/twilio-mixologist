@@ -140,7 +140,7 @@ async function createIfNotExists(resource, name, data) {
     uniqueName: name
   };
   if (data) {
-    argument[data] = data;
+    argument.data = data;
   }
   try {
     return await resource(name).fetch();
