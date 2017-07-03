@@ -1,19 +1,12 @@
 {
   "devDependencies": {
-    "node-env-run": "^1.0.1",
-    "sequelize-cli": "^2.7.0"
+    "node-env-run": "^1.0.1"
   },
   "dependencies": {
     "basic-auth": "^1.1.0",
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "moment": "^2.18.1",
-    "pg": "^6.1.5",
-    "pg-hstore": "^2.3.2",
-    "pug": "^2.0.0-rc.2",
-    "pusher": "^1.5.1",
-    "sequelize": "^3.30.4",
-    "sqlite3": "^3.1.8",
     "twilio": "^3.4.0-alpha-2"
   },
   "name": "twilio-barista-node",
