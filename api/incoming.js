@@ -117,7 +117,8 @@ async function handleIncomingMessages(req, res, next) {
       data: {
         product: coffeeOrder,
         message: req.body.Body,
-        source: customer.source
+        source: customer.source,
+        countryCode: customer.countryCode
       }
     });
 
