@@ -22,7 +22,5 @@ function determineCoffeeFromMessage(messageBody) {
 }
 
 module.exports = {
-  AVAILABLE_OPTIONS,
-  POSSIBLE_OPTIONS,
   determineCoffeeFromMessage
 };
