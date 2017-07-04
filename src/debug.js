@@ -2,10 +2,10 @@ import { SyncClient } from 'twilio-sync';
 
 var client;
 
-var orderQueue;
-var configuration;
-var customers;
-var allOrders;
+window.orderQueueList = undefined;
+window.configurationDoc = undefined;
+window.customersMap = undefined;
+window.allOrdersList = undefined;
 
 fetch('/api/token', {
   credentials: 'include'
@@ -23,39 +23,53 @@ fetch('/api/token', {
 
 function clientConnected() {
   client.document('configuration').then(doc => {
-    configuration = doc;
+    window.configurationDoc = doc;
     setData('configuration', doc.value);
-    configuration.on('updated', data => {
+    window.configurationDoc.on('updated', data => {
       setData('configuration', data);
     });
   });
 
   client.list('orderQueue').then(list => {
-    orderQueue = list;
-    displayAllItems('orderQueue', orderQueue);
-    orderQueue.on('itemAdded', () => displayAllItems('orderQueue', orderQueue));
-    orderQueue.on('itemRemoved', () =>
-      displayAllItems('orderQueue', orderQueue)
+    window.orderQueueList = list;
+    displayAllItems('orderQueue', window.orderQueueList);
+    window.orderQueueList.on('itemAdded', () =>
+      displayAllItems('orderQueue', window.orderQueueList)
     );
-    orderQueue.on('itemUpdated', () =>
-      displayAllItems('orderQueue', orderQueue)
+    window.orderQueueList.on('itemRemoved', () =>
+      displayAllItems('orderQueue', window.orderQueueList)
+    );
+    window.orderQueueList.on('itemUpdated', () =>
+      displayAllItems('orderQueue', window.orderQueueList)
     );
   });
 
   client.list('allOrders').then(list => {
-    allOrders = list;
-    displayAllItems('allOrders', allOrders);
-    allOrders.on('itemAdded', () => displayAllItems('allOrders', allOrders));
-    allOrders.on('itemRemoved', () => displayAllItems('allOrders', allOrders));
-    allOrders.on('itemUpdated', () => displayAllItems('allOrders', allOrders));
+    window.allOrdersList = list;
+    displayAllItems('allOrders', window.allOrdersList);
+    window.allOrdersList.on('itemAdded', () =>
+      displayAllItems('allOrders', window.allOrdersList)
+    );
+    window.allOrdersList.on('itemRemoved', () =>
+      displayAllItems('allOrders', window.allOrdersList)
+    );
+    window.allOrdersList.on('itemUpdated', () =>
+      displayAllItems('allOrders', window.allOrdersList)
+    );
   });
 
   client.map('customers').then(map => {
-    customers = map;
-    displayAllItems('customers', customers);
-    customers.on('itemAdded', () => displayAllItems('customers', customers));
-    customers.on('itemRemoved', () => displayAllItems('customers', customers));
-    customers.on('itemUpdated', () => displayAllItems('customers', customers));
+    window.customersMap = map;
+    displayAllItems('customers', window.customersMap);
+    window.customersMap.on('itemAdded', () =>
+      displayAllItems('customers', window.customersMap)
+    );
+    window.customersMap.on('itemRemoved', () =>
+      displayAllItems('customers', window.customersMap)
+    );
+    window.customersMap.on('itemUpdated', () =>
+      displayAllItems('customers', window.customersMap)
+    );
   });
 }
 
