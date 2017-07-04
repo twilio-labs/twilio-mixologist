@@ -48,7 +48,7 @@ export default class OrderService /* extends EventEmitter */ {
   }
 
   changeStatus(order, status) {
-    const idx = this.orders.find(item => item.number === order.number);
+    const idx = this.orders.findIndex(item => item.number === order.number);
     this.orders[idx] = { ...order, status };
     this.emit('updated', { orders: this.orders });
     return this.ordersList.update(order.number, { status });
@@ -61,7 +61,7 @@ export default class OrderService /* extends EventEmitter */ {
     });
 
     this.ordersList.on('itemUpdated', item => {
-      const idx = this.orders.find(
+      const idx = this.orders.findIndex(
         existingItem => item.index === existingItem.number
       );
       this.orders[idx] = this.convertItemToOrder(item);
@@ -69,7 +69,7 @@ export default class OrderService /* extends EventEmitter */ {
     });
 
     this.ordersList.on('itemRemoved', item => {
-      const idx = this.orders.find(
+      const idx = this.orders.findIndex(
         existingItem => item.index === existingItem.number
       );
 
