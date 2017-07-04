@@ -2,7 +2,7 @@ const twilio = require('twilio');
 const { AccessToken } = twilio.jwt;
 const { SyncGrant } = AccessToken;
 
-const { DEFAULT_CONFIGURATION } = require('../data/configuration');
+const { DEFAULT_CONFIGURATION } = require('../data/config');
 
 const {
   TWILIO_API_KEY,
