@@ -22,7 +22,7 @@ export default class Orders extends Component {
   render() {
     return (
       <div class={style.admin}>
-        <h1>Admin</h1>
+        <h3>Admin</h3>
         <Configurator
           config={this.state.config}
           update={(key, value) => this.updateConfig(key, value)}
