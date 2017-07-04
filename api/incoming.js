@@ -8,7 +8,11 @@ const {
 const {
   getWrongOrderMessage,
   getExistingOrderMessage,
-  getOrderCreatedMessage
+  getOrderCreatedMessage,
+  getHelpMessage,
+  getNoOpenOrderMessage,
+  getQueuePositionMessage,
+  getCancelOrderMessage
 } = require('../utils/messages');
 const {
   restClient,
@@ -16,6 +20,14 @@ const {
   orderQueueList,
   allOrdersList
 } = require('./twilio');
+
+const INTENTS = {
+  HELP: 'help',
+  QUEUE: 'queue',
+  ORDER: 'order',
+  CANCEL: 'cancel',
+  INVALID: 'invalid'
+};
 
 /**
  * This is the request handler for incoming SMS and Facebook messages by handling webhook request from Twilio.
@@ -31,13 +43,33 @@ async function handleIncomingMessages(req, res, next) {
   res.type('text/xml').send(twiml.toString());
 
   const customer = getCustomerInformation(req.body);
-  const coffeeOrder = determineCoffeeFromMessage(req.body.Body);
-  if (!coffeeOrder) {
+  const messageIntent = determineIntent(req.body.Body);
+
+  if (messageIntent.intent !== INTENTS.ORDER) {
     try {
-      let responseMessage = getWrongOrderMessage(
-        req.body.Body,
-        AVAILABLE_OPTIONS
-      );
+      let responseMessage;
+      if (messageIntent.intent === INTENTS.HELP) {
+        responseMessage = getHelpMessage(AVAILABLE_OPTIONS);
+      } else if (messageIntent.intent === INTENTS.QUEUE) {
+        const queuePosition = await getQueuePosition(customer);
+        if (isNaN(queuePosition)) {
+          responseMessage = getNoOpenOrderMessage();
+        } else {
+          responseMessage = getQueuePositionMessage(queuePosition);
+        }
+      } else if (messageIntent.intent === INTENTS.CANCEL) {
+        const cancelled = await cancelOrder(customer);
+        if (cancelled) {
+          responseMessage = getCancelOrderMessage();
+        } else {
+          responseMessage = getNoOpenOrderMessage();
+        }
+      } else {
+        responseMessage = getWrongOrderMessage(
+          req.body.Body,
+          AVAILABLE_OPTIONS
+        );
+      }
       await sendMessage(customer, responseMessage);
       return;
     } catch (err) {
@@ -45,6 +77,7 @@ async function handleIncomingMessages(req, res, next) {
       return;
     }
   }
+  const coffeeOrder = messageIntent.value;
   console.log('Determined coffee:', coffeeOrder);
 
   let customerEntry = await findOrCreateCustomer(customer);
@@ -140,6 +173,67 @@ function sendMessage(customer, msg) {
     to: customer.address,
     body: msg
   });
+}
+
+function determineIntent(message) {
+  const msgNormalized = message.toLowerCase().trim();
+  if (msgNormalized.indexOf('help') !== -1) {
+    return { intent: INTENTS.HELP };
+  }
+
+  if (msgNormalized.indexOf('queue') !== -1) {
+    return { intent: INTENTS.QUEUE };
+  }
+
+  if (msgNormalized.indexOf('cancel') !== -1) {
+    return { intent: INTENTS.CANCEL };
+  }
+
+  const coffeeOrder = determineCoffeeFromMessage(message);
+  if (!coffeeOrder) {
+    return { intent: INTENTS.INVALID };
+  }
+
+  return { intent: INTENTS.ORDER, value: coffeeOrder };
+}
+
+async function getQueuePosition(customer) {
+  const key = customer.address;
+  let customerEntry;
+  try {
+    customerEntry = await customersMap.syncMapItems(key).fetch();
+  } catch (err) {
+    return NaN;
+  }
+  const orderNumber = customerEntry.data.openOrders[0];
+  if (!orderNumber) {
+    return NaN;
+  }
+  const items = await orderQueueList.syncListItems.list({ pageSize: 100 });
+  console.log(orderNumber, items);
+  const queuePosition = items.findIndex(item => item.index === orderNumber);
+  console.log(queuePosition);
+  return queuePosition >= 0 ? queuePosition : NaN;
+}
+
+async function cancelOrder(customer) {
+  const key = customer.address;
+  let customerEntry;
+  try {
+    customerEntry = await customersMap.syncMapItems(key).fetch();
+  } catch (err) {
+    return false;
+  }
+  const orderNumber = customerEntry.data.openOrders[0];
+  if (!orderNumber) {
+    return false;
+  }
+  await orderQueueList.syncListItems(orderNumber).remove();
+  customerEntry.data.openOrders = [];
+  await customersMap.syncMapItems(key).update({
+    data: customerEntry.data
+  });
+  return true;
 }
 
 module.exports = { handler: handleIncomingMessages };
