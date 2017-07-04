@@ -1,10 +1,8 @@
 const twilio = require('twilio');
 const { MessagingResponse } = require('twilio').twiml;
 
-const {
-  AVAILABLE_OPTIONS,
-  determineCoffeeFromMessage
-} = require('../data/coffee-options');
+const { determineCoffeeFromMessage } = require('../data/coffee-options');
+const { config } = require('../data/config');
 const {
   getWrongOrderMessage,
   getExistingOrderMessage,
@@ -46,10 +44,11 @@ async function handleIncomingMessages(req, res, next) {
   const messageIntent = determineIntent(req.body.Body);
 
   if (messageIntent.intent !== INTENTS.ORDER) {
+    const availableOptions = Object.keys(config().availableCoffees);
     try {
       let responseMessage;
       if (messageIntent.intent === INTENTS.HELP) {
-        responseMessage = getHelpMessage(AVAILABLE_OPTIONS);
+        responseMessage = getHelpMessage(availableOptions);
       } else if (messageIntent.intent === INTENTS.QUEUE) {
         const queuePosition = await getQueuePosition(customer);
         if (isNaN(queuePosition)) {
@@ -65,10 +64,7 @@ async function handleIncomingMessages(req, res, next) {
           responseMessage = getNoOpenOrderMessage();
         }
       } else {
-        responseMessage = getWrongOrderMessage(
-          req.body.Body,
-          AVAILABLE_OPTIONS
-        );
+        responseMessage = getWrongOrderMessage(req.body.Body, availableOptions);
       }
       await sendMessage(customer, responseMessage);
       return;

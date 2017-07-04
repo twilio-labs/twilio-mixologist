@@ -1,3 +1,5 @@
+const { config } = require('./config');
+
 /**
  * These are all coffee options that can actually be ordered
  */
@@ -34,18 +36,18 @@ const POSSIBLE_OPTIONS = {
   lattee: 'Latte',
   latte: 'Latte',
   'cafe late': 'Latte',
-  'caff� latte': 'Latte',
-  'caff� latte': 'Latte',
+  'caffeé latte': 'Latte',
+  'caffeé latte': 'Latte',
   'caffe latte': 'Latte',
   americano: 'Americano',
   'white americano': 'Americano',
-  'caff�': 'Americano',
+  caffeé: 'Americano',
   'flat white': 'Flat White',
   flatwhite: 'Flat White',
   'flat-white': 'Flat White',
   'flatt white': 'Flat White',
   'filter coffee': 'Filter Coffee',
-  'coffee': 'Filter Coffee',
+  coffee: 'Filter Coffee',
   'fliter coffee': 'Filter Coffee'
 };
 
@@ -56,13 +58,15 @@ const POSSIBLE_OPTIONS = {
  * @returns string with coffee name or null if none could be determined
  */
 function determineCoffeeFromMessage(messageBody) {
+  const possibleOptions = config().spellingMap;
+  const availableOptions = config().availableCoffees;
   const message = messageBody.trim().toLowerCase();
-  for (let option of Object.keys(POSSIBLE_OPTIONS)) {
+  for (let option of Object.keys(possibleOptions)) {
     if (
       message.indexOf(option) !== -1 &&
-      AVAILABLE_OPTIONS.indexOf(POSSIBLE_OPTIONS[option]) !== -1
+      availableOptions[possibleOptions[option]]
     ) {
-      return POSSIBLE_OPTIONS[option];
+      return possibleOptions[option];
     }
   }
   return null;
