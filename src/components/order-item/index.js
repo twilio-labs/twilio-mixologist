@@ -10,7 +10,7 @@ export default class OrderItem extends Component {
       orderItem: true,
       done: this.props.done
     });
-    const { number, product, message } = this.props.order;
+    const { number, product, message, changeStatus } = this.props.order;
     return (
       <div class={itemClass}>
         <p class={style.number}>
@@ -25,8 +25,15 @@ export default class OrderItem extends Component {
           </code>
         </p>
         <div>
-          <button class={style.finish}>Finish</button>
-          <button class={style.cancel}>Cancel</button>
+          <button class={style.finish} onClick={() => changeStatus('ready')}>
+            Finish
+          </button>
+          <button
+            class={style.cancel}
+            onClick={() => changeStatus('cancelled')}
+          >
+            Cancel
+          </button>
         </div>
       </div>
     );
