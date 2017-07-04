@@ -6,6 +6,11 @@ const {
   determineCoffeeFromMessage
 } = require('../data/coffee-options');
 const {
+  getWrongOrderMessage,
+  getExistingOrderMessage,
+  getOrderCreatedMessage
+} = require('../utils/messages');
+const {
   restClient,
   customersMap,
   orderQueueList,
@@ -29,10 +34,10 @@ async function handleIncomingMessages(req, res, next) {
   const coffeeOrder = determineCoffeeFromMessage(req.body.Body);
   if (!coffeeOrder) {
     try {
-      let responseMessage = `Seems like your order of "${req.body
-        .Body}" is not something we can serve. Possible orders are ${AVAILABLE_OPTIONS.join(
-        ', '
-      )}.`;
+      let responseMessage = getWrongOrderMessage(
+        req.body.Body,
+        AVAILABLE_OPTIONS
+      );
       await sendMessage(customer, responseMessage);
       return;
     } catch (err) {
@@ -50,8 +55,10 @@ async function handleIncomingMessages(req, res, next) {
     try {
       console.log('Has open orders');
       const order = await orderQueueList.syncListItems(openOrders[0]).fetch();
-      const responseMessage = `We're still making you a ${order.data
-        .product}. Check order #${order.index} with the barista if you think there's something wrong.`;
+      const responseMessage = getExistingOrderMessage(
+        order.data.product,
+        order.index
+      );
       await sendMessage(customer, responseMessage);
       return;
     } catch (err) {
@@ -81,7 +88,7 @@ async function handleIncomingMessages(req, res, next) {
       }
     });
 
-    const msg = `Thanks for ordering a ${coffeeOrder} from the Twilio powered Coffee Shop. We'll text you back when it's ready. In the mean time check out this repo https://github.com/dkundel/twilio-barista-node if you want to see how we built this app.`;
+    const msg = getOrderCreatedMessage(coffeeOrder, orderEntry.index);
     await sendMessage(customer, msg);
   } catch (err) {
     console.error(err);

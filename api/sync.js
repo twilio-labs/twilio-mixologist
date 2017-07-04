@@ -5,6 +5,11 @@ const {
   restClient
 } = require('./twilio');
 
+const {
+  getOrderCancelledMessage,
+  getOrderReadyMessage
+} = require('../utils/messages');
+
 async function handler(req, res, next) {
   res.sendStatus(200);
   if (
@@ -38,9 +43,9 @@ async function handler(req, res, next) {
 
     let responseMessage;
     if (itemData.status === 'ready') {
-      responseMessage = `Your ${itemData.product} is ready. You can collect it from the coffee shop right away, ask for order number ${itemIndex}`;
+      responseMessage = getOrderReadyMessage(itemData.product, itemIndex);
     } else {
-      responseMessage = `Your ${itemData.product} order has been cancelled. Please check with the barista if you think something is wrong.`;
+      responseMessage = getOrderCancelledMessage(itemData.product, itemIndex);
     }
     await sendMessage(customer.data, responseMessage);
 
