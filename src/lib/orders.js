@@ -1,6 +1,5 @@
 import * as EventEmitter from 'event-emitter';
-import { SyncClient } from 'twilio-sync';
-
+import TwilioClient from './sync-client';
 import { SYNC_NAMES } from '../../shared/consts';
 
 let instance;
@@ -12,7 +11,6 @@ export default class OrderService /* extends EventEmitter */ {
   }
 
   constructor() {
-    this.client = undefined;
     this.orders = undefined;
     this.ordersList = undefined;
   }
@@ -25,11 +23,10 @@ export default class OrderService /* extends EventEmitter */ {
   }
 
   init() {
-    return fetch('/api/token', { credentials: 'include' })
-      .then(resp => resp.json())
-      .then(({ token }) => {
-        this.client = new SyncClient(token);
-        return this.client.list(SYNC_NAMES.ORDER_QUEUE);
+    return TwilioClient.shared()
+      .init()
+      .then(client => {
+        return client.list(SYNC_NAMES.ORDER_QUEUE);
       })
       .then(list => {
         this.ordersList = list;

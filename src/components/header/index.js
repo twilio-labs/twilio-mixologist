@@ -14,6 +14,9 @@ export default class Header extends Component {
           <Link activeClassName={style.active} href="/orders">
             Orders
           </Link>
+          <Link activeClassName={style.active} href="/admin">
+            Admin
+          </Link>
         </nav>
       </header>
     );
