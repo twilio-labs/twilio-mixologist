@@ -10,7 +10,8 @@ const {
   getHelpMessage,
   getNoOpenOrderMessage,
   getQueuePositionMessage,
-  getCancelOrderMessage
+  getCancelOrderMessagem,
+  getSystemOfflineMessage
 } = require('../utils/messages');
 const {
   restClient,
@@ -36,8 +37,12 @@ const INTENTS = {
  * @returns 
  */
 async function handleIncomingMessages(req, res, next) {
-  const twiml = new MessagingResponse();
+  if (!config().isOn) {
+    res.type('text/plain').send(getSystemOfflineMessage());
+    return;
+  }
   // Respond to HTTP request with empty Response object since we will use the REST API to respond to messages.
+  const twiml = new MessagingResponse();
   res.type('text/xml').send(twiml.toString());
 
   const customer = getCustomerInformation(req.body);
