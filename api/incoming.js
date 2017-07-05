@@ -17,7 +17,9 @@ const {
   restClient,
   customersMap,
   orderQueueList,
-  allOrdersList
+  allOrdersList,
+  sendMessage,
+  registerAddress
 } = require('./twilio');
 
 const INTENTS = {
@@ -46,8 +48,9 @@ async function handleIncomingMessages(req, res, next) {
   res.type('text/xml').send(twiml.toString());
 
   const customer = getCustomerInformation(req.body);
-  const messageIntent = determineIntent(req.body.Body);
+  customer.identity = await registerAddress(req.body.From, customer.source);
 
+  const messageIntent = determineIntent(req.body.Body);
   if (messageIntent.intent !== INTENTS.ORDER) {
     const availableOptions = Object.keys(config().availableCoffees);
     try {
@@ -71,7 +74,7 @@ async function handleIncomingMessages(req, res, next) {
       } else {
         responseMessage = getWrongOrderMessage(req.body.Body, availableOptions);
       }
-      await sendMessage(customer, responseMessage);
+      await sendMessageToCustomer(customer, responseMessage);
       return;
     } catch (err) {
       console.error(err);
@@ -93,7 +96,7 @@ async function handleIncomingMessages(req, res, next) {
         order.data.product,
         order.index
       );
-      await sendMessage(customer, responseMessage);
+      await sendMessageToCustomer(customer, responseMessage);
       return;
     } catch (err) {
       console.error(err);
@@ -124,7 +127,7 @@ async function handleIncomingMessages(req, res, next) {
     });
 
     const msg = getOrderCreatedMessage(coffeeOrder, orderEntry.index);
-    await sendMessage(customer, msg);
+    await sendMessageToCustomer(customer, msg);
   } catch (err) {
     console.error(err);
   }
@@ -137,7 +140,7 @@ function getCustomerInformation({ From, Body, To, FromCountry }) {
 
   const source = From.indexOf('Messenger') !== -1 ? 'facebook' : 'sms';
   return {
-    address: From,
+    // address: From,
     openOrders: [],
     countryCode: FromCountry,
     contact: To,
@@ -152,29 +155,25 @@ function createOrderItem(customer, coffeeOrder, originalMessage) {
       message: originalMessage,
       source: customer.source,
       status: 'open',
-      customer: customer.address
+      customer: customer.identity
     }
   };
 }
 
 async function findOrCreateCustomer(customer) {
   try {
-    customerEntry = await customersMap.syncMapItems(customer.address).fetch();
+    customerEntry = await customersMap.syncMapItems(customer.identity).fetch();
   } catch (err) {
     customerEntry = await customersMap.syncMapItems.create({
-      key: customer.address,
+      key: customer.identity,
       data: customer
     });
   }
   return customerEntry;
 }
 
-function sendMessage(customer, msg) {
-  return restClient.messages.create({
-    from: customer.contact,
-    to: customer.address,
-    body: msg
-  });
+async function sendMessageToCustomer(customer, msg) {
+  return sendMessage(customer.identity, msg);
 }
 
 function determineIntent(message) {
@@ -200,7 +199,7 @@ function determineIntent(message) {
 }
 
 async function getQueuePosition(customer) {
-  const key = customer.address;
+  const key = customer.identity;
   let customerEntry;
   try {
     customerEntry = await customersMap.syncMapItems(key).fetch();
@@ -219,7 +218,7 @@ async function getQueuePosition(customer) {
 }
 
 async function cancelOrder(customer) {
-  const key = customer.address;
+  const key = customer.identity;
   let customerEntry;
   try {
     customerEntry = await customersMap.syncMapItems(key).fetch();

@@ -2,7 +2,8 @@ const {
   SYNC_NAMES,
   customersMap,
   orderQueueList,
-  restClient
+  restClient,
+  sendMessage
 } = require('./twilio');
 
 const {
@@ -56,18 +57,10 @@ async function handleOrderStatusChange(requestBody) {
   } else {
     responseMessage = getOrderCancelledMessage(itemData.product, itemIndex);
   }
-  await sendMessage(customer.data, responseMessage);
+  await sendMessage(customer.key, responseMessage);
 
   await orderQueueList.syncListItems(itemIndex).remove();
   return;
-}
-
-async function sendMessage(customer, msg) {
-  return restClient.messages.create({
-    from: customer.contact,
-    to: customer.address,
-    body: msg
-  });
 }
 
 function validEventType(eventType) {

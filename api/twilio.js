@@ -3,11 +3,13 @@ const { AccessToken } = twilio.jwt;
 const { SyncGrant } = AccessToken;
 
 const { DEFAULT_CONFIGURATION } = require('../data/config');
+const { getIdentityFromAddress } = require('../utils/identity');
 
 const {
   TWILIO_API_KEY,
   TWILIO_API_SECRET,
   TWILIO_ACCOUNT_SID,
+  TWILIO_NOTIFY_SERVICE,
   TWILIO_SYNC_SERVICE,
   TWILIO_MESSAGING_SERVICE
 } = process.env;
@@ -19,12 +21,35 @@ const restClient = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
 });
 
 const syncClient = restClient.sync.services(TWILIO_SYNC_SERVICE);
+const notifyClient = restClient.notify.services(TWILIO_NOTIFY_SERVICE);
 const messagingClient = restClient.messaging.services(TWILIO_MESSAGING_SERVICE);
 
 const orderQueueList = syncClient.syncLists(SYNC_NAMES.ORDER_QUEUE);
 const configurationDoc = syncClient.documents(SYNC_NAMES.CONFIGURATION);
 const customersMap = syncClient.syncMaps(SYNC_NAMES.CUSTOMERS);
 const allOrdersList = syncClient.syncLists(SYNC_NAMES.ALL_ORDERS);
+
+async function registerAddress(address, bindingType) {
+  const identity = getIdentityFromAddress(address);
+  const endpoint = `${identity}:${bindingType}`;
+  const tag = ['interacted'];
+  await notifyClient.bindings.create({
+    identity,
+    address,
+    endpoint,
+    bindingType,
+    tag
+  });
+  return identity;
+}
+
+async function sendMessage(identity, body) {
+  const notification = await notifyClient.notifications.create({
+    identity: identity,
+    body: body
+  });
+  return;
+}
 
 async function setup() {
   console.log('Creating resources');
@@ -148,6 +173,8 @@ module.exports = {
   SYNC_NAMES,
   restClient,
   syncClient,
+  sendMessage,
+  registerAddress,
   messagingClient,
   orderQueueList,
   configurationDoc,
