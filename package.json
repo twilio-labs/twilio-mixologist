@@ -23,7 +23,7 @@
     "serve": "preact build && preact serve",
     "dev": "npm-run-all -p dev:*",
     "dev:preact": "watch 'npm run build:preact' src/",
-    "dev:api": "node-env-run . -f"
+    "dev:api": "node-env-run . -f | pino-colada"
   },
   "devDependencies": {
     "eslint": "^4.1.1",
