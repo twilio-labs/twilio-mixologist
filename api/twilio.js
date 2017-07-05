@@ -52,9 +52,7 @@ async function sendMessage(identity, body) {
 }
 
 async function setup() {
-  console.log('Creating resources');
   await createResources();
-  console.log('Define permissions');
   return await setPermissions();
 }
 

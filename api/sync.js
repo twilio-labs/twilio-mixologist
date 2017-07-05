@@ -18,7 +18,6 @@ async function handler(req, res, next) {
   if (!req.body || !req.body.EventType || !validEventType(req.body.EventType)) {
     return;
   }
-  console.log('Correct event type');
 
   try {
     if (isDocumentUpdate(req.body.EventType)) {
@@ -28,11 +27,10 @@ async function handler(req, res, next) {
         return;
       }
 
-      console.log('Correct list');
       await handleOrderStatusChange(req.body);
     }
   } catch (err) {
-    console.error(err);
+    req.log.error(err);
   }
 }
 
@@ -42,7 +40,6 @@ async function handleOrderStatusChange(requestBody) {
   if (itemData.status === 'open') {
     return;
   }
-  console.log('Item Data', itemData);
 
   const customer = await customersMap.syncMapItems(itemData.customer).fetch();
   const indexOfOrder = customer.data.openOrders.indexOf(itemIndex);

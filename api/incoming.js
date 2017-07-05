@@ -77,20 +77,16 @@ async function handleIncomingMessages(req, res, next) {
       await sendMessageToCustomer(customer, responseMessage);
       return;
     } catch (err) {
-      console.error(err);
+      req.log.error(err);
       return;
     }
   }
   const coffeeOrder = messageIntent.value;
-  console.log('Determined coffee:', coffeeOrder);
 
   let customerEntry = await findOrCreateCustomer(customer);
-  console.log('Customer Entry', customerEntry);
   const openOrders = customerEntry.data.openOrders;
-  console.log('Open orders', openOrders);
   if (Array.isArray(openOrders) && openOrders.length > 0) {
     try {
-      console.log('Has open orders');
       const order = await orderQueueList.syncListItems(openOrders[0]).fetch();
       const responseMessage = getExistingOrderMessage(
         order.data.product,
@@ -99,24 +95,21 @@ async function handleIncomingMessages(req, res, next) {
       await sendMessageToCustomer(customer, responseMessage);
       return;
     } catch (err) {
-      console.error(err);
+      req.log.error(err);
       return;
     }
   }
 
   try {
-    console.log('Create order entry');
     const orderEntry = await orderQueueList.syncListItems.create(
       createOrderItem(customer, coffeeOrder, req.body.Body)
     );
 
     customerEntry.data.openOrders.push(orderEntry.index);
-    console.log('new customer entry:', customerEntry);
     await customersMap.syncMapItems(customerEntry.key).update({
       data: customerEntry.data
     });
 
-    console.log('Update all orders list');
     await allOrdersList.syncListItems.create({
       data: {
         product: coffeeOrder,
@@ -129,7 +122,7 @@ async function handleIncomingMessages(req, res, next) {
     const msg = getOrderCreatedMessage(coffeeOrder, orderEntry.index);
     await sendMessageToCustomer(customer, msg);
   } catch (err) {
-    console.error(err);
+    req.log.error(err);
   }
 }
 
@@ -211,9 +204,7 @@ async function getQueuePosition(customer) {
     return NaN;
   }
   const items = await orderQueueList.syncListItems.list({ pageSize: 100 });
-  console.log(orderNumber, items);
   const queuePosition = items.findIndex(item => item.index === orderNumber);
-  console.log(queuePosition);
   return queuePosition >= 0 ? queuePosition : NaN;
 }
 

@@ -1,5 +1,8 @@
 const express = require('express');
 const path = require('path');
+const log = require('pino')();
+const pinoMiddleware = require('express-pino-logger')({ logger: log });
+
 const { loadConfig, config } = require('./data/config');
 
 const PORT = process.env.PORT || 3000;
@@ -7,6 +10,7 @@ const PORT = process.env.PORT || 3000;
 (async function() {
   const app = express();
 
+  app.use(pinoMiddleware);
   app.use(express.static(path.join(__dirname, 'build')));
 
   app.use('/api', require('./api'));
@@ -16,8 +20,7 @@ const PORT = process.env.PORT || 3000;
   });
 
   await loadConfig();
-  console.log('loaded config:', config());
   app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
+    log.info(`Server is listening on port ${PORT}`);
   });
 })();

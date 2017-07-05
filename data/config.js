@@ -76,7 +76,6 @@ async function loadConfig() {
     const { data } = await configurationDoc.fetch();
     setConfig(data);
   } catch (err) {
-    console.error(err);
     setConfig(DEFAULT_CONFIGURATION);
   }
   return config();
