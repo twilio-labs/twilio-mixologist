@@ -1,6 +1,7 @@
 import * as EventEmitter from 'event-emitter';
 import TwilioClient from './sync-client';
 import { SYNC_NAMES } from '../../shared/consts';
+import * as uniqBy from 'lodash.uniqby';
 
 let instance;
 
@@ -54,6 +55,7 @@ export default class OrderService /* extends EventEmitter */ {
   addEventListeners() {
     this.ordersList.on('itemAdded', item => {
       this.orders.push(this.convertItemToOrder(item));
+      this.orders = uniqBy(this.orders, 'number');
       this.emit('updated', { orders: this.orders });
     });
 
@@ -62,6 +64,7 @@ export default class OrderService /* extends EventEmitter */ {
         existingItem => item.index === existingItem.number
       );
       this.orders[idx] = this.convertItemToOrder(item);
+      this.orders = uniqBy(this.orders, 'number');
       this.emit('updated', { orders: this.orders });
     });
 
@@ -71,6 +74,7 @@ export default class OrderService /* extends EventEmitter */ {
       );
 
       this.orders.splice(idx, 1);
+      this.orders = uniqBy(this.orders, 'number');
       this.emit('updated', { orders: this.orders });
     });
   }
