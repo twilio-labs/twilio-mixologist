@@ -1,4 +1,6 @@
 import { h, Component } from 'preact';
+import mdl from 'material-design-lite/material';
+import { Button } from 'preact-mdl';
 import style from './style';
 import classnames from 'classnames/bind';
 
@@ -25,15 +27,12 @@ export default class OrderItem extends Component {
           </code>
         </p>
         <div>
-          <button class={style.finish} onClick={() => changeStatus('ready')}>
+          <Button primary raised onClick={() => changeStatus('ready')}>
             Finish
-          </button>
-          <button
-            class={style.cancel}
-            onClick={() => changeStatus('cancelled')}
-          >
+          </Button>
+          <Button accent colored onClick={() => changeStatus('cancelled')}>
             Cancel
-          </button>
+          </Button>
         </div>
       </div>
     );

@@ -24,6 +24,11 @@ export default class Orders extends Component {
   render() {
     return (
       <div class={style.orders}>
+        <h4>
+          <span data-badge={this.state.orders.length} class="mdl-badge">
+            Orders
+          </span>
+        </h4>
         <OrderList orders={this.state.orders} />
       </div>
     );
