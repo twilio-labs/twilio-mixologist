@@ -12,5 +12,6 @@ export default function(config, env, helpers) {
     const htmlPluginOptions = plugins[0].plugin.options;
     htmlPluginOptions.excludeChunks.push('debug');
     config.entry['debug'] = './debug.js';
+    config.node.Buffer = true;
   }
 }
