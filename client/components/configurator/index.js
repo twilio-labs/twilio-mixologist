@@ -1,6 +1,8 @@
 import { h, Component } from 'preact';
 import mdl from 'material-design-lite/material';
 import { TextField, Switch, Button } from 'preact-mdl';
+
+import { DEFAULT_JSON_ENTRY_KEY } from '../../../shared/consts';
 import style from './style';
 
 export default class Configurator extends Component {
@@ -93,6 +95,14 @@ export default class Configurator extends Component {
             />;
       return (
         <div class={style.jsonEntry}>
+          <Button
+            class={style.deleteButton}
+            colored
+            accent
+            onClick={() => this.deleteJsonEntry(key, value, objectKey)}
+          >
+            &times;
+          </Button>
           <TextField
             class={style.jsonKey}
             placeholder="key"
@@ -111,6 +121,22 @@ export default class Configurator extends Component {
         </h6>
         <div class={style.jsonList}>
           {entries}
+        </div>
+        <div class={style.createNewJsonEntryButtons}>
+          <Button
+            primary
+            colored
+            onClick={() => this.createNewJsonEntry(key, value)}
+          >
+            Create Text Entry
+          </Button>
+          <Button
+            primary
+            colored
+            onClick={() => this.createNewJsonEntry(key, value, false)}
+          >
+            Create Boolean Entry
+          </Button>
         </div>
       </div>
     );
@@ -144,6 +170,17 @@ export default class Configurator extends Component {
     const newValue =
       evt.target.type === 'checkbox' ? evt.target.checked : evt.target.value;
     obj[key] = newValue;
+    this.props.update(name, obj);
+  }
+
+  createNewJsonEntry(name, obj, value) {
+    value = typeof value === 'undefined' ? 'CHOOSE_VALUE' : value;
+    obj[DEFAULT_JSON_ENTRY_KEY] = value;
+    this.props.update(name, obj);
+  }
+
+  deleteJsonEntry(name, obj, key) {
+    delete obj[key];
     this.props.update(name, obj);
   }
 

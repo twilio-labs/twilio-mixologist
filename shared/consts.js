@@ -5,4 +5,6 @@ const SYNC_NAMES = {
   ALL_ORDERS: 'allOrders'
 };
 
-module.exports = { SYNC_NAMES };
+const DEFAULT_JSON_ENTRY_KEY = 'CHOOSE_KEY';
+
+module.exports = { SYNC_NAMES, DEFAULT_JSON_ENTRY_KEY };

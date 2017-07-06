@@ -1,5 +1,6 @@
 const EventEmitter = require('events');
 const { configurationDoc } = require('../api/twilio');
+const { DEFAULT_JSON_ENTRY_KEY } = require('../../shared/consts');
 
 /**
  * These are all coffee options that can actually be ordered
@@ -86,6 +87,13 @@ function config() {
 }
 
 function setConfig(conf) {
+  for (let key of Object.keys(conf)) {
+    const val = conf[key];
+    if (typeof val === 'object' && !Array.isArray(val)) {
+      delete val[''];
+      delete val[DEFAULT_JSON_ENTRY_KEY];
+    }
+  }
   internalConfig = conf;
   configEvents.emit('updated', { config: conf });
 }
