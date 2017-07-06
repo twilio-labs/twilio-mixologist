@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 import mdl from 'material-design-lite/material';
 import { Tabs } from 'preact-mdl';
-import Configurator from '../../components/configurator';
+import Configurator from '../../components/panels/configurator';
 import Messenger from '../../components/panels/messenger';
 import ConfigService from '../../lib/config';
 import style from './style';

@@ -2,7 +2,7 @@ import { h, Component } from 'preact';
 import mdl from 'material-design-lite/material';
 import { TextField, Switch, Button } from 'preact-mdl';
 
-import { DEFAULT_JSON_ENTRY_KEY } from '../../../shared/consts';
+import { DEFAULT_JSON_ENTRY_KEY } from '../../../../shared/consts';
 import style from './style';
 
 export default class Configurator extends Component {
