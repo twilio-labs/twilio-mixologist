@@ -2,7 +2,6 @@ const twilio = require('twilio');
 const { AccessToken } = twilio.jwt;
 const { SyncGrant } = AccessToken;
 
-const { DEFAULT_CONFIGURATION } = require('../data/config');
 const { getIdentityFromAddress } = require('../utils/identity');
 
 const {
@@ -14,7 +13,7 @@ const {
   TWILIO_MESSAGING_SERVICE
 } = process.env;
 
-const { SYNC_NAMES } = require('../../shared/consts');
+const { SYNC_NAMES, DEFAULT_CONFIGURATION } = require('../../shared/consts');
 
 const restClient = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
   accountSid: TWILIO_ACCOUNT_SID
@@ -53,7 +52,13 @@ async function sendMessage(identity, body) {
 
 async function setup() {
   await createResources();
-  return await setPermissions();
+  return setPermissions();
+}
+
+async function loadConnectedPhoneNumbers() {
+  const phoneNumbers = await messagingClient.phoneNumbers.list();
+  const connectedPhoneNumbers = phoneNumbers.map(p => p.phoneNumber).join(', ');
+  return connectedPhoneNumbers;
 }
 
 function createToken(user) {
@@ -179,5 +184,6 @@ module.exports = {
   customersMap,
   allOrdersList,
   setup,
-  createToken
+  createToken,
+  loadConnectedPhoneNumbers
 };

@@ -7,4 +7,77 @@ const SYNC_NAMES = {
 
 const DEFAULT_JSON_ENTRY_KEY = 'CHOOSE_KEY';
 
-module.exports = { SYNC_NAMES, DEFAULT_JSON_ENTRY_KEY };
+/**
+ * These are all coffee options that can actually be ordered
+ */
+const AVAILABLE_DEFAULT_OPTIONS = [
+  'Espresso',
+  'Cappuccino',
+  'Latte',
+  'Americano',
+  'Flat White',
+  'Filter Coffee'
+];
+
+/**
+ * This is a rudamentary solution to solve typos. All these
+ * wrong spellings will map to an actual available coffee.
+ */
+const SPELLING_MISTAKES = {
+  expreso: 'Espresso',
+  expresso: 'Espresso',
+  espresso: 'Espresso',
+  cappacino: 'Cappuccino',
+  capacino: 'Cappuccino',
+  cappacino: 'Cappuccino',
+  cappocino: 'Cappuccino',
+  capocino: 'Cappuccino',
+  capacino: 'Cappuccino',
+  cappucino: 'Cappuccino',
+  cappuccino: 'Cappuccino',
+  capuccino: 'Cappuccino',
+  capochino: 'Cappuccino',
+  late: 'Latte',
+  lattey: 'Latte',
+  larte: 'Latte',
+  lattee: 'Latte',
+  latte: 'Latte',
+  'cafe late': 'Latte',
+  'caffeé latte': 'Latte',
+  'caffeé latte': 'Latte',
+  'caffe latte': 'Latte',
+  americano: 'Americano',
+  'white americano': 'Americano',
+  caffeé: 'Americano',
+  'flat white': 'Flat White',
+  flatwhite: 'Flat White',
+  'flat-white': 'Flat White',
+  'flatt white': 'Flat White',
+  'filter coffee': 'Filter Coffee',
+  coffee: 'Filter Coffee',
+  'fliter coffee': 'Filter Coffee'
+};
+
+const DEFAULT_CONFIGURATION = {
+  isOn: true,
+  offlineMessage: 'We are sorry but there is currently no coffee.',
+  availableCoffees: createBooleanMapOfArray(AVAILABLE_DEFAULT_OPTIONS),
+  spellingMap: SPELLING_MISTAKES,
+  countriesAvailable: [],
+  repoUrl: 'https://github.com/dkundel/twilio-barista-node'
+};
+
+function createBooleanMapOfArray(array) {
+  return array.reduce((map, entry) => {
+    map[entry] = true;
+    return map;
+  }, {});
+}
+
+module.exports = {
+  AVAILABLE_DEFAULT_OPTIONS,
+  DEFAULT_CONFIGURATION,
+  DEFAULT_JSON_ENTRY_KEY,
+  SPELLING_MISTAKES,
+  SYNC_NAMES
+};
