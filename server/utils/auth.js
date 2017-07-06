@@ -2,7 +2,7 @@ const basicAuth = require('basic-auth');
 
 const LOGINS = processLogins(process.env.LOGINS);
 
-const availableUsers = (module.exports = function(req, res, next) {
+function authenticate(req, res, next) {
   function unauthorized(res) {
     res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
     return res.sendStatus(401);
@@ -26,7 +26,17 @@ const availableUsers = (module.exports = function(req, res, next) {
   } else {
     return unauthorized(res);
   }
-});
+}
+
+function gateForAdmin(req, res, next) {
+  authenticate(req, res, () => {
+    if (req.user !== 'admin') {
+      res.sendStatus(403);
+    } else {
+      next();
+    }
+  });
+}
 
 function processLogins(loginString) {
   const users = loginString.split(';').map(s => s.trim());
@@ -35,3 +45,8 @@ function processLogins(loginString) {
     return { username, password, role };
   });
 }
+
+module.exports = {
+  authenticate: authenticate,
+  gateForAdmin: gateForAdmin
+};

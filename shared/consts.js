@@ -7,6 +7,15 @@ const SYNC_NAMES = {
 
 const DEFAULT_JSON_ENTRY_KEY = 'CHOOSE_KEY';
 
+const SEGMENTS = {
+  OPEN_ORDER: 'open-order'
+};
+
+const TAGS = {
+  INTERACTED: 'interacted',
+  ALL: 'all'
+};
+
 /**
  * These are all coffee options that can actually be ordered
  */
@@ -79,5 +88,7 @@ module.exports = {
   DEFAULT_CONFIGURATION,
   DEFAULT_JSON_ENTRY_KEY,
   SPELLING_MISTAKES,
-  SYNC_NAMES
+  SYNC_NAMES,
+  TAGS,
+  SEGMENTS
 };

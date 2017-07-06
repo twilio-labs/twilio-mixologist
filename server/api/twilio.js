@@ -13,7 +13,12 @@ const {
   TWILIO_MESSAGING_SERVICE
 } = process.env;
 
-const { SYNC_NAMES, DEFAULT_CONFIGURATION } = require('../../shared/consts');
+const {
+  SYNC_NAMES,
+  DEFAULT_CONFIGURATION,
+  SEGMENTS,
+  TAGS
+} = require('../../shared/consts');
 
 const restClient = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
   accountSid: TWILIO_ACCOUNT_SID
@@ -31,7 +36,7 @@ const allOrdersList = syncClient.syncLists(SYNC_NAMES.ALL_ORDERS);
 async function registerAddress(address, bindingType) {
   const identity = getIdentityFromAddress(address);
   const endpoint = `${identity}:${bindingType}`;
-  const tag = ['interacted'];
+  const tag = [TAGS.INTERACTED];
   await notifyClient.bindings.create({
     identity,
     address,
@@ -47,7 +52,37 @@ async function sendMessage(identity, body) {
     identity: identity,
     body: body
   });
-  return;
+  return notification;
+}
+
+async function sendMessageToAll(body) {
+  const notification = await notifyClient.notifications.create({
+    tag: TAGS.ALL,
+    body
+  });
+  return notification;
+}
+
+async function registerOpenOrder(identity) {
+  const membership = await notifyClient
+    .users(identity)
+    .segmentMemberships.create({ segment: SEGMENTS.OPEN_ORDER });
+  return membership;
+}
+
+async function deregisterOpenOrder(identity) {
+  await notifyClient
+    .users(identity)
+    .segmentMemberships(SEGMENTS.OPEN_ORDER)
+    .remove();
+  return true;
+}
+
+async function sendMessageToAllOpenOrders(body) {
+  const notification = await notifyClient.notifications.create({
+    segment: SEGMENTS.OPEN_ORDER
+  });
+  return notification;
 }
 
 async function setup() {
@@ -185,5 +220,9 @@ module.exports = {
   allOrdersList,
   setup,
   createToken,
-  loadConnectedPhoneNumbers
+  loadConnectedPhoneNumbers,
+  sendMessageToAll,
+  sendMessageToAllOpenOrders,
+  registerOpenOrder,
+  deregisterOpenOrder
 };

@@ -19,7 +19,8 @@ const {
   orderQueueList,
   allOrdersList,
   sendMessage,
-  registerAddress
+  registerAddress,
+  registerOpenOrder
 } = require('./twilio');
 
 const INTENTS = {
@@ -121,6 +122,8 @@ async function handleIncomingMessages(req, res, next) {
         countryCode: customer.countryCode
       }
     });
+
+    await registerOpenOrder(customer.identity);
 
     const msg = getOrderCreatedMessage(coffeeOrder, orderEntry.index);
     await sendMessageToCustomer(customer, msg);

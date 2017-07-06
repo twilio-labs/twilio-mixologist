@@ -3,7 +3,8 @@ const {
   customersMap,
   orderQueueList,
   restClient,
-  sendMessage
+  sendMessage,
+  deregisterOpenOrder
 } = require('./twilio');
 
 const {
@@ -57,6 +58,7 @@ async function handleOrderStatusChange(requestBody) {
   await sendMessage(customer.key, responseMessage);
 
   await orderQueueList.syncListItems(itemIndex).remove();
+  await deregisterOpenOrder(itemData.customer);
   return;
 }
 
