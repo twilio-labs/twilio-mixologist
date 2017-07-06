@@ -38,6 +38,7 @@
   "dependencies": {
     "basic-auth": "^1.1.0",
     "body-parser": "^1.17.2",
+    "buffer": "^5.0.6",
     "classnames": "^2.2.5",
     "event-emitter": "^0.3.5",
     "express": "^4.15.3",
@@ -52,6 +53,7 @@
     "preact-mdl": "^2.2.1",
     "preact-router": "^2.5.2",
     "twilio": "^3.4.0-alpha-2",
+    "twilio-common": "^0.1.6",
     "twilio-sync": "^0.5.8"
   }
 }
