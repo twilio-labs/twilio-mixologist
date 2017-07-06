@@ -1,43 +1,13 @@
 import { h, Component } from 'preact';
 import mdl from 'material-design-lite/material';
-import { TextField, Switch } from 'preact-mdl';
+import { TextField, Switch, Button } from 'preact-mdl';
 import style from './style';
 
 export default class Configurator extends Component {
   render() {
     const { config } = this.props;
     const entries = Object.keys(config)
-      .sort((configNameA, configNameB) => {
-        const valueA = config[configNameA];
-        const valueB = config[configNameA];
-        const typeA = typeof valueA;
-        const typeB = typeof valueB;
-        if (typeA === typeB) {
-          if (valueA > valueB) {
-            return 1;
-          } else if (valueA < valueB) {
-            return -1;
-          } else {
-            return 0;
-          }
-        } else if (typeA === 'boolean') {
-          return -1;
-        } else if (typeB === 'boolean') {
-          return 1;
-        } else if (typeA === 'object' && !Array.isArray(valueA)) {
-          return -1;
-        } else if (typeB === 'object' && !Array.isArray(valueB)) {
-          return 1;
-        } else {
-          if (valueA > valueB) {
-            return 1;
-          } else if (valueA < valueB) {
-            return -1;
-          } else {
-            return 0;
-          }
-        }
-      })
+      .sort((a, b) => this.sortConfig(config, a, b))
       .map(configName => {
         const value = config[configName];
         if (typeof value === 'boolean') {
@@ -175,5 +145,37 @@ export default class Configurator extends Component {
       evt.target.type === 'checkbox' ? evt.target.checked : evt.target.value;
     obj[key] = newValue;
     this.props.update(name, obj);
+  }
+
+  sortConfig(config, configNameA, configNameB) {
+    const valueA = config[configNameA];
+    const valueB = config[configNameA];
+    const typeA = typeof valueA;
+    const typeB = typeof valueB;
+    if (typeA === typeB) {
+      if (valueA > valueB) {
+        return 1;
+      } else if (valueA < valueB) {
+        return -1;
+      } else {
+        return 0;
+      }
+    } else if (typeA === 'boolean') {
+      return -1;
+    } else if (typeB === 'boolean') {
+      return 1;
+    } else if (typeA === 'object' && !Array.isArray(valueA)) {
+      return -1;
+    } else if (typeB === 'object' && !Array.isArray(valueB)) {
+      return 1;
+    } else {
+      if (valueA > valueB) {
+        return 1;
+      } else if (valueA < valueB) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
   }
 }

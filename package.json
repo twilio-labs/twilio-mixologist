@@ -1,7 +1,7 @@
 {
   "name": "twilio-barista-node",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server/index.js",
   "repository": {
     "url": "git@github.com:dkundel/twilio-barista-node.git",
     "type": "git"
@@ -15,15 +15,17 @@
   "author": "Dominik Kundel <dominik.kundel@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "postinstall": "npm run build",
-    "start": "node .",
+    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start:prod": "node .",
+    "start:dev": "node-env-run . -f | pino-colada",
     "test": "eslint src && preact test",
-    "build:preact": "preact build --no-prerender",
+    "build:preact": "preact build --src client --dest client-dist --no-prerender",
     "build": "npm-run-all -p build:*",
-    "serve": "preact build && preact serve",
+    "serve": "npm-run-all -p serve:*",
+    "serve:preact": "npm run build:preact && preact serve --dir client-dist",
     "dev": "npm-run-all -p dev:*",
-    "dev:preact": "watch 'npm run build:preact' src/",
-    "dev:api": "node-env-run . -f | pino-colada"
+    "dev:preact": "watch 'npm run build:preact' client/ shared/",
+    "dev:api": "watch 'npm run start:dev' server/ shared/ "
   },
   "devDependencies": {
     "eslint": "^4.1.1",

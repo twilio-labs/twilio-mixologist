@@ -46,6 +46,15 @@ export default class ConfigService /* extends EventEmitter */ {
   }
 
   updateValue(key, value) {
+    if (!key) {
+      return;
+    }
+
+    if (typeof value === 'object' && !Array.isArray(value)) {
+      delete value[''];
+      delete value['CHOOSE_KEY'];
+    }
+
     this.configurationDoc.update({
       [key]: value
     });

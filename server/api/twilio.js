@@ -14,7 +14,7 @@ const {
   TWILIO_MESSAGING_SERVICE
 } = process.env;
 
-const { SYNC_NAMES } = require('../shared/consts');
+const { SYNC_NAMES } = require('../../shared/consts');
 
 const restClient = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
   accountSid: TWILIO_ACCOUNT_SID
