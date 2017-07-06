@@ -52,7 +52,10 @@ async function handleIncomingMessages(req, res, next) {
 
   const messageIntent = determineIntent(req.body.Body);
   if (messageIntent.intent !== INTENTS.ORDER) {
-    const availableOptions = Object.keys(config().availableCoffees);
+    const availableOptionsMap = config().availableCoffees;
+    const availableOptions = Object.keys(availableOptionsMap).filter(
+      key => availableOptionsMap[key]
+    );
     try {
       let responseMessage;
       if (messageIntent.intent === INTENTS.HELP) {
