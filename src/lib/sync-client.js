@@ -1,8 +1,9 @@
+import * as EventEmitter from 'event-emitter';
 import { AccessManager } from 'twilio-common';
 import { SyncClient } from 'twilio-sync';
 
 let instance;
-export default class TwilioClient {
+export default class TwilioClient /* extends EventEmitter */ {
   static shared() {
     instance = instance || new TwilioClient();
     return instance;
@@ -21,23 +22,38 @@ export default class TwilioClient {
 
     return this.fetchToken().then(({ token, identity }) => {
       this.role = identity;
-      this.createAccessManager(token);
-      this.client = new SyncClient(token);
+      this.accessManager = this.createAccessManager(token);
+      this.client = this.createClient(token);
       return this.client;
     });
   }
 
+  createClient(token) {
+    const client = new SyncClient(token);
+    client.on('connectionStateChanged', ({ connectionState }) => {
+      if (
+        connectionState === 'disconnected' ||
+        connectionState === 'error' ||
+        connectionState === 'denied'
+      ) {
+        this.emit('disconnected');
+        this.client = undefined;
+      }
+    });
+    return client;
+  }
+
   createAccessManager(token) {
-    this.accessManager = new AccessManager(token);
-    this.accessManager.on('tokenExpired', () => {
+    const accessManager = new AccessManager(token);
+    accessManager.on('tokenExpired', () => {
       this.fetchToken().then(({ token }) => {
-        this.accessManager.updateToken(token);
+        accessManager.updateToken(token);
       });
     });
-    this.accessManager.on('tokenUpdated', () => {
+    accessManager.on('tokenUpdated', () => {
       this.client.updateToken(this.accessManager.token);
     });
-    return this.accessManager;
+    return accessManager;
   }
 
   fetchToken() {
@@ -46,3 +62,5 @@ export default class TwilioClient {
     );
   }
 }
+
+EventEmitter(TwilioClient.prototype);

@@ -19,6 +19,9 @@ export default class App extends Component {
   }
 
   componentWillMount() {
+    this.syncClient.on('disconnected', () => {
+      this.setState({ isAdmin: false, isLoggedIn: false });
+    });
     this.syncClient
       .init()
       .then(() => {
