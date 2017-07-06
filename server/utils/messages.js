@@ -1,4 +1,5 @@
 const template = require('lodash.template');
+const { config } = require('../data/config');
 
 // available values: originalMessage, availableOptions
 const WRONG_ORDER_MESSAGES = [
@@ -90,6 +91,10 @@ function getOrderReadyMessage(product, orderNumber) {
 }
 
 function getSystemOfflineMessage() {
+  const customMessage = config().offlineMessage;
+  if (typeof customMessage === 'string' && customMessage.trim().length > 0) {
+    return customMessage;
+  }
   const tmpl = template(pickRandom(SYSTEM_OFFLINE_MESSAGES));
   return tmpl();
 }
