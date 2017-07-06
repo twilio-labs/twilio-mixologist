@@ -3,6 +3,7 @@ import mdl from 'material-design-lite/material';
 import { Tabs } from 'preact-mdl';
 import Configurator from '../../components/panels/configurator';
 import Messenger from '../../components/panels/messenger';
+import Other from '../../components/panels/other';
 import ConfigService from '../../lib/config';
 import style from './style';
 
@@ -33,11 +34,12 @@ export default class Orders extends Component {
     let noAdminMessage = <p>You are not admin</p>;
     let adminInterface = (
       <Tabs>
-        <Tabs.TabBar>
+        <Tabs.TabBar class={style.tabsLeft}>
           <Tabs.Tab href="#configuration" active>
             Configuration
           </Tabs.Tab>
           <Tabs.Tab href="#messages">Messages</Tabs.Tab>
+          <Tabs.Tab href="#other">Other</Tabs.Tab>
         </Tabs.TabBar>
         <Tabs.TabPanel id="configuration" active>
           <Configurator
@@ -47,6 +49,9 @@ export default class Orders extends Component {
         </Tabs.TabPanel>
         <Tabs.TabPanel id="messages">
           <Messenger />
+        </Tabs.TabPanel>
+        <Tabs.TabPanel id="other">
+          <Other />
         </Tabs.TabPanel>
       </Tabs>
     );

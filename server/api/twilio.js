@@ -207,9 +207,16 @@ async function createIfNotExists(resource, name, data) {
   }
 }
 
+async function resetList(name) {
+  await syncClient.syncLists(name).remove();
+  await createIfNotExists(syncClient.syncLists, name);
+  return true;
+}
+
 module.exports = {
   SYNC_NAMES,
   restClient,
+  notifyClient,
   syncClient,
   sendMessage,
   registerAddress,
@@ -224,5 +231,7 @@ module.exports = {
   sendMessageToAll,
   sendMessageToAllOpenOrders,
   registerOpenOrder,
-  deregisterOpenOrder
+  deregisterOpenOrder,
+  resetList,
+  setPermissions
 };

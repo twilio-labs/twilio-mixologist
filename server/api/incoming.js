@@ -10,7 +10,7 @@ const {
   getHelpMessage,
   getNoOpenOrderMessage,
   getQueuePositionMessage,
-  getCancelOrderMessagem,
+  getCancelOrderMessage,
   getSystemOfflineMessage
 } = require('../utils/messages');
 const {

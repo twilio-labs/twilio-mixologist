@@ -21,6 +21,7 @@ router.post(
   parseJsonBody,
   require('./notification').handler
 );
+router.post('/reset', gateForAdmin, require('./reset').handler);
 
 router.get('/debug', gateForAdmin, (req, res, next) => {
   res.sendFile(path.resolve(__dirname, '../utils/debug.html'));
