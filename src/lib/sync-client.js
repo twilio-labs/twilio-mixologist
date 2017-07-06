@@ -9,6 +9,7 @@ export default class TwilioClient {
 
   constructor() {
     this.client = undefined;
+    this.role = undefined;
   }
 
   init() {
@@ -18,7 +19,8 @@ export default class TwilioClient {
 
     return fetch('/api/token', { credentials: 'include' })
       .then(resp => resp.json())
-      .then(({ token }) => {
+      .then(({ token, identity }) => {
+        this.role = identity;
         this.client = new SyncClient(token);
         return this.client;
       });
