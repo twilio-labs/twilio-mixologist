@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const { authenticate, gateForAdmin } = require('../utils/auth');
 
 const parseBody = bodyParser.urlencoded({ extended: false });
+const parseJsonBody = bodyParser.json();
 
 router.get('/', (req, res, next) => {
   res.send('Hello World!');
@@ -17,7 +18,7 @@ router.post('/setup', require('./setup').handler);
 router.post(
   '/notification',
   gateForAdmin,
-  parseBody,
+  parseJsonBody,
   require('./notification').handler
 );
 
