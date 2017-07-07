@@ -3,6 +3,7 @@ const router = require('express').Router();
 const bodyParser = require('body-parser');
 
 const { authenticate, gateForAdmin } = require('../utils/auth');
+const numbers = require('./numbers');
 
 const parseBody = bodyParser.urlencoded({ extended: false });
 const parseJsonBody = bodyParser.json();
@@ -22,6 +23,8 @@ router.post(
   require('./notification').handler
 );
 router.post('/reset', gateForAdmin, require('./reset').handler);
+router.get('/numbers', numbers.get);
+router.post('/numbers', gateForAdmin, parseJsonBody, numbers.post);
 
 router.get('/debug', gateForAdmin, (req, res, next) => {
   res.sendFile(path.resolve(__dirname, '../utils/debug.html'));
