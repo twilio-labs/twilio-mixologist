@@ -16,6 +16,14 @@ const TAGS = {
   ALL: 'all'
 };
 
+const INTENTS = {
+  HELP: 'help',
+  QUEUE: 'queue',
+  ORDER: 'order',
+  CANCEL: 'cancel',
+  INVALID: 'invalid'
+};
+
 /**
  * These are all coffee options that can actually be ordered
  */
@@ -86,8 +94,9 @@ module.exports = {
   AVAILABLE_DEFAULT_OPTIONS,
   DEFAULT_CONFIGURATION,
   DEFAULT_JSON_ENTRY_KEY,
+  INTENTS,
+  SEGMENTS,
   SPELLING_MISTAKES,
   SYNC_NAMES,
-  TAGS,
-  SEGMENTS
+  TAGS
 };

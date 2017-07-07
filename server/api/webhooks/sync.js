@@ -5,14 +5,14 @@ const {
   restClient,
   sendMessage,
   deregisterOpenOrder
-} = require('./twilio');
+} = require('../twilio');
 
 const {
   getOrderCancelledMessage,
   getOrderReadyMessage
-} = require('../utils/messages');
+} = require('../../utils/messages');
 
-const { setConfig } = require('../data/config');
+const { setConfig } = require('../../data/config');
 
 async function handler(req, res, next) {
   res.sendStatus(200);

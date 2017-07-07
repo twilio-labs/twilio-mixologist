@@ -1,8 +1,7 @@
-const twilio = require('twilio');
 const { MessagingResponse } = require('twilio').twiml;
 
-const { determineCoffeeFromMessage } = require('../data/coffee-options');
-const { config } = require('../data/config');
+const { determineCoffeeFromMessage } = require('../../data/coffee-options');
+const { config } = require('../../data/config');
 const {
   getWrongOrderMessage,
   getExistingOrderMessage,
@@ -12,7 +11,7 @@ const {
   getQueuePositionMessage,
   getCancelOrderMessage,
   getSystemOfflineMessage
-} = require('../utils/messages');
+} = require('../../utils/messages');
 const {
   restClient,
   customersMap,
@@ -21,15 +20,8 @@ const {
   sendMessage,
   registerAddress,
   registerOpenOrder
-} = require('./twilio');
-
-const INTENTS = {
-  HELP: 'help',
-  QUEUE: 'queue',
-  ORDER: 'order',
-  CANCEL: 'cancel',
-  INVALID: 'invalid'
-};
+} = require('../twilio');
+const { INTENTS } = require('../../../shared/consts');
 
 /**
  * This is the request handler for incoming SMS and Facebook messages by handling webhook request from Twilio.
