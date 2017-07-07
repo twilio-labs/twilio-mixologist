@@ -1,5 +1,5 @@
-const { SEGMENTS } = require('../../shared/consts');
-const { getOrderCancelledMessage } = require('../utils/messages');
+const { SEGMENTS } = require('../../../shared/consts');
+const { getOrderCancelledMessage } = require('../../utils/messages');
 const {
   SYNC_NAMES,
   resetList,
@@ -8,7 +8,7 @@ const {
   sendMessage,
   notifyClient,
   customersMap
-} = require('./twilio');
+} = require('../twilio');
 
 async function cancelOpenOrders() {
   const openOrders = await orderQueueList.syncListItems.list({

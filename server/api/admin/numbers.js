@@ -2,8 +2,8 @@ const {
   restClient,
   messagingClient,
   loadConnectedPhoneNumbers
-} = require('./twilio');
-const { updateConfigEntry } = require('../data/config');
+} = require('../twilio');
+const { updateConfigEntry } = require('../../data/config');
 
 async function handleNumberAcquisition(req, res, next) {
   const { code } = req.body;

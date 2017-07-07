@@ -21,7 +21,7 @@ export default class Messenger extends Component {
     if (identity) {
       data.identity = identity.value;
     }
-    fetch('/api/notification', {
+    fetch('/api/admin/notification', {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json'

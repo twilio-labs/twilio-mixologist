@@ -3,7 +3,6 @@ const router = require('express').Router();
 const bodyParser = require('body-parser');
 
 const { authenticate, gateForAdmin } = require('../utils/auth');
-const numbers = require('./numbers');
 
 const parseJsonBody = bodyParser.json();
 
@@ -19,16 +18,7 @@ router.use('/webhook', require('./webhooks'));
 router.get('/token', authenticate, require('./token').handler);
 
 // Different routes for admin interface
-router.get('/numbers', numbers.get);
-router.post(
-  '/notification',
-  gateForAdmin,
-  parseJsonBody,
-  require('./notification').handler
-);
-router.post('/numbers', gateForAdmin, parseJsonBody, numbers.post);
-router.post('/reset', gateForAdmin, require('./reset').handler);
-router.post('/setup', require('./setup').handler);
+router.use('/admin', require('./admin'));
 
 // Serves a "god view" debugging interface
 router.get('/debug', gateForAdmin, (req, res, next) => {

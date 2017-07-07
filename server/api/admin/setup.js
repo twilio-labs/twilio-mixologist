@@ -1,4 +1,4 @@
-const { setup } = require('./twilio');
+const { setup } = require('../twilio');
 
 function handler(req, res, next) {
   setup()

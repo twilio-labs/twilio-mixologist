@@ -2,7 +2,7 @@ const {
   sendMessage,
   sendMessageToAll,
   sendMessageToAllOpenOrders
-} = require('./twilio');
+} = require('../twilio');
 
 async function requestHandler(req, res, next) {
   const { sendTo, message, identity } = req.body;

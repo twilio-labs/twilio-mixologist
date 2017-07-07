@@ -12,7 +12,7 @@ export default class Other extends Component {
   }
 
   cancelAllOpens() {
-    fetch('/api/reset?action=openOrders', {
+    fetch('/api/admin/reset?action=openOrders', {
       method: 'POST',
       credentials: 'include'
     })
@@ -29,7 +29,7 @@ export default class Other extends Component {
   }
 
   resetApplication() {
-    fetch('/api/reset?action=resetApplication', {
+    fetch('/api/admin/reset?action=resetApplication', {
       method: 'POST',
       credentials: 'include'
     })
@@ -46,7 +46,7 @@ export default class Other extends Component {
   }
 
   getAvailableCountries() {
-    fetch('/api/numbers')
+    fetch('/api/admin/numbers')
       .then(resp => {
         if (resp.ok) {
           return resp.json();
@@ -68,7 +68,7 @@ export default class Other extends Component {
 
   acquirePhoneNumber() {
     const code = this.state.selectedCountry;
-    fetch('/api/numbers', {
+    fetch('/api/admin/numbers', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
