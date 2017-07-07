@@ -22,8 +22,11 @@ const CLIENT_CODE_PATH = path.resolve(__dirname, '..', 'client-dist');
   });
 
   try {
+    log.info('Load config from Twilio Sync');
     await loadConfig();
+    log.info('Retrieve available phone numbers');
     const connectedPhoneNumbers = await loadConnectedPhoneNumbers();
+    log.info('Write available phone numbers into configuration');
     await updateConfigEntry('connectedPhoneNumbers', connectedPhoneNumbers);
     app.listen(PORT, () => {
       log.info(`Server is listening on port ${PORT}`);
