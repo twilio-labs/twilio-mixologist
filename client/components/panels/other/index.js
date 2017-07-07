@@ -97,41 +97,44 @@ export default class Other extends Component {
     return (
       <div class={style.others}>
         <h4>Other Operations</h4>
-        <ActionCard
-          title="Cancel All Open Orders"
-          buttonText="Cancel All Open Orders"
-          action={() => this.cancelAllOpens()}
-        >
-          Empties all open orders and sends cancellation messages to everyone.
-        </ActionCard>
-        <ActionCard
-          title="Acquire New Phone Number"
-          buttonText="Acquire Number"
-          action={() => this.acquirePhoneNumber()}
-          disabled={!this.state.selectedCountry}
-        >
-          <p>
-            Choose a country that you want a phone number to acquire for. Once
-            acquired it will appear in the config under{' '}
-            <code>connectedPhoneNumbers</code>.
-          </p>
-          {this.state.availableCountries !== undefined
-            ? <CountryPicker
-                countries={this.state.availableCountries}
-                value={this.state.selectedCountry}
-                onSelect={value => this.choseCountry(value)}
-              />
-            : <Progress indeterminate />}
-        </ActionCard>
-        <ActionCard
-          title="Reset Complete Application"
-          buttonText="Reset Entire Application"
-          action={() => this.resetApplication()}
-          disabled
-        >
-          This will clear out all open and past orders, reset the configuration
-          to default, delete all Notify bindings and clear the customer map.
-        </ActionCard>
+        <div class={style.cardContainer}>
+          <ActionCard
+            title="Cancel All Open Orders"
+            buttonText="Cancel All Open Orders"
+            action={() => this.cancelAllOpens()}
+          >
+            Empties all open orders and sends cancellation messages to everyone.
+          </ActionCard>
+          <ActionCard
+            title="Acquire New Phone Number"
+            buttonText="Acquire Number"
+            action={() => this.acquirePhoneNumber()}
+            disabled={!this.state.selectedCountry}
+          >
+            <p>
+              Choose a country that you want a phone number to acquire for. Once
+              acquired it will appear in the config under{' '}
+              <code>connectedPhoneNumbers</code>.
+            </p>
+            {this.state.availableCountries !== undefined
+              ? <CountryPicker
+                  countries={this.state.availableCountries}
+                  value={this.state.selectedCountry}
+                  onSelect={value => this.choseCountry(value)}
+                />
+              : <Progress indeterminate />}
+          </ActionCard>
+          <ActionCard
+            title="Reset Complete Application"
+            buttonText="Reset Entire Application"
+            action={() => this.resetApplication()}
+            disabled
+          >
+            This will clear out all open and past orders, reset the
+            configuration to default, delete all Notify bindings and clear the
+            customer map.
+          </ActionCard>
+        </div>
       </div>
     );
   }
@@ -145,7 +148,7 @@ function ActionCard({ title, children, buttonText, action, disabled }) {
           {title}
         </Card.TitleText>
       </Card.Title>
-      <Card.Text>
+      <Card.Text class={style.flexOne}>
         {children}
       </Card.Text>
       <Card.Actions class="mdl-card--border">
