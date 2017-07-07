@@ -1,39 +1,53 @@
 {
-  "name": "Twilio Barista Node.js",
-  "description": "A Node.js application that allows users ",
-  "logo": "https://avatars2.githubusercontent.com/u/109142?v=3&s=200",
-  "keywords": ["node", "express", "twilio", "coffee", "barista", "facebook", "messenger"],
+  "name": "Twilio Barista",
+  "description": "A Node.js application that allows users to order coffee via channels like SMS using Twilio.",
+  "logo": "https://github.com/dkundel/twilio-barista/raw/major-refactor/client/assets/icons/android-chrome-512x512.png",
+  "keywords": [
+    "node",
+    "express",
+    "twilio",
+    "coffee",
+    "barista",
+    "sync",
+    "notify"
+  ],
   "website": "https://github.com/dkundel",
-  "repository": "https://github.com/dkundel/twilio-barista-node",
-  "success_url": "/setup",
-  "addons": ["heroku-postgresql"],
+  "repository": "https://github.com/dkundel/twilio-barista",
+  "success_url": "/",
+  "addons": [],
   "env": {
-    "LOGIN_USERNAME": {
-      "description": "Username to gain access to the service.",
-      "required": true
+    "LOGINS": {
+      "description": "Semicolon-separated list of users in the schema username,password,role. Roles available are admin and barista",
+      "required": true,
+      "value": "someuser,somepassword,barista;someadmin,otherpassword,admin"
     },
-    "LOGIN_PASSWORD": {
-      "description": "Password to gain access to the service.",
-      "required": true
+    "PHONE_NUMBER_HASHING_SECRET": {
+      "description": "Secret that is being used to generate the identities of the users based on their phone numbers",
+      "required": true,
+      "value": "dontUseThisSecret"
     },
     "TWILIO_ACCOUNT_SID": {
-      "description": "Your Twilio Account SID",
+      "description": "Your Twilio Account SID. www.twilio.com/console",
       "required": true
     },
-    "TWILIO_AUTH_TOKEN": {
-      "description": "Your Twilio Auth Token",
+    "TWILIO_API_KEY": {
+      "description": "Your Twilio API Key. www.twilio.com/console/dev-tools/api-keys",
       "required": true
     },
-    "PUSHER_APP_ID": {
-      "description": "App ID of your Pusher Application",
+    "TWILIO_API_SECRET": {
+      "description": "Your Twilio API Key. www.twilio.com/console/dev-tools/api-keys",
       "required": true
     },
-    "PUSHER_APP_KEY": {
-      "description": "App Key to identify with the Pusher Application",
+    "TWILIO_MESSAGE_SERVICE": {
+      "description": "Your Twilio Message Service SID. www.twilio.com/console/sms/services",
       "required": true
     },
-    "PUSHER_APP_SECRET": {
-      "description": "Secret to identify with the Pusher API",
+    "TWILIO_NOTIFY_SERVICE": {
+      "description": "Your Twilio Notify Service SID. www.twilio.com/console/notify/services",
+      "required": true
+    },
+    "TWILIO_SYNC_SERVICE": {
+      "description": "Your Twilio Sync Service SID. www.twilio.com/console/sync/services",
       "required": true
     }
   }

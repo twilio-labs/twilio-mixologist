@@ -65,6 +65,8 @@ npm install
 ### 2. Configure environment variables
 The following environment variables are necessary for Twilio Barista:
 - `TWILIO_ACCOUNT_SID`
+- `TWILIO_API_KEY`
+- `TWILIO_API_SECRET`
 - `TWILIO_MESSAGING_SERVICE`
 - `TWILIO_SYNC_SERVICE`
 - `TWILIO_NOTIFY_SERVICE`
