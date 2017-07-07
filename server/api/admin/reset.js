@@ -1,4 +1,4 @@
-const { SEGMENTS } = require('../../../shared/consts');
+const { SEGMENTS, DEFAULT_CONFIGURATION } = require('../../../shared/consts');
 const { getOrderCancelledMessage } = require('../../utils/messages');
 const {
   SYNC_NAMES,
@@ -7,7 +7,11 @@ const {
   setPermissions,
   sendMessage,
   notifyClient,
-  customersMap
+  customersMap,
+  configurationDoc,
+  allOrdersList,
+  resetMap,
+  resetNotify
 } = require('../twilio');
 
 async function cancelOpenOrders() {
@@ -34,7 +38,11 @@ async function cancelOpenOrders() {
 }
 
 async function resetApplication() {
-  // TODO
+  await resetList(SYNC_NAMES.ORDER_QUEUE);
+  await resetList(SYNC_NAMES.ALL_ORDERS);
+  await configurationDoc.update({ data: DEFAULT_CONFIGURATION });
+  await resetMap(SYNC_NAMES.CUSTOMERS);
+  await resetNotify();
   return Promise.resolve();
 }
 

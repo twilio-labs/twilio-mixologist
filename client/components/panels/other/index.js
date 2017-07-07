@@ -1,6 +1,14 @@
 import { h, Component } from 'preact';
 import mdl from 'material-design-lite/material';
-import { TextField, Radio, Button, Card, Chip, Progress } from 'preact-mdl';
+import {
+  TextField,
+  Radio,
+  Button,
+  Card,
+  Chip,
+  Progress,
+  CheckBox
+} from 'preact-mdl';
 
 import style from './style';
 
@@ -9,6 +17,7 @@ export default class Other extends Component {
     super(...args);
     this.state.availableCountries = undefined;
     this.state.selectedCountry = undefined;
+    this.state.resetApplicationActivated = false;
   }
 
   cancelAllOpens() {
@@ -89,6 +98,28 @@ export default class Other extends Component {
       });
   }
 
+  activateResetApplication(evt) {
+    if (evt.target.checked) {
+      this.setState({ resetApplicationActivated: true });
+    } else {
+      this.setState({ resetApplicationActivated: false });
+    }
+  }
+
+  setupApplication() {
+    fetch('/api/admin/setup', { method: 'POST' })
+      .then(resp => {
+        if (resp.ok) {
+          console.log('Project Setup');
+        } else {
+          throw new Error(resp.statusText);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
   componentDidMount() {
     this.getAvailableCountries();
   }
@@ -98,6 +129,14 @@ export default class Other extends Component {
       <div class={style.others}>
         <h4>Other Operations</h4>
         <div class={style.cardContainer}>
+          <ActionCard
+            title="Setup App"
+            buttonText="Setup"
+            action={() => this.setupApplication()}
+          >
+            This will create the necessary sync objects and other things
+            necessary for the first setup.
+          </ActionCard>
           <ActionCard
             title="Cancel All Open Orders"
             buttonText="Cancel All Open Orders"
@@ -128,11 +167,21 @@ export default class Other extends Component {
             title="Reset Complete Application"
             buttonText="Reset Entire Application"
             action={() => this.resetApplication()}
-            disabled
+            disabled={!this.state.resetApplicationActivated}
           >
-            This will clear out all open and past orders, reset the
-            configuration to default, delete all Notify bindings and clear the
-            customer map.
+            <p>
+              This will clear out all open and past orders, reset the
+              configuration to default, delete all Notify bindings and clear the
+              customer map.
+            </p>
+            <CheckBox
+              name="resetApplicationActivated"
+              onChange={evt => this.activateResetApplication(evt)}
+              checked={this.state.resetApplicationActivated}
+              disabled={true}
+            >
+              I know what I'm doing.
+            </CheckBox>
           </ActionCard>
         </div>
       </div>

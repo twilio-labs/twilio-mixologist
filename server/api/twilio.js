@@ -213,6 +213,24 @@ async function resetList(name) {
   return true;
 }
 
+async function resetMap(name) {
+  await syncClient.syncMaps(name).remove();
+  await createIfNotExists(syncClient.syncMaps, name);
+}
+
+async function resetNotify() {
+  const users = await notifyClient.users.list();
+  const deleteUsers = users.map(async ({ sid }) => {
+    const bindings = await notifyClient.users(sid).bindings.list();
+    const deleteBindings = bindings.map(async b => {
+      return notifyClient.bindings(b.sid).remove();
+    });
+    await Promise.all(deleteBindings);
+    return notifyClient.users(sid).remove();
+  });
+  return Promise.all(deleteUsers);
+}
+
 module.exports = {
   SYNC_NAMES,
   restClient,
@@ -233,5 +251,7 @@ module.exports = {
   registerOpenOrder,
   deregisterOpenOrder,
   resetList,
-  setPermissions
+  setPermissions,
+  resetMap,
+  resetNotify
 };
