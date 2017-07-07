@@ -38,6 +38,7 @@
     "watch": "^1.0.2"
   },
   "dependencies": {
+    "@material/select": "^0.3.9",
     "basic-auth": "^1.1.0",
     "body-parser": "^1.17.2",
     "buffer": "^5.0.6",
