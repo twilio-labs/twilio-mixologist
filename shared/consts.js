@@ -72,7 +72,6 @@ const DEFAULT_CONFIGURATION = {
   offlineMessage: 'We are sorry but there is currently no coffee.',
   availableCoffees: createBooleanMapOfArray(AVAILABLE_DEFAULT_OPTIONS),
   spellingMap: SPELLING_MISTAKES,
-  countriesAvailable: [],
   repoUrl: 'https://github.com/dkundel/twilio-barista-node'
 };
 
