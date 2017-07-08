@@ -35,7 +35,7 @@
       "required": true
     },
     "TWILIO_API_SECRET": {
-      "description": "Your Twilio API Key. www.twilio.com/console/dev-tools/api-keys",
+      "description": "Your Twilio API Secret. www.twilio.com/console/dev-tools/api-keys",
       "required": true
     },
     "TWILIO_MESSAGE_SERVICE": {
