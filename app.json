@@ -1,7 +1,7 @@
 {
   "name": "Twilio Barista",
   "description": "A Node.js application that allows users to order coffee via channels like SMS using Twilio.",
-  "logo": "https://github.com/dkundel/twilio-barista/raw/major-refactor/client/assets/icons/android-chrome-512x512.png",
+  "logo": "https://github.com/dkundel/twilio-barista/raw/master/client/assets/icons/android-chrome-512x512.png",
   "keywords": [
     "node",
     "express",
