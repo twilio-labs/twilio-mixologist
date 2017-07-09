@@ -56,6 +56,14 @@ Create a [Notify Service in the Twilio Console](https://www.twilio.com/console/n
 ### 4. Create a Sync Service
 Create a [Sync Service in the Twilio Console](https://www.twilio.com/console/sync/services) and store the SID.
 
+## Deploy via Heroku
+
+Simply click the button below, add the respective configuration values. 
+
+Go afterwards in the `/admin` section and click the **Setup** button. This will configure everything for you and you are ready to add phone numbers for the service.
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
 ## Manual
 
 ### 1. Clone project and install dependencies
