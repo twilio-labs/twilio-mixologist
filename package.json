@@ -1,9 +1,9 @@
 {
-  "name": "twilio-barista-node",
-  "version": "1.0.0",
+  "name": "twilio-barista",
+  "version": "2.0.0",
   "main": "server/index.js",
   "repository": {
-    "url": "git@github.com:dkundel/twilio-barista-node.git",
+    "url": "git@github.com:dkundel/twilio-barista.git",
     "type": "git"
   },
   "engines": {
