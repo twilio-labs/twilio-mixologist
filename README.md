@@ -13,6 +13,9 @@ Different versions of this system have been used at events such as:
 - [NDC Oslo](https://ndcoslo.com) 2016, 2017
 - [CSSConf EU](https://2017.cssconf.eu/) && [JSConf EU](https://2017.jsconf.eu/) 2017
 
+![Diagram](resources/barista-diagram.png)
+More information on how it works is in the [documentation].
+
 # Features
 
 - Receive orders using [Twilio Messaging]
