@@ -38,8 +38,8 @@
       "description": "Your Twilio API Secret. www.twilio.com/console/dev-tools/api-keys",
       "required": true
     },
-    "TWILIO_MESSAGE_SERVICE": {
-      "description": "Your Twilio Message Service SID. www.twilio.com/console/sms/services",
+    "TWILIO_MESSAGING_SERVICE": {
+      "description": "Your Twilio Messaging Service SID. www.twilio.com/console/sms/services",
       "required": true
     },
     "TWILIO_NOTIFY_SERVICE": {
