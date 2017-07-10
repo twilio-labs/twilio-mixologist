@@ -26,6 +26,7 @@ More information on how it works is in the [documentation].
 - Permission management based on [Twilio Sync]
 - Top PWA support thanks to [Preact CLI] based front-end
 - Easy way to reset the application from the admin interface
+- Query for location in the queue as well as canceling the order as a user
 
 ## Channels
 
