@@ -3,8 +3,6 @@
   <h1 align="center">Twilio Barista</h1>
 </p>
 
-> :construction: This version is still very much work in progress. The setup instructions and documentation will follow soon :construction:
-
 # About
 
 Twilio Barista is an application that allows you to solve the problem of long queues at barista stands at events. Attendees can order their coffee via various Twilio-powered channels, baristas get all orders on a website that can be loaded via a tablet and once an order is done the attendee will be notified via the system to come and pick it up. No more queueing and efficient coffee ☕️ ordering! 🎉
@@ -14,6 +12,7 @@ Different versions of this system have been used at events such as:
 - [CSSConf EU](https://2017.cssconf.eu/) && [JSConf EU](https://2017.jsconf.eu/) 2017
 
 ![Diagram](resources/barista-diagram.png)
+
 More information on how it works is in the [documentation].
 
 # Features
