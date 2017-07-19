@@ -107,7 +107,7 @@ export default class Other extends Component {
   }
 
   setupApplication() {
-    fetch('/api/admin/setup', { method: 'POST' })
+    fetch('/api/admin/setup', { method: 'POST', credentials: 'include' })
       .then(resp => {
         if (resp.ok) {
           console.log('Project Setup');
