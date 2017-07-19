@@ -1,4 +1,5 @@
 const twilio = require('twilio');
+const urljoin = require('url-join');
 const { AccessToken } = twilio.jwt;
 const { SyncGrant } = AccessToken;
 
@@ -85,9 +86,20 @@ async function sendMessageToAllOpenOrders(body) {
   return notification;
 }
 
-async function setup() {
+async function setup(baseUrl) {
+  await configureWebhookUrls(baseUrl);
   await createResources();
   return setPermissions();
+}
+
+async function configureWebhookUrls(baseUrl) {
+  await messagingClient.update({
+    inboundRequestUrl: urljoin(baseUrl, '/api/webhook/incoming')
+  });
+  await syncClient.update({
+    webhookUrl: urljoin(baseUrl, '/api/webhook/sync')
+  });
+  return true;
 }
 
 async function loadConnectedPhoneNumbers() {
