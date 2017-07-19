@@ -5,12 +5,17 @@ const pinoMiddleware = require('express-pino-logger')({ logger: log });
 
 const { loadConnectedPhoneNumbers } = require('./api/twilio');
 const { loadConfig, updateConfigEntry } = require('./data/config');
+const { forceSsl } = require('./utils/request');
 
 const PORT = process.env.PORT || 3000;
 const CLIENT_CODE_PATH = path.resolve(__dirname, '..', 'client-dist');
 
 (async function() {
   const app = express();
+
+  if (process.env.NODE_ENV === 'production') {
+    app.use(forceSsl);
+  }
 
   app.use(pinoMiddleware);
   app.use(express.static(CLIENT_CODE_PATH));
