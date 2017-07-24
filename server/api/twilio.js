@@ -178,30 +178,29 @@ async function setPermissions() {
   ]);
 }
 
-async function createResources() {
-  const createOrderQueue = createIfNotExists(
-    syncClient.syncLists,
-    SYNC_NAMES.ORDER_QUEUE
-  );
-  const createConfigurationDoc = createIfNotExists(
+const createConfigurationDoc = function() {
+  createIfNotExists(
     syncClient.documents,
     SYNC_NAMES.CONFIGURATION,
     DEFAULT_CONFIGURATION
   );
-  const createCustomerMap = createIfNotExists(
-    syncClient.syncMaps,
-    SYNC_NAMES.CUSTOMERS
-  );
-  const createAllOrdersList = createIfNotExists(
-    syncClient.syncLists,
-    SYNC_NAMES.ALL_ORDERS
-  );
+};
+const createOrderQueue = function() {
+  createIfNotExists(syncClient.syncLists, SYNC_NAMES.ORDER_QUEUE);
+};
+const createCustomerMap = function() {
+  createIfNotExists(syncClient.syncMaps, SYNC_NAMES.CUSTOMERS);
+};
+const createAllOrdersList = function() {
+  createIfNotExists(syncClient.syncLists, SYNC_NAMES.ALL_ORDERS);
+};
 
+async function createResources() {
   return Promise.all([
-    createOrderQueue,
-    createConfigurationDoc,
-    createCustomerMap,
-    createAllOrdersList
+    createOrderQueue(),
+    createConfigurationDoc(),
+    createCustomerMap(),
+    createAllOrdersList()
   ]);
 }
 
@@ -257,6 +256,7 @@ module.exports = {
   allOrdersList,
   setup,
   createToken,
+  createConfigurationDoc,
   loadConnectedPhoneNumbers,
   sendMessageToAll,
   sendMessageToAllOpenOrders,

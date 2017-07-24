@@ -1,5 +1,5 @@
 const EventEmitter = require('events');
-const { configurationDoc } = require('../api/twilio');
+const { configurationDoc, createConfigurationDoc } = require('../api/twilio');
 const {
   DEFAULT_JSON_ENTRY_KEY,
   DEFAULT_CONFIGURATION
@@ -18,6 +18,7 @@ async function updateConfigEntry(key, value) {
 
 async function loadConfig() {
   try {
+    await createConfigurationDoc();
     const { data } = await configurationDoc.fetch();
     setConfig(data);
   } catch (err) {
