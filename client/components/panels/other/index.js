@@ -178,7 +178,6 @@ export default class Other extends Component {
               name="resetApplicationActivated"
               onChange={evt => this.activateResetApplication(evt)}
               checked={this.state.resetApplicationActivated}
-              disabled={true}
             >
               I know what I'm doing.
             </CheckBox>
