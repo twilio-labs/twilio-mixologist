@@ -151,6 +151,15 @@ async function setPermissions() {
       manage: 'false'
     });
 
+  const updateAllOrdersPermissionsForBarista = syncClient
+    .syncLists(SYNC_NAMES.ALL_ORDERS)
+    .syncListPermissions('barista')
+    .update({
+      read: 'true',
+      write: 'false',
+      manage: 'false'
+    });
+
   const updateConfigurationPermissionsForAdmin = syncClient
     .documents(SYNC_NAMES.CONFIGURATION)
     .documentPermissions('admin')
@@ -173,6 +182,7 @@ async function setPermissions() {
     updateOrderQueuePermissions,
     updateOrderQueuePermissionsForAdmin,
     updateAllOrdersPermissionsForAdmin,
+    updateAllOrdersPermissionsForBarista,
     updateConfigurationPermissionsForAdmin,
     updateCustomerPermissionsForAdmin
   ]);
