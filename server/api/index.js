@@ -28,4 +28,7 @@ router.get('/debug', gateForAdmin, (req, res, next) => {
 // Returns information necessary for the kiosk screen
 router.get('/kiosk', require('./kiosk').handler);
 
+// Returns basic stats on coffee orders
+router.get('/stats', require('./stats').handler);
+
 module.exports = router;
