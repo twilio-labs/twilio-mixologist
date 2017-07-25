@@ -18,7 +18,7 @@ export default class OrderService /* extends EventEmitter */ {
 
   getOrders() {
     if (this.orders) {
-      return Promise.resolve(orders);
+      return Promise.resolve(this.orders);
     }
     return this.fetchOrders();
   }
