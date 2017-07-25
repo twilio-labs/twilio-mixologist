@@ -54,11 +54,11 @@ Create a [Messaging Service in the Twilio Console](https://www.twilio.com/consol
 Create a [Notify Service in the Twilio Console](https://www.twilio.com/console/notify/services) and choose your created Messaging Service as a Messaging Service. Make sure to store the SID.
 
 ### 4. Create a Sync Service
-Create a [Sync Service in the Twilio Console](https://www.twilio.com/console/sync/services) and store the SID.
+Create a [Sync Service in the Twilio Console](https://www.twilio.com/console/sync/services), check the "ACL Enabled" enabled box, and store the SID.
 
 ## Deploy via Heroku
 
-Simply click the button below, add the respective configuration values. 
+Simply click the button below, add the respective configuration values.
 
 Go afterwards in the `/admin` section and click the **Setup** button. This will configure everything for you and you are ready to add phone numbers for the service.
 
