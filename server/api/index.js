@@ -25,4 +25,7 @@ router.get('/debug', gateForAdmin, (req, res, next) => {
   res.sendFile(path.resolve(__dirname, '../utils/debug.html'));
 });
 
+// Returns information necessary for the kiosk screen
+router.get('/kiosk', require('./kiosk').handler);
+
 module.exports = router;

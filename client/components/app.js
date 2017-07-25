@@ -1,5 +1,6 @@
 import { h, Component } from 'preact';
 import { Router } from 'preact-router';
+import { Match } from 'preact-router/match';
 
 import TwilioClient from '../lib/sync-client';
 
@@ -7,6 +8,7 @@ import Header from './header';
 import Home from '../routes/home';
 import Orders from '../routes/orders';
 import Admin from '../routes/admin';
+import Kiosk from '../routes/kiosk';
 // import Home from 'async!./home';
 // import Profile from 'async!./profile';
 
@@ -47,14 +49,19 @@ export default class App extends Component {
   render() {
     return (
       <div id="app">
-        <Header
-          isLoggedIn={this.state.isLoggedIn}
-          isAdmin={this.state.isAdmin}
-        />
+        <Match path="/kiosk">
+          {({ matches }) =>
+            !matches &&
+            <Header
+              isLoggedIn={this.state.isLoggedIn}
+              isAdmin={this.state.isAdmin}
+            />}
+        </Match>
         <Router onChange={this.handleRoute}>
           <Home path="/" />
           <Orders path="/orders" />
           <Admin isAdmin={this.state.isAdmin} path="/admin" />
+          <Kiosk path="/kiosk" />
         </Router>
       </div>
     );
