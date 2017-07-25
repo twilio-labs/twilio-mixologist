@@ -43,3 +43,5 @@ mydatabase.sqlite
 node_modules
 /build
 /*.log
+
+.DS_Store
