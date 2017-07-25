@@ -172,6 +172,7 @@ MIT © Dominik Kundel
 # Contributors
 
 - [Dominik Kundel](https://github.com/dkundel)
+- [Phil Nash](https://github.com/philnash)
 
 [Twilio Console]: https://www.twilio.com/console
 [Twilio REST API]: https://www.twilio.com/docs/api/rest
