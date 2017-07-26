@@ -111,6 +111,11 @@ npm run start:dev
 npm run start:prod
 ```
 
+### d) Start in watch mode for automatic reloading of front-end or back-end
+```bash
+npm run dev
+```
+
 ### 4. Setup application
 Navigate to your deployment on an externally available URL. If you are hosting for testing on your localhost you should use [ngrok] to create a tunnel.
 
@@ -143,15 +148,11 @@ To build changes for the front-end you can run the following command:
 npm run build:preact
 ```
 
-This will build the directory into the `client-dist` directory. Start off the API server to fully test it. If you want to just serve the front-end with limited functionality you can use this command to serve:
-```bash
-npm run serve:preact
-```
+## Running the server in dev mode
 
-## Running the backend
-Simply run the server as you are used to with:
+If you are developing and you want to incrementally build the changes for development purposes you can start of the back-end and front-end with:
 ```bash
-npm start
+npm run dev
 ```
 
 # Special Thanks To
