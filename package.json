@@ -33,6 +33,7 @@
     "eslint": "^4.1.1",
     "eslint-config-synacor": "^1.0.1",
     "node-env-run": "^1.0.1",
+    "nodemon": "^1.11.0",
     "npm-run-all": "^4.0.2",
     "pino-colada": "^1.4.0",
     "preact-cli": "^1.4.1",
