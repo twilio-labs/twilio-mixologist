@@ -43,7 +43,7 @@ export default class Kiosk extends Component {
             <div class={style.phoneNumbers}>
               {this.state.kioskInfo.phoneNumbers.slice(0, 4).map(num =>
                 <p>
-                  {num}
+                  {num.emoji} {num.phoneNumber}
                 </p>
               )}
             </div>
