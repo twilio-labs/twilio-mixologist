@@ -29,7 +29,7 @@ export default class BaristaIcon extends Component {
     return (
       <span
         class={style.baristaIcon}
-        style={{ '--color': color }}
+        style={`--color: ${color};`}
         dangerouslySetInnerHTML={{
           __html: DOMPurify.sanitize(this.state.svgData)
         }}
