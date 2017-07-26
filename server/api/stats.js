@@ -8,7 +8,10 @@ async function handler(req, res, next) {
     connectedPhoneNumbers,
     repoUrl
   } = config();
-  const phoneNumbers = connectedPhoneNumbers.slice(0, 2);
+  const phoneNumbers = connectedPhoneNumbers
+    .split(',')
+    .map(n => n.trim())
+    .slice(0, 2);
   const product = getAvailableProducts(availableCoffees);
   try {
     const allOrders = await allOrdersList.syncListItems.list();
