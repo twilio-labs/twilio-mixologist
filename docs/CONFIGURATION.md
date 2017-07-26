@@ -14,6 +14,7 @@ These values can be changed in the configuration document.
 | `spellingMap` | `object` | `SPELLING_MISTAKES` in [consts file] | This is the map that is used to determine the order from the incoming message |
 | `spellingMap['Spelling of Coffee']` | `string` | | Maps to the string of a value in `availableCoffees` |
 | `repoUrl` | `string | 'https://github.com/dkundel/twilio-barista` | The link the repo that should be sent in the response messages |
+| `expectedOrders` | `number` | `300` | Arbitrary number of coffee orders expected. This is used to determine how filled the cup in the dashboard should be. |
 
 ## Static configuration 
 

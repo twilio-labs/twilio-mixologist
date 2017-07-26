@@ -18,6 +18,7 @@ type ConfigurationData = {
     SomeSpelling: string;
   };
   repoUrl: string;
+  expectedOrders: numbers;
 }
 ```
 
