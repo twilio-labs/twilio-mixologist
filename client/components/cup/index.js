@@ -9,7 +9,8 @@ const FLEXIBLE_HEIGHT = MAX_HEIGHT - MIN_HEIGHT;
 export default class Cup extends Component {
   render() {
     const { value, percentage } = this.props;
-    const filledHeight = MIN_HEIGHT + FLEXIBLE_HEIGHT * percentage / 100.0;
+    const filledHeight =
+      MIN_HEIGHT + FLEXIBLE_HEIGHT * (1 - percentage % 100 / 100.0);
 
     return (
       <div class={style.cup}>
