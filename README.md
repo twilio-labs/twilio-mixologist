@@ -11,6 +11,10 @@ Different versions of this system have been used at events such as:
 - [NDC Oslo](https://ndcoslo.com) 2016, 2017
 - [CSSConf EU](https://2017.cssconf.eu/) && [JSConf EU](https://2017.jsconf.eu/) 2017
 
+You can find previous versions or implementations in other languages here:
+
+| [<img src="https://avatars2.githubusercontent.com/u/9141961?s=100&v=4" width="100px;"/><br /><sub>.NET</sub>](https://github.com/mplacona/TwilioBaristaApp) | [<img src="https://avatars3.githubusercontent.com/u/9950313?s=100&v=4" width="100px;"/><br /><sub>Node.js v1</sub>](https://github.com/dkundel/twilio-barista/tree/v1.0.0) | [<img src="https://avatars2.githubusercontent.com/u/210414?s=100&v=4" width="100px;"/><br /><sub>Ruby</sub>](https://github.com/mplacona/SMSCoffeeShop) |
+
 ![Diagram](resources/barista-diagram.png)
 
 More information on how it works is in the [documentation].
