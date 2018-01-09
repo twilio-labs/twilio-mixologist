@@ -23,9 +23,10 @@
     "build": "npm-run-all -p build:*",
     "serve": "npm-run-all -p serve:*",
     "serve:preact": "npm run build:preact && preact serve --dir client-dist",
+    "serve:api": "npm run start:dev",
     "dev": "npm-run-all -p dev:*",
-    "dev:preact": "watch 'npm run build:preact' client/ shared/",
-    "dev:api": "watch 'npm run start:dev' server/ shared/ ",
+    "dev:preact": "preact watch --src client",
+    "dev:api": "nodemon --watch shared --watch server --exec \"npm run start:dev\"",
     "snyk-protect": "snyk protect",
     "prepare": "npm run snyk-protect"
   },
