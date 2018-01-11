@@ -7,23 +7,30 @@ async function handler(req, res, next) {
   const filteredNumbers = connectedPhoneNumbers
     .split(',')
     .map(num => num.trim());
-  const phoneNumbers = await Promise.all(
-    filteredNumbers.map(async number => {
-      const {
-        countryCode,
-        phoneNumber
-      } = await restClient.lookups.phoneNumbers(number).fetch();
-      const { emoji } = emojiFlags.countryCode(countryCode);
-      return {
-        countryCode,
-        phoneNumber,
-        emoji
-      };
-    })
-  );
-  res.send({
-    phoneNumbers
-  });
+
+  try {
+    const phoneNumbers = await Promise.all(
+      filteredNumbers.map(async number => {
+        const sanitizedNumber = number.replace(/[^(\d|\w)]/g, '');
+        const {
+          countryCode,
+          phoneNumber
+        } = await restClient.lookups.phoneNumbers(sanitizedNumber).fetch();
+        const { emoji } = emojiFlags.countryCode(countryCode);
+        return {
+          countryCode,
+          phoneNumber: number,
+          emoji
+        };
+      })
+    );
+    res.send({
+      phoneNumbers
+    });
+  } catch (err) {
+    req.log.error(err);
+    res.status(500).send('Failed to retrieve kiosk info');
+  }
 }
 
 module.exports = {
