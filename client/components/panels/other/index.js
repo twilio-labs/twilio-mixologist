@@ -37,6 +37,23 @@ export default class Other extends Component {
       });
   }
 
+  resetStats() {
+    fetch('/api/admin/reset?action=stats', {
+      method: 'POST',
+      credentials: 'include'
+    })
+      .then(resp => {
+        if (resp.ok) {
+          console.log('Reset stats');
+        } else {
+          throw new Error(resp.statusText);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
   resetApplication() {
     fetch('/api/admin/reset?action=resetApplication', {
       method: 'POST',
@@ -64,7 +81,9 @@ export default class Other extends Component {
         }
       })
       .then(({ countries }) => {
-        this.setState({ availableCountries: countries });
+        this.setState({
+          availableCountries: countries
+        });
       })
       .catch(err => {
         console.error(err);
@@ -72,7 +91,9 @@ export default class Other extends Component {
   }
 
   choseCountry(countryCode) {
-    this.setState({ selectedCountry: countryCode });
+    this.setState({
+      selectedCountry: countryCode
+    });
   }
 
   acquirePhoneNumber() {
@@ -88,7 +109,9 @@ export default class Other extends Component {
       .then(resp => {
         if (resp.ok) {
           console.log('Phone number configured');
-          this.setState({ selectedCountry: undefined });
+          this.setState({
+            selectedCountry: undefined
+          });
         } else {
           throw new Error(resp.statusText);
         }
@@ -100,14 +123,21 @@ export default class Other extends Component {
 
   activateResetApplication(evt) {
     if (evt.target.checked) {
-      this.setState({ resetApplicationActivated: true });
+      this.setState({
+        resetApplicationActivated: true
+      });
     } else {
-      this.setState({ resetApplicationActivated: false });
+      this.setState({
+        resetApplicationActivated: false
+      });
     }
   }
 
   setupApplication() {
-    fetch('/api/admin/setup', { method: 'POST', credentials: 'include' })
+    fetch('/api/admin/setup', {
+      method: 'POST',
+      credentials: 'include'
+    })
       .then(resp => {
         if (resp.ok) {
           console.log('Project Setup');
@@ -145,6 +175,14 @@ export default class Other extends Component {
             Empties all open orders and sends cancellation messages to everyone.
           </ActionCard>
           <ActionCard
+            title="Reset Dashboard Stats"
+            buttonText="Reset Stats"
+            action={() => this.resetStats()}
+          >
+            This will reset the statistics on the dashboard but maintains open
+            orders and the customer database
+          </ActionCard>
+          <ActionCard
             title="Acquire New Phone Number"
             buttonText="Acquire Number"
             action={() => this.acquirePhoneNumber()}
@@ -155,13 +193,15 @@ export default class Other extends Component {
               acquired it will appear in the config under{' '}
               <code>connectedPhoneNumbers</code>.
             </p>
-            {this.state.availableCountries !== undefined
-              ? <CountryPicker
-                  countries={this.state.availableCountries}
-                  value={this.state.selectedCountry}
-                  onSelect={value => this.choseCountry(value)}
-                />
-              : <Progress indeterminate />}
+            {this.state.availableCountries !== undefined ? (
+              <CountryPicker
+                countries={this.state.availableCountries}
+                value={this.state.selectedCountry}
+                onSelect={value => this.choseCountry(value)}
+              />
+            ) : (
+              <Progress indeterminate />
+            )}
           </ActionCard>
           <ActionCard
             title="Reset Complete Application"
@@ -192,13 +232,9 @@ function ActionCard({ title, children, buttonText, action, disabled }) {
   return (
     <Card shadow="2">
       <Card.Title>
-        <Card.TitleText>
-          {title}
-        </Card.TitleText>
+        <Card.TitleText>{title}</Card.TitleText>
       </Card.Title>
-      <Card.Text class={style.flexOne}>
-        {children}
-      </Card.Text>
+      <Card.Text class={style.flexOne}>{children}</Card.Text>
       <Card.Actions class="mdl-card--border">
         <Button raised accent onClick={action} disabled={disabled}>
           {buttonText}

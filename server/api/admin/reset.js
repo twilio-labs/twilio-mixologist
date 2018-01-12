@@ -11,8 +11,10 @@ const {
   configurationDoc,
   allOrdersList,
   resetMap,
-  resetNotify
+  resetNotify,
+  loadConnectedPhoneNumbers
 } = require('../twilio');
+const { updateConfigEntry } = require('../../data/config');
 
 async function cancelOpenOrders() {
   const openOrders = await orderQueueList.syncListItems.list({
@@ -41,9 +43,17 @@ async function resetApplication() {
   await resetList(SYNC_NAMES.ORDER_QUEUE);
   await resetList(SYNC_NAMES.ALL_ORDERS);
   await configurationDoc.update({ data: DEFAULT_CONFIGURATION });
+  const connectedPhoneNumbers = await loadConnectedPhoneNumbers();
+  await updateConfigEntry('connectedPhoneNumbers', connectedPhoneNumbers);
   await resetMap(SYNC_NAMES.CUSTOMERS);
   await resetNotify();
+  await setPermissions();
   return Promise.resolve();
+}
+
+async function resetStats() {
+  await resetList(SYNC_NAMES.ALL_ORDERS);
+  return setPermissions();
 }
 
 async function handleResetRequest(req, res, next) {
@@ -51,6 +61,14 @@ async function handleResetRequest(req, res, next) {
   if (action === 'openOrders') {
     try {
       await cancelOpenOrders();
+      res.send();
+    } catch (err) {
+      req.log.error(err);
+      res.sendStatus(500);
+    }
+  } else if (action === 'stats') {
+    try {
+      await resetStats();
       res.send();
     } catch (err) {
       req.log.error(err);
