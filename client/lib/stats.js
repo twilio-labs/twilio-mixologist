@@ -26,8 +26,7 @@ export default class StatsService /* extends EventEmitter */ {
   init() {
     const twilioClient = TwilioClient.shared();
     const disconnectHandler = () => this.reconnect();
-    twilioClient.removeListener('disconnected', disconnectHandler);
-    twilioClient.on('disconnected', disconnectHandler);
+    twilioClient.once('disconnected', disconnectHandler);
 
     return twilioClient.init()
       .then(client => {
