@@ -24,8 +24,11 @@ export default class StatsService /* extends EventEmitter */ {
   }
 
   init() {
-    return TwilioClient.shared()
-      .init()
+    const twilioClient = TwilioClient.shared();
+    const disconnectHandler = () => this.reconnect();
+    twilioClient.on('disconnected', disconnectHandler);
+
+    return twilioClient.init()
       .then(client => {
         return client.list(SYNC_NAMES.ALL_ORDERS);
       })
@@ -34,6 +37,11 @@ export default class StatsService /* extends EventEmitter */ {
         this.addEventListeners();
         return this.fetchStats();
       });
+  }
+
+  reconnect() {
+    console.log('trying to reconnect...')
+    this.init();
   }
 
   updateStats({ value }) {

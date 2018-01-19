@@ -36,6 +36,7 @@ export default class TwilioClient /* extends EventEmitter */ {
         connectionState === 'error' ||
         connectionState === 'denied'
       ) {
+        console.error('lost connection...')
         this.emit('disconnected');
         this.client = undefined;
       }
