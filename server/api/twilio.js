@@ -129,7 +129,7 @@ async function setPermissions() {
     .syncListPermissions('barista')
     .update({
       read: 'true',
-      write: 'false',
+      write: 'true',
       manage: 'false'
     });
 
