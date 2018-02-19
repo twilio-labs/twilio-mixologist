@@ -16,6 +16,7 @@ router.use('/webhook', require('./webhooks'));
 
 // Generates Twilio Sync access token
 router.get('/token', authenticate, require('./token').handler);
+router.get('/dashboard-token', require('./token').handlerDashboard);
 
 // Different routes for admin interface
 router.use('/admin', require('./admin'));

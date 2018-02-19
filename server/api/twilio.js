@@ -160,6 +160,15 @@ async function setPermissions() {
       manage: 'false'
     });
 
+  const updateAllOrdersPermissionsForDashboard = syncClient
+    .syncLists(SYNC_NAMES.ALL_ORDERS)
+    .syncListPermissions('dashboard')
+    .update({
+      read: 'true',
+      write: 'false',
+      manage: 'false'
+    });
+
   const updateConfigurationPermissionsForAdmin = syncClient
     .documents(SYNC_NAMES.CONFIGURATION)
     .documentPermissions('admin')

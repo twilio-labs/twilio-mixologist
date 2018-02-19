@@ -11,4 +11,9 @@ function handler(req, res, next) {
   res.send({ token, identity: req.user });
 }
 
-module.exports = { handler };
+function handlerDashboard(req, res, next) {
+  const token = createToken('dashboard');
+  res.send({ token, identity: 'dashboard' });
+}
+
+module.exports = { handler, handlerDashboard };

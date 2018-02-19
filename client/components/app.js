@@ -25,8 +25,9 @@ export default class App extends Component {
     this.syncClient.on('disconnected', () => {
       this.setState({ isAdmin: false, isLoggedIn: false });
     });
+    const isDashboard = location.pathname === '/dashboard';
     this.syncClient
-      .init()
+      .init(isDashboard)
       .then(() => {
         const isAdmin = this.syncClient.role === 'admin';
         const isLoggedIn = true;
@@ -40,9 +41,9 @@ export default class App extends Component {
   }
 
   /** Gets fired when the route changes.
-	 *	@param {Object} event		"change" event from [preact-router](http://git.io/preact-router)
-	 *	@param {string} event.url	The newly routed URL
-	 */
+   *	@param {Object} event		"change" event from [preact-router](http://git.io/preact-router)
+   *	@param {string} event.url	The newly routed URL
+   */
   handleRoute = e => {
     this.currentUrl = e.url;
   };
@@ -52,11 +53,13 @@ export default class App extends Component {
       <div id="app">
         <Match path="/kiosk">
           {({ matches, path }) =>
-            this.isPathWithHeader(path) &&
-            <Header
-              isLoggedIn={this.state.isLoggedIn}
-              isAdmin={this.state.isAdmin}
-            />}
+            this.isPathWithHeader(path) && (
+              <Header
+                isLoggedIn={this.state.isLoggedIn}
+                isAdmin={this.state.isAdmin}
+              />
+            )
+          }
         </Match>
         <Router onChange={this.handleRoute}>
           <Home path="/" />

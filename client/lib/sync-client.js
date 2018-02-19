@@ -13,9 +13,12 @@ export default class TwilioClient /* extends EventEmitter */ {
     this.accessManager = undefined;
     this.client = undefined;
     this.role = undefined;
+    this.isDashboard = false;
   }
 
-  init() {
+  init(isDashboard) {
+    this.isDashboard = isDashboard;
+
     if (this.client) {
       return Promise.resolve(this.client);
     }
@@ -36,7 +39,7 @@ export default class TwilioClient /* extends EventEmitter */ {
         connectionState === 'error' ||
         connectionState === 'denied'
       ) {
-        console.error('lost connection...')
+        console.error('lost connection...');
         this.emit('disconnected');
         this.client = undefined;
       }
@@ -58,9 +61,8 @@ export default class TwilioClient /* extends EventEmitter */ {
   }
 
   fetchToken() {
-    return fetch('/api/token', { credentials: 'include' }).then(resp =>
-      resp.json()
-    );
+    const url = this.isDashboard ? '/api/dashboard-token' : '/api/token';
+    return fetch(url, { credentials: 'include' }).then(resp => resp.json());
   }
 }
 
