@@ -33,7 +33,8 @@ const AVAILABLE_DEFAULT_OPTIONS = [
   'Latte',
   'Americano',
   'Flat White',
-  'Filter Coffee'
+  'Filter Coffee',
+  'Hot Chocolate'
 ];
 
 /**
@@ -72,7 +73,10 @@ const SPELLING_MISTAKES = {
   'flatt white': 'Flat White',
   'filter coffee': 'Filter Coffee',
   coffee: 'Filter Coffee',
-  'fliter coffee': 'Filter Coffee'
+  'fliter coffee': 'Filter Coffee',
+  'hot chocolate': 'Hot Chocolate',
+  'chocolate': 'Hot Chocolate',
+  'cocolate': 'Hot Chocolate'
 };
 
 const DEFAULT_CONFIGURATION = {

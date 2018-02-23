@@ -1,5 +1,9 @@
 const { config } = require('./config');
 
+function sortByLengthDesc(a, b) {
+  return b.length - a.length;
+}
+
 /**
  * Determines based on a message which coffee is trying to be ordered.
  * 
@@ -10,7 +14,7 @@ function determineCoffeeFromMessage(messageBody) {
   const possibleOptions = config().spellingMap;
   const availableOptions = config().availableCoffees;
   const message = messageBody.trim().toLowerCase();
-  for (let option of Object.keys(possibleOptions)) {
+  for (let option of Object.keys(possibleOptions).sort(sortByLengthDesc)) {
     if (
       message.indexOf(option) !== -1 &&
       availableOptions[possibleOptions[option]]
