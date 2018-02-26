@@ -12,7 +12,10 @@ const ICON_MAP = {
   Americano: 'americano',
   Mocca: 'coffee-to-go',
   Espresso: 'espresso-maker',
-  'Filter Coffee': 'coffee-filter'
+  'Filter Coffee': 'coffee-filter',
+  'Lagunitas Pilsner': 'pilsener',
+  'Broadside Cabernet Sauvignon': 'red-wine',
+  'Clifford Bay Sauvignon Blanc': 'white-wine'
 };
 
 export default class ProductListings extends Component {
