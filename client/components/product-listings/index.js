@@ -15,7 +15,10 @@ const ICON_MAP = {
   'Filter Coffee': 'coffee-filter',
   'Lagunitas Pilsner': 'pilsener',
   'Broadside Cabernet Sauvignon': 'red-wine',
-  'Clifford Bay Sauvignon Blanc': 'white-wine'
+  'Clifford Bay Sauvignon Blanc': 'white-wine',
+  'Beer': 'pilsener',
+  'White Wine': 'white-wine',
+  'Red Wine': 'red-wine'
 };
 
 export default class ProductListings extends Component {
