@@ -267,13 +267,13 @@ function getEventConfigName(slug) {
   return SYNC_NAMES.EVENT_CONFIG + slug;
 }
 
-async function createEventConfiguration(eventName) {
+async function createEventConfiguration(eventName, customData) {
   const slug = kebabCase(eventName);
   const data = Object.assign({}, DEFAULT_EVENT_CONFIGURATION, {
     eventName,
     slug
-  });
-  const name = getEventConfigName();
+  }, customData);
+  const name = getEventConfigName(slug);
   const createResult = await createIfNotExists(
     syncClient.documents,
     name,

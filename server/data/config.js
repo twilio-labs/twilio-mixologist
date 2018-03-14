@@ -88,7 +88,10 @@ async function deleteEventConfig(event) {
 }
 
 async function createEventConfig(eventName) {
-  const { data } = await createEventConfiguration(eventName);
+  const customData = {
+    visibleNumbers: internalGlobalConfig.connectedPhoneNumbers
+  };
+  const { data } = await createEventConfiguration(eventName, customData);
   setEventConfig(data);
   return data;
 }
