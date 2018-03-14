@@ -3,10 +3,12 @@ const bodyParser = require('body-parser');
 
 const { gateForAdmin } = require('../../utils/auth');
 const numbers = require('./numbers');
+const events = require('./events');
 
 const parseJsonBody = bodyParser.json();
 
 router.get('/numbers', numbers.get);
+router.get('/events', events.get);
 router.post(
   '/notification',
   gateForAdmin,
@@ -14,7 +16,9 @@ router.post(
   require('./notification').handler
 );
 router.post('/numbers', gateForAdmin, parseJsonBody, numbers.post);
+router.post('/events', gateForAdmin, parseJsonBody, events.create);
 router.post('/reset', gateForAdmin, require('./reset').handler);
 router.post('/setup', gateForAdmin, require('./setup').handler);
+router.delete('/numbers/:eventId', gateForAdmin, events.delete);
 
 module.exports = router;

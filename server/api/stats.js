@@ -2,12 +2,13 @@ const { allOrdersList } = require('./twilio');
 const { config } = require('../data/config');
 
 async function handler(req, res, next) {
+  const { eventId } = req.query;
   const {
     expectedOrders,
     availableCoffees,
     connectedPhoneNumbers,
     repoUrl
-  } = config();
+  } = config(eventId);
   const phoneNumbers = connectedPhoneNumbers
     .split(',')
     .map(n => n.trim())
@@ -15,30 +16,30 @@ async function handler(req, res, next) {
   const product = getAvailableProducts(availableCoffees);
   try {
     const allOrders = await allOrdersList.syncListItems.list();
-    const stats = allOrders.map(order => order.data).reduce((
-      currentStats,
-      order
-    ) => {
-      currentStats.totalOrders++;
-      currentStats.source[order.source] = safelyIncrement(
-        currentStats.source[order.source]
-      );
-      currentStats.product[order.product] = safelyIncrement(
-        currentStats.product[order.product]
-      );
-      currentStats.countryCode[order.countryCode] = safelyIncrement(
-        currentStats.countryCode[order.countryCode]
-      );
-      return currentStats;
-    }, {
-      totalOrders: 0,
-      product,
-      countryCode: {},
-      source: {},
-      expectedOrders,
-      phoneNumbers,
-      repoUrl
-    });
+    const stats = allOrders.map(order => order.data).reduce(
+      (currentStats, order) => {
+        currentStats.totalOrders++;
+        currentStats.source[order.source] = safelyIncrement(
+          currentStats.source[order.source]
+        );
+        currentStats.product[order.product] = safelyIncrement(
+          currentStats.product[order.product]
+        );
+        currentStats.countryCode[order.countryCode] = safelyIncrement(
+          currentStats.countryCode[order.countryCode]
+        );
+        return currentStats;
+      },
+      {
+        totalOrders: 0,
+        product,
+        countryCode: {},
+        source: {},
+        expectedOrders,
+        phoneNumbers,
+        repoUrl
+      }
+    );
     res.send(stats);
   } catch (err) {
     req.log.error(err);
@@ -52,9 +53,11 @@ function safelyIncrement(item) {
 
 function getAvailableProducts(availableCoffees) {
   const products = {};
-  Object.keys(availableCoffees).filter(c => availableCoffees[c]).forEach(c => {
-    products[c] = 0;
-  });
+  Object.keys(availableCoffees)
+    .filter(c => availableCoffees[c])
+    .forEach(c => {
+      products[c] = 0;
+    });
   return products;
 }
 

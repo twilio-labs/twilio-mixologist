@@ -3,7 +3,8 @@ const { restClient } = require('./twilio');
 const emojiFlags = require('emoji-flags');
 
 async function handler(req, res, next) {
-  const { connectedPhoneNumbers } = config();
+  const { eventId } = req.query;
+  const { connectedPhoneNumbers } = config(eventId);
   const filteredNumbers = connectedPhoneNumbers
     .split(',')
     .map(num => num.trim());

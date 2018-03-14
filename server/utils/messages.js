@@ -75,8 +75,8 @@ function getExistingOrderMessage(product, orderNumber) {
   return tmpl({ product, orderNumber });
 }
 
-function getOrderCreatedMessage(product, orderNumber) {
-  const repoUrl = config().repoUrl;
+function getOrderCreatedMessage(product, orderNumber, forEvent) {
+  const repoUrl = config(forEvent).repoUrl;
   const tmpl = template(pickRandom(ORDER_CREATED_MESSAGES));
   return tmpl({ product, orderNumber, repoUrl });
 }
@@ -91,8 +91,8 @@ function getOrderReadyMessage(product, orderNumber) {
   return tmpl({ product, orderNumber });
 }
 
-function getSystemOfflineMessage() {
-  const customMessage = config().offlineMessage;
+function getSystemOfflineMessage(forEvent) {
+  const customMessage = config(forEvent).offlineMessage;
   if (typeof customMessage === 'string' && customMessage.trim().length > 0) {
     return customMessage;
   }

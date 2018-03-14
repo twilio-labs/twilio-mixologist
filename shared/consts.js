@@ -1,6 +1,7 @@
 const SYNC_NAMES = {
   ORDER_QUEUE: 'orderQueue',
   CONFIGURATION: 'configuration',
+  EVENT_CONFIG: 'event_',
   CUSTOMERS: 'customers',
   ALL_ORDERS: 'allOrders'
 };
@@ -75,17 +76,22 @@ const SPELLING_MISTAKES = {
   coffee: 'Filter Coffee',
   'fliter coffee': 'Filter Coffee',
   'hot chocolate': 'Hot Chocolate',
-  'chocolate': 'Hot Chocolate',
-  'cocolate': 'Hot Chocolate'
+  chocolate: 'Hot Chocolate',
+  cocolate: 'Hot Chocolate'
 };
 
 const DEFAULT_CONFIGURATION = {
+  connectedPhoneNumbers: [],
+  spellingMap: SPELLING_MISTAKES
+};
+
+const DEFAULT_EVENT_CONFIGURATION = {
   isOn: true,
   offlineMessage: 'We are sorry but there is currently no coffee.',
   availableCoffees: createBooleanMapOfArray(AVAILABLE_DEFAULT_OPTIONS),
-  spellingMap: SPELLING_MISTAKES,
   repoUrl: 'bit.ly/twilio-barista',
-  expectedOrders: 300
+  expectedOrders: 300,
+  visibleNumbers: []
 };
 
 function createBooleanMapOfArray(array) {
@@ -98,6 +104,7 @@ function createBooleanMapOfArray(array) {
 module.exports = {
   AVAILABLE_DEFAULT_OPTIONS,
   DEFAULT_CONFIGURATION,
+  DEFAULT_EVENT_CONFIGURATION,
   DEFAULT_JSON_ENTRY_KEY,
   INTENTS,
   SEGMENTS,
