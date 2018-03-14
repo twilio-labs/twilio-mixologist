@@ -1,5 +1,6 @@
 const twilio = require('twilio');
 const urljoin = require('url-join');
+const kebabCase = require('lodash.kebabcase');
 const { AccessToken } = twilio.jwt;
 const { SyncGrant } = AccessToken;
 
@@ -17,6 +18,7 @@ const {
 const {
   SYNC_NAMES,
   DEFAULT_CONFIGURATION,
+  DEFAULT_EVENT_CONFIGURATION,
   SEGMENTS,
   TAGS
 } = require('../../shared/consts');
@@ -198,20 +200,20 @@ async function setPermissions() {
 }
 
 const createConfigurationDoc = function() {
-  createIfNotExists(
+  return createIfNotExists(
     syncClient.documents,
     SYNC_NAMES.CONFIGURATION,
     DEFAULT_CONFIGURATION
   );
 };
 const createOrderQueue = function() {
-  createIfNotExists(syncClient.syncLists, SYNC_NAMES.ORDER_QUEUE);
+  return createIfNotExists(syncClient.syncLists, SYNC_NAMES.ORDER_QUEUE);
 };
 const createCustomerMap = function() {
-  createIfNotExists(syncClient.syncMaps, SYNC_NAMES.CUSTOMERS);
+  return createIfNotExists(syncClient.syncMaps, SYNC_NAMES.CUSTOMERS);
 };
 const createAllOrdersList = function() {
-  createIfNotExists(syncClient.syncLists, SYNC_NAMES.ALL_ORDERS);
+  return createIfNotExists(syncClient.syncLists, SYNC_NAMES.ALL_ORDERS);
 };
 
 async function createResources() {
@@ -261,6 +263,54 @@ async function resetNotify() {
   return Promise.all(deleteUsers);
 }
 
+function getEventConfigName(slug) {
+  return SYNC_NAMES.EVENT_CONFIG + slug;
+}
+
+async function createEventConfiguration(eventName) {
+  const slug = kebabCase(eventName);
+  const data = Object.assign({}, DEFAULT_EVENT_CONFIGURATION, {
+    eventName,
+    slug
+  });
+  const name = getEventConfigName();
+  const createResult = await createIfNotExists(
+    syncClient.documents,
+    name,
+    data
+  );
+  await syncClient
+    .documents(name)
+    .documentPermissions('admin')
+    .update({
+      read: 'true',
+      write: 'true',
+      manage: 'false'
+    });
+  return createResult;
+}
+
+async function listAllEvents() {
+  const documents = await syncClient.documents.list();
+  const events = documents
+    .map(d => d.uniqueName)
+    .filter(name => name.indexOf(SYNC_NAMES.EVENT_CONFIG) === 0);
+  return events;
+}
+
+async function fetchEventConfigurations() {
+  const events = await listAllEvents();
+  const eventDataPromises = events.map(async name => {
+    const { data } = await syncClient.documents(name).fetch();
+    return data;
+  });
+  return Promise.all(eventDataPromises);
+}
+
+function getEventConfigDoc(slug) {
+  return syncClient.documents(getEventConfigName(slug));
+}
+
 module.exports = {
   SYNC_NAMES,
   restClient,
@@ -284,5 +334,9 @@ module.exports = {
   resetList,
   setPermissions,
   resetMap,
-  resetNotify
+  resetNotify,
+  fetchEventConfigurations,
+  getEventConfigDoc,
+  createEventConfiguration,
+  listAllEvents
 };

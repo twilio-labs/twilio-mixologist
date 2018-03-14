@@ -25,15 +25,16 @@ const { INTENTS } = require('../../../shared/consts');
 
 /**
  * This is the request handler for incoming SMS and Facebook messages by handling webhook request from Twilio.
- * 
- * @param {any} req 
- * @param {any} res 
- * @param {any} next 
- * @returns 
+ *
+ * @param {any} req
+ * @param {any} res
+ * @param {any} next
+ * @returns
  */
 async function handleIncomingMessages(req, res, next) {
-  if (!config().isOn) {
-    res.type('text/plain').send(getSystemOfflineMessage());
+  const eventId = 'TODO';
+  if (!config(eventId).isOn) {
+    res.type('text/plain').send(getSystemOfflineMessage(eventId));
     return;
   }
   // Respond to HTTP request with empty Response object since we will use the REST API to respond to messages.
@@ -43,9 +44,9 @@ async function handleIncomingMessages(req, res, next) {
   const customer = getCustomerInformation(req.body);
   customer.identity = await registerAddress(req.body.From, customer.source);
 
-  const messageIntent = determineIntent(req.body.Body);
+  const messageIntent = determineIntent(req.body.Body, eventId);
   if (messageIntent.intent !== INTENTS.ORDER) {
-    const availableOptionsMap = config().availableCoffees;
+    const availableOptionsMap = config(eventId).availableCoffees;
     const availableOptions = Object.keys(availableOptionsMap).filter(
       key => availableOptionsMap[key]
     );
@@ -117,7 +118,7 @@ async function handleIncomingMessages(req, res, next) {
 
     await registerOpenOrder(customer.identity);
 
-    const msg = getOrderCreatedMessage(coffeeOrder, orderEntry.index);
+    const msg = getOrderCreatedMessage(coffeeOrder, orderEntry.index, eventId);
     await sendMessageToCustomer(customer, msg);
   } catch (err) {
     req.log.error(err);
@@ -167,7 +168,7 @@ async function sendMessageToCustomer(customer, msg) {
   return sendMessage(customer.identity, msg);
 }
 
-function determineIntent(message) {
+function determineIntent(message, forEvent) {
   const msgNormalized = message.toLowerCase().trim();
   if (msgNormalized.indexOf('help') !== -1) {
     return { intent: INTENTS.HELP };
@@ -181,7 +182,7 @@ function determineIntent(message) {
     return { intent: INTENTS.CANCEL };
   }
 
-  const coffeeOrder = determineCoffeeFromMessage(message);
+  const coffeeOrder = determineCoffeeFromMessage(message, forEvent);
   if (!coffeeOrder) {
     return { intent: INTENTS.INVALID };
   }

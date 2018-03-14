@@ -12,7 +12,7 @@ const {
   getOrderReadyMessage
 } = require('../../utils/messages');
 
-const { setConfig } = require('../../data/config');
+const { setGlobalConfig, setEventConfig } = require('../../data/config');
 
 async function handler(req, res, next) {
   res.sendStatus(200);
@@ -22,7 +22,11 @@ async function handler(req, res, next) {
 
   try {
     if (isDocumentUpdate(req.body.EventType)) {
-      await updateConfiguration(req.body);
+      if (req.body.DocumentUniqueName === SYNC_NAMES.CONFIGURATION) {
+        updateConfiguration(req.body);
+      } else {
+        updateEventConfiguration(req.body);
+      }
     } else {
       if (req.body.ListUniqueName !== SYNC_NAMES.ORDER_QUEUE) {
         return;
@@ -72,7 +76,12 @@ function isDocumentUpdate(eventType) {
 
 function updateConfiguration(requestBody) {
   const newConfig = JSON.parse(requestBody.DocumentData);
-  setConfig(newConfig);
+  setGlobalConfig(newConfig);
+}
+
+function updateEventConfiguration(requestBody) {
+  const newConfig = JSON.parse(requestBody.DocumentData);
+  setEventConfig(newConfig);
 }
 
 module.exports = { handler };

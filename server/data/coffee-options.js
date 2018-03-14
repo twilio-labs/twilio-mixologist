@@ -6,13 +6,13 @@ function sortByLengthDesc(a, b) {
 
 /**
  * Determines based on a message which coffee is trying to be ordered.
- * 
- * @param {any} messageBody 
+ *
+ * @param {any} messageBody
  * @returns string with coffee name or null if none could be determined
  */
-function determineCoffeeFromMessage(messageBody) {
-  const possibleOptions = config().spellingMap;
-  const availableOptions = config().availableCoffees;
+function determineCoffeeFromMessage(messageBody, forEvent) {
+  const possibleOptions = config(forEvent).spellingMap;
+  const availableOptions = config(forEvent).availableCoffees;
   const message = messageBody.trim().toLowerCase();
   for (let option of Object.keys(possibleOptions).sort(sortByLengthDesc)) {
     if (
