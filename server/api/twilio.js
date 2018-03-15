@@ -1,10 +1,16 @@
 const twilio = require('twilio');
 const urljoin = require('url-join');
 const kebabCase = require('lodash.kebabcase');
-const { AccessToken } = twilio.jwt;
-const { SyncGrant } = AccessToken;
+const {
+  AccessToken
+} = twilio.jwt;
+const {
+  SyncGrant
+} = AccessToken;
 
-const { getIdentityFromAddress } = require('../utils/identity');
+const {
+  getIdentityFromAddress
+} = require('../utils/identity');
 
 const {
   TWILIO_API_KEY,
@@ -69,7 +75,9 @@ async function sendMessageToAll(body) {
 async function registerOpenOrder(identity) {
   const membership = await notifyClient
     .users(identity)
-    .segmentMemberships.create({ segment: SEGMENTS.OPEN_ORDER });
+    .segmentMemberships.create({
+      segment: SEGMENTS.OPEN_ORDER
+    });
   return membership;
 }
 
@@ -199,20 +207,20 @@ async function setPermissions() {
   ]);
 }
 
-const createConfigurationDoc = function() {
+const createConfigurationDoc = function () {
   return createIfNotExists(
     syncClient.documents,
     SYNC_NAMES.CONFIGURATION,
     DEFAULT_CONFIGURATION
   );
 };
-const createOrderQueue = function() {
+const createOrderQueue = function () {
   return createIfNotExists(syncClient.syncLists, SYNC_NAMES.ORDER_QUEUE);
 };
-const createCustomerMap = function() {
+const createCustomerMap = function () {
   return createIfNotExists(syncClient.syncMaps, SYNC_NAMES.CUSTOMERS);
 };
-const createAllOrdersList = function() {
+const createAllOrdersList = function () {
   return createIfNotExists(syncClient.syncLists, SYNC_NAMES.ALL_ORDERS);
 };
 
@@ -252,7 +260,9 @@ async function resetMap(name) {
 
 async function resetNotify() {
   const users = await notifyClient.users.list();
-  const deleteUsers = users.map(async ({ sid }) => {
+  const deleteUsers = users.map(async ({
+    sid
+  }) => {
     const bindings = await notifyClient.users(sid).bindings.list();
     const deleteBindings = bindings.map(async b => {
       return notifyClient.bindings(b.sid).remove();
@@ -301,7 +311,9 @@ async function listAllEvents() {
 async function fetchEventConfigurations() {
   const events = await listAllEvents();
   const eventDataPromises = events.map(async name => {
-    const { data } = await syncClient.documents(name).fetch();
+    const {
+      data
+    } = await syncClient.documents(name).fetch();
     return data;
   });
   return Promise.all(eventDataPromises);

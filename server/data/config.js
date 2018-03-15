@@ -48,7 +48,9 @@ function config(event) {
     return configForEvent(event);
   }
 
-  return Object.assign({}, internalGlobalConfig, allEventsAsObject());
+  return Object.assign({}, internalGlobalConfig, {
+    events: allEventsAsObject()
+  });
 }
 
 function configForEvent(event) {
