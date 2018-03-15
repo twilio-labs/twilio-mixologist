@@ -4,27 +4,29 @@ const emojiFlags = require('emoji-flags');
 
 async function handler(req, res, next) {
   const { eventId } = req.query;
-  const { connectedPhoneNumbers } = config(eventId);
-  const filteredNumbers = connectedPhoneNumbers
-    .split(',')
-    .map(num => num.trim());
+  const { visibleNumbers } = config(eventId);
+  const filteredNumbers = visibleNumbers.split(',').map(num => num.trim());
 
   try {
-    const phoneNumbers = await Promise.all(
+    const phoneNumbers = (await Promise.all(
       filteredNumbers.map(async number => {
-        const sanitizedNumber = number.replace(/[^(\d|\w)]/g, '');
-        const {
-          countryCode,
-          phoneNumber
-        } = await restClient.lookups.phoneNumbers(sanitizedNumber).fetch();
-        const { emoji } = emojiFlags.countryCode(countryCode);
-        return {
-          countryCode,
-          phoneNumber: number,
-          emoji
-        };
+        try {
+          const sanitizedNumber = number.replace(/[^(\d|\w)]/g, '');
+          const {
+            countryCode,
+            phoneNumber
+          } = await restClient.lookups.phoneNumbers(sanitizedNumber).fetch();
+          const { emoji } = emojiFlags.countryCode(countryCode);
+          return {
+            countryCode,
+            phoneNumber: number,
+            emoji
+          };
+        } catch (err) {
+          return undefined;
+        }
       })
-    );
+    )).filter(x => !!x);
     res.send({
       phoneNumbers
     });
