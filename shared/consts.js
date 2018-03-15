@@ -14,7 +14,8 @@ const SEGMENTS = {
 
 const TAGS = {
   INTERACTED: 'interacted',
-  ALL: 'all'
+  ALL: 'all',
+  _PREFIX_EVENT: 'event_'
 };
 
 const INTENTS = {
@@ -23,6 +24,15 @@ const INTENTS = {
   ORDER: 'order',
   CANCEL: 'cancel',
   INVALID: 'invalid'
+};
+
+const COOKIES = {
+  CUSTOMER_STATE: 'CustomerState',
+  EVENT_MAPPING: 'EventMapping'
+};
+
+const CUSTOMER_STATES = {
+  SET: 'set-eventId'
 };
 
 /**
@@ -110,5 +120,7 @@ module.exports = {
   SEGMENTS,
   SPELLING_MISTAKES,
   SYNC_NAMES,
-  TAGS
+  TAGS,
+  COOKIES,
+  CUSTOMER_STATES
 };
