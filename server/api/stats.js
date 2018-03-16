@@ -3,13 +3,10 @@ const { config } = require('../data/config');
 
 async function handler(req, res, next) {
   const { eventId } = req.query;
-  const {
-    expectedOrders,
-    availableCoffees,
-    connectedPhoneNumbers,
-    repoUrl
-  } = config(eventId);
-  const phoneNumbers = connectedPhoneNumbers
+  const { expectedOrders, availableCoffees, visibleNumbers, repoUrl } = config(
+    eventId
+  );
+  const phoneNumbers = visibleNumbers
     .split(',')
     .map(n => n.trim())
     .slice(0, 2);
