@@ -12,7 +12,8 @@ export default class Kiosk extends Component {
   }
 
   componentWillMount() {
-    fetch('/api/kiosk')
+    const { eventId } = this.props;
+    fetch(`/api/kiosk?eventId=${eventId}`)
       .then(resp => {
         if (!resp.ok) {
           throw new Error('Could not fetch kiosk info');
@@ -30,29 +31,31 @@ export default class Kiosk extends Component {
 
   render() {
     const loading = <p>Loading...</p>;
-    const kiosk = !this.state.kioskLoaded
-      ? loading
-      : <div id="kiosk" class={style.kiosk}>
-          <h1 class={style.thirsty}>Thirsty? Coffee?</h1>
-          <p class={style.hr}>Skip the Queue!</p>
-          <div class={style.centerContent}>
-            <p>
-              Make your coffee order ⚡️ <i>asynchronous</i> ⚡️
-            </p>
-            <p>Send your order via SMS to:</p>
-            <div class={style.phoneNumbers}>
-              {this.state.kioskInfo.phoneNumbers.slice(0, 4).map(num =>
-                <p>
-                  {num.emoji} {num.phoneNumber}
-                </p>
-              )}
-            </div>
-          </div>
-          <p class={style.hr}>Enjoy</p>
+    const kiosk = !this.state.kioskLoaded ? (
+      loading
+    ) : (
+      <div id="kiosk" class={style.kiosk}>
+        <h1 class={style.thirsty}>Thirsty? Coffee?</h1>
+        <p class={style.hr}>Skip the Queue!</p>
+        <div class={style.centerContent}>
           <p>
-            <TwilioLogo />
+            Make your coffee order ⚡️ <i>asynchronous</i> ⚡️
           </p>
-        </div>;
+          <p>Send your order via SMS to:</p>
+          <div class={style.phoneNumbers}>
+            {this.state.kioskInfo.phoneNumbers.slice(0, 4).map(num => (
+              <p>
+                {num.emoji} {num.phoneNumber}
+              </p>
+            ))}
+          </div>
+        </div>
+        <p class={style.hr}>Enjoy</p>
+        <p>
+          <TwilioLogo />
+        </p>
+      </div>
+    );
     return kiosk;
   }
 }

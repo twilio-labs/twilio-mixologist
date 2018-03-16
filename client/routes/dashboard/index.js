@@ -20,7 +20,7 @@ export default class Dashboard extends Component {
   }
 
   componentWillMount() {
-    this.statsService.init().then(stats => {
+    this.statsService.init(this.props.eventId).then(stats => {
       this.setState({ stats, loading: false });
     });
   }
