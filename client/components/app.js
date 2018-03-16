@@ -51,7 +51,7 @@ export default class App extends Component {
   render() {
     return (
       <div id="app">
-        <Match path="/kiosk">
+        <Match path="/:eventId/kiosk">
           {({ matches, path }) =>
             this.isPathWithHeader(path) && (
               <Header
@@ -63,16 +63,16 @@ export default class App extends Component {
         </Match>
         <Router onChange={this.handleRoute}>
           <Home path="/" />
-          <Orders path="/orders" />
+          <Orders path="/:eventId/orders" />
           <Admin isAdmin={this.state.isAdmin} path="/admin" />
-          <Kiosk path="/kiosk" />
-          <Dashboard path="/dashboard" />
+          <Kiosk path="/:eventId/kiosk" />
+          <Dashboard path="/:eventId/dashboard" />
         </Router>
       </div>
     );
   }
 
   isPathWithHeader(path) {
-    return path !== '/kiosk' && path !== '/dashboard';
+    return !path.endsWith('/kiosk') && !path.endsWith('/dashboard');
   }
 }
