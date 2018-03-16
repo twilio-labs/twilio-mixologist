@@ -23,29 +23,24 @@ export default class ConfigService /* extends EventEmitter */ {
     return this.globalConfig;
   }
 
-  init(eventId) {
+  async init(eventId) {
     this.eventId = eventId;
-    return TwilioClient.shared()
-      .init()
-      .then(twilioClient => {
-        this.client = twilioClient;
-        return this.client.document(SYNC_NAMES.CONFIGURATION);
-      })
-      .then(doc => {
-        this.globalConfigurationDoc = doc;
-        this.globalConfig = doc.value;
-        this.addGlobalEventListeners();
-        return this.globalConfig;
-      })
-      .then(() => {
-        return this.client.document(SYNC_NAMES.EVENT_CONFIG + eventId);
-      })
-      .then(doc => {
-        this.eventConfigurationDoc = doc;
-        this.eventConfig = doc.value;
-        this.addEventEventListeners();
-        return { eventConfig: this.eventConfig, config: this.globalConfig };
-      });
+    this.client = await TwilioClient.shared().init();
+    this.globalConfigurationDoc = await this.client.document(
+      SYNC_NAMES.CONFIGURATION
+    );
+    this.globalConfig = this.globalConfigurationDoc.value;
+    this.addGlobalEventListeners();
+
+    if (!eventId) {
+      return { config: this.globalConfig };
+    }
+    this.eventConfigurationDoc = await this.client.document(
+      SYNC_NAMES.EVENT_CONFIG + eventId
+    );
+    this.eventConfig = this.eventConfigurationDoc.value;
+    this.addEventEventListeners();
+    return { eventConfig: this.eventConfig, config: this.globalConfig };
   }
 
   addGlobalEventListeners() {
@@ -77,14 +72,13 @@ export default class ConfigService /* extends EventEmitter */ {
     this.eventConfigurationDoc.removeAllListeners('updatedRemotely');
   }
 
-  changeEvent(eventId) {
-    this.client.document(SYNC_NAMES.EVENT_CONFIG + eventId).then(doc => {
-      this.eventConfigurationDoc = doc;
-      this.eventConfig = doc.value;
-      this.addEventEventListeners();
-      this.emit('updatedEvent', { eventConfig: this.eventConfig });
-      return { eventConfig: this.eventConfig };
-    });
+  async changeEvent(eventId) {
+    const doc = await this.client.document(SYNC_NAMES.EVENT_CONFIG + eventId);
+    this.eventConfigurationDoc = doc;
+    this.eventConfig = doc.value;
+    this.addEventEventListeners();
+    this.emit('updatedEvent', { eventConfig: this.eventConfig });
+    return { eventConfig: this.eventConfig };
   }
 
   updateValue(key, value, forDoc) {
