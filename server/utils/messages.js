@@ -66,6 +66,10 @@ const EVENT_REGISTRATION = [
   "We are sorry but we don't know at which event you currently are. Please reply with one of the numbers below to register for that event. \n${choices}",
 ];
 
+const NO_ACTIVE_EVENTS = [
+  'Oh no! 😕 It seems like we are currently not serving at the moment. Please check back later 🙂',
+];
+
 function pickRandom(arr) {
   const len = arr.length;
   const idx = Math.floor(Math.random() * len);
@@ -147,6 +151,11 @@ function getEventRegistrationMessage(choices) {
   return tmpl({ choices: choices.join('\n') });
 }
 
+function getNoActiveEventsMessage() {
+  const tmpl = template(pickRandom(NO_ACTIVE_EVENTS));
+  return tmpl();
+}
+
 module.exports = {
   getWrongOrderMessage,
   getExistingOrderMessage,
@@ -161,4 +170,5 @@ module.exports = {
   getOopsMessage,
   getPostRegistrationMessage,
   getEventRegistrationMessage,
+  getNoActiveEventsMessage,
 };

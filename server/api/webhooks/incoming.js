@@ -14,6 +14,7 @@ const {
   getSystemOfflineMessage,
   getPostRegistrationMessage,
   getEventRegistrationMessage,
+  getNoActiveEventsMessage,
 } = require('../../utils/messages');
 const {
   restClient,
@@ -50,36 +51,47 @@ async function handleIncomingMessages(req, res, next) {
         .map(x => x.eventName)
         .map((name, idx) => `${idx + 1}: ${name}`);
       const choiceToEventId = Object.keys(events).filter(x => events[x].isOn);
-      const message = getEventRegistrationMessage(choices);
-      res.cookie(COOKIES.CUSTOMER_STATE, CUSTOMER_STATES.SET);
-      res.cookie(COOKIES.EVENT_MAPPING, choiceToEventId.join(','));
-      res.type('text/plain').send(message);
-      return;
-    }
-    res.type('text/plain');
-    const eventChoices = req.cookies[COOKIES.EVENT_MAPPING].split(',');
-    const choice = parseInt(req.body.Body.trim(), 10);
-    if (isNaN(choice)) {
-      res.send('🙁 Please send only the number of the respective event.');
-      return;
-    }
-    console.log(eventChoices, typeof choice, choice);
-    const chosenEventId = eventChoices[choice - 1];
-    if (!chosenEventId) {
-      res.send(
-        '🤷‍♀️ You chose an invalid number for the event. 🤷‍♂️ Please try again.'
+      if (choiceToEventId.length === 0) {
+        res.type('text/plain').send(getNoActiveEventsMessage());
+        return;
+      } else if (choiceToEventId.length > 1) {
+        const message = getEventRegistrationMessage(choices);
+        res.cookie(COOKIES.CUSTOMER_STATE, CUSTOMER_STATES.SET);
+        res.cookie(COOKIES.EVENT_MAPPING, choiceToEventId.join(','));
+        res.type('text/plain').send(message);
+        return;
+      }
+      const autoChosenEventId = choiceToEventId[0];
+      customerEntry = await setEventForCustomer(
+        customerEntry,
+        autoChosenEventId
       );
+    } else {
+      res.type('text/plain');
+      const eventChoices = req.cookies[COOKIES.EVENT_MAPPING].split(',');
+      const choice = parseInt(req.body.Body.trim(), 10);
+      if (isNaN(choice)) {
+        res.send('🙁 Please send only the number of the respective event.');
+        return;
+      }
+      console.log(eventChoices, typeof choice, choice);
+      const chosenEventId = eventChoices[choice - 1];
+      if (!chosenEventId) {
+        res.send(
+          '🤷‍♀️ You chose an invalid number for the event. 🤷‍♂️ Please try again.'
+        );
+        return;
+      }
+      customerEntry = await setEventForCustomer(customerEntry, chosenEventId);
+      res.clearCookie(COOKIES.CUSTOMER_STATE);
+      res.clearCookie(COOKIES.EVENT_MAPPING);
+      const availableOptionsMap = config(chosenEventId).availableCoffees;
+      const availableOptions = Object.keys(availableOptionsMap).filter(
+        key => availableOptionsMap[key]
+      );
+      res.send(getPostRegistrationMessage(availableOptions));
       return;
     }
-    customerEntry = await setEventForCustomer(customerEntry, chosenEventId);
-    res.clearCookie(COOKIES.CUSTOMER_STATE);
-    res.clearCookie(COOKIES.EVENT_MAPPING);
-    const availableOptionsMap = config(chosenEventId).availableCoffees;
-    const availableOptions = Object.keys(availableOptionsMap).filter(
-      key => availableOptionsMap[key]
-    );
-    res.send(getPostRegistrationMessage(availableOptions));
-    return;
   }
 
   const { eventId } = customerEntry.data;
