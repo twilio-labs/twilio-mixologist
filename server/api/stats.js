@@ -12,7 +12,7 @@ async function handler(req, res, next) {
     .slice(0, 2);
   const product = getAvailableProducts(availableCoffees);
   try {
-    const allOrders = await allOrdersList.syncListItems.list();
+    const allOrders = await allOrdersList(eventId).syncListItems.list();
     const stats = allOrders.map(order => order.data).reduce(
       (currentStats, order) => {
         currentStats.totalOrders++;
@@ -34,7 +34,7 @@ async function handler(req, res, next) {
         source: {},
         expectedOrders,
         phoneNumbers,
-        repoUrl
+        repoUrl,
       }
     );
     res.send(stats);
@@ -59,5 +59,5 @@ function getAvailableProducts(availableCoffees) {
 }
 
 module.exports = {
-  handler: handler
+  handler,
 };

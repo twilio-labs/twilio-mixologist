@@ -1,16 +1,11 @@
 const twilio = require('twilio');
 const urljoin = require('url-join');
 const kebabCase = require('lodash.kebabcase');
-const {
-  AccessToken
-} = twilio.jwt;
-const {
-  SyncGrant
-} = AccessToken;
 
-const {
-  getIdentityFromAddress
-} = require('../utils/identity');
+const { AccessToken } = twilio.jwt;
+const { SyncGrant } = AccessToken;
+
+const { getIdentityFromAddress } = require('../utils/identity');
 
 const {
   TWILIO_API_KEY,
@@ -18,7 +13,7 @@ const {
   TWILIO_ACCOUNT_SID,
   TWILIO_NOTIFY_SERVICE,
   TWILIO_SYNC_SERVICE,
-  TWILIO_MESSAGING_SERVICE
+  TWILIO_MESSAGING_SERVICE,
 } = process.env;
 
 const {
@@ -26,21 +21,23 @@ const {
   DEFAULT_CONFIGURATION,
   DEFAULT_EVENT_CONFIGURATION,
   SEGMENTS,
-  TAGS
+  TAGS,
 } = require('../../shared/consts');
 
 const restClient = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
-  accountSid: TWILIO_ACCOUNT_SID
+  accountSid: TWILIO_ACCOUNT_SID,
 });
 
 const syncClient = restClient.sync.services(TWILIO_SYNC_SERVICE);
 const notifyClient = restClient.notify.services(TWILIO_NOTIFY_SERVICE);
 const messagingClient = restClient.messaging.services(TWILIO_MESSAGING_SERVICE);
 
-const orderQueueList = syncClient.syncLists(SYNC_NAMES.ORDER_QUEUE);
+const orderQueueList = eventId =>
+  syncClient.syncLists(SYNC_NAMES.ORDER_QUEUE + eventId);
 const configurationDoc = syncClient.documents(SYNC_NAMES.CONFIGURATION);
 const customersMap = syncClient.syncMaps(SYNC_NAMES.CUSTOMERS);
-const allOrdersList = syncClient.syncLists(SYNC_NAMES.ALL_ORDERS);
+const allOrdersList = eventId =>
+  syncClient.syncLists(SYNC_NAMES.ALL_ORDERS + eventId);
 
 async function registerAddress(address, bindingType) {
   const identity = getIdentityFromAddress(address);
@@ -51,15 +48,15 @@ async function registerAddress(address, bindingType) {
     address,
     endpoint,
     bindingType,
-    tag
+    tag,
   });
   return identity;
 }
 
 async function sendMessage(identity, body) {
   const notification = await notifyClient.notifications.create({
-    identity: identity,
-    body: body
+    identity,
+    body,
   });
   return notification;
 }
@@ -67,7 +64,7 @@ async function sendMessage(identity, body) {
 async function sendMessageToAll(body) {
   const notification = await notifyClient.notifications.create({
     tag: TAGS.ALL,
-    body
+    body,
   });
   return notification;
 }
@@ -76,7 +73,7 @@ async function registerOpenOrder(identity) {
   const membership = await notifyClient
     .users(identity)
     .segmentMemberships.create({
-      segment: SEGMENTS.OPEN_ORDER
+      segment: SEGMENTS.OPEN_ORDER,
     });
   return membership;
 }
@@ -91,7 +88,7 @@ async function deregisterOpenOrder(identity) {
 
 async function sendMessageToAllOpenOrders(body) {
   const notification = await notifyClient.notifications.create({
-    segment: SEGMENTS.OPEN_ORDER
+    segment: SEGMENTS.OPEN_ORDER,
   });
   return notification;
 }
@@ -104,10 +101,10 @@ async function setup(baseUrl) {
 
 async function configureWebhookUrls(baseUrl) {
   await messagingClient.update({
-    inboundRequestUrl: urljoin(baseUrl, '/api/webhook/incoming')
+    inboundRequestUrl: urljoin(baseUrl, '/api/webhook/incoming'),
   });
   await syncClient.update({
-    webhookUrl: urljoin(baseUrl, '/api/webhook/sync')
+    webhookUrl: urljoin(baseUrl, '/api/webhook/sync'),
   });
   return true;
 }
@@ -120,7 +117,7 @@ async function loadConnectedPhoneNumbers() {
 
 function createToken(user) {
   const syncGrant = new SyncGrant({
-    serviceSid: TWILIO_SYNC_SERVICE
+    serviceSid: TWILIO_SYNC_SERVICE,
   });
 
   const token = new AccessToken(
@@ -133,59 +130,63 @@ function createToken(user) {
   return token.toJwt();
 }
 
-async function setPermissions() {
+async function setOrderQueuePermission(orderQueueName) {
   const updateOrderQueuePermissions = syncClient
-    .syncLists(SYNC_NAMES.ORDER_QUEUE)
+    .syncLists(orderQueueName)
     .syncListPermissions('barista')
-    .update({
-      read: 'true',
-      write: 'true',
-      manage: 'false'
-    });
+    .update({ read: 'true', write: 'true', manage: 'false' });
 
   const updateOrderQueuePermissionsForAdmin = syncClient
-    .syncLists(SYNC_NAMES.ORDER_QUEUE)
+    .syncLists(orderQueueName)
     .syncListPermissions('admin')
-    .update({
-      read: 'true',
-      write: 'true',
-      manage: 'false'
-    });
+    .update({ read: 'true', write: 'true', manage: 'false' });
 
+  return Promise.all([
+    updateOrderQueuePermissions,
+    updateOrderQueuePermissionsForAdmin,
+  ]);
+}
+
+async function setAllOrdersListPermission(allOrdersListName) {
   const updateAllOrdersPermissionsForAdmin = syncClient
-    .syncLists(SYNC_NAMES.ALL_ORDERS)
+    .syncLists(allOrdersListName)
     .syncListPermissions('admin')
-    .update({
-      read: 'true',
-      write: 'true',
-      manage: 'false'
-    });
+    .update({ read: 'true', write: 'true', manage: 'false' });
 
   const updateAllOrdersPermissionsForBarista = syncClient
-    .syncLists(SYNC_NAMES.ALL_ORDERS)
+    .syncLists(allOrdersListName)
     .syncListPermissions('barista')
-    .update({
-      read: 'true',
-      write: 'false',
-      manage: 'false'
-    });
+    .update({ read: 'true', write: 'false', manage: 'false' });
 
   const updateAllOrdersPermissionsForDashboard = syncClient
-    .syncLists(SYNC_NAMES.ALL_ORDERS)
+    .syncLists(allOrdersListName)
     .syncListPermissions('dashboard')
-    .update({
-      read: 'true',
-      write: 'false',
-      manage: 'false'
-    });
+    .update({ read: 'true', write: 'false', manage: 'false' });
 
+  return Promise.all([
+    updateAllOrdersPermissionsForAdmin,
+    updateAllOrdersPermissionsForBarista,
+    updateAllOrdersPermissionsForDashboard,
+  ]);
+}
+
+async function setConfigurationPermissions(configName) {
+  const updateConfigurationPermissionsForAdmin = syncClient
+    .documents(configName)
+    .documentPermissions('admin')
+    .update({ read: 'true', write: 'true', manage: 'false' });
+
+  return Promise.all([updateConfigurationPermissionsForAdmin]);
+}
+
+async function setPermissions() {
   const updateConfigurationPermissionsForAdmin = syncClient
     .documents(SYNC_NAMES.CONFIGURATION)
     .documentPermissions('admin')
     .update({
       read: 'true',
       write: 'true',
-      manage: 'false'
+      manage: 'false',
     });
 
   const updateCustomerPermissionsForAdmin = syncClient
@@ -194,48 +195,41 @@ async function setPermissions() {
     .update({
       read: 'true',
       write: 'true',
-      manage: 'false'
+      manage: 'false',
     });
 
   return Promise.all([
-    updateOrderQueuePermissions,
-    updateOrderQueuePermissionsForAdmin,
-    updateAllOrdersPermissionsForAdmin,
-    updateAllOrdersPermissionsForBarista,
     updateConfigurationPermissionsForAdmin,
-    updateCustomerPermissionsForAdmin
+    updateCustomerPermissionsForAdmin,
   ]);
 }
 
-const createConfigurationDoc = function () {
+const createConfigurationDoc = function() {
   return createIfNotExists(
     syncClient.documents,
     SYNC_NAMES.CONFIGURATION,
     DEFAULT_CONFIGURATION
   );
 };
-const createOrderQueue = function () {
-  return createIfNotExists(syncClient.syncLists, SYNC_NAMES.ORDER_QUEUE);
-};
-const createCustomerMap = function () {
+async function createOrderQueue(eventId) {
+  const name = SYNC_NAMES.ORDER_QUEUE + eventId;
+  return resetList(name);
+}
+const createCustomerMap = function() {
   return createIfNotExists(syncClient.syncMaps, SYNC_NAMES.CUSTOMERS);
 };
-const createAllOrdersList = function () {
-  return createIfNotExists(syncClient.syncLists, SYNC_NAMES.ALL_ORDERS);
-};
+async function createAllOrdersList(eventId) {
+  const name = SYNC_NAMES.ALL_ORDERS + eventId;
+  return resetList(name);
+}
 
 async function createResources() {
-  return Promise.all([
-    createOrderQueue(),
-    createConfigurationDoc(),
-    createCustomerMap(),
-    createAllOrdersList()
-  ]);
+  return Promise.all([createConfigurationDoc(), createCustomerMap()]);
 }
 
 async function createIfNotExists(resource, name, data) {
   const argument = {
-    uniqueName: name
+    uniqueName: name,
   };
   if (data) {
     argument.data = data;
@@ -247,9 +241,26 @@ async function createIfNotExists(resource, name, data) {
   }
 }
 
+async function resetAllLists(baseName) {
+  const listNames = (await syncClient.syncLists.list())
+    .map(list => list.uniqueName)
+    .filter(name => name.startsWith(baseName));
+  const listPromises = listNames.map(resetList);
+  return Promise.all(listPromises);
+}
+
 async function resetList(name) {
-  await syncClient.syncLists(name).remove();
+  try {
+    await syncClient.syncLists(name).remove();
+  } catch (err) {
+    // noop
+  }
   await createIfNotExists(syncClient.syncLists, name);
+  if (name.startsWith(SYNC_NAMES.ORDER_QUEUE)) {
+    setOrderQueuePermission(name);
+  } else if (name.startsWith(SYNC_NAMES.ALL_ORDERS)) {
+    setAllOrdersListPermission(name);
+  }
   return true;
 }
 
@@ -260,13 +271,11 @@ async function resetMap(name) {
 
 async function resetNotify() {
   const users = await notifyClient.users.list();
-  const deleteUsers = users.map(async ({
-    sid
-  }) => {
+  const deleteUsers = users.map(async ({ sid }) => {
     const bindings = await notifyClient.users(sid).bindings.list();
-    const deleteBindings = bindings.map(async b => {
-      return notifyClient.bindings(b.sid).remove();
-    });
+    const deleteBindings = bindings.map(async b =>
+      notifyClient.bindings(b.sid).remove()
+    );
     await Promise.all(deleteBindings);
     return notifyClient.users(sid).remove();
   });
@@ -279,10 +288,15 @@ function getEventConfigName(slug) {
 
 async function createEventConfiguration(eventName, customData) {
   const slug = kebabCase(eventName);
-  const data = Object.assign({}, DEFAULT_EVENT_CONFIGURATION, {
-    eventName,
-    slug
-  }, customData);
+  const data = Object.assign(
+    {},
+    DEFAULT_EVENT_CONFIGURATION,
+    {
+      eventName,
+      slug,
+    },
+    customData
+  );
   const name = getEventConfigName(slug);
   const createResult = await createIfNotExists(
     syncClient.documents,
@@ -295,7 +309,7 @@ async function createEventConfiguration(eventName, customData) {
     .update({
       read: 'true',
       write: 'true',
-      manage: 'false'
+      manage: 'false',
     });
   return createResult;
 }
@@ -311,9 +325,7 @@ async function listAllEvents() {
 async function fetchEventConfigurations() {
   const events = await listAllEvents();
   const eventDataPromises = events.map(async name => {
-    const {
-      data
-    } = await syncClient.documents(name).fetch();
+    const { data } = await syncClient.documents(name).fetch();
     return data;
   });
   return Promise.all(eventDataPromises);
@@ -350,5 +362,8 @@ module.exports = {
   fetchEventConfigurations,
   getEventConfigDoc,
   createEventConfiguration,
-  listAllEvents
+  listAllEvents,
+  resetAllLists,
+  createAllOrdersList,
+  createOrderQueue,
 };

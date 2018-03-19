@@ -1,21 +1,21 @@
 const SYNC_NAMES = {
-  ORDER_QUEUE: 'orderQueue',
+  ORDER_QUEUE: 'orderQueue_',
   CONFIGURATION: 'configuration',
   EVENT_CONFIG: 'event_',
   CUSTOMERS: 'customers',
-  ALL_ORDERS: 'allOrders'
+  ALL_ORDERS: 'allOrders_',
 };
 
 const DEFAULT_JSON_ENTRY_KEY = 'CHOOSE_KEY';
 
 const SEGMENTS = {
-  OPEN_ORDER: 'open-order'
+  OPEN_ORDER: 'open-order',
 };
 
 const TAGS = {
   INTERACTED: 'interacted',
   ALL: 'all',
-  _PREFIX_EVENT: 'event_'
+  _PREFIX_EVENT: 'event_',
 };
 
 const INTENTS = {
@@ -23,16 +23,16 @@ const INTENTS = {
   QUEUE: 'queue',
   ORDER: 'order',
   CANCEL: 'cancel',
-  INVALID: 'invalid'
+  INVALID: 'invalid',
 };
 
 const COOKIES = {
   CUSTOMER_STATE: 'CustomerState',
-  EVENT_MAPPING: 'EventMapping'
+  EVENT_MAPPING: 'EventMapping',
 };
 
 const CUSTOMER_STATES = {
-  SET: 'set-eventId'
+  SET: 'set-eventId',
 };
 
 /**
@@ -45,7 +45,7 @@ const AVAILABLE_DEFAULT_OPTIONS = [
   'Americano',
   'Flat White',
   'Filter Coffee',
-  'Hot Chocolate'
+  'Hot Chocolate',
 ];
 
 /**
@@ -58,10 +58,8 @@ const SPELLING_MISTAKES = {
   espresso: 'Espresso',
   cappacino: 'Cappuccino',
   capacino: 'Cappuccino',
-  cappacino: 'Cappuccino',
   cappocino: 'Cappuccino',
   capocino: 'Cappuccino',
-  capacino: 'Cappuccino',
   cappucino: 'Cappuccino',
   cappuccino: 'Cappuccino',
   capuccino: 'Cappuccino',
@@ -72,7 +70,6 @@ const SPELLING_MISTAKES = {
   lattee: 'Latte',
   latte: 'Latte',
   'cafe late': 'Latte',
-  'caffeé latte': 'Latte',
   'caffeé latte': 'Latte',
   'caffe latte': 'Latte',
   americano: 'Americano',
@@ -87,12 +84,12 @@ const SPELLING_MISTAKES = {
   'fliter coffee': 'Filter Coffee',
   'hot chocolate': 'Hot Chocolate',
   chocolate: 'Hot Chocolate',
-  cocolate: 'Hot Chocolate'
+  cocolate: 'Hot Chocolate',
 };
 
 const DEFAULT_CONFIGURATION = {
   connectedPhoneNumbers: [],
-  spellingMap: SPELLING_MISTAKES
+  spellingMap: SPELLING_MISTAKES,
 };
 
 const DEFAULT_EVENT_CONFIGURATION = {
@@ -101,7 +98,7 @@ const DEFAULT_EVENT_CONFIGURATION = {
   availableCoffees: createBooleanMapOfArray(AVAILABLE_DEFAULT_OPTIONS),
   repoUrl: 'bit.ly/twilio-barista',
   expectedOrders: 300,
-  visibleNumbers: []
+  visibleNumbers: [],
 };
 
 function createBooleanMapOfArray(array) {
@@ -122,5 +119,5 @@ module.exports = {
   SYNC_NAMES,
   TAGS,
   COOKIES,
-  CUSTOMER_STATES
+  CUSTOMER_STATES,
 };
