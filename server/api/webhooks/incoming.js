@@ -74,7 +74,7 @@ async function handleIncomingMessages(req, res, next) {
     customerEntry = await setEventForCustomer(customerEntry, chosenEventId);
     res.clearCookie(COOKIES.CUSTOMER_STATE);
     res.clearCookie(COOKIES.EVENT_MAPPING);
-    const availableOptionsMap = config(eventId).availableCoffees;
+    const availableOptionsMap = config(chosenEventId).availableCoffees;
     const availableOptions = Object.keys(availableOptionsMap).filter(
       key => availableOptionsMap[key]
     );
