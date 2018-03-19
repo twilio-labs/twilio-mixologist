@@ -60,6 +60,10 @@ const POST_REGISTRATION = [
   "Thank you! Now let's get you some coffee. What would you like? The options are: ${availableOptions}",
 ];
 
+const EVENT_REGISTRATION = [
+  "We are sorry but we don't know at which event you currently are. Please reply with one of the numbers below to register for that event. ${choices}",
+];
+
 function pickRandom(arr) {
   const len = arr.length;
   const idx = Math.floor(Math.random() * len);
@@ -136,6 +140,11 @@ function getPostRegistrationMessage(availableOptions) {
   return tmpl({ availableOptions: availableOptions.join(', ') });
 }
 
+function getEventRegistrationMessage(choices) {
+  const tmpl = template(pickRandom(EVENT_REGISTRATION));
+  return tmpl({ choices: choices.join('\n') });
+}
+
 module.exports = {
   getWrongOrderMessage,
   getExistingOrderMessage,
@@ -149,4 +158,5 @@ module.exports = {
   getCancelOrderMessage,
   getOopsMessage,
   getPostRegistrationMessage,
+  getEventRegistrationMessage,
 };

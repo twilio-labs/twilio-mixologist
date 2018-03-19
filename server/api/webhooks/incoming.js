@@ -13,6 +13,7 @@ const {
   getCancelOrderMessage,
   getSystemOfflineMessage,
   getPostRegistrationMessage,
+  getEventRegistrationMessage,
 } = require('../../utils/messages');
 const {
   restClient,
@@ -47,10 +48,9 @@ async function handleIncomingMessages(req, res, next) {
       const choices = Object.values(events)
         .filter(x => x.isOn)
         .map(x => x.eventName)
-        .map((name, idx) => `${idx + 1}: ${name}`)
-        .join('\n');
+        .map((name, idx) => `${idx + 1}: ${name}`);
       const choiceToEventId = Object.keys(events).filter(x => events[x].isOn);
-      const message = `We are sorry but we don't know at which event you currently are. Please reply with one of the numbers below to register for that event. ${choices}`;
+      const message = getEventRegistrationMessage(choices);
       res.cookie(COOKIES.CUSTOMER_STATE, CUSTOMER_STATES.SET);
       res.cookie(COOKIES.EVENT_MAPPING, choiceToEventId.join(','));
       res.type('text/plain').send(message);
@@ -60,13 +60,15 @@ async function handleIncomingMessages(req, res, next) {
     const eventChoices = req.cookies[COOKIES.EVENT_MAPPING].split(',');
     const choice = parseInt(req.body.Body.trim(), 10);
     if (isNaN(choice)) {
-      res.send('Please send only the number of the respective event.');
+      res.send('🙁 Please send only the number of the respective event.');
       return;
     }
     console.log(eventChoices, typeof choice, choice);
     const chosenEventId = eventChoices[choice - 1];
     if (!chosenEventId) {
-      res.send('You chose an invalid number for the event. Please try again.');
+      res.send(
+        '🤷‍♀️ You chose an invalid number for the event. 🤷‍♂️ Please try again.'
+      );
       return;
     }
     customerEntry = await setEventForCustomer(customerEntry, chosenEventId);
