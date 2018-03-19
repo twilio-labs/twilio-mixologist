@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 
 const parseBody = bodyParser.urlencoded({ extended: false });
 const parseCookies = cookieParser({
-  secret: process.env.PHONE_NUMBER_HASHING_SECRET || 'myamazingsecret'
+  secret: process.env.PHONE_NUMBER_HASHING_SECRET || 'myamazingsecret',
 });
 
 router.post('/sync', parseBody, require('./sync').handler);

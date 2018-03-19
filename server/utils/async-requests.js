@@ -9,5 +9,5 @@ function safeAsyncRequestHandler(fn) {
 
 module.exports = {
   safe: safeAsyncRequestHandler,
-  safeAsyncRequestHandler
+  safeAsyncRequestHandler,
 };

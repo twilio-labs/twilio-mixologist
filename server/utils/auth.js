@@ -23,9 +23,8 @@ function authenticate(req, res, next) {
   ) {
     req.user = foundUser.role;
     return next();
-  } else {
-    return unauthorized(res);
   }
+  return unauthorized(res);
 }
 
 function gateForAdmin(req, res, next) {
@@ -47,6 +46,6 @@ function processLogins(loginString) {
 }
 
 module.exports = {
-  authenticate: authenticate,
-  gateForAdmin: gateForAdmin
+  authenticate,
+  gateForAdmin,
 };
