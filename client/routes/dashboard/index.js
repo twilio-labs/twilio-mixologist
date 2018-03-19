@@ -35,7 +35,7 @@ export default class Dashboard extends Component {
       expectedOrders,
       totalOrders,
       repoUrl,
-      phoneNumbers
+      phoneNumbers,
     } = this.state.stats;
     const percentage = totalOrders / expectedOrders * 100;
     return (

@@ -21,7 +21,9 @@ export default class Home extends Component {
 
   render() {
     let events = this.state.events ? (
-      this.state.events.map(eventId => <EventEntry eventId={eventId} />)
+      this.state.events.map(({ eventId, eventName }) => (
+        <EventEntry eventId={eventId} name={eventName} />
+      ))
     ) : (
       <Progress indeterminate />
     );
@@ -29,32 +31,32 @@ export default class Home extends Component {
       <div class={style.home}>
         <h2>Twilio Barista</h2>
         <p>Welcome to Twilio Barista. Please pick your event:</p>
-        {events}
+        <div class={style.container}>{events}</div>
       </div>
     );
   }
 }
 
-const EventEntry = ({ eventId }) => {
+const EventEntry = ({ eventId, name }) => {
   return (
-    <Card shadow={2} style={{ marginBottom: '20px' }}>
+    <Card shadow={2} class={style.eventEntry}>
       <Card.Title>
-        <Card.TitleText>{eventId}</Card.TitleText>
+        <Card.TitleText>{name}</Card.TitleText>
       </Card.Title>
-      {/* <Card.Text>Something...</Card.Text> */}
+      <Card.Text>Event ID: {eventId}</Card.Text>
       <Card.Actions>
         <Link href={`/${eventId}/orders`}>
-          <Button primary style={{ width: '100%', textAlign: 'left' }}>
+          <Button primary class={style.actionButton}>
             📝 Orders
           </Button>
         </Link>
         <Link href={`/${eventId}/kiosk`}>
-          <Button primary style={{ width: '100%', textAlign: 'left' }}>
+          <Button primary class={style.actionButton}>
             📱 Kiosk
           </Button>
         </Link>
         <Link href={`/${eventId}/dashboard`}>
-          <Button primary style={{ width: '100%', textAlign: 'left' }}>
+          <Button primary class={style.actionButton}>
             📊 Dashboard
           </Button>
         </Link>
