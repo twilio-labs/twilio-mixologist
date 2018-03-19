@@ -1,4 +1,6 @@
 const template = require('lodash.template');
+const { commaListsAnd } = require('common-tags');
+
 const { config } = require('../data/config');
 
 // available values: originalMessage, availableOptions
@@ -61,7 +63,7 @@ const POST_REGISTRATION = [
 ];
 
 const EVENT_REGISTRATION = [
-  "We are sorry but we don't know at which event you currently are. Please reply with one of the numbers below to register for that event. ${choices}",
+  "We are sorry but we don't know at which event you currently are. Please reply with one of the numbers below to register for that event. \n${choices}",
 ];
 
 function pickRandom(arr) {
@@ -74,7 +76,7 @@ function getWrongOrderMessage(originalMessage, availableOptions) {
   const tmpl = template(pickRandom(WRONG_ORDER_MESSAGES));
   return tmpl({
     originalMessage,
-    availableOptions: availableOptions.join(', '),
+    availableOptions: commaListsAnd`${availableOptions}`,
   });
 }
 
@@ -111,7 +113,7 @@ function getSystemOfflineMessage(forEvent) {
 function getHelpMessage(availableOptions) {
   const tmpl = template(pickRandom(HELP_MESSAGES));
   return tmpl({
-    availableOptions: availableOptions.join(', '),
+    availableOptions: commaListsAnd`${availableOptions}`,
   });
 }
 
@@ -137,7 +139,7 @@ function getOopsMessage(error) {
 
 function getPostRegistrationMessage(availableOptions) {
   const tmpl = template(pickRandom(POST_REGISTRATION));
-  return tmpl({ availableOptions: availableOptions.join(', ') });
+  return tmpl({ availableOptions: commaListsAnd`${availableOptions}` });
 }
 
 function getEventRegistrationMessage(choices) {
