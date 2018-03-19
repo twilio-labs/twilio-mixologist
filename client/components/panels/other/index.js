@@ -163,7 +163,7 @@ export default class Other extends Component {
             disabled={true}
           >
             <p>
-              <strong>Important:</strong>Moved to the events section below the
+              <strong>Important:</strong> Moved to the events section below the
               configuration
             </p>
             <p>

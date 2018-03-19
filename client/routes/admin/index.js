@@ -2,35 +2,11 @@ import { h, Component } from 'preact';
 import mdl from 'material-design-lite/material';
 import { Tabs, Button, TextField } from 'preact-mdl';
 import Configurator from '../../components/panels/configurator';
+import EventConfigurator from '../../components/panels/event-configurator';
 import Messenger from '../../components/panels/messenger';
 import Other from '../../components/panels/other';
 import ConfigService from '../../lib/config';
 import style from './style';
-
-const CreateEventForm = ({ onNewEvent }) => {
-  function onSubmit(evt) {
-    evt.preventDefault();
-    const eventNameInput = evt.target.eventName;
-    const eventName = eventNameInput.value;
-    eventNameInput.value = '';
-    onNewEvent(eventName);
-  }
-
-  return (
-    <form onSubmit={onSubmit}>
-      <TextField
-        floating-label={true}
-        label="New Event Name"
-        type="text"
-        name="eventName"
-        value=""
-      />
-      <Button primary raised type="submit">
-        Create
-      </Button>
-    </form>
-  );
-};
 
 export default class Orders extends Component {
   constructor(...args) {
@@ -79,12 +55,25 @@ export default class Orders extends Component {
           <Tabs.Tab href="#other">Other</Tabs.Tab>
         </Tabs.TabBar>
         <Tabs.TabPanel id="configuration" active>
+          <h4>Global Configuration</h4>
           <Configurator
             config={this.state.config}
             update={(key, value) => this.updateConfig(key, value)}
           />
         </Tabs.TabPanel>
-        {this.renderEventsTab()}
+        <Tabs.TabPanel id="events">
+          <h4>Event Configuration</h4>
+          <EventConfigurator
+            events={this.state.events}
+            currentEventId={this.eventId}
+            currentEventConfig={this.state.eventConfig}
+            onEventChange={this.changeEvent.bind(this)}
+            onResetEvent={this.resetEventStats.bind(this)}
+            onDeleteEvent={this.deleteEvent.bind(this)}
+            onCreateEvent={this.createEvent.bind(this)}
+            onUpdateEventConfig={this.updateEventConfig.bind(this)}
+          />
+        </Tabs.TabPanel>
         <Tabs.TabPanel id="messages">
           <Messenger />
         </Tabs.TabPanel>
@@ -101,41 +90,7 @@ export default class Orders extends Component {
     );
   }
 
-  renderEventsTab() {
-    const eventOptions = this.state.events.map(x => (
-      <option selected={x === this.eventId}>{x}</option>
-    ));
-    const selectEventOptions = (
-      <select
-        class="mdc-select"
-        value={this.eventId}
-        onChange={this.changeEvent.bind(this)}
-      >
-        {eventOptions}
-      </select>
-    );
-    const eventActionButtons = (
-      <div>
-        <Button raised accent onClick={this.resetEventStats.bind(this)}>
-          Reset Stats
-        </Button>
-        <Button accent onClick={this.deleteEvent.bind(this)}>
-          Delete Event
-        </Button>
-      </div>
-    );
-    return (
-      <Tabs.TabPanel id="events">
-        <CreateEventForm onNewEvent={this.createEvent.bind(this)} />
-        {this.state.events.length > 0 && selectEventOptions}
-        <Configurator
-          config={this.state.eventConfig}
-          update={(key, value) => this.updateEventConfig(key, value)}
-        />
-        {this.eventId && eventActionButtons}
-      </Tabs.TabPanel>
-    );
-  }
+  renderEventsTab() {}
 
   updateConfig(key, value) {
     this.configService.updateValue(key, value);
@@ -145,8 +100,8 @@ export default class Orders extends Component {
     this.configService.updateValue(key, value, 'event');
   }
 
-  changeEvent(evt) {
-    this.eventId = event.target.value;
+  changeEvent(eventId) {
+    this.eventId = eventId;
     this.configService.changeEvent(this.eventId);
   }
 
