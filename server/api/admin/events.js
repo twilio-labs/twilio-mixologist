@@ -1,5 +1,9 @@
 const { safe } = require('../../utils/async-requests');
-const { createEventConfig, deleteEventConfig } = require('../../data/config');
+const {
+  createEventConfig,
+  deleteEventConfig,
+  config,
+} = require('../../data/config');
 const {
   listAllEvents,
   createAllOrdersList,
@@ -31,9 +35,16 @@ async function handleDeleteEventRequest(req, res, next) {
 }
 
 async function handleGetEventsRequest(req, res, next) {
-  const events = (await listAllEvents()).map(id =>
-    id.substr(SYNC_NAMES.EVENT_CONFIG.length)
-  );
+  const eventList = await listAllEvents();
+
+  let events = eventList.map(id => id.substr(SYNC_NAMES.EVENT_CONFIG.length));
+
+  if (req.query.type === 'full') {
+    events = events.map(eventId => {
+      const { eventName } = config(eventId);
+      return { eventId, eventName };
+    });
+  }
   res.send({ events });
 }
 
