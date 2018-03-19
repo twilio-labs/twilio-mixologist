@@ -7,7 +7,7 @@ function getBaseHostUrl(req) {
     return null;
   }
 
-  let protocol = isHttps(req) ? 'https' : 'http';
+  const protocol = isHttps(req) ? 'https' : 'http';
   return `${protocol}://${req.get('host')}`;
 }
 
@@ -23,5 +23,5 @@ function forceSsl(req, res, next) {
 module.exports = {
   forceSsl,
   isHttps,
-  getBaseHostUrl
+  getBaseHostUrl,
 };

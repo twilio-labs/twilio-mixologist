@@ -13,4 +13,4 @@ function handler(req, res, next) {
     });
 }
 
-module.exports = { handler: handler };
+module.exports = { handler };

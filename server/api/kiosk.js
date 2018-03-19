@@ -14,13 +14,13 @@ async function handler(req, res, next) {
           const sanitizedNumber = number.replace(/[^(\d|\w)]/g, '');
           const {
             countryCode,
-            phoneNumber
+            phoneNumber,
           } = await restClient.lookups.phoneNumbers(sanitizedNumber).fetch();
           const { emoji } = emojiFlags.countryCode(countryCode);
           return {
             countryCode,
             phoneNumber: number,
-            emoji
+            emoji,
           };
         } catch (err) {
           return undefined;
@@ -28,7 +28,7 @@ async function handler(req, res, next) {
       })
     )).filter(x => !!x);
     res.send({
-      phoneNumbers
+      phoneNumbers,
     });
   } catch (err) {
     req.log.error(err);
@@ -37,5 +37,5 @@ async function handler(req, res, next) {
 }
 
 module.exports = {
-  handler: handler
+  handler,
 };

@@ -14,7 +14,7 @@ function determineCoffeeFromMessage(messageBody, forEvent) {
   const possibleOptions = config(forEvent).spellingMap;
   const availableOptions = config(forEvent).availableCoffees;
   const message = messageBody.trim().toLowerCase();
-  for (let option of Object.keys(possibleOptions).sort(sortByLengthDesc)) {
+  for (const option of Object.keys(possibleOptions).sort(sortByLengthDesc)) {
     if (
       message.indexOf(option) !== -1 &&
       availableOptions[possibleOptions[option]]
@@ -26,5 +26,5 @@ function determineCoffeeFromMessage(messageBody, forEvent) {
 }
 
 module.exports = {
-  determineCoffeeFromMessage
+  determineCoffeeFromMessage,
 };

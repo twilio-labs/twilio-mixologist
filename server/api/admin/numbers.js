@@ -1,7 +1,7 @@
 const {
   restClient,
   messagingClient,
-  loadConnectedPhoneNumbers
+  loadConnectedPhoneNumbers,
 } = require('../twilio');
 const { updateGlobalConfigEntry } = require('../../data/config');
 
@@ -14,7 +14,7 @@ async function handleNumberAcquisition(req, res, next) {
 
   try {
     const numbers = await restClient.availablePhoneNumbers(code).local.list({
-      smsEnabled: 'true'
+      smsEnabled: 'true',
     });
     if (numbers.length === 0) {
       res.send({});
@@ -23,10 +23,10 @@ async function handleNumberAcquisition(req, res, next) {
 
     const { phoneNumber } = numbers[0];
     const { sid } = await restClient.incomingPhoneNumbers.create({
-      phoneNumber
+      phoneNumber,
     });
     const resp = await messagingClient.phoneNumbers.create({
-      phoneNumberSid: sid
+      phoneNumberSid: sid,
     });
     const connectedPhoneNumbers = await loadConnectedPhoneNumbers();
     await updateGlobalConfigEntry(
@@ -43,9 +43,10 @@ async function handleNumberAcquisition(req, res, next) {
 async function getAllAvailableCountries(req, res, next) {
   try {
     const countriesList = await restClient.pricing.messaging.countries.list();
-    const countries = countriesList.map(({ country, isoCountry }) => {
-      return { country, code: isoCountry };
-    });
+    const countries = countriesList.map(({ country, isoCountry }) => ({
+      country,
+      code: isoCountry,
+    }));
 
     res.send({ countries });
   } catch (err) {
@@ -56,5 +57,5 @@ async function getAllAvailableCountries(req, res, next) {
 
 module.exports = {
   get: getAllAvailableCountries,
-  post: handleNumberAcquisition
+  post: handleNumberAcquisition,
 };

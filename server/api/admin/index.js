@@ -15,10 +15,12 @@ router.post(
   parseJsonBody,
   require('./notification').handler
 );
+
 router.post('/numbers', gateForAdmin, parseJsonBody, numbers.post);
 router.post('/events', gateForAdmin, parseJsonBody, events.create);
 router.post('/reset', gateForAdmin, require('./reset').handler);
 router.post('/setup', gateForAdmin, require('./setup').handler);
+
 router.delete('/events/:eventId', gateForAdmin, events.delete);
 
 module.exports = router;
