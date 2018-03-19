@@ -22,11 +22,7 @@ export default class Configurator extends Component {
           return this.createTextInput(configName, value);
         }
       });
-    return (
-      <div class={style.configList}>
-        {entries}
-      </div>
-    );
+    return <div class={style.configList}>{entries}</div>;
   }
 
   createTextInput(key, value) {
@@ -76,23 +72,28 @@ export default class Configurator extends Component {
 
   createJsonInput(key, value) {
     const keys = Object.keys(value);
+    const type = typeof value[keys[0]];
     const entries = keys.map((objectKey, idx) => {
       const objectValue = value[objectKey];
       let input =
-        typeof objectValue === 'boolean'
-          ? <Switch
-              class={style.jsonSwitch}
-              checked={objectValue}
-              onChange={evt =>
-                this.handleJsonValueChange(key, value, objectKey, evt)}
-            />
-          : <TextField
-              class={style.jsonInput}
-              placeholder="value"
-              value={objectValue}
-              onChange={evt =>
-                this.handleJsonValueChange(key, value, objectKey, evt)}
-            />;
+        typeof objectValue === 'boolean' ? (
+          <Switch
+            class={style.jsonSwitch}
+            checked={objectValue}
+            onChange={evt =>
+              this.handleJsonValueChange(key, value, objectKey, evt)
+            }
+          />
+        ) : (
+          <TextField
+            class={style.jsonInput}
+            placeholder="value"
+            value={objectValue}
+            onChange={evt =>
+              this.handleJsonValueChange(key, value, objectKey, evt)
+            }
+          />
+        );
       return (
         <div class={style.jsonEntry}>
           <Button
@@ -116,27 +117,27 @@ export default class Configurator extends Component {
     });
     return (
       <div class={style.configEntry}>
-        <h6 class={style.jsonHeadline}>
-          {key}
-        </h6>
-        <div class={style.jsonList}>
-          {entries}
-        </div>
+        <h6 class={style.jsonHeadline}>{key}</h6>
+        <div class={style.jsonList}>{entries}</div>
         <div class={style.createNewJsonEntryButtons}>
-          <Button
-            primary
-            colored
-            onClick={() => this.createNewJsonEntry(key, value)}
-          >
-            Create Text Entry
-          </Button>
-          <Button
-            primary
-            colored
-            onClick={() => this.createNewJsonEntry(key, value, false)}
-          >
-            Create Boolean Entry
-          </Button>
+          {type !== 'boolean' && (
+            <Button
+              primary
+              colored
+              onClick={() => this.createNewJsonEntry(key, value)}
+            >
+              Create Text Entry
+            </Button>
+          )}
+          {type === 'boolean' && (
+            <Button
+              primary
+              colored
+              onClick={() => this.createNewJsonEntry(key, value, false)}
+            >
+              Create Boolean Entry
+            </Button>
+          )}
         </div>
       </div>
     );
@@ -152,7 +153,10 @@ export default class Configurator extends Component {
 
   handleArrayInputChange(evt) {
     let { value, name } = evt.target;
-    value = value.split(',').map(s => s.trim()).filter(s => s.length > 0);
+    value = value
+      .split(',')
+      .map(s => s.trim())
+      .filter(s => s.length > 0);
 
     this.props.update(name, value);
   }
