@@ -4,16 +4,16 @@ import style from './style';
 
 export default class Header extends Component {
   render() {
-    const adminLink =
-      this.props.isAdmin &&
+    const adminLink = this.props.isAdmin && (
       <Link activeClassName={style.active} href="/admin">
         Admin
-      </Link>;
-    const ordersLink =
-      this.props.isLoggedIn &&
-      <Link activeClassName={style.active} href="/orders">
-        Orders
-      </Link>;
+      </Link>
+    );
+    // const ordersLink =
+    //   this.props.isLoggedIn &&
+    //   <Link activeClassName={style.active} href="/orders">
+    //     Orders
+    //   </Link>;
     return (
       <header class={style.header}>
         <h1>Twilio Barista</h1>
@@ -21,7 +21,7 @@ export default class Header extends Component {
           <Link activeClassName={style.active} href="/">
             Home
           </Link>
-          {ordersLink}
+          {/* {ordersLink} */}
           {adminLink}
         </nav>
       </header>

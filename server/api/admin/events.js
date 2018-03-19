@@ -1,12 +1,21 @@
 const { safe } = require('../../utils/async-requests');
 const { createEventConfig, deleteEventConfig } = require('../../data/config');
-const { listAllEvents } = require('../twilio');
+const {
+  listAllEvents,
+  createAllOrdersList,
+  createOrderQueue,
+  orderQueueList,
+  allOrdersList,
+} = require('../twilio');
 const { SYNC_NAMES } = require('../../../shared/consts');
 
 async function handleCreateEventRequest(req, res, next) {
   const { eventName } = req.body;
   const data = await createEventConfig(eventName);
-  res.send({ eventId: data.slug });
+  const eventId = data.slug;
+  await createOrderQueue(eventId);
+  await createAllOrdersList(eventId);
+  res.send({ eventId });
 }
 
 async function handleDeleteEventRequest(req, res, next) {
@@ -16,6 +25,8 @@ async function handleDeleteEventRequest(req, res, next) {
     return;
   }
   await deleteEventConfig(eventId);
+  await allOrdersList(eventId).remove();
+  await orderQueueList(eventId).remove();
   res.send({ message: 'Event deleted' });
 }
 
@@ -29,5 +40,5 @@ async function handleGetEventsRequest(req, res, next) {
 module.exports = {
   get: safe(handleGetEventsRequest),
   create: safe(handleCreateEventRequest),
-  delete: safe(handleDeleteEventRequest)
+  delete: safe(handleDeleteEventRequest),
 };

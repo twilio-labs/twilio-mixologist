@@ -14,6 +14,7 @@ export default class OrderService /* extends EventEmitter */ {
   constructor() {
     this.orders = undefined;
     this.ordersList = undefined;
+    this.eventId = undefined;
   }
 
   getOrders() {
@@ -23,11 +24,12 @@ export default class OrderService /* extends EventEmitter */ {
     return this.fetchOrders();
   }
 
-  init() {
+  init(eventId) {
+    this.eventId = eventId;
     return TwilioClient.shared()
       .init()
       .then(client => {
-        return client.list(SYNC_NAMES.ORDER_QUEUE);
+        return client.list(SYNC_NAMES.ORDER_QUEUE + this.eventId);
       })
       .then(list => {
         this.ordersList = list;

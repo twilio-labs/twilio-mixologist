@@ -1,7 +1,7 @@
 import * as EventEmitter from 'event-emitter';
 import TwilioClient from './sync-client';
 import { SYNC_NAMES } from '../../shared/consts';
-import * as uniqBy from 'lodash.uniqby';
+import uniqBy from 'lodash.uniqby';
 
 let instance;
 
@@ -14,6 +14,7 @@ export default class StatsService /* extends EventEmitter */ {
   constructor() {
     this.stats = undefined;
     this.allOrdersList = undefined;
+    this.eventId = undefined;
   }
 
   getStats() {
@@ -23,14 +24,16 @@ export default class StatsService /* extends EventEmitter */ {
     return this.fetchStats();
   }
 
-  init() {
+  init(eventId) {
+    this.eventId = eventId;
     const twilioClient = TwilioClient.shared();
     const disconnectHandler = () => this.reconnect();
     twilioClient.once('disconnected', disconnectHandler);
 
-    return twilioClient.init()
+    return twilioClient
+      .init()
       .then(client => {
-        return client.list(SYNC_NAMES.ALL_ORDERS);
+        return client.list(SYNC_NAMES.ALL_ORDERS + this.eventId);
       })
       .then(list => {
         this.allOrdersList = list;
@@ -40,7 +43,7 @@ export default class StatsService /* extends EventEmitter */ {
   }
 
   reconnect() {
-    console.log('trying to reconnect...')
+    console.log('trying to reconnect...');
     this.init();
   }
 
@@ -64,7 +67,7 @@ export default class StatsService /* extends EventEmitter */ {
   }
 
   fetchStats() {
-    return fetch('/api/stats')
+    return fetch(`/api/stats?eventId=${this.eventId}`)
       .then(resp => {
         if (!resp.ok) {
           throw new Error(resp.body);

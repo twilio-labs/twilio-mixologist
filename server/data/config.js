@@ -4,11 +4,11 @@ const {
   createConfigurationDoc,
   fetchEventConfigurations,
   getEventConfigDoc,
-  createEventConfiguration
+  createEventConfiguration,
 } = require('../api/twilio');
 const {
   DEFAULT_JSON_ENTRY_KEY,
-  DEFAULT_CONFIGURATION
+  DEFAULT_CONFIGURATION,
 } = require('../../shared/consts');
 
 let internalGlobalConfig = {};
@@ -49,7 +49,7 @@ function config(event) {
   }
 
   return Object.assign({}, internalGlobalConfig, {
-    events: allEventsAsObject()
+    events: allEventsAsObject(),
   });
 }
 
@@ -60,7 +60,7 @@ function configForEvent(event) {
 }
 
 function setGlobalConfig(conf) {
-  for (let key of Object.keys(conf)) {
+  for (const key of Object.keys(conf)) {
     const val = conf[key];
     if (typeof val === 'object' && !Array.isArray(val)) {
       delete val[''];
@@ -77,7 +77,7 @@ function setEventConfig(data) {
 
 function allEventsAsObject() {
   const data = {};
-  for (let [slug, conf] of eventConfigMap.entries()) {
+  for (const [slug, conf] of eventConfigMap.entries()) {
     data[slug] = conf;
   }
   return data;
@@ -91,7 +91,7 @@ async function deleteEventConfig(event) {
 
 async function createEventConfig(eventName) {
   const customData = {
-    visibleNumbers: internalGlobalConfig.connectedPhoneNumbers
+    visibleNumbers: internalGlobalConfig.connectedPhoneNumbers,
   };
   const { data } = await createEventConfiguration(eventName, customData);
   setEventConfig(data);
@@ -107,5 +107,5 @@ module.exports = {
   loadConfig,
   updateGlobalConfigEntry,
   createEventConfig,
-  deleteEventConfig
+  deleteEventConfig,
 };

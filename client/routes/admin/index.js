@@ -55,7 +55,11 @@ export default class Orders extends Component {
       const { config, eventConfig } = await this.configService.init(
         this.eventId
       );
-      this.setState({ events, config, eventConfig });
+      this.setState({
+        events,
+        config,
+        eventConfig,
+      });
     } catch (err) {
       console.log('Failed to initialize Admin');
       console.error(err);
@@ -110,18 +114,25 @@ export default class Orders extends Component {
         {eventOptions}
       </select>
     );
+    const eventActionButtons = (
+      <div>
+        <Button raised accent onClick={this.resetEventStats.bind(this)}>
+          Reset Stats
+        </Button>
+        <Button accent onClick={this.deleteEvent.bind(this)}>
+          Delete Event
+        </Button>
+      </div>
+    );
     return (
       <Tabs.TabPanel id="events">
-        {this.state.events.length > 0 && selectEventOptions}
         <CreateEventForm onNewEvent={this.createEvent.bind(this)} />
+        {this.state.events.length > 0 && selectEventOptions}
         <Configurator
           config={this.state.eventConfig}
           update={(key, value) => this.updateEventConfig(key, value)}
         />
-
-        <Button raised primary onClick={this.deleteEvent.bind(this)}>
-          Delete Event
-        </Button>
+        {this.eventId && eventActionButtons}
       </Tabs.TabPanel>
     );
   }
@@ -144,7 +155,7 @@ export default class Orders extends Component {
     try {
       const resp = await fetch(`/api/admin/events/${eventId}`, {
         method: 'DELETE',
-        credentials: 'include'
+        credentials: 'include',
       });
 
       if (!resp.ok) {
@@ -164,6 +175,23 @@ export default class Orders extends Component {
     }
   }
 
+  async resetEventStats() {
+    const eventId = this.eventId;
+    try {
+      const resp = await fetch('/api/admin/reset?action=stats', {
+        method: 'POST',
+        credentials: 'include',
+      });
+      if (resp.ok) {
+        console.log('Reset stats');
+      } else {
+        throw new Error(resp.statusText);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   async createEvent(eventName) {
     try {
       const resp = await fetch('/api/admin/events', {
@@ -171,8 +199,8 @@ export default class Orders extends Component {
         credentials: 'include',
         body: JSON.stringify({ eventName }),
         headers: {
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       });
 
       if (!resp.ok) {

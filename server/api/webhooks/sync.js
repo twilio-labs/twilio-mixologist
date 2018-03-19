@@ -4,12 +4,12 @@ const {
   orderQueueList,
   restClient,
   sendMessage,
-  deregisterOpenOrder
+  deregisterOpenOrder,
 } = require('../twilio');
 
 const {
   getOrderCancelledMessage,
-  getOrderReadyMessage
+  getOrderReadyMessage,
 } = require('../../utils/messages');
 
 const { setGlobalConfig, setEventConfig } = require('../../data/config');
@@ -28,7 +28,7 @@ async function handler(req, res, next) {
         updateEventConfiguration(req.body);
       }
     } else {
-      if (req.body.ListUniqueName !== SYNC_NAMES.ORDER_QUEUE) {
+      if (!req.body.ListUniqueName.startsWith(SYNC_NAMES.ORDER_QUEUE)) {
         return;
       }
 
@@ -41,6 +41,10 @@ async function handler(req, res, next) {
 
 async function handleOrderStatusChange(requestBody) {
   const itemData = JSON.parse(requestBody.ItemData);
+  const eventId = requestBody.ListUniqueName.replace(
+    SYNC_NAMES.ORDER_QUEUE,
+    ''
+  );
   const itemIndex = +requestBody.ItemIndex;
   if (itemData.status === 'open') {
     return;
@@ -50,7 +54,7 @@ async function handleOrderStatusChange(requestBody) {
   const indexOfOrder = customer.data.openOrders.indexOf(itemIndex);
   customer.data.openOrders.splice(indexOfOrder, 1);
   await customersMap.syncMapItems(customer.key).update({
-    data: customer.data
+    data: customer.data,
   });
 
   let responseMessage;
@@ -61,9 +65,10 @@ async function handleOrderStatusChange(requestBody) {
   }
   await sendMessage(customer.key, responseMessage);
 
-  await orderQueueList.syncListItems(itemIndex).remove();
+  await orderQueueList(eventId)
+    .syncListItems(itemIndex)
+    .remove();
   await deregisterOpenOrder(itemData.customer);
-  return;
 }
 
 function validEventType(eventType) {

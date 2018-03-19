@@ -11,7 +11,8 @@ const {
   getNoOpenOrderMessage,
   getQueuePositionMessage,
   getCancelOrderMessage,
-  getSystemOfflineMessage
+  getSystemOfflineMessage,
+  getPostRegistrationMessage,
 } = require('../../utils/messages');
 const {
   restClient,
@@ -20,7 +21,7 @@ const {
   allOrdersList,
   sendMessage,
   registerAddress,
-  registerOpenOrder
+  registerOpenOrder,
 } = require('../twilio');
 const { INTENTS, CUSTOMER_STATES, COOKIES } = require('../../../shared/consts');
 
@@ -42,7 +43,7 @@ async function handleIncomingMessages(req, res, next) {
     customerEntry.data.eventExpiryDate < Date.now()
   ) {
     if (req.cookies[COOKIES.CUSTOMER_STATE] !== CUSTOMER_STATES.SET) {
-      const { events } = config().events;
+      const { events } = config();
       const choices = Object.values(events)
         .filter(x => x.isOn)
         .map(x => x.eventName)
@@ -54,26 +55,33 @@ async function handleIncomingMessages(req, res, next) {
       res.cookie(COOKIES.EVENT_MAPPING, choiceToEventId.join(','));
       res.type('text/plain').send(message);
       return;
-    } else {
-      res.type('text/plain');
-      const eventChoices = req.cookies[COOKIES.CUSTOMER_STATE].split(',');
-      const choice = parseInt(req.body.Body.trim(), 10);
-      if (isNaN(choice)) {
-        res.send('Please send only the number of the respective event.');
-        return;
-      }
-      const chosenEventId = eventChoices[choice];
-      if (!chosenEventId) {
-        res.send(
-          'You chose an invalid number for the event. Please try again.'
-        );
-        return;
-      }
-      customerEntry = await setEventForCustomer(chosenEventId);
     }
+    res.type('text/plain');
+    const eventChoices = req.cookies[COOKIES.EVENT_MAPPING].split(',');
+    const choice = parseInt(req.body.Body.trim(), 10);
+    if (isNaN(choice)) {
+      res.send('Please send only the number of the respective event.');
+      return;
+    }
+    console.log(eventChoices, typeof choice, choice);
+    const chosenEventId = eventChoices[choice - 1];
+    if (!chosenEventId) {
+      res.send('You chose an invalid number for the event. Please try again.');
+      return;
+    }
+    customerEntry = await setEventForCustomer(customerEntry, chosenEventId);
+    res.clearCookie(COOKIES.CUSTOMER_STATE);
+    res.clearCookie(COOKIES.EVENT_MAPPING);
+    const availableOptionsMap = config(eventId).availableCoffees;
+    const availableOptions = Object.keys(availableOptionsMap).filter(
+      key => availableOptionsMap[key]
+    );
+    res.send(getPostRegistrationMessage(availableOptions));
+    return;
   }
 
   const { eventId } = customerEntry.data;
+  customer.eventId = eventId;
 
   if (!config(eventId).isOn) {
     res.type('text/plain').send(getSystemOfflineMessage(eventId));
@@ -122,7 +130,9 @@ async function handleIncomingMessages(req, res, next) {
   const openOrders = customerEntry.data.openOrders;
   if (Array.isArray(openOrders) && openOrders.length > 0) {
     try {
-      const order = await orderQueueList.syncListItems(openOrders[0]).fetch();
+      const order = await orderQueueList(eventId)
+        .syncListItems(openOrders[0])
+        .fetch();
       const responseMessage = getExistingOrderMessage(
         order.data.product,
         order.index
@@ -136,22 +146,22 @@ async function handleIncomingMessages(req, res, next) {
   }
 
   try {
-    const orderEntry = await orderQueueList.syncListItems.create(
+    const orderEntry = await orderQueueList(eventId).syncListItems.create(
       createOrderItem(customer, coffeeOrder, req.body.Body)
     );
 
     customerEntry.data.openOrders.push(orderEntry.index);
     await customersMap.syncMapItems(customerEntry.key).update({
-      data: customerEntry.data
+      data: customerEntry.data,
     });
 
-    await allOrdersList.syncListItems.create({
+    await allOrdersList(eventId).syncListItems.create({
       data: {
         product: coffeeOrder,
         message: req.body.Body,
         source: customer.source,
-        countryCode: customer.countryCode
-      }
+        countryCode: customer.countryCode,
+      },
     });
 
     await registerOpenOrder(customer.identity);
@@ -175,7 +185,7 @@ function getCustomerInformation({ From, Body, To, FromCountry }) {
     countryCode: FromCountry,
     contact: To,
     source,
-    eventId: null
+    eventId: null,
   };
 }
 
@@ -186,8 +196,8 @@ function createOrderItem(customer, coffeeOrder, originalMessage) {
       message: originalMessage,
       source: customer.source,
       status: 'open',
-      customer: customer.identity
-    }
+      customer: customer.identity,
+    },
   };
 }
 
@@ -198,7 +208,7 @@ async function findOrCreateCustomer(customer) {
   } catch (err) {
     customerEntry = await customersMap.syncMapItems.create({
       key: customer.identity,
-      data: customer
+      data: customer,
     });
   }
   return customerEntry;
@@ -210,7 +220,7 @@ async function setEventForCustomer(customerEntry, eventId) {
     .valueOf();
   const data = Object.assign({}, customerEntry.data, {
     eventId,
-    eventExpiryDate
+    eventExpiryDate,
   });
   return customerEntry.update({ data });
 }
@@ -223,32 +233,32 @@ function determineIntent(message, forEvent) {
   const msgNormalized = message.toLowerCase().trim();
   if (msgNormalized.indexOf('help') !== -1) {
     return {
-      intent: INTENTS.HELP
+      intent: INTENTS.HELP,
     };
   }
 
   if (msgNormalized.indexOf('queue') !== -1) {
     return {
-      intent: INTENTS.QUEUE
+      intent: INTENTS.QUEUE,
     };
   }
 
   if (msgNormalized.indexOf('cancel') !== -1) {
     return {
-      intent: INTENTS.CANCEL
+      intent: INTENTS.CANCEL,
     };
   }
 
   const coffeeOrder = determineCoffeeFromMessage(message, forEvent);
   if (!coffeeOrder) {
     return {
-      intent: INTENTS.INVALID
+      intent: INTENTS.INVALID,
     };
   }
 
   return {
     intent: INTENTS.ORDER,
-    value: coffeeOrder
+    value: coffeeOrder,
   };
 }
 
@@ -264,8 +274,8 @@ async function getQueuePosition(customer) {
   if (!orderNumber) {
     return NaN;
   }
-  const items = await orderQueueList.syncListItems.list({
-    pageSize: 100
+  const items = await orderQueueList(customer.eventId).syncListItems.list({
+    pageSize: 100,
   });
   const queuePosition = items.findIndex(item => item.index === orderNumber);
   return queuePosition >= 0 ? queuePosition : NaN;
@@ -283,14 +293,16 @@ async function cancelOrder(customer) {
   if (!orderNumber) {
     return false;
   }
-  await orderQueueList.syncListItems(orderNumber).remove();
+  await orderQueueList(customer.eventId)
+    .syncListItems(orderNumber)
+    .remove();
   customerEntry.data.openOrders = [];
   await customersMap.syncMapItems(key).update({
-    data: customerEntry.data
+    data: customerEntry.data,
   });
   return true;
 }
 
 module.exports = {
-  handler: handleIncomingMessages
+  handler: handleIncomingMessages,
 };

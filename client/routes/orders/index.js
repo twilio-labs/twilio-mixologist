@@ -10,13 +10,14 @@ export default class Orders extends Component {
     this.orderService = OrderService.shared();
     this.orderService.on('updated', ({ orders }) => {
       this.setState({
-        orders
+        orders,
       });
     });
   }
 
   componentDidMount() {
-    this.orderService.init().then(orders => {
+    const { eventId } = this.props;
+    this.orderService.init(eventId).then(orders => {
       this.setState({ orders });
     });
   }

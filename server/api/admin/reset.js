@@ -12,13 +12,14 @@ const {
   allOrdersList,
   resetMap,
   resetNotify,
-  loadConnectedPhoneNumbers
+  loadConnectedPhoneNumbers,
+  resetAllLists,
 } = require('../twilio');
 const { updateGlobalConfigEntry } = require('../../data/config');
 
-async function cancelOpenOrders() {
-  const openOrders = await orderQueueList.syncListItems.list({
-    pageSize: 1000
+async function cancelOpenOrders(eventId) {
+  const openOrders = await orderQueueList(eventId).syncListItems.list({
+    pageSize: 1000,
   });
   const closeAllOpenOrders = openOrders.map(async order => {
     const customerId = order.data.customer;
@@ -35,13 +36,13 @@ async function cancelOpenOrders() {
     return customersMap.syncMapItems(customerId).update({ data });
   });
   await Promise.all(closeAllOpenOrders);
-  await resetList(SYNC_NAMES.ORDER_QUEUE);
+  await resetList(SYNC_NAMES.ORDER_QUEUE + eventId);
   return setPermissions();
 }
 
 async function resetApplication() {
-  await resetList(SYNC_NAMES.ORDER_QUEUE);
-  await resetList(SYNC_NAMES.ALL_ORDERS);
+  await resetAllLists(SYNC_NAMES.ORDER_QUEUE);
+  await resetAllLists(SYNC_NAMES.ALL_ORDERS);
   await configurationDoc.update({ data: DEFAULT_CONFIGURATION });
   const connectedPhoneNumbers = await loadConnectedPhoneNumbers();
   await updateGlobalConfigEntry('connectedPhoneNumbers', connectedPhoneNumbers);
@@ -51,16 +52,15 @@ async function resetApplication() {
   return Promise.resolve();
 }
 
-async function resetStats() {
-  await resetList(SYNC_NAMES.ALL_ORDERS);
-  return setPermissions();
+async function resetStats(eventId) {
+  return resetList(SYNC_NAMES.ALL_ORDERS + eventId);
 }
 
 async function handleResetRequest(req, res, next) {
-  const { action } = req.query;
+  const { action, eventId } = req.query;
   if (action === 'openOrders') {
     try {
-      await cancelOpenOrders();
+      await cancelOpenOrders(eventId);
       res.send();
     } catch (err) {
       req.log.error(err);
@@ -68,7 +68,7 @@ async function handleResetRequest(req, res, next) {
     }
   } else if (action === 'stats') {
     try {
-      await resetStats();
+      await resetStats(eventId);
       res.send();
     } catch (err) {
       req.log.error(err);

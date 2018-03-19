@@ -7,7 +7,7 @@ import {
   Card,
   Chip,
   Progress,
-  CheckBox
+  CheckBox,
 } from 'preact-mdl';
 
 import style from './style';
@@ -23,7 +23,7 @@ export default class Other extends Component {
   cancelAllOpens() {
     fetch('/api/admin/reset?action=openOrders', {
       method: 'POST',
-      credentials: 'include'
+      credentials: 'include',
     })
       .then(resp => {
         if (resp.ok) {
@@ -37,27 +37,10 @@ export default class Other extends Component {
       });
   }
 
-  resetStats() {
-    fetch('/api/admin/reset?action=stats', {
-      method: 'POST',
-      credentials: 'include'
-    })
-      .then(resp => {
-        if (resp.ok) {
-          console.log('Reset stats');
-        } else {
-          throw new Error(resp.statusText);
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  }
-
   resetApplication() {
     fetch('/api/admin/reset?action=resetApplication', {
       method: 'POST',
-      credentials: 'include'
+      credentials: 'include',
     })
       .then(resp => {
         if (resp.ok) {
@@ -82,7 +65,7 @@ export default class Other extends Component {
       })
       .then(({ countries }) => {
         this.setState({
-          availableCountries: countries
+          availableCountries: countries,
         });
       })
       .catch(err => {
@@ -92,7 +75,7 @@ export default class Other extends Component {
 
   choseCountry(countryCode) {
     this.setState({
-      selectedCountry: countryCode
+      selectedCountry: countryCode,
     });
   }
 
@@ -101,16 +84,16 @@ export default class Other extends Component {
     fetch('/api/admin/numbers', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       credentials: 'include',
-      body: JSON.stringify({ code })
+      body: JSON.stringify({ code }),
     })
       .then(resp => {
         if (resp.ok) {
           console.log('Phone number configured');
           this.setState({
-            selectedCountry: undefined
+            selectedCountry: undefined,
           });
         } else {
           throw new Error(resp.statusText);
@@ -124,11 +107,11 @@ export default class Other extends Component {
   activateResetApplication(evt) {
     if (evt.target.checked) {
       this.setState({
-        resetApplicationActivated: true
+        resetApplicationActivated: true,
       });
     } else {
       this.setState({
-        resetApplicationActivated: false
+        resetApplicationActivated: false,
       });
     }
   }
@@ -136,7 +119,7 @@ export default class Other extends Component {
   setupApplication() {
     fetch('/api/admin/setup', {
       method: 'POST',
-      credentials: 'include'
+      credentials: 'include',
     })
       .then(resp => {
         if (resp.ok) {
@@ -177,10 +160,16 @@ export default class Other extends Component {
           <ActionCard
             title="Reset Dashboard Stats"
             buttonText="Reset Stats"
-            action={() => this.resetStats()}
+            disabled={true}
           >
-            This will reset the statistics on the dashboard but maintains open
-            orders and the customer database
+            <p>
+              <strong>Important:</strong>Moved to the events section below the
+              configuration
+            </p>
+            <p>
+              This will reset the statistics on the dashboard but maintains open
+              orders and the customer database
+            </p>
           </ActionCard>
           <ActionCard
             title="Acquire New Phone Number"
