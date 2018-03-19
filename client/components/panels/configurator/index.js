@@ -190,7 +190,7 @@ export default class Configurator extends Component {
 
   sortConfig(config, configNameA, configNameB) {
     const valueA = config[configNameA];
-    const valueB = config[configNameA];
+    const valueB = config[configNameB];
     const typeA = typeof valueA;
     const typeB = typeof valueB;
     if (typeA === typeB) {
@@ -204,6 +204,14 @@ export default class Configurator extends Component {
     } else if (typeA === 'boolean') {
       return -1;
     } else if (typeB === 'boolean') {
+      return 1;
+    } else if (typeA === 'string') {
+      return -1;
+    } else if (typeB === 'string') {
+      return 1;
+    } else if (typeA === 'number') {
+      return -1;
+    } else if (typeB === 'number') {
       return 1;
     } else if (typeA === 'object' && !Array.isArray(valueA)) {
       return -1;
