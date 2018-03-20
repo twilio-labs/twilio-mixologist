@@ -29,6 +29,7 @@ const INTENTS = {
 const COOKIES = {
   CUSTOMER_STATE: 'CustomerState',
   EVENT_MAPPING: 'EventMapping',
+  ORIGINAL_MESSAGE: 'PreviousMessage',
 };
 
 const CUSTOMER_STATES = {
@@ -94,6 +95,8 @@ const DEFAULT_CONFIGURATION = {
 
 const DEFAULT_EVENT_CONFIGURATION = {
   isOn: true,
+  isVisible: false,
+  mode: 'barista',
   offlineMessage: 'We are sorry but there is currently no coffee.',
   availableCoffees: createBooleanMapOfArray(AVAILABLE_DEFAULT_OPTIONS),
   repoUrl: 'bit.ly/twilio-barista',
