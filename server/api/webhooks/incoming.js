@@ -47,10 +47,14 @@ async function handleIncomingMessages(req, res, next) {
     if (req.cookies[COOKIES.CUSTOMER_STATE] !== CUSTOMER_STATES.SET) {
       const { events } = config();
       const choices = Object.values(events)
-        .filter(x => x.isOn)
+        .filter(x => {
+          return x.isVisible;
+        })
         .map(x => x.eventName)
         .map((name, idx) => `${idx + 1}: ${name}`);
-      const choiceToEventId = Object.keys(events).filter(x => events[x].isOn);
+      const choiceToEventId = Object.keys(events).filter(
+        x => events[x].isVisible
+      );
       if (choiceToEventId.length === 0) {
         res.type('text/plain').send(getNoActiveEventsMessage());
         return;
@@ -58,6 +62,7 @@ async function handleIncomingMessages(req, res, next) {
         const message = getEventRegistrationMessage(choices);
         res.cookie(COOKIES.CUSTOMER_STATE, CUSTOMER_STATES.SET);
         res.cookie(COOKIES.EVENT_MAPPING, choiceToEventId.join(','));
+        res.cookie(COOKIES.ORIGINAL_MESSAGE, req.body.Body);
         res.type('text/plain').send(message);
         return;
       }
@@ -83,14 +88,10 @@ async function handleIncomingMessages(req, res, next) {
         return;
       }
       customerEntry = await setEventForCustomer(customerEntry, chosenEventId);
+      req.body.Body = req.cookies[COOKIES.ORIGINAL_MESSAGE];
       res.clearCookie(COOKIES.CUSTOMER_STATE);
       res.clearCookie(COOKIES.EVENT_MAPPING);
-      const availableOptionsMap = config(chosenEventId).availableCoffees;
-      const availableOptions = Object.keys(availableOptionsMap).filter(
-        key => availableOptionsMap[key]
-      );
-      res.send(getPostRegistrationMessage(availableOptions));
-      return;
+      res.clearCookie(COOKIES.ORIGINAL_MESSAGE);
     }
   }
 
