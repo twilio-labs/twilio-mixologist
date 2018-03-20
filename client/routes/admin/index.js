@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 import mdl from 'material-design-lite/material';
-import { Tabs, Button, TextField } from 'preact-mdl';
+import { Tabs, Button, TextField, Progress } from 'preact-mdl';
 import Configurator from '../../components/panels/configurator';
 import EventConfigurator from '../../components/panels/event-configurator';
 import Messenger from '../../components/panels/messenger';
@@ -13,8 +13,8 @@ export default class Orders extends Component {
     super(...args);
 
     this.state.events = [];
-    this.state.config = {};
-    this.state.eventConfig = {};
+    this.state.config = undefined;
+    this.state.eventConfig = undefined;
     this.configService = ConfigService.shared();
     this.configService.on('updatedGlobal', ({ config }) => {
       this.setState({ config });
@@ -56,10 +56,14 @@ export default class Orders extends Component {
         </Tabs.TabBar>
         <Tabs.TabPanel id="configuration" active>
           <h4>Global Configuration</h4>
-          <Configurator
-            config={this.state.config}
-            update={(key, value) => this.updateConfig(key, value)}
-          />
+          {this.state.config ? (
+            <Configurator
+              config={this.state.config}
+              update={(key, value) => this.updateConfig(key, value)}
+            />
+          ) : (
+            <Progress indeterminate />
+          )}
         </Tabs.TabPanel>
         <Tabs.TabPanel id="events">
           <h4>Event Configuration</h4>
@@ -127,16 +131,21 @@ export default class Orders extends Component {
     this.setState({ events });
     if (this.eventId) {
       this.configService.changeEvent(this.eventId);
+    } else {
+      this.setState({ eventConfig: {} });
     }
   }
 
   async resetEventStats() {
     const eventId = this.eventId;
     try {
-      const resp = await fetch('/api/admin/reset?action=stats', {
-        method: 'POST',
-        credentials: 'include',
-      });
+      const resp = await fetch(
+        `/api/admin/reset?action=stats&eventId=${eventId}`,
+        {
+          method: 'POST',
+          credentials: 'include',
+        }
+      );
       if (resp.ok) {
         console.log('Reset stats');
       } else {
