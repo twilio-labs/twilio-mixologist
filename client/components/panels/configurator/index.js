@@ -194,9 +194,9 @@ export default class Configurator extends Component {
     const typeA = typeof valueA;
     const typeB = typeof valueB;
     if (typeA === typeB) {
-      if (valueA > valueB) {
+      if (configNameA > configNameB) {
         return 1;
-      } else if (valueA < valueB) {
+      } else if (configNameA < configNameB) {
         return -1;
       } else {
         return 0;
@@ -218,9 +218,9 @@ export default class Configurator extends Component {
     } else if (typeB === 'object' && !Array.isArray(valueB)) {
       return 1;
     } else {
-      if (valueA > valueB) {
+      if (configNameA > configNameB) {
         return 1;
-      } else if (valueA < valueB) {
+      } else if (configNameA < configNameB) {
         return -1;
       } else {
         return 0;
