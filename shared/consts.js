@@ -28,6 +28,8 @@ const INTENTS = {
   ORDER: 'order',
   CANCEL: 'cancel',
   INVALID: 'invalid',
+  DEREGISTER: 'deregister',
+  REGISTER: 'register',
 };
 
 const COOKIES = {
