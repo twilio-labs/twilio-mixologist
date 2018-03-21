@@ -9,7 +9,6 @@ const {
   notifyClient,
   customersMap,
   configurationDoc,
-  allOrdersList,
   resetMap,
   resetNotify,
   loadConnectedPhoneNumbers,
@@ -56,7 +55,7 @@ async function resetStats(eventId) {
   return resetList(SYNC_NAMES.ALL_ORDERS + eventId);
 }
 
-async function handleResetRequest(req, res, next) {
+async function handleResetRequest(req, res) {
   const { action, eventId } = req.query;
   if (action === 'openOrders') {
     if (!eventId) {
@@ -76,7 +75,7 @@ async function handleResetRequest(req, res, next) {
       req.status(400).send('Missing eventId');
       return;
     }
-    
+
     try {
       await resetStats(eventId);
       res.send();

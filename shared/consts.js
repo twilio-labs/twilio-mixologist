@@ -1,3 +1,7 @@
+function createBooleanMapOfArray(array) {
+  return array.reduce((map, entry) => ({ ...map, [entry]: true }), {});
+}
+
 const SYNC_NAMES = {
   ORDER_QUEUE: 'orderQueue_',
   CONFIGURATION: 'configuration',
@@ -103,13 +107,6 @@ const DEFAULT_EVENT_CONFIGURATION = {
   expectedOrders: 300,
   visibleNumbers: [],
 };
-
-function createBooleanMapOfArray(array) {
-  return array.reduce((map, entry) => {
-    map[entry] = true;
-    return map;
-  }, {});
-}
 
 module.exports = {
   AVAILABLE_DEFAULT_OPTIONS,
