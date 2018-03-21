@@ -1,49 +1,32 @@
 import { h, Component } from 'preact';
 
-import BaristaIcon from '../barista-icon';
+import Icon from '../icon';
 import style from './style';
-
-const ICON_MAP = {
-  Cappuccino: 'cappuccino',
-  Tea: 'cup-of-coffee',
-  'Hot Chocolate': 'coffee-to-go',
-  'Flat White': 'flat-white',
-  Latte: 'cafe-latte',
-  Americano: 'americano',
-  Mocca: 'coffee-to-go',
-  Espresso: 'espresso-maker',
-  'Filter Coffee': 'coffee-filter',
-  'Lagunitas Pilsner': 'pilsener',
-  'Broadside Cabernet Sauvignon': 'red-wine',
-  'Clifford Bay Sauvignon Blanc': 'white-wine',
-  'Beer': 'pilsener',
-  'White Wine': 'white-wine',
-  'Red Wine': 'red-wine'
-};
+import eventConsts from '../../../shared/event-type-consts';
 
 export default class ProductListings extends Component {
-  render({ products }) {
+  render({ products, eventType }) {
+    const { dashboard } = eventConsts(eventType);
+
     const productEntries = Object.keys(products).map(product => {
       const value = products[product];
-      const icon = ICON_MAP[product] || 'coffee-to-go';
+      const icon =
+        dashboard.productIcons[product] || dashboard.defaultProductIcon;
       return (
         <div class={style.entryWrapper}>
-          <p class={style.entryName}>
-            {product}
-          </p>
+          <p class={style.entryName}>{product}</p>
           <div class={style.entry}>
-            <BaristaIcon class={style.icon} color="#fff" name={icon} />
-            <p class={style.value}>
-              {value}
-            </p>
+            <Icon
+              class={style.icon}
+              color="#fff"
+              name={icon}
+              type={eventType}
+            />
+            <p class={style.value}>{value}</p>
           </div>
         </div>
       );
     });
-    return (
-      <div class={style.byProduct}>
-        {productEntries}
-      </div>
-    );
+    return <div class={style.byProduct}>{productEntries}</div>;
   }
 }

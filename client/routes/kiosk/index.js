@@ -2,6 +2,7 @@ import { h, Component } from 'preact';
 
 import TwilioLogo from '../../components/twilio-logo';
 import style from './style';
+import eventConsts from '../../../shared/event-type-consts';
 
 export default class Kiosk extends Component {
   constructor(...args) {
@@ -30,17 +31,16 @@ export default class Kiosk extends Component {
   }
 
   render() {
+    const { kiosk } = eventConsts(this.state.kioskInfo.eventType);
     const loading = <p>Loading...</p>;
-    const kiosk = !this.state.kioskLoaded ? (
+    return !this.state.kioskLoaded ? (
       loading
     ) : (
       <div id="kiosk" class={style.kiosk}>
-        <h1 class={style.thirsty}>Thirsty? Coffee?</h1>
+        <h1 class={style.thirsty}>{kiosk.title}</h1>
         <p class={style.hr}>Skip the Queue!</p>
         <div class={style.centerContent}>
-          <p>
-            Make your coffee order ⚡️ <i>asynchronous</i> ⚡️
-          </p>
+          <p>{kiosk.tagLine}</p>
           <p>Send your order via SMS to:</p>
           <div class={style.phoneNumbers}>
             {this.state.kioskInfo.phoneNumbers.slice(0, 4).map(num => (
@@ -56,6 +56,5 @@ export default class Kiosk extends Component {
         </p>
       </div>
     );
-    return kiosk;
   }
 }

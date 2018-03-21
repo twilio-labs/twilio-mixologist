@@ -1,11 +1,29 @@
 const { allOrdersList } = require('./twilio');
 const { config } = require('../data/config');
 
-async function handler(req, res, next) {
+function safelyIncrement(item) {
+  return (item || 0) + 1;
+}
+
+function getAvailableProducts(availableCoffees) {
+  const products = {};
+  Object.keys(availableCoffees)
+    .filter(c => availableCoffees[c])
+    .forEach(c => {
+      products[c] = 0;
+    });
+  return products;
+}
+
+async function handler(req, res) {
   const { eventId } = req.query;
-  const { expectedOrders, availableCoffees, visibleNumbers, repoUrl } = config(
-    eventId
-  );
+  const {
+    expectedOrders,
+    availableCoffees,
+    visibleNumbers,
+    repoUrl,
+    mode,
+  } = config(eventId);
   const phoneNumbers = visibleNumbers
     .split(',')
     .map(n => n.trim())
@@ -35,6 +53,7 @@ async function handler(req, res, next) {
         expectedOrders,
         phoneNumbers,
         repoUrl,
+        eventType: mode,
       }
     );
     res.send(stats);
@@ -42,20 +61,6 @@ async function handler(req, res, next) {
     req.log.error(err);
     res.status(500).send('Could not fetch stats. Check logs for information.');
   }
-}
-
-function safelyIncrement(item) {
-  return (item || 0) + 1;
-}
-
-function getAvailableProducts(availableCoffees) {
-  const products = {};
-  Object.keys(availableCoffees)
-    .filter(c => availableCoffees[c])
-    .forEach(c => {
-      products[c] = 0;
-    });
-  return products;
 }
 
 module.exports = {

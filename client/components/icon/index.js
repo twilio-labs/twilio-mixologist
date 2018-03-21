@@ -2,14 +2,15 @@ import DOMPurify from 'dompurify';
 import { h, Component } from 'preact';
 
 import style from './style';
+import eventConsts from '../../../shared/event-type-consts';
 
-export default class BaristaIcon extends Component {
+export default class Icon extends Component {
   constructor(...args) {
     super(...args);
     this.state.svgData = undefined;
   }
-  getSvgData(name) {
-    const url = `/assets/barista-icons/barista-icons_${name}.svg`;
+  getSvgData(name, type) {
+    const url = `${eventConsts(type).iconBasePath}${name}.svg`;
     return fetch(url).then(resp => {
       if (!resp.ok) {
         throw new Error(resp.statusText);
@@ -19,7 +20,8 @@ export default class BaristaIcon extends Component {
   }
 
   componentWillMount() {
-    this.getSvgData(this.props.name).then(svgData => {
+    const eventType = this.props.type;
+    this.getSvgData(this.props.name, eventType).then(svgData => {
       this.setState({ svgData });
     });
   }
@@ -31,7 +33,7 @@ export default class BaristaIcon extends Component {
         class={style.baristaIcon}
         style={`--color: ${color};`}
         dangerouslySetInnerHTML={{
-          __html: DOMPurify.sanitize(this.state.svgData)
+          __html: DOMPurify.sanitize(this.state.svgData),
         }}
       />
     );
