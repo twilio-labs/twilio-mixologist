@@ -2,9 +2,9 @@ const { config } = require('../data/config');
 const { restClient } = require('./twilio');
 const emojiFlags = require('emoji-flags');
 
-async function handler(req, res, next) {
+async function handler(req, res) {
   const { eventId } = req.query;
-  const { visibleNumbers } = config(eventId);
+  const { visibleNumbers, mode } = config(eventId);
   const filteredNumbers = visibleNumbers.split(',').map(num => num.trim());
 
   try {
@@ -12,10 +12,9 @@ async function handler(req, res, next) {
       filteredNumbers.map(async number => {
         try {
           const sanitizedNumber = number.replace(/[^(\d|\w)]/g, '');
-          const {
-            countryCode,
-            phoneNumber,
-          } = await restClient.lookups.phoneNumbers(sanitizedNumber).fetch();
+          const { countryCode } = await restClient.lookups
+            .phoneNumbers(sanitizedNumber)
+            .fetch();
           const { emoji } = emojiFlags.countryCode(countryCode);
           return {
             countryCode,
@@ -29,6 +28,7 @@ async function handler(req, res, next) {
     )).filter(x => !!x);
     res.send({
       phoneNumbers,
+      eventType: mode,
     });
   } catch (err) {
     req.log.error(err);
