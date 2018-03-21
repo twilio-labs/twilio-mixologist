@@ -12,12 +12,10 @@ const {
   getQueuePositionMessage,
   getCancelOrderMessage,
   getSystemOfflineMessage,
-  getPostRegistrationMessage,
   getEventRegistrationMessage,
   getNoActiveEventsMessage,
 } = require('../../utils/messages');
 const {
-  restClient,
   customersMap,
   orderQueueList,
   allOrdersList,
@@ -26,6 +24,157 @@ const {
   registerOpenOrder,
 } = require('../twilio');
 const { INTENTS, CUSTOMER_STATES, COOKIES } = require('../../../shared/consts');
+
+function getCustomerInformation({ From, Body, To, FromCountry }) {
+  if (!From || !Body || !To || !FromCountry) {
+    return null;
+  }
+
+  const source = From.indexOf('Messenger') !== -1 ? 'facebook' : 'sms';
+  return {
+    // address: From,
+    openOrders: [],
+    countryCode: FromCountry,
+    contact: To,
+    source,
+    eventId: null,
+  };
+}
+
+function createOrderItem(customer, coffeeOrder, originalMessage) {
+  return {
+    data: {
+      product: coffeeOrder,
+      message: originalMessage,
+      source: customer.source,
+      status: 'open',
+      customer: customer.identity,
+    },
+  };
+}
+
+async function findOrCreateCustomer(customer) {
+  let customerEntry;
+  try {
+    customerEntry = await customersMap.syncMapItems(customer.identity).fetch();
+  } catch (err) {
+    customerEntry = await customersMap.syncMapItems.create({
+      key: customer.identity,
+      data: customer,
+    });
+  }
+  return customerEntry;
+}
+
+async function setEventForCustomer(customerEntry, eventId) {
+  const eventExpiryDate = moment()
+    .add(5, 'days')
+    .valueOf();
+  const data = Object.assign({}, customerEntry.data, {
+    eventId,
+    eventExpiryDate,
+  });
+  return customerEntry.update({ data });
+}
+
+async function removeEventForCustomer(customerEntry) {
+  const data = Object.assign({}, customerEntry.data);
+  data.eventId = undefined;
+  data.eventExpiryDate = undefined;
+  return customerEntry.update({ data });
+}
+
+async function sendMessageToCustomer(customer, msg) {
+  return sendMessage(customer.identity, msg);
+}
+
+function determineIntent(message, forEvent) {
+  const msgNormalized = message.toLowerCase().trim();
+  if (msgNormalized.startsWith('_register:')) {
+    const eventId = msgNormalized.replace('_register:', '').trim();
+    return {
+      intent: INTENTS.REGISTER,
+      value: eventId,
+    };
+  }
+
+  if (msgNormalized.startsWith('_unregister')) {
+    return {
+      intent: INTENTS.UNREGISTER,
+    };
+  }
+
+  if (msgNormalized.indexOf('help') !== -1) {
+    return {
+      intent: INTENTS.HELP,
+    };
+  }
+
+  if (msgNormalized.indexOf('queue') !== -1) {
+    return {
+      intent: INTENTS.QUEUE,
+    };
+  }
+
+  if (msgNormalized.indexOf('cancel') !== -1) {
+    return {
+      intent: INTENTS.CANCEL,
+    };
+  }
+
+  const coffeeOrder = determineCoffeeFromMessage(message, forEvent);
+  if (!coffeeOrder) {
+    return {
+      intent: INTENTS.INVALID,
+    };
+  }
+
+  return {
+    intent: INTENTS.ORDER,
+    value: coffeeOrder,
+  };
+}
+
+async function getQueuePosition(customer) {
+  const key = customer.identity;
+  let customerEntry;
+  try {
+    customerEntry = await customersMap.syncMapItems(key).fetch();
+  } catch (err) {
+    return NaN;
+  }
+  const orderNumber = customerEntry.data.openOrders[0];
+  if (!orderNumber) {
+    return NaN;
+  }
+  const items = await orderQueueList(customer.eventId).syncListItems.list({
+    pageSize: 100,
+  });
+  const queuePosition = items.findIndex(item => item.index === orderNumber);
+  return queuePosition >= 0 ? queuePosition : NaN;
+}
+
+async function cancelOrder(customer) {
+  const key = customer.identity;
+  let customerEntry;
+  try {
+    customerEntry = await customersMap.syncMapItems(key).fetch();
+  } catch (err) {
+    return false;
+  }
+  const orderNumber = customerEntry.data.openOrders[0];
+  if (!orderNumber) {
+    return false;
+  }
+  await orderQueueList(customer.eventId)
+    .syncListItems(orderNumber)
+    .remove();
+  customerEntry.data.openOrders = [];
+  await customersMap.syncMapItems(key).update({
+    data: customerEntry.data,
+  });
+  return true;
+}
 
 /**
  * This is the request handler for incoming SMS and Facebook messages by handling webhook request from Twilio.
@@ -114,11 +263,20 @@ async function handleIncomingMessages(req, res, next) {
     );
     try {
       let responseMessage;
-      if (messageIntent.intent === INTENTS.HELP) {
+      if (messageIntent.intent === INTENTS.REGISTER) {
+        customerEntry = await setEventForCustomer(
+          customerEntry,
+          messageIntent.value
+        );
+        responseMessage = `Registered for ${messageIntent.value}`;
+      } else if (messageIntent.intent === INTENTS.UNREGISTER) {
+        customerEntry = await removeEventForCustomer(customerEntry);
+        responseMessage = `Unregistered from all events`;
+      } else if (messageIntent.intent === INTENTS.HELP) {
         responseMessage = getHelpMessage(availableOptions);
       } else if (messageIntent.intent === INTENTS.QUEUE) {
         const queuePosition = await getQueuePosition(customer);
-        if (isNaN(queuePosition)) {
+        if (Number.isNaN(queuePosition)) {
           responseMessage = getNoOpenOrderMessage();
         } else {
           responseMessage = getQueuePositionMessage(queuePosition);
@@ -134,15 +292,17 @@ async function handleIncomingMessages(req, res, next) {
         responseMessage = getWrongOrderMessage(req.body.Body, availableOptions);
       }
       await sendMessageToCustomer(customer, responseMessage);
+      res.send();
       return;
     } catch (err) {
       req.log.error(err);
+      res.status(500).send();
       return;
     }
   }
   const coffeeOrder = messageIntent.value;
 
-  const openOrders = customerEntry.data.openOrders;
+  const { openOrders } = customerEntry.data;
   if (Array.isArray(openOrders) && openOrders.length > 0) {
     try {
       const order = await orderQueueList(eventId)
@@ -183,139 +343,11 @@ async function handleIncomingMessages(req, res, next) {
 
     const msg = getOrderCreatedMessage(coffeeOrder, orderEntry.index, eventId);
     await sendMessageToCustomer(customer, msg);
+    res.send();
   } catch (err) {
     req.log.error(err);
+    res.status(500).send();
   }
-}
-
-function getCustomerInformation({ From, Body, To, FromCountry }) {
-  if (!From || !Body || !To || !FromCountry) {
-    return null;
-  }
-
-  const source = From.indexOf('Messenger') !== -1 ? 'facebook' : 'sms';
-  return {
-    // address: From,
-    openOrders: [],
-    countryCode: FromCountry,
-    contact: To,
-    source,
-    eventId: null,
-  };
-}
-
-function createOrderItem(customer, coffeeOrder, originalMessage) {
-  return {
-    data: {
-      product: coffeeOrder,
-      message: originalMessage,
-      source: customer.source,
-      status: 'open',
-      customer: customer.identity,
-    },
-  };
-}
-
-async function findOrCreateCustomer(customer) {
-  let customerEntry;
-  try {
-    customerEntry = await customersMap.syncMapItems(customer.identity).fetch();
-  } catch (err) {
-    customerEntry = await customersMap.syncMapItems.create({
-      key: customer.identity,
-      data: customer,
-    });
-  }
-  return customerEntry;
-}
-
-async function setEventForCustomer(customerEntry, eventId) {
-  const eventExpiryDate = moment()
-    .add(5, 'days')
-    .valueOf();
-  const data = Object.assign({}, customerEntry.data, {
-    eventId,
-    eventExpiryDate,
-  });
-  return customerEntry.update({ data });
-}
-
-async function sendMessageToCustomer(customer, msg) {
-  return sendMessage(customer.identity, msg);
-}
-
-function determineIntent(message, forEvent) {
-  const msgNormalized = message.toLowerCase().trim();
-  if (msgNormalized.indexOf('help') !== -1) {
-    return {
-      intent: INTENTS.HELP,
-    };
-  }
-
-  if (msgNormalized.indexOf('queue') !== -1) {
-    return {
-      intent: INTENTS.QUEUE,
-    };
-  }
-
-  if (msgNormalized.indexOf('cancel') !== -1) {
-    return {
-      intent: INTENTS.CANCEL,
-    };
-  }
-
-  const coffeeOrder = determineCoffeeFromMessage(message, forEvent);
-  if (!coffeeOrder) {
-    return {
-      intent: INTENTS.INVALID,
-    };
-  }
-
-  return {
-    intent: INTENTS.ORDER,
-    value: coffeeOrder,
-  };
-}
-
-async function getQueuePosition(customer) {
-  const key = customer.identity;
-  let customerEntry;
-  try {
-    customerEntry = await customersMap.syncMapItems(key).fetch();
-  } catch (err) {
-    return NaN;
-  }
-  const orderNumber = customerEntry.data.openOrders[0];
-  if (!orderNumber) {
-    return NaN;
-  }
-  const items = await orderQueueList(customer.eventId).syncListItems.list({
-    pageSize: 100,
-  });
-  const queuePosition = items.findIndex(item => item.index === orderNumber);
-  return queuePosition >= 0 ? queuePosition : NaN;
-}
-
-async function cancelOrder(customer) {
-  const key = customer.identity;
-  let customerEntry;
-  try {
-    customerEntry = await customersMap.syncMapItems(key).fetch();
-  } catch (err) {
-    return false;
-  }
-  const orderNumber = customerEntry.data.openOrders[0];
-  if (!orderNumber) {
-    return false;
-  }
-  await orderQueueList(customer.eventId)
-    .syncListItems(orderNumber)
-    .remove();
-  customerEntry.data.openOrders = [];
-  await customersMap.syncMapItems(key).update({
-    data: customerEntry.data,
-  });
-  return true;
 }
 
 module.exports = {
