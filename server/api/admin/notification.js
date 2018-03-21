@@ -1,11 +1,13 @@
 const {
   sendMessage,
   sendMessageToAll,
+  sendMessageToAllForEvent,
   sendMessageToAllOpenOrders,
+  sendMessageToAllOpenOrdersForEvent,
 } = require('../twilio');
 
-async function requestHandler(req, res, next) {
-  const { sendTo, message, identity } = req.body;
+async function requestHandler(req, res) {
+  const { sendTo, message, identity, eventId } = req.body;
   try {
     let notification;
     if (sendTo === 'all') {
@@ -14,6 +16,18 @@ async function requestHandler(req, res, next) {
       notification = await sendMessageToAllOpenOrders(message);
     } else if (sendTo === 'individual') {
       notification = await sendMessage(identity, message);
+    } else if (sendTo === 'allForEvent') {
+      if (!eventId) {
+        res.status(400).send('Missing event ID');
+        return;
+      }
+      notification = await sendMessageToAllForEvent(message, eventId);
+    } else if (sendTo === 'activeOrdersForEvent') {
+      if (!eventId) {
+        res.status(400).send('Missing event ID');
+        return;
+      }
+      notification = await sendMessageToAllOpenOrdersForEvent(message, eventId);
     }
     if (notification) {
       req.log.info(`Sent notification ${notification.sid}`);

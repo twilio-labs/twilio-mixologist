@@ -71,7 +71,7 @@
     "preact-mdl": "^2.2.1",
     "preact-router": "^2.5.2",
     "snyk": "^1.52.1",
-    "twilio": "^3.5.0-alpha.1",
+    "twilio": "^3.13.1",
     "twilio-common": "^0.1.6",
     "twilio-sync": "^0.5.8",
     "url-join": "^2.0.2"

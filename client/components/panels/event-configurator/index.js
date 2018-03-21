@@ -46,6 +46,7 @@ export default class EventConfigurator extends Component {
       onDeleteEvent,
       onCreateEvent,
       onUpdateEventConfig,
+      onCancelOrders,
     } = this.props;
     const eventOptions = events.map(x => (
       <option selected={x === currentEventId}>{x}</option>
@@ -71,6 +72,9 @@ export default class EventConfigurator extends Component {
         </Button>
         <Button accent onClick={onDeleteEvent}>
           Delete Event
+        </Button>
+        <Button accent onClick={onCancelOrders}>
+          Cancel All Orders
         </Button>
       </div>
     );

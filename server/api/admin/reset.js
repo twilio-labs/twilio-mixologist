@@ -1,4 +1,4 @@
-const { SEGMENTS, DEFAULT_CONFIGURATION } = require('../../../shared/consts');
+const { DEFAULT_CONFIGURATION } = require('../../../shared/consts');
 const { getOrderCancelledMessage } = require('../../utils/messages');
 const {
   SYNC_NAMES,
@@ -13,6 +13,7 @@ const {
   resetNotify,
   loadConnectedPhoneNumbers,
   resetAllLists,
+  deregisterOpenOrder,
 } = require('../twilio');
 const { updateGlobalConfigEntry } = require('../../data/config');
 
@@ -26,12 +27,10 @@ async function cancelOpenOrders(eventId) {
     const orderNumber = order.index;
     const msg = getOrderCancelledMessage(product, orderNumber);
     await sendMessage(customerId, msg);
-    await notifyClient
-      .users(customerId)
-      .segmentMemberships(SEGMENTS.OPEN_ORDER)
-      .remove();
     const { data } = await customersMap.syncMapItems(customerId).fetch();
+    const newBindingSid = await deregisterOpenOrder(data.bindingSid);
     data.openOrders = [];
+    data.bindingSid = newBindingSid;
     return customersMap.syncMapItems(customerId).update({ data });
   });
   await Promise.all(closeAllOpenOrders);
@@ -59,7 +58,7 @@ async function handleResetRequest(req, res) {
   const { action, eventId } = req.query;
   if (action === 'openOrders') {
     if (!eventId) {
-      req.status(400).send('Missing eventId');
+      res.status(400).send('Missing eventId');
       return;
     }
 

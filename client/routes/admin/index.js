@@ -76,6 +76,7 @@ export default class Orders extends Component {
             onDeleteEvent={this.deleteEvent.bind(this)}
             onCreateEvent={this.createEvent.bind(this)}
             onUpdateEventConfig={this.updateEventConfig.bind(this)}
+            onCancelOrders={this.cancelAllOpenOrders.bind(this)}
           />
         </Tabs.TabPanel>
         <Tabs.TabPanel id="messages">
@@ -148,6 +149,25 @@ export default class Orders extends Component {
       );
       if (resp.ok) {
         console.log('Reset stats');
+      } else {
+        throw new Error(resp.statusText);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async cancelAllOpenOrders() {
+    try {
+      const resp = await fetch(
+        `/api/admin/reset?action=openOrders&eventId=${this.eventId}`,
+        {
+          method: 'POST',
+          credentials: 'include',
+        }
+      );
+      if (resp.ok) {
+        console.log('Cleared queue');
       } else {
         throw new Error(resp.statusText);
       }

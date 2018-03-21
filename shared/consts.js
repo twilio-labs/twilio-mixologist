@@ -12,14 +12,11 @@ const SYNC_NAMES = {
 
 const DEFAULT_JSON_ENTRY_KEY = 'CHOOSE_KEY';
 
-const SEGMENTS = {
-  OPEN_ORDER: 'open-order',
-};
-
 const TAGS = {
   INTERACTED: 'interacted',
   ALL: 'all',
-  _PREFIX_EVENT: 'event_',
+  OPEN_ORDER: 'open-order',
+  PREFIX_EVENT: 'event_',
 };
 
 const INTENTS = {
@@ -28,7 +25,7 @@ const INTENTS = {
   ORDER: 'order',
   CANCEL: 'cancel',
   INVALID: 'invalid',
-  DEREGISTER: 'deregister',
+  UNREGISTER: 'unregister',
   REGISTER: 'register',
 };
 
@@ -116,7 +113,6 @@ module.exports = {
   DEFAULT_EVENT_CONFIGURATION,
   DEFAULT_JSON_ENTRY_KEY,
   INTENTS,
-  SEGMENTS,
   SPELLING_MISTAKES,
   SYNC_NAMES,
   TAGS,

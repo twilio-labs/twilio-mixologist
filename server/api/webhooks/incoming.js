@@ -22,8 +22,19 @@ const {
   sendMessage,
   registerAddress,
   registerOpenOrder,
+  registerTagForBinding,
+  removeTagForBinding,
+  removeTagsForBindingWithPrefix,
+  getIdentityFromAddress,
 } = require('../twilio');
-const { INTENTS, CUSTOMER_STATES, COOKIES } = require('../../../shared/consts');
+const {
+  INTENTS,
+  CUSTOMER_STATES,
+  COOKIES,
+  TAGS,
+} = require('../../../shared/consts');
+
+const { safe } = require('../../utils/async-requests.js');
 
 function getCustomerInformation({ From, Body, To, FromCountry }) {
   if (!From || !Body || !To || !FromCountry) {
@@ -70,7 +81,16 @@ async function setEventForCustomer(customerEntry, eventId) {
   const eventExpiryDate = moment()
     .add(5, 'days')
     .valueOf();
+  let bindingSid = await removeTagsForBindingWithPrefix(
+    customerEntry.data.bindingSid,
+    TAGS.PREFIX_EVENT
+  );
+  bindingSid = await registerTagForBinding(
+    bindingSid,
+    TAGS.PREFIX_EVENT + eventId
+  );
   const data = Object.assign({}, customerEntry.data, {
+    bindingSid,
     eventId,
     eventExpiryDate,
   });
@@ -79,8 +99,19 @@ async function setEventForCustomer(customerEntry, eventId) {
 
 async function removeEventForCustomer(customerEntry) {
   const data = Object.assign({}, customerEntry.data);
+  data.bindingSid = await removeTagForBinding(
+    data.bindingSid,
+    TAGS.PREFIX_EVENT + data.eventId
+  );
   data.eventId = undefined;
   data.eventExpiryDate = undefined;
+  return customerEntry.update({ data });
+}
+
+async function updateBindingSidForCustomer(customerEntry, bindingSid) {
+  const data = Object.assign({}, customerEntry.data, {
+    bindingSid,
+  });
   return customerEntry.update({ data });
 }
 
@@ -181,13 +212,17 @@ async function cancelOrder(customer) {
  *
  * @param {any} req
  * @param {any} res
- * @param {any} next
  * @returns
  */
-async function handleIncomingMessages(req, res, next) {
+async function handleIncomingMessages(req, res) {
   const customer = getCustomerInformation(req.body);
-  customer.identity = await registerAddress(req.body.From, customer.source);
+  customer.identity = getIdentityFromAddress(req.body.From);
   let customerEntry = await findOrCreateCustomer(customer);
+  if (!customerEntry.data.bindingSid) {
+    const { sid } = await registerAddress(req.body.From, customer.source);
+    await updateBindingSidForCustomer(customerEntry, sid);
+    customer.bindingSid = sid;
+  }
 
   if (
     !customerEntry.data.eventId ||
@@ -228,7 +263,6 @@ async function handleIncomingMessages(req, res, next) {
         res.send('🙁 Please send only the number of the respective event.');
         return;
       }
-      console.log(eventChoices, typeof choice, choice);
       const chosenEventId = eventChoices[choice - 1];
       if (!chosenEventId) {
         res.send(
@@ -339,7 +373,8 @@ async function handleIncomingMessages(req, res, next) {
       },
     });
 
-    await registerOpenOrder(customer.identity);
+    const newBindingSid = await registerOpenOrder(customer.bindingSid);
+    await updateBindingSidForCustomer(customerEntry, newBindingSid);
 
     const msg = getOrderCreatedMessage(coffeeOrder, orderEntry.index, eventId);
     await sendMessageToCustomer(customer, msg);
@@ -351,5 +386,5 @@ async function handleIncomingMessages(req, res, next) {
 }
 
 module.exports = {
-  handler: handleIncomingMessages,
+  handler: safe(handleIncomingMessages),
 };

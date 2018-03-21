@@ -20,23 +20,6 @@ export default class Other extends Component {
     this.state.resetApplicationActivated = false;
   }
 
-  cancelAllOpens() {
-    fetch('/api/admin/reset?action=openOrders', {
-      method: 'POST',
-      credentials: 'include',
-    })
-      .then(resp => {
-        if (resp.ok) {
-          console.log('Cleared queue');
-        } else {
-          throw new Error(resp.statusText);
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  }
-
   resetApplication() {
     fetch('/api/admin/reset?action=resetApplication', {
       method: 'POST',
@@ -153,9 +136,15 @@ export default class Other extends Component {
           <ActionCard
             title="Cancel All Open Orders"
             buttonText="Cancel All Open Orders"
-            action={() => this.cancelAllOpens()}
+            disabled={true}
           >
-            Empties all open orders and sends cancellation messages to everyone.
+            <p>
+              Empties all open orders and sends cancellation messages to
+              everyone.
+            </p>
+            <p>
+              <strong>Important:</strong> This moved into the event view
+            </p>
           </ActionCard>
           <ActionCard
             title="Reset Dashboard Stats"
