@@ -59,6 +59,11 @@ async function resetStats(eventId) {
 async function handleResetRequest(req, res, next) {
   const { action, eventId } = req.query;
   if (action === 'openOrders') {
+    if (!eventId) {
+      req.status(400).send('Missing eventId');
+      return;
+    }
+
     try {
       await cancelOpenOrders(eventId);
       res.send();
@@ -67,6 +72,11 @@ async function handleResetRequest(req, res, next) {
       res.sendStatus(500);
     }
   } else if (action === 'stats') {
+    if (!eventId) {
+      req.status(400).send('Missing eventId');
+      return;
+    }
+    
     try {
       await resetStats(eventId);
       res.send();
