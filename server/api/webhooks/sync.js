@@ -14,31 +14,6 @@ const {
 
 const { setGlobalConfig, setEventConfig } = require('../../data/config');
 
-async function handler(req, res, next) {
-  res.sendStatus(200);
-  if (!req.body || !req.body.EventType || !validEventType(req.body.EventType)) {
-    return;
-  }
-
-  try {
-    if (isDocumentUpdate(req.body.EventType)) {
-      if (req.body.DocumentUniqueName === SYNC_NAMES.CONFIGURATION) {
-        updateConfiguration(req.body);
-      } else {
-        updateEventConfiguration(req.body);
-      }
-    } else {
-      if (!req.body.ListUniqueName.startsWith(SYNC_NAMES.ORDER_QUEUE)) {
-        return;
-      }
-
-      await handleOrderStatusChange(req.body);
-    }
-  } catch (err) {
-    req.log.error(err);
-  }
-}
-
 async function handleOrderStatusChange(requestBody) {
   const itemData = JSON.parse(requestBody.ItemData);
   const eventId = requestBody.ListUniqueName.replace(
@@ -68,7 +43,11 @@ async function handleOrderStatusChange(requestBody) {
   await orderQueueList(eventId)
     .syncListItems(itemIndex)
     .remove();
-  await deregisterOpenOrder(itemData.customer);
+  const newBindingSid = await deregisterOpenOrder(customer.data.bindingSid);
+  const newCustomerData = Object.assign({}, customer.data, {
+    bindingSid: newBindingSid,
+  });
+  await customer.update({ data: newCustomerData });
 }
 
 function validEventType(eventType) {
@@ -87,6 +66,31 @@ function updateConfiguration(requestBody) {
 function updateEventConfiguration(requestBody) {
   const newConfig = JSON.parse(requestBody.DocumentData);
   setEventConfig(newConfig);
+}
+
+async function handler(req, res, next) {
+  res.sendStatus(200);
+  if (!req.body || !req.body.EventType || !validEventType(req.body.EventType)) {
+    return;
+  }
+
+  try {
+    if (isDocumentUpdate(req.body.EventType)) {
+      if (req.body.DocumentUniqueName === SYNC_NAMES.CONFIGURATION) {
+        updateConfiguration(req.body);
+      } else {
+        updateEventConfiguration(req.body);
+      }
+    } else {
+      if (!req.body.ListUniqueName.startsWith(SYNC_NAMES.ORDER_QUEUE)) {
+        return;
+      }
+
+      await handleOrderStatusChange(req.body);
+    }
+  } catch (err) {
+    req.log.error(err);
+  }
 }
 
 module.exports = { handler };

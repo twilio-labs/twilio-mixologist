@@ -8,26 +8,38 @@ export default class Messenger extends Component {
   constructor(...args) {
     super(...args);
     this.state.sendTo = 'all';
+    this.state.events = [];
+  }
+
+  async componentWillMount() {
+    const { events } = await (await fetch(
+      '/api/admin/events?type=full'
+    )).json();
+    this.setState({ events });
   }
 
   sendMessage(evt) {
     evt.preventDefault();
-    const { sendTo, message, identity } = evt.target;
+    const { sendTo, message, identity, selectedEvent } = evt.target;
 
     const data = {
       sendTo: sendTo.value,
-      message: message.value
+      message: message.value,
     };
+    if (sendTo.value.indexOf('ForEvent') !== -1) {
+      console.log(selectedEvent);
+      data.eventId = selectedEvent.value;
+    }
     if (identity) {
       data.identity = identity.value;
     }
     fetch('/api/admin/notification', {
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       method: 'POST',
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
       .then(resp => {
         if (resp.ok) {
@@ -41,7 +53,7 @@ export default class Messenger extends Component {
           sendTo: 'all',
           message: undefined,
           identity: undefined,
-          messageSent: true
+          messageSent: true,
         });
         setTimeout(() => {
           this.setState({ messageSent: undefined });
@@ -78,7 +90,23 @@ export default class Messenger extends Component {
                   checked={this.state.sendTo === 'activeOrders'}
                   onChange={evt => this.handleInputChange(evt)}
                 >
-                  Active Orders
+                  All Active Orders
+                </Radio>
+                <Radio
+                  name="sendTo"
+                  value="allForEvent"
+                  checked={this.state.sendTo === 'allForEvent'}
+                  onChange={evt => this.handleInputChange(evt)}
+                >
+                  Everyone For Event
+                </Radio>
+                <Radio
+                  name="sendTo"
+                  value="activeOrdersForEvent"
+                  checked={this.state.sendTo === 'activeOrdersForEvent'}
+                  onChange={evt => this.handleInputChange(evt)}
+                >
+                  Active Orders For Event
                 </Radio>
                 <Radio
                   name="sendTo"
@@ -89,7 +117,7 @@ export default class Messenger extends Component {
                   Individual
                 </Radio>
               </div>
-              {this.state.sendTo === 'individual' &&
+              {this.state.sendTo === 'individual' && (
                 <div>
                   <TextField
                     name="identity"
@@ -99,7 +127,10 @@ export default class Messenger extends Component {
                   >
                     Identity of individual...
                   </TextField>
-                </div>}
+                </div>
+              )}
+              {this.state.sendTo.indexOf('ForEvent') !== -1 &&
+                this.renderSelector()}
               <div>
                 <TextField
                   class={style.messageInput}
@@ -116,15 +147,30 @@ export default class Messenger extends Component {
               <Button raised primary type="submit">
                 Send Message
               </Button>
-              {this.state.messageSent &&
+              {this.state.messageSent && (
                 <span class="mdl-chip">
                   <span class="mdl-chip__text">
                     Your message has been sent!
                   </span>
-                </span>}
+                </span>
+              )}
             </Card.Actions>
           </Card>
         </form>
+      </div>
+    );
+  }
+
+  renderSelector() {
+    const eventOptions = this.state.events.map(x => (
+      <option value={x.eventId}>{x.eventName}</option>
+    ));
+    return (
+      <div class={style.eventSelector}>
+        <label for="eventPicker">Pick your event</label>
+        <select id="eventPicker" name="selectedEvent" class="mdc-select">
+          {eventOptions}
+        </select>
       </div>
     );
   }

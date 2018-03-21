@@ -20,7 +20,6 @@ const {
   SYNC_NAMES,
   DEFAULT_CONFIGURATION,
   DEFAULT_EVENT_CONFIGURATION,
-  SEGMENTS,
   TAGS,
 } = require('../../shared/consts');
 
@@ -43,14 +42,14 @@ async function registerAddress(address, bindingType) {
   const identity = getIdentityFromAddress(address);
   const endpoint = `${identity}:${bindingType}`;
   const tag = [TAGS.INTERACTED];
-  await notifyClient.bindings.create({
+  const { sid } = await notifyClient.bindings.create({
     identity,
     address,
     endpoint,
     bindingType,
     tag,
   });
-  return identity;
+  return { identity, sid };
 }
 
 async function sendMessage(identity, body) {
@@ -69,26 +68,77 @@ async function sendMessageToAll(body) {
   return notification;
 }
 
-async function registerOpenOrder(identity) {
-  const membership = await notifyClient
-    .users(identity)
-    .segmentMemberships.create({
-      segment: SEGMENTS.OPEN_ORDER,
-    });
-  return membership;
+async function sendMessageToAllForEvent(body, eventId) {
+  const notification = await notifyClient.notifications.create({
+    tag: TAGS.PREFIX_EVENT + eventId,
+    body,
+  });
+  return notification;
 }
 
-async function deregisterOpenOrder(identity) {
-  await notifyClient
-    .users(identity)
-    .segmentMemberships(SEGMENTS.OPEN_ORDER)
-    .remove();
-  return true;
+async function registerTagForBinding(bindingSid, tag) {
+  const originalBinding = await notifyClient.bindings(bindingSid).fetch();
+  const newBindingData = {
+    identity: originalBinding.identity,
+    address: originalBinding.address,
+    endpoint: originalBinding.endpoint,
+    bindingType: originalBinding.bindingType,
+  };
+  newBindingData.tag = [...originalBinding.tags, tag];
+  const { sid } = await notifyClient.bindings.create(newBindingData);
+  return sid;
+}
+
+async function removeTagForBinding(bindingSid, tagToRemove) {
+  const originalBinding = await notifyClient.bindings(bindingSid).fetch();
+  const newBindingData = {
+    identity: originalBinding.identity,
+    address: originalBinding.address,
+    endpoint: originalBinding.endpoint,
+    bindingType: originalBinding.bindingType,
+  };
+  newBindingData.tag = (originalBinding.tags || []).filter(
+    tag => tag !== tagToRemove
+  );
+  const { sid } = await notifyClient.bindings.create(newBindingData);
+  return sid;
+}
+
+async function removeTagsForBindingWithPrefix(bindingSid, tagPrefix) {
+  const originalBinding = await notifyClient.bindings(bindingSid).fetch();
+  const newBindingData = {
+    identity: originalBinding.identity,
+    address: originalBinding.address,
+    endpoint: originalBinding.endpoint,
+    bindingType: originalBinding.bindingType,
+  };
+  newBindingData.tag = (originalBinding.tags || []).filter(
+    tag => !tag.startsWith(tagPrefix)
+  );
+  const { sid } = await notifyClient.bindings.create(newBindingData);
+  return sid;
+}
+
+async function registerOpenOrder(bindingSid) {
+  return registerTagForBinding(bindingSid, TAGS.OPEN_ORDER);
+}
+
+async function deregisterOpenOrder(bindingSid) {
+  return removeTagForBinding(bindingSid, TAGS.OPEN_ORDER);
 }
 
 async function sendMessageToAllOpenOrders(body) {
   const notification = await notifyClient.notifications.create({
-    segment: SEGMENTS.OPEN_ORDER,
+    tag: TAGS.OPEN_ORDER,
+    body,
+  });
+  return notification;
+}
+
+async function sendMessageToAllOpenOrdersForEvent(body, eventId) {
+  const notification = await notifyClient.notification.create({
+    tag: TAGS.PREFIX_EVENT + eventId,
+    body,
   });
   return notification;
 }
@@ -270,16 +320,11 @@ async function resetMap(name) {
 }
 
 async function resetNotify() {
-  const users = await notifyClient.users.list();
-  const deleteUsers = users.map(async ({ sid }) => {
-    const bindings = await notifyClient.users(sid).bindings.list();
-    const deleteBindings = bindings.map(async b =>
-      notifyClient.bindings(b.sid).remove()
-    );
-    await Promise.all(deleteBindings);
-    return notifyClient.users(sid).remove();
-  });
-  return Promise.all(deleteUsers);
+  const bindings = await notifyClient.bindings.list();
+  const deleteBindings = bindings.map(async ({ sid }) =>
+    notifyClient.bindings(sid).remove()
+  );
+  return Promise.all(deleteBindings);
 }
 
 function getEventConfigName(slug) {
@@ -303,14 +348,7 @@ async function createEventConfiguration(eventName, customData) {
     name,
     data
   );
-  await syncClient
-    .documents(name)
-    .documentPermissions('admin')
-    .update({
-      read: 'true',
-      write: 'true',
-      manage: 'false',
-    });
+  await setConfigurationPermissions(name);
   return createResult;
 }
 
@@ -352,7 +390,9 @@ module.exports = {
   createConfigurationDoc,
   loadConnectedPhoneNumbers,
   sendMessageToAll,
+  sendMessageToAllForEvent,
   sendMessageToAllOpenOrders,
+  sendMessageToAllOpenOrdersForEvent,
   registerOpenOrder,
   deregisterOpenOrder,
   resetList,
@@ -366,4 +406,8 @@ module.exports = {
   resetAllLists,
   createAllOrdersList,
   createOrderQueue,
+  registerTagForBinding,
+  removeTagForBinding,
+  removeTagsForBindingWithPrefix,
+  getIdentityFromAddress,
 };
