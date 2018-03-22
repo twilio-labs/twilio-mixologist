@@ -27,6 +27,7 @@ const INTENTS = {
   INVALID: 'invalid',
   UNREGISTER: 'unregister',
   REGISTER: 'register',
+  GET_EVENT: 'getEvent',
 };
 
 const COOKIES = {
