@@ -135,6 +135,12 @@ function determineIntent(message, forEvent) {
     };
   }
 
+  if (msgNormalized.startsWith('_eventinfo')) {
+    return {
+      intent: INTENTS.GET_EVENT,
+    };
+  }
+
   if (msgNormalized.indexOf('help') !== -1) {
     return {
       intent: INTENTS.HELP,
@@ -280,6 +286,23 @@ async function handleIncomingMessages(req, res) {
 
   const { eventId } = customerEntry.data;
   customer.eventId = eventId;
+  const messageIntent = determineIntent(req.body.Body, eventId);
+
+  if (messageIntent.intent === INTENTS.REGISTER) {
+    customerEntry = await setEventForCustomer(
+      customerEntry,
+      messageIntent.value
+    );
+    res.type('text/plain').send(`Registered for ${messageIntent.value}`);
+    return;
+  } else if (messageIntent.intent === INTENTS.UNREGISTER) {
+    customerEntry = await removeEventForCustomer(customerEntry);
+    res.type('text/plain').send(`Unregistered from all events`);
+    return;
+  } else if (messageIntent.intent === INTENTS.GET_EVENT) {
+    res.type('text/plain').send(`You are registered for: ${eventId}`);
+    return;
+  }
 
   if (!config(eventId).isOn) {
     res.type('text/plain').send(getSystemOfflineMessage(eventId));
@@ -289,7 +312,6 @@ async function handleIncomingMessages(req, res) {
   const twiml = new MessagingResponse();
   res.type('text/xml').send(twiml.toString());
 
-  const messageIntent = determineIntent(req.body.Body, eventId);
   if (messageIntent.intent !== INTENTS.ORDER) {
     const availableOptionsMap = config(eventId).availableCoffees;
     const availableOptions = Object.keys(availableOptionsMap).filter(
@@ -297,16 +319,7 @@ async function handleIncomingMessages(req, res) {
     );
     try {
       let responseMessage;
-      if (messageIntent.intent === INTENTS.REGISTER) {
-        customerEntry = await setEventForCustomer(
-          customerEntry,
-          messageIntent.value
-        );
-        responseMessage = `Registered for ${messageIntent.value}`;
-      } else if (messageIntent.intent === INTENTS.UNREGISTER) {
-        customerEntry = await removeEventForCustomer(customerEntry);
-        responseMessage = `Unregistered from all events`;
-      } else if (messageIntent.intent === INTENTS.HELP) {
+      if (messageIntent.intent === INTENTS.HELP) {
         responseMessage = getHelpMessage(availableOptions);
       } else if (messageIntent.intent === INTENTS.QUEUE) {
         const queuePosition = await getQueuePosition(customer);
@@ -373,8 +386,13 @@ async function handleIncomingMessages(req, res) {
       },
     });
 
-    const newBindingSid = await registerOpenOrder(customer.bindingSid);
-    await updateBindingSidForCustomer(customerEntry, newBindingSid);
+    const newBindingSid = await registerOpenOrder(
+      customerEntry.data.bindingSid
+    );
+    customerEntry = await updateBindingSidForCustomer(
+      customerEntry,
+      newBindingSid
+    );
 
     const msg = getOrderCreatedMessage(coffeeOrder, orderEntry.index, eventId);
     await sendMessageToCustomer(customer, msg);
