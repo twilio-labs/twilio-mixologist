@@ -14,6 +14,7 @@ const {
   loadConnectedPhoneNumbers,
   resetAllLists,
   deregisterOpenOrder,
+  removeAllEventConfigs,
 } = require('../twilio');
 const { updateGlobalConfigEntry } = require('../../data/config');
 
@@ -41,6 +42,7 @@ async function cancelOpenOrders(eventId) {
 async function resetApplication() {
   await resetAllLists(SYNC_NAMES.ORDER_QUEUE);
   await resetAllLists(SYNC_NAMES.ALL_ORDERS);
+  await removeAllEventConfigs();
   await configurationDoc.update({ data: DEFAULT_CONFIGURATION });
   const connectedPhoneNumbers = await loadConnectedPhoneNumbers();
   await updateGlobalConfigEntry('connectedPhoneNumbers', connectedPhoneNumbers);
