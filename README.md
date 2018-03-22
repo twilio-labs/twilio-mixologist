@@ -44,7 +44,7 @@ The current [Twilio Channels] are:
 
 ## Requirements
 
-* [Node.js] version 8.1 or higher
+* [Node.js] version 9.8 or higher
 * [npm]
 * A Twilio account - [Sign up here](https://www.twilio.com/try-twilio)
 
