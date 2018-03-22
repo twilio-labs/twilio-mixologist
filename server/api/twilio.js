@@ -295,7 +295,7 @@ async function removeDocument(docName) {
   return syncClient.documents(docName).remove();
 }
 
-async function removeAllEventConfigs() {
+async function removeAllEventConfigDocs() {
   const configNames = (await syncClient.documents.list())
     .map(doc => doc.uniqueName)
     .filter(name => name.startsWith(SYNC_NAMES.EVENT_CONFIG));
@@ -426,5 +426,5 @@ module.exports = {
   removeTagForBinding,
   removeTagsForBindingWithPrefix,
   getIdentityFromAddress,
-  removeAllEventConfigs,
+  removeAllEventConfigDocs,
 };

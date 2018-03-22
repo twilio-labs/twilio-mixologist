@@ -89,6 +89,10 @@ async function deleteEventConfig(event) {
   return true;
 }
 
+function unsetAllEventConfigs() {
+  eventConfigMap.clear();
+}
+
 async function createEventConfig(eventName) {
   const customData = {
     visibleNumbers: internalGlobalConfig.connectedPhoneNumbers,
@@ -108,4 +112,5 @@ module.exports = {
   updateGlobalConfigEntry,
   createEventConfig,
   deleteEventConfig,
+  unsetAllEventConfigs,
 };
