@@ -39,11 +39,14 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-react": "^7.7.0",
+    "less": "^3.0.1",
+    "less-loader": "^4.1.0",
     "node-env-run": "^1.0.1",
     "nodemon": "^1.11.0",
     "npm-run-all": "^4.0.2",
     "pino-colada": "^1.4.0",
-    "preact-cli": "^1.4.1",
+    "preact-cli": "^2.2.1",
+    "preact-cli-plugin-fast-async": "^1.0.1",
     "prettier": "^1.11.1"
   },
   "dependencies": {
