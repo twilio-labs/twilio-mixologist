@@ -287,15 +287,31 @@ async function createIfNotExists(resource, name, data) {
   try {
     return await resource(name).fetch();
   } catch (err) {
-    return await resource.create(argument);
+    return resource.create(argument);
   }
+}
+
+async function removeDocument(docName) {
+  return syncClient.documents(docName).remove();
+}
+
+async function removeAllEventConfigs() {
+  const configNames = (await syncClient.documents.list())
+    .map(doc => doc.uniqueName)
+    .filter(name => name.startsWith(SYNC_NAMES.EVENT_CONFIG));
+
+  return Promise.all(configNames.map(removeDocument));
+}
+
+async function removeList(listName) {
+  return syncClient.syncLists(listName).remove();
 }
 
 async function resetAllLists(baseName) {
   const listNames = (await syncClient.syncLists.list())
     .map(list => list.uniqueName)
     .filter(name => name.startsWith(baseName));
-  const listPromises = listNames.map(resetList);
+  const listPromises = listNames.map(removeList);
   return Promise.all(listPromises);
 }
 
@@ -410,4 +426,5 @@ module.exports = {
   removeTagForBinding,
   removeTagsForBindingWithPrefix,
   getIdentityFromAddress,
+  removeAllEventConfigs,
 };
