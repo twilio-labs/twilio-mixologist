@@ -19,19 +19,31 @@ export default class Home extends Component {
     this.setState({ events });
   }
 
+  renderEvents() {
+    if (!this.state.events || !Array.isArray(this.state.events)) {
+      return <Progress indeterminate />;
+    }
+
+    if (this.state.events.length === 0) {
+      return (
+        <div>
+          <h5>No events found.</h5>
+          <p>Please create an event in the admin section</p>
+        </div>
+      );
+    }
+
+    return this.state.events.map(({ eventId, eventName }) => (
+      <EventEntry eventId={eventId} name={eventName} />
+    ));
+  }
+
   render() {
-    let events = this.state.events ? (
-      this.state.events.map(({ eventId, eventName }) => (
-        <EventEntry eventId={eventId} name={eventName} />
-      ))
-    ) : (
-      <Progress indeterminate />
-    );
     return (
       <div class={style.home}>
         <h2>Twilio Barista</h2>
         <p>Welcome to Twilio Barista. Please pick your event:</p>
-        <div class={style.container}>{events}</div>
+        <div class={style.container}>{this.renderEvents()}</div>
       </div>
     );
   }
