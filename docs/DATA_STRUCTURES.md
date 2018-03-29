@@ -7,15 +7,29 @@ The following data structures are used in the application.
 This is a [Twilio Sync Document] with the key `configuration` storing configuration data of the following structure:
 
 ```ts
-type ConfigurationData = {
-  isOn: boolean;
+type GlobalConfigurationData = {
   connectedPhoneNumbers: string[];
+  spellingMap: {
+    SomeSpelling: string;
+  };
+}
+```
+
+Changes in the document will trigger a [sync webhook] that will update the [config] on the server.
+
+## Event Configuration
+
+This is a [Twilio Sync Document] with the key prefix `event_` followed by the ID of your event storing configuration data of the following structure:
+
+```ts
+type GlobalConfigurationData = {
+  isVisible: boolean;
+  isOn: boolean;
+  mode: 'barista' | 'bartender';
+  visibleNumbers: string[];
   offlineMessage: string;
   availableCoffees: {
     SomeCoffee: boolean;
-  };
-  spellingMap: {
-    SomeSpelling: string;
   };
   repoUrl: string;
   expectedOrders: numbers;
@@ -26,7 +40,7 @@ Changes in the document will trigger a [sync webhook] that will update the [conf
 
 ## Order Queue
 
-This is a [Twilio Sync List] with the key `orderQueue` storing entries of the following structure:
+This is a [Twilio Sync List] with the key prefix `orderQueue_` storing entries of the following structure:
 
 ```ts
 type OrderQueueListEntry = {
@@ -51,6 +65,8 @@ type CustomerMapData = {
   countryCode: string;
   contact: string;
   source: string;
+  eventExpiryData: number;
+  eventId: string;
 }
 ```
 
@@ -58,7 +74,7 @@ The keys are generated as 'identity' based on the phone number. For details chec
 
 ## All Orders
 
-This is a [Twilio Sync List] with the key `allOrders` with entries of the following data structure:
+This is a [Twilio Sync List] with the key prefix `allOrders_` with entries of the following data structure:
 
 ```ts
 type AllOrdersListEntry = {
