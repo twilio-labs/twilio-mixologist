@@ -44,7 +44,7 @@
     "eslint-plugin-react": "^7.7.0",
     "less": "^3.0.1",
     "less-loader": "^4.1.0",
-    "node-env-run": "^1.0.1",
+    "node-env-run": "^3.0.1",
     "nodemon": "^1.11.0",
     "npm-run-all": "^4.0.2",
     "pino-colada": "^1.4.0",
