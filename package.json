@@ -15,7 +15,7 @@
     "start":
       "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
     "start:prod": "node .",
-    "start:dev": "node-env-run . -f | pino-colada",
+    "start:dev": "node-env-run . -f  -- --inspect | pino-colada",
     "lint": "npm-run-all lint:*",
     "lint:api": "eslint server",
     "lint:preact": "eslint client",
