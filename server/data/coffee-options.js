@@ -14,14 +14,25 @@ function determineCoffeeFromMessage(messageBody, forEvent) {
   const possibleOptions = config(forEvent).spellingMap;
   const availableOptions = config(forEvent).availableCoffees;
   const message = messageBody.trim().toLowerCase();
-  for (const option of Object.keys(possibleOptions).sort(sortByLengthDesc)) {
-    if (
-      message.indexOf(option) !== -1 &&
-      availableOptions[possibleOptions[option]]
-    ) {
-      return possibleOptions[option];
+
+  // add availableOptions to possibleOptions to avoid missing entries:
+  Object.keys(availableOptions).forEach(name => {
+    possibleOptions[name.toLowerCase()] = name;
+  });
+
+  const optionsSortedByLength = Object.keys(possibleOptions).sort(
+    sortByLengthDesc
+  );
+
+  /* eslint-disable no-restricted-syntax */
+  for (const option of optionsSortedByLength) {
+    const actualPick = possibleOptions[option];
+    if (message.indexOf(option) !== -1 && availableOptions[actualPick]) {
+      return actualPick;
     }
   }
+  /* eslint-enable no-restricted-syntax */
+
   return null;
 }
 
