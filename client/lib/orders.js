@@ -79,6 +79,10 @@ export default class OrderService /* extends EventEmitter */ {
       this.orders = uniqBy(this.orders, 'number');
       this.emit('updated', { orders: this.orders });
     });
+
+    this.ordersList.on('removed', () => {
+      this.emit('reset');
+    });
   }
 
   fetchOrders() {

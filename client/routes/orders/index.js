@@ -1,4 +1,6 @@
 import { h, Component } from 'preact';
+import { route } from 'preact-router';
+
 import OrderList from '../../components/order-list';
 import OrderService from '../../lib/orders';
 import style from './style';
@@ -12,6 +14,9 @@ export default class Orders extends Component {
       this.setState({
         orders,
       });
+    });
+    this.orderService.on('reset', () => {
+      route('/');
     });
   }
 
