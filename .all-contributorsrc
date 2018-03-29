@@ -1,0 +1,53 @@
+{
+  "projectName": "twilio-barista",
+  "projectOwner": "dkundel",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "dkundel",
+      "name": "Dominik Kundel",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1505101?v=4",
+      "profile": "https://dkundel.com",
+      "contributions": [
+        "code",
+        "bug",
+        "doc"
+      ]
+    },
+    {
+      "login": "philnash",
+      "name": "Phil Nash",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/31462?v=4",
+      "profile": "https://philna.sh",
+      "contributions": [
+        "code",
+        "bug"
+      ]
+    },
+    {
+      "login": "robinske",
+      "name": "Kelley Robinson",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/3673341?v=4",
+      "profile": "http://krobinson.me",
+      "contributions": [
+        "code",
+        "bug"
+      ]
+    },
+    {
+      "login": "devinrader",
+      "name": "Devin Rader",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1095289?v=4",
+      "profile": "https://github.com/devinrader",
+      "contributions": [
+        "bug"
+      ]
+    }
+  ]
+}
