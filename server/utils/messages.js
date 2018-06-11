@@ -3,6 +3,9 @@ const { commaListsAnd } = require('common-tags');
 
 const { config } = require('../data/config');
 
+const DATA_POLICY =
+  'We only use your phone number to notify you about our coffee service and redact all the messages & phone numbers afterwards.';
+
 // available values: originalMessage, availableOptions
 const WRONG_ORDER_MESSAGES = [
   'Seems like your order of "${originalMessage}" is not something we can serve. Possible orders are ${availableOptions}. Write \'I need help\' to get an overview of other commands.',
@@ -15,7 +18,7 @@ const EXISTING_ORDER_MESSAGES = [
 
 // available values: product, orderNumber
 const ORDER_CREATED_MESSAGES = [
-  "Thanks for ordering a ${product} from the Twilio powered Coffee Shop. Your order number is #${orderNumber}. We'll text you back when it's ready. In the meantime check out this repo ${repoUrl} if you want to see how we built this app.",
+  "Thanks for ordering a ${product} from the Twilio powered Coffee Shop. Your order number is #${orderNumber}. We'll text you back when it's ready. ${dataPolicy} In the meantime check out this repo ${repoUrl} if you want to see how we built this app. ",
 ];
 
 // available values: product, orderNumber
@@ -91,8 +94,9 @@ function getExistingOrderMessage(product, orderNumber) {
 
 function getOrderCreatedMessage(product, orderNumber, forEvent) {
   const repoUrl = config(forEvent).repoUrl;
+  const dataPolicy = DATA_POLICY;
   const tmpl = template(pickRandom(ORDER_CREATED_MESSAGES));
-  return tmpl({ product, orderNumber, repoUrl });
+  return tmpl({ product, orderNumber, repoUrl, dataPolicy });
 }
 
 function getOrderCancelledMessage(product, orderNumber) {

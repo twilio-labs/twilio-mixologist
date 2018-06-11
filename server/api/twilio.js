@@ -151,6 +151,7 @@ async function setup(baseUrl) {
 
 async function configureWebhookUrls(baseUrl) {
   await messagingClient.update({
+    friendlyName: 'Twilio Barista',
     inboundRequestUrl: urljoin(baseUrl, '/api/webhook/incoming'),
   });
   await syncClient.update({
