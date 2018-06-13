@@ -84,17 +84,18 @@ async function registerTagForBinding(bindingSid, tag) {
     endpoint: originalBinding.endpoint,
     bindingType: originalBinding.bindingType,
   };
+  console.log(originalBinding, newBindingData);
   newBindingData.tag = [
     ...(originalBinding.tags || []).filter(t => t !== tag),
     tag,
   ];
   const { sid } = await notifyClient.bindings.create(newBindingData);
+  console.log(sid);
   return sid;
 }
 
 async function removeTagForBinding(bindingSid, tagToRemove) {
   const originalBinding = await notifyClient.bindings(bindingSid).fetch();
-  console.log(originalBinding);
   const newBindingData = {
     identity: originalBinding.identity,
     address: originalBinding.address,
@@ -110,7 +111,6 @@ async function removeTagForBinding(bindingSid, tagToRemove) {
 
 async function removeTagsForBindingWithPrefix(bindingSid, tagPrefix) {
   const originalBinding = await notifyClient.bindings(bindingSid).fetch();
-  console.log(originalBinding);
   const newBindingData = {
     identity: originalBinding.identity,
     address: originalBinding.address,
