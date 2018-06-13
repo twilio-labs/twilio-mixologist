@@ -81,12 +81,12 @@ async function setEventForCustomer(customerEntry, eventId) {
   const eventExpiryDate = moment()
     .add(5, 'days')
     .valueOf();
-  let bindingSid = await removeTagsForBindingWithPrefix(
+  // let bindingSid = await removeTagsForBindingWithPrefix(
+  //   customerEntry.data.bindingSid,
+  //   TAGS.PREFIX_EVENT
+  // );
+  const bindingSid = await registerTagForBinding(
     customerEntry.data.bindingSid,
-    TAGS.PREFIX_EVENT
-  );
-  bindingSid = await registerTagForBinding(
-    bindingSid,
     TAGS.PREFIX_EVENT + eventId
   );
   const data = Object.assign({}, customerEntry.data, {
