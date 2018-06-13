@@ -91,6 +91,7 @@ async function registerTagForBinding(bindingSid, tag) {
 
 async function removeTagForBinding(bindingSid, tagToRemove) {
   const originalBinding = await notifyClient.bindings(bindingSid).fetch();
+  console.log(originalBinding);
   const newBindingData = {
     identity: originalBinding.identity,
     address: originalBinding.address,
