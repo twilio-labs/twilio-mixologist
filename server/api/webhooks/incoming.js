@@ -226,7 +226,7 @@ async function handleIncomingMessages(req, res) {
   let customerEntry = await findOrCreateCustomer(customer);
   if (!customerEntry.data.bindingSid) {
     const { sid } = await registerAddress(req.body.From, customer.source);
-    await updateBindingSidForCustomer(customerEntry, sid);
+    customerEntry = await updateBindingSidForCustomer(customerEntry, sid);
     customer.bindingSid = sid;
   }
 

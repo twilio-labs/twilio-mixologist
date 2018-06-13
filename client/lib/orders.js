@@ -1,7 +1,7 @@
 import * as EventEmitter from 'event-emitter';
-import TwilioClient from './sync-client';
-import { SYNC_NAMES } from '../../shared/consts';
 import * as uniqBy from 'lodash.uniqby';
+import { SYNC_NAMES } from '../../shared/consts';
+import TwilioClient from './sync-client';
 
 let instance;
 
@@ -70,14 +70,17 @@ export default class OrderService /* extends EventEmitter */ {
       this.emit('updated', { orders: this.orders });
     });
 
-    this.ordersList.on('itemRemoved', item => {
-      const idx = this.orders.findIndex(
-        existingItem => item.index === existingItem.number
-      );
+    this.ordersList.on('itemRemoved', () => {
+      // const idx = this.orders.findIndex(
+      //   existingItem => item.index === existingItem.number
+      // );
 
-      this.orders.splice(idx, 1);
-      this.orders = uniqBy(this.orders, 'number');
-      this.emit('updated', { orders: this.orders });
+      // this.orders.splice(idx, 1);
+      // this.orders = uniqBy(this.orders, 'number');
+      this.fetchOrders().then(orders => {
+        this.orders = orders;
+        this.emit('updated', { orders });
+      });
     });
 
     this.ordersList.on('removed', () => {

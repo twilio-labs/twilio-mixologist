@@ -84,13 +84,11 @@ async function registerTagForBinding(bindingSid, tag) {
     endpoint: originalBinding.endpoint,
     bindingType: originalBinding.bindingType,
   };
-  console.log(originalBinding, newBindingData);
   newBindingData.tag = [
     ...(originalBinding.tags || []).filter(t => t !== tag),
     tag,
   ];
   const { sid } = await notifyClient.bindings.create(newBindingData);
-  console.log(sid);
   return sid;
 }
 
