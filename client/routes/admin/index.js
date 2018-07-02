@@ -12,7 +12,7 @@ export default class Orders extends Component {
   constructor(...args) {
     super(...args);
 
-    this.state.events = [];
+    this.state.events = undefined;
     this.state.config = undefined;
     this.state.eventConfig = undefined;
     this.configService = ConfigService.shared();
@@ -133,7 +133,7 @@ export default class Orders extends Component {
     if (this.eventId) {
       this.configService.changeEvent(this.eventId);
     } else {
-      this.setState({ eventConfig: {} });
+      this.setState({ eventConfig: undefined });
     }
   }
 

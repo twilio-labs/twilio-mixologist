@@ -48,9 +48,9 @@ export default class EventConfigurator extends Component {
       onUpdateEventConfig,
       onCancelOrders,
     } = this.props;
-    const eventOptions = events.map(x => (
+    const eventOptions = events ? events.map(x => (
       <option selected={x === currentEventId}>{x}</option>
-    ));
+    )) : [];
     const selectEventOptions = (
       <div class={style.eventSelector}>
         <label for="eventPicker">Pick your event</label>
@@ -78,10 +78,8 @@ export default class EventConfigurator extends Component {
         </Button>
       </div>
     );
-    return (
+    const eventConfigurator = (
       <div>
-        <CreateEventForm onNewEvent={onCreateEvent} />
-        {events.length > 0 && selectEventOptions}
         <h5>Event Configuration</h5>
         {currentEventConfig ? (
           <Configurator
@@ -89,9 +87,16 @@ export default class EventConfigurator extends Component {
             update={onUpdateEventConfig}
           />
         ) : (
-          <Progress indeterminate />
+          <p>There are no events, please create one above.</p>
         )}
         {currentEventConfig && eventActionButtons}
+      </div>
+    )
+    return (
+      <div>
+        <CreateEventForm onNewEvent={onCreateEvent} />
+        {events && events.length > 0 && selectEventOptions}
+        {events ? eventConfigurator : (<Progress indeterminate />)}
       </div>
     );
   }
