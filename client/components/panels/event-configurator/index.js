@@ -1,6 +1,5 @@
-import { h, Component } from 'preact';
-import mdl from 'material-design-lite/material';
-import { Tabs, Button, TextField, Progress } from 'preact-mdl';
+import { Component } from 'preact';
+import { Button, Progress, TextField } from 'preact-mdl';
 import Configurator from '../configurator';
 import style from './style';
 

@@ -1,9 +1,9 @@
-import { h, Component } from 'preact';
-import mdl from 'material-design-lite/material';
-import { Tabs, Button, TextField, Progress } from 'preact-mdl';
+import { Component } from 'preact';
+import { Progress, Tabs } from 'preact-mdl';
 import Configurator from '../../components/panels/configurator';
 import EventConfigurator from '../../components/panels/event-configurator';
 import Messenger from '../../components/panels/messenger';
+import Metrics from '../../components/panels/metrics';
 import Other from '../../components/panels/other';
 import ConfigService from '../../lib/config';
 import style from './style';
@@ -51,6 +51,7 @@ export default class Orders extends Component {
             Configuration
           </Tabs.Tab>
           <Tabs.Tab href="#events">Events</Tabs.Tab>
+          <Tabs.Tab href="#metrics">Metrics</Tabs.Tab>
           <Tabs.Tab href="#messages">Messages</Tabs.Tab>
           <Tabs.Tab href="#other">Other</Tabs.Tab>
         </Tabs.TabBar>
@@ -78,6 +79,9 @@ export default class Orders extends Component {
             onUpdateEventConfig={this.updateEventConfig.bind(this)}
             onCancelOrders={this.cancelAllOpenOrders.bind(this)}
           />
+        </Tabs.TabPanel>
+        <Tabs.TabPanel id="metrics">
+          <Metrics events={this.state.events} />
         </Tabs.TabPanel>
         <Tabs.TabPanel id="messages">
           <Messenger />
