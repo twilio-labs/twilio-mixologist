@@ -62,10 +62,14 @@ async function handleRetrievingStats(req, res) {
   const finalStats = flat(stats);
 
   if (cache === 'write') {
-    await metricsMap.syncMapItems.create({
-      key: eventId,
-      data: finalStats,
-    });
+    try {
+      await metricsMap.syncMapItems(eventId).update({ data: finalStats });
+    } catch (err) {
+      await metricsMap.syncMapItems.create({
+        key: eventId,
+        data: finalStats,
+      });
+    }
   }
   res.send(finalStats);
 }
