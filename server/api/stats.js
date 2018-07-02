@@ -15,8 +15,7 @@ function getAvailableProducts(availableCoffees) {
   return products;
 }
 
-async function handler(req, res) {
-  const { eventId } = req.query;
+async function fetchStats(eventId) {
   const {
     expectedOrders,
     availableCoffees,
@@ -29,33 +28,39 @@ async function handler(req, res) {
     .map(n => n.trim())
     .slice(0, 2);
   const product = getAvailableProducts(availableCoffees);
+  const allOrders = await allOrdersList(eventId).syncListItems.list();
+  const stats = allOrders.map(order => order.data).reduce(
+    (currentStats, order) => {
+      currentStats.totalOrders++;
+      currentStats.source[order.source] = safelyIncrement(
+        currentStats.source[order.source]
+      );
+      currentStats.product[order.product] = safelyIncrement(
+        currentStats.product[order.product]
+      );
+      currentStats.countryCode[order.countryCode] = safelyIncrement(
+        currentStats.countryCode[order.countryCode]
+      );
+      return currentStats;
+    },
+    {
+      totalOrders: 0,
+      product,
+      countryCode: {},
+      source: {},
+      expectedOrders,
+      phoneNumbers,
+      repoUrl,
+      eventType: mode,
+    }
+  );
+  return stats;
+}
+
+async function handler(req, res) {
+  const { eventId } = req.query;
   try {
-    const allOrders = await allOrdersList(eventId).syncListItems.list();
-    const stats = allOrders.map(order => order.data).reduce(
-      (currentStats, order) => {
-        currentStats.totalOrders++;
-        currentStats.source[order.source] = safelyIncrement(
-          currentStats.source[order.source]
-        );
-        currentStats.product[order.product] = safelyIncrement(
-          currentStats.product[order.product]
-        );
-        currentStats.countryCode[order.countryCode] = safelyIncrement(
-          currentStats.countryCode[order.countryCode]
-        );
-        return currentStats;
-      },
-      {
-        totalOrders: 0,
-        product,
-        countryCode: {},
-        source: {},
-        expectedOrders,
-        phoneNumbers,
-        repoUrl,
-        eventType: mode,
-      }
-    );
+    const stats = await fetchStats(eventId);
     res.send(stats);
   } catch (err) {
     req.log.error(err);
@@ -65,4 +70,5 @@ async function handler(req, res) {
 
 module.exports = {
   handler,
+  fetchStats,
 };

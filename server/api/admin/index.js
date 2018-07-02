@@ -4,11 +4,13 @@ const bodyParser = require('body-parser');
 const { gateForAdmin } = require('../../utils/auth');
 const numbers = require('./numbers');
 const events = require('./events');
+const metrics = require('./metrics');
 
 const parseJsonBody = bodyParser.json();
 
 router.get('/numbers', numbers.get);
 router.get('/events', events.get);
+router.get('/metrics/:eventId', metrics.get);
 router.post(
   '/notification',
   gateForAdmin,

@@ -35,6 +35,7 @@ const orderQueueList = eventId =>
   syncClient.syncLists(SYNC_NAMES.ORDER_QUEUE + eventId);
 const configurationDoc = syncClient.documents(SYNC_NAMES.CONFIGURATION);
 const customersMap = syncClient.syncMaps(SYNC_NAMES.CUSTOMERS);
+const metricsMap = syncClient.syncMaps(SYNC_NAMES.METRICS);
 const allOrdersList = eventId =>
   syncClient.syncLists(SYNC_NAMES.ALL_ORDERS + eventId);
 
@@ -272,13 +273,16 @@ async function createOrderQueue(eventId) {
 const createCustomerMap = function() {
   return createIfNotExists(syncClient.syncMaps, SYNC_NAMES.CUSTOMERS);
 };
+const createMetricsMap = function() {
+  return createIfNotExists(syncClient.syncMaps, SYNC_NAMES.METRICS);
+};
 async function createAllOrdersList(eventId) {
   const name = SYNC_NAMES.ALL_ORDERS + eventId;
   return resetList(name);
 }
 
 async function createResources() {
-  return Promise.all([createConfigurationDoc(), createCustomerMap()]);
+  return Promise.all([createConfigurationDoc(), createCustomerMap(), createMetricsMap()]);
 }
 
 async function createIfNotExists(resource, name, data) {
@@ -404,6 +408,7 @@ module.exports = {
   orderQueueList,
   configurationDoc,
   customersMap,
+  metricsMap,
   allOrdersList,
   setup,
   createToken,

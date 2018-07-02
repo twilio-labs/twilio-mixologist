@@ -8,6 +8,7 @@ const SYNC_NAMES = {
   EVENT_CONFIG: 'event_',
   CUSTOMERS: 'customers',
   ALL_ORDERS: 'allOrders_',
+  METRICS: 'metrics'
 };
 
 const DEFAULT_JSON_ENTRY_KEY = 'CHOOSE_KEY';
