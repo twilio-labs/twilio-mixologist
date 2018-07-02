@@ -1,17 +1,13 @@
-import { h, Component } from 'preact';
+import { Component } from 'preact';
 import { Router } from 'preact-router';
 import { Match } from 'preact-router/match';
-
 import TwilioClient from '../lib/sync-client';
-
-import Header from './header';
-import Home from '../routes/home';
-import Orders from '../routes/orders';
 import Admin from '../routes/admin';
-import Kiosk from '../routes/kiosk';
 import Dashboard from '../routes/dashboard';
-// import Home from 'async!./home';
-// import Profile from 'async!./profile';
+import Home from '../routes/home';
+import Kiosk from '../routes/kiosk';
+import Orders from '../routes/orders';
+import Header from './header';
 
 export default class App extends Component {
   constructor(...args) {
@@ -25,7 +21,7 @@ export default class App extends Component {
     this.syncClient.on('disconnected', () => {
       this.setState({ isAdmin: false, isLoggedIn: false });
     });
-    const isDashboard = location.pathname === '/dashboard';
+    const isDashboard = location.pathname.endsWith('/dashboard');
     this.syncClient
       .init(isDashboard)
       .then(() => {
