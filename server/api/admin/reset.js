@@ -1,3 +1,4 @@
+const PromiseThrottle = require('promise-throttle');
 const { DEFAULT_CONFIGURATION } = require('../../../shared/consts');
 const { getOrderCancelledMessage } = require('../../utils/messages');
 const {
@@ -14,6 +15,7 @@ const {
   resetAllLists,
   deregisterOpenOrder,
   removeAllEventConfigDocs,
+  restClient,
 } = require('../twilio');
 const {
   updateGlobalConfigEntry,
@@ -41,6 +43,24 @@ async function cancelOpenOrders(eventId) {
   return setPermissions();
 }
 
+async function deleteAllMessages() {
+  function deleteMessage(message) {
+    return message.remove().catch(err => true);
+  }
+
+  const throttle = new PromiseThrottle({
+    requestsPerSecond: 100,
+    promiseImplementation: Promise,
+  });
+  const messages = (await restClient.messages.list()).filter(
+    msg => msg.messagingServiceSid === process.env.TWILIO_MESSAGING_SERVICE
+  );
+  const promises = messages.map(message =>
+    throttle.add(deleteMessage.bind(this, message))
+  );
+  return Promise.all(promises);
+}
+
 async function resetApplication() {
   await resetAllLists(SYNC_NAMES.ORDER_QUEUE);
   await resetAllLists(SYNC_NAMES.ALL_ORDERS);
@@ -51,6 +71,7 @@ async function resetApplication() {
   await updateGlobalConfigEntry('connectedPhoneNumbers', connectedPhoneNumbers);
   await resetMap(SYNC_NAMES.CUSTOMERS);
   await resetNotify();
+  await deleteAllMessages();
   await setPermissions();
   return Promise.resolve();
 }

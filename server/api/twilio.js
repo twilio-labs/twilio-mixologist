@@ -266,23 +266,31 @@ const createConfigurationDoc = function() {
     DEFAULT_CONFIGURATION
   );
 };
+
 async function createOrderQueue(eventId) {
   const name = SYNC_NAMES.ORDER_QUEUE + eventId;
   return resetList(name);
 }
+
 const createCustomerMap = function() {
   return createIfNotExists(syncClient.syncMaps, SYNC_NAMES.CUSTOMERS);
 };
+
 const createMetricsMap = function() {
   return createIfNotExists(syncClient.syncMaps, SYNC_NAMES.METRICS);
 };
+
 async function createAllOrdersList(eventId) {
   const name = SYNC_NAMES.ALL_ORDERS + eventId;
   return resetList(name);
 }
 
 async function createResources() {
-  return Promise.all([createConfigurationDoc(), createCustomerMap(), createMetricsMap()]);
+  return Promise.all([
+    createConfigurationDoc(),
+    createCustomerMap(),
+    createMetricsMap(),
+  ]);
 }
 
 async function createIfNotExists(resource, name, data) {
