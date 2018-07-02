@@ -66,6 +66,7 @@ export default class EventConfigurator extends Component {
     const eventActionButtons = (
       <div>
         <h5>Other Actions</h5>
+        <p><strong>Important:</strong> Please make sure to only delete the event if there is nobody using the system right now.</p>
         <Button raised accent onClick={onResetEvent}>
           Reset Stats
         </Button>
