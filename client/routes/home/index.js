@@ -14,7 +14,7 @@ export default class Home extends Component {
 
   async componentWillMount() {
     const { events } = await (await fetch(
-      '/api/admin/events?type=full'
+      '/api/admin/events?type=full&visible=true'
     )).json();
     this.setState({ events });
   }

@@ -41,7 +41,14 @@ async function handleGetEventsRequest(req, res, next) {
 
   if (req.query.type === 'full') {
     events = events.map(eventId => {
-      const { eventName } = config(eventId);
+      const { eventName, isVisible } = config(eventId);
+      return { eventId, eventName, isVisible };
+    });
+
+    if (req.query.visible === 'true') {
+      events = events.filter(({ isVisible }) => isVisible);
+    }
+    events = events.map(({ eventId, eventName }) => {
       return { eventId, eventName };
     });
   }
