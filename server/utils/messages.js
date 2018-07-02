@@ -28,7 +28,7 @@ const ORDER_CANCELLED_MESSAGES = [
 
 // available values: product, orderNumber
 const ORDER_READY_MESSAGES = [
-  'Your ${product} is ready. You can collect it on the left side of the coffee stand right away, ask for order number #${orderNumber}.',
+  'Your ${product} is ready. You can skip the queue and collect it at the coffee stand right away, ask for order number #${orderNumber}.',
 ];
 
 // available values:
