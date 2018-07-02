@@ -2,7 +2,7 @@ const moment = require('moment');
 const uniqBy = require('lodash.uniqby');
 const flat = require('flat');
 const { fetchStats } = require('../stats');
-const { restClient, metricsMap } = require('../twilio');
+const { restClient, metricsMap, customersMap } = require('../twilio');
 const { config } = require('../../data/config');
 const { safe } = require('../../utils/async-requests');
 
@@ -35,11 +35,19 @@ async function handleRetrievingStats(req, res) {
   const endDateParsed = moment(endDate, 'YYYY-MM-DD').toDate();
   const { connectedPhoneNumbers } = config(eventId);
 
-  const messages = await restClient.messages.list({
+  const messages = (await restClient.messages.list({
     pageSize: 2000,
     dateSentBefore: endDateParsed,
     dateSentAfter: startDateParsed,
-  });
+  })).filter(
+    ({ messagingServiceSid }) =>
+      messagingServiceSid === process.env.TWILIO_MESSAGING_SERVICE
+  );
+
+  const customers = await customersMap.syncMapItems.list();
+  const customersForEvent = customers.filter(
+    ({ data }) => data.eventId === eventId
+  );
 
   const customerMessages = messages.filter(
     ({ from }) => !connectedPhoneNumbers.includes(from)
@@ -48,14 +56,15 @@ async function handleRetrievingStats(req, res) {
 
   stats.totalMessages = messages.length;
   stats.incomingMessages = customerMessages.length;
-  stats.totalCustomers = uniqueCustomers.length;
+  stats.totalUniqueContacts = uniqueCustomers.length;
+  stats.totalCustomers = customersForEvent.length;
 
   const finalStats = flat(stats);
 
   if (cache === 'write') {
     await metricsMap.syncMapItems.create({
       key: eventId,
-      data: finalStats
+      data: finalStats,
     });
   }
   res.send(finalStats);
