@@ -20,6 +20,7 @@ const {
 const {
   updateGlobalConfigEntry,
   unsetAllEventConfigs,
+  config,
 } = require('../../data/config');
 
 async function cancelOpenOrders(eventId) {
@@ -52,8 +53,12 @@ async function deleteAllMessages() {
     requestsPerSecond: 100,
     promiseImplementation: Promise,
   });
+  const { connectedPhoneNumbers } = config();
   const messages = (await restClient.messages.list()).filter(
-    msg => msg.messagingServiceSid === process.env.TWILIO_MESSAGING_SERVICE
+    msg =>
+      msg.messagingServiceSid === process.env.TWILIO_MESSAGING_SERVICE ||
+      connectedPhoneNumbers.includes(msg.from) ||
+      connectedPhoneNumbers.includes(msg.to)
   );
   const promises = messages.map(message =>
     throttle.add(deleteMessage.bind(this, message))
