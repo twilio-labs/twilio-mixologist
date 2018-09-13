@@ -3,7 +3,7 @@
   "short_name": "Barista",
   "start_url": "/",
   "display": "standalone",
-  "orientation": "portrait",
+  "orientation": "any",
   "background_color": "#fff",
   "theme_color": "#F22F46",
   "icons": [
