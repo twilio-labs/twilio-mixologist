@@ -23,7 +23,7 @@
     "pretest": "npm run lint",
     "test": "preact test",
     "build:preact":
-      "preact build --src client --dest client-dist --no-prerender",
+      "preact build --src client --dest client-dist --no-prerender --template client/index.html",
     "build": "npm-run-all -p build:*",
     "serve":
       "stmux -w always -m beep,system -- [ [ \"npm run serve:preact\" ] : [ \"npm run serve:api\" ] ]",
@@ -31,7 +31,7 @@
     "serve:api": "npm run start:dev",
     "dev":
       "stmux -w always -m beep,system -- [ [ \"npm run dev:preact\" ] : [ \"npm run dev:api\" ] ]",
-    "dev:preact": "preact watch --src client",
+    "dev:preact": "preact watch --src client --template client/index.html",
     "dev:api":
       "nodemon --watch shared --watch server --exec \"npm run start:dev\"",
     "snyk-protect": "snyk protect",
