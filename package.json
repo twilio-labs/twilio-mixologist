@@ -13,8 +13,7 @@
   "author": "Dominik Kundel <dominik.kundel@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start":
-      "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
     "start:prod": "node .",
     "start:dev": "node-env-run . -f  -- --inspect | pino-colada",
     "lint": "npm-run-all lint:*",
@@ -22,22 +21,19 @@
     "lint:preact": "eslint client",
     "pretest": "npm run lint",
     "test": "preact test",
-    "build:preact":
-      "preact build --src client --dest client-dist --no-prerender --template client/index.html",
+    "build:preact": "preact build --src client --dest client-dist --no-prerender --template client/index.html",
     "build": "npm-run-all -p build:*",
-    "serve":
-      "stmux -w always -m beep,system -- [ [ \"npm run serve:preact\" ] : [ \"npm run serve:api\" ] ]",
+    "serve": "stmux -w always -m beep,system -- [ [ \"npm run serve:preact\" ] : [ \"npm run serve:api\" ] ]",
     "serve:preact": "npm run build:preact && preact serve --dir client-dist",
     "serve:api": "npm run start:dev",
-    "dev":
-      "stmux -w always -m beep,system -- [ [ \"npm run dev:preact\" ] : [ \"npm run dev:api\" ] ]",
+    "dev": "stmux -w always -m beep,system -- [ [ \"npm run dev:preact\" ] : [ \"npm run dev:api\" ] ]",
     "dev:preact": "preact watch --src client --template client/index.html",
-    "dev:api":
-      "nodemon --watch shared --watch server --exec \"npm run start:dev\"",
+    "dev:api": "nodemon --watch shared --watch server --exec \"npm run start:dev\"",
     "snyk-protect": "snyk protect",
     "prepare": "npm run snyk-protect"
   },
   "devDependencies": {
+    "dotenv": "^6.2.0",
     "eslint": "^4.19.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-config-prettier": "^2.9.0",
@@ -82,6 +78,7 @@
     "preact-mdl": "^2.2.1",
     "preact-router": "^2.5.2",
     "promise-throttle": "^1.0.0",
+    "rollbar": "^2.5.1",
     "snyk": "^1.52.1",
     "twilio": "^3.13.1",
     "twilio-common": "^0.1.6",
