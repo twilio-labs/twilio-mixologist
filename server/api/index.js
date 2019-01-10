@@ -1,11 +1,15 @@
 const path = require('path');
 const router = require('express').Router();
 const bodyParser = require('body-parser');
-
+const Sentry = require('@sentry/node');
 const { authenticate, gateForAdmin } = require('../utils/auth');
 
 const parseJsonBody = bodyParser.json();
 
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+});
+captureMessage('Hello, world!'); //test
 // Empty endpoint that just prompts whether the API is alive
 router.get('/', (req, res, next) => {
   res.send('API Alive!');

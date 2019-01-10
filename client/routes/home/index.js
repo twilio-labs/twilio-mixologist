@@ -76,3 +76,4 @@ const EventEntry = ({ eventId, name }) => {
     </Card>
   );
 };
+
