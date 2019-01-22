@@ -1,4 +1,5 @@
 import asyncPlugin from 'preact-cli-plugin-fast-async';
+import webpack from 'webpack';
 
 /**
  * Function that mutates original webpack config.
@@ -12,6 +13,11 @@ export default function(config, env, helpers) {
   asyncPlugin(config);
   config.node.Buffer = true;
   config.entry['debug'] = './debug.js';
+
+  const plugin = new webpack.DefinePlugin({
+    'process.env.SENTRY_DSN': JSON.stringify(process.env.SENTRY_DSN),
+  });
+  config.plugins.push(plugin);
 
   if (!env.ssr) {
     const plugins = helpers.getPluginsByName(config, 'HtmlWebpackPlugin');

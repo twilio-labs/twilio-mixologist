@@ -1,7 +1,6 @@
 const path = require('path');
 const router = require('express').Router();
 const bodyParser = require('body-parser');
-
 const { authenticate, gateForAdmin } = require('../utils/auth');
 
 const parseJsonBody = bodyParser.json();
