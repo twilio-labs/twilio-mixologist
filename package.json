@@ -41,6 +41,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-react": "^7.7.0",
+    "fast-async": "^6.3.8",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "node-env-run": "^3.0.2",
@@ -48,7 +49,6 @@
     "npm-run-all": "^4.0.2",
     "pino-colada": "^1.4.0",
     "preact-cli": "^2.2.1",
-    "preact-cli-plugin-env-vars": "^1.2.1",
     "preact-cli-plugin-fast-async": "^1.0.1",
     "prettier": "^1.11.1",
     "stmux": "^1.5.5"
@@ -86,7 +86,7 @@
     "snyk": "^1.122.0",
     "twilio": "^3.26.1",
     "twilio-common": "^0.1.6",
-    "twilio-sync": "^0.9.1",
+    "twilio-sync": "0.5.8",
     "url-join": "^2.0.2"
   },
   "snyk": true

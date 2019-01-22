@@ -1,6 +1,5 @@
 import asyncPlugin from 'preact-cli-plugin-fast-async';
 import webpack from 'webpack';
-import envVars from 'preact-cli-plugin-env-vars';
 
 /**
  * Function that mutates original webpack config.
@@ -15,10 +14,20 @@ export default function(config, env, helpers) {
   config.node.Buffer = true;
   config.entry['debug'] = './debug.js';
 
-  // const plugin = new webpack.DefinePlugin({
-  //   'process.env.SENTRY_DSN': JSON.stringify(process.env.SENTRY_DSN),
-  // });
-  // config.plugins.push(plugin);
+  const plugin = new webpack.DefinePlugin({
+    'process.env.SENTRY_DSN': JSON.stringify(process.env.SENTRY_DSN),
+  });
+  config.plugins.push(plugin);
+
+  if (env.isProd) {
+
+    // Make async work
+    let babel = config.module.loaders.filter(loader => loader.loader === 'babel-loader')[0].options;
+    // Blacklist regenerator within env preset:
+    babel.presets[0][1].exclude.push('transform-async-to-generator');
+    // Add fast-async
+    babel.plugins.push([require.resolve('fast-async'), { spec: true }]);
+  }
 
   if (!env.ssr) {
     const plugins = helpers.getPluginsByName(config, 'HtmlWebpackPlugin');
