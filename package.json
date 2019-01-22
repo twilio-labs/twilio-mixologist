@@ -27,7 +27,7 @@
     "serve:preact": "npm run build:preact && preact serve --dir client-dist",
     "serve:api": "npm run start:dev",
     "dev": "stmux -w always -m beep,system -- [ [ \"npm run dev:preact\" ] : [ \"npm run dev:api\" ] ]",
-    "dev:preact": "preact watch --src client --template client/index.html",
+    "dev:preact": "PORT=8080 preact watch --src client --template client/index.html",
     "dev:api": "nodemon --watch shared --watch server --exec \"npm run start:dev\"",
     "snyk-protect": "snyk protect",
     "prepare": "npm run snyk-protect"
@@ -48,6 +48,7 @@
     "npm-run-all": "^4.0.2",
     "pino-colada": "^1.4.0",
     "preact-cli": "^2.2.1",
+    "preact-cli-plugin-env-vars": "^1.2.1",
     "preact-cli-plugin-fast-async": "^1.0.1",
     "prettier": "^1.11.1",
     "stmux": "^1.5.5"

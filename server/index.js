@@ -2,13 +2,17 @@ const express = require('express');
 const path = require('path');
 const log = require('pino')();
 const pinoMiddleware = require('express-pino-logger')({ logger: log });
-
+const Sentry = require('@sentry/node');
 const { loadConnectedPhoneNumbers } = require('./api/twilio');
 const { loadConfig, updateGlobalConfigEntry } = require('./data/config');
 const { forceSsl } = require('./utils/request');
 
 const PORT = process.env.PORT || 3000;
 const CLIENT_CODE_PATH = path.resolve(__dirname, '..', 'client-dist');
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+});
 
 (async function() {
   const app = express();
@@ -42,4 +46,4 @@ const CLIENT_CODE_PATH = path.resolve(__dirname, '..', 'client-dist');
   } catch (err) {
     log.error(err);
   }
-})();
+})().catch(console.error);
