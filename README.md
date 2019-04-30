@@ -7,6 +7,10 @@
 
 Twilio Barista is an application that allows you to solve the problem of long queues at barista stands at events. Attendees can order their coffee via various Twilio-powered channels, baristas get all orders on a website that can be loaded via a tablet and once an order is done the attendee will be notified via the system to come and pick it up. No more queueing and efficient coffee ☕️ ordering! 🎉
 
+If you want to learn more about how this has been built, check out the following blog posts:
+- [Serving Coffee with Twilio Programmable SMS and React](https://www.twilio.com/blog/2018/03/serving-coffee-with-sms-and-react.html)
+- [Building an Intelligent Coffee Order System with Twilio Autopilot](https://d-k.im/coffee-autopilot)
+
 Different versions of this system have been used at events such as:
 
 * [NDC Oslo](https://ndcoslo.com) 2016, 2017
