@@ -1,8 +1,15 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.8.0
+version: v1.13.5
 ignore: {}
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   'npm:moment:20170905':
     - twilio > moment:
         patched: '2017-12-01T00:41:16.636Z'
+  SNYK-JS-HTTPSPROXYAGENT-469131:
+    - '@sentry/node > https-proxy-agent':
+        patched: '2019-10-04T07:55:17.804Z'
+    - snyk > proxy-agent > https-proxy-agent:
+        patched: '2019-10-04T07:55:17.804Z'
+    - snyk > proxy-agent > pac-proxy-agent > https-proxy-agent:
+        patched: '2019-10-04T07:55:17.804Z'

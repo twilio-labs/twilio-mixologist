@@ -14,8 +14,7 @@
   "license": "MIT",
   "scripts": {
     "heroku-postbuild": "exit 0;",
-    "start":
-      "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
     "start:prod": "node .",
     "start:dev": "node-env-run . -f  -- --inspect | pino-colada",
     "lint": "npm-run-all lint:*",
@@ -23,19 +22,14 @@
     "lint:preact": "eslint client",
     "pretest": "npm run lint",
     "test": "preact test",
-    "build:preact":
-      "preact build --src client --dest client-dist --no-prerender --template client/index.html",
+    "build:preact": "preact build --src client --dest client-dist --no-prerender --template client/index.html",
     "build": "npm-run-all -p build:*",
-    "serve":
-      "stmux -w always -m beep,system -- [ [ \"npm run serve:preact\" ] : [ \"npm run serve:api\" ] ]",
+    "serve": "stmux -w always -m beep,system -- [ [ \"npm run serve:preact\" ] : [ \"npm run serve:api\" ] ]",
     "serve:preact": "npm run build:preact && preact serve --dir client-dist",
     "serve:api": "npm run start:dev",
-    "dev":
-      "stmux -w always -m beep,system -- [ [ \"npm run dev:preact\" ] : [ \"npm run dev:api\" ] ]",
-    "dev:preact":
-      "PORT=8080 preact watch --src client --template client/index.html",
-    "dev:api":
-      "nodemon --watch shared --watch server --exec \"npm run start:dev\"",
+    "dev": "stmux -w always -m beep,system -- [ [ \"npm run dev:preact\" ] : [ \"npm run dev:api\" ] ]",
+    "dev:preact": "PORT=8080 preact watch --src client --template client/index.html",
+    "dev:api": "nodemon --watch shared --watch server --exec \"npm run start:dev\"",
     "snyk-protect": "snyk protect",
     "prepare": "npm run snyk-protect"
   },
@@ -90,7 +84,7 @@
     "promise-throttle": "^1.0.0",
     "rollbar": "^2.5.1",
     "sentry": "^0.1.2",
-    "snyk": "^1.122.0",
+    "snyk": "^1.230.5",
     "twilio": "^3.26.1",
     "twilio-common": "^0.1.6",
     "twilio-sync": "0.5.8",
