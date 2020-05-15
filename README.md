@@ -87,7 +87,7 @@ Go afterwards in the `/admin` section and click the **Setup** button. This will 
 #### 1. Clone project and install dependencies
 
 ```bash
-git clone git@github.com:dkundel/twilio-barista.git
+git clone git@github.com:twilio-labs/twilio-barista.git
 cd twilio-barista
 npm install
 ```
@@ -116,7 +116,15 @@ Copy the `.env.example` file into a `.env` file. And set the respective values i
 
 [Set the environment variables](https://www.twilio.com/blog/2017/01/how-to-set-environment-variables.html) based on your operating system or hosting provider.
 
-#### 3. Start up server
+#### 3. Initially build your front-end
+
+After you cloned the project and installed the dependencies, you have to do an intial build of the front-end. Run the following command to do so:
+
+```bash
+npm run build
+```
+
+#### 4. Start up server
 
 #### a) Automatic detection of environment
 
@@ -144,17 +152,17 @@ npm run start:prod
 npm run dev
 ```
 
-#### 4. Setup application
+#### 5. Setup application
 
 Navigate to your deployment on an externally available URL. If you are hosting for testing on your localhost you should use [ngrok] to create a tunnel.
 
 Authenticate with an admin user, go into the Admin section and under Other click the **Setup** button. This will configure the rest.
 
-#### 5. Acquire phone numbers
+#### 6. Acquire phone numbers
 
 Choose in the Admin section under Other a country that you want a phone number from and click acquire. It will purchase the number, configure it and you can see it in the Configuration section of your Admin part under `connectedPhoneNumbers`.
 
-#### 6. You are ready for some ☕️ action!
+#### 7. You are ready for some ☕️ action!
 
 You are all set. People can start sending in messages to those numbers and you will receive them in the order section of your interface.
 
