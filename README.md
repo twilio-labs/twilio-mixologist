@@ -230,7 +230,7 @@ This project follows the [all-contributors](https://github.com/kentcdodds/all-co
 
 ## License
 
-MIT © Dominik Kundel
+MIT (c) Dominik Kundel
 
 [twilio console]: https://www.twilio.com/console
 [twilio rest api]: https://www.twilio.com/docs/api/rest
