@@ -8,7 +8,7 @@
     "type": "git"
   },
   "engines": {
-    "node": "~9.8.0"
+    "node": "~16.14.0"
   },
   "author": "Dominik Kundel <dominik.kundel@gmail.com>",
   "license": "MIT",
