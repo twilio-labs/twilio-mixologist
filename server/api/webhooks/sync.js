@@ -12,7 +12,7 @@ const {
   getOrderReadyMessage,
 } = require('../../utils/messages');
 
-const { setGlobalConfig, setEventConfig, config } = require('../../data/config');
+const { setGlobalConfig, setEventConfig } = require('../../data/config');
 
 async function handleOrderStatusChange(requestBody) {
   const itemData = JSON.parse(requestBody.ItemData);
