@@ -22,7 +22,6 @@ export default class ProductListings extends Component {
               name={icon}
               type={eventType}
             />
-            <p class={style.value}>{value}</p>
           </div>
         </div>
       );
