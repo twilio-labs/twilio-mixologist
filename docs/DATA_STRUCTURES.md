@@ -31,6 +31,7 @@ type GlobalConfigurationData = {
   availableCoffees: {
     SomeCoffee: boolean;
   };
+  orderPickupLocation: string;
   repoUrl: string;
   expectedOrders: numbers;
 }

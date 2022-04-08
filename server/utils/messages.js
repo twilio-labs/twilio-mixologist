@@ -28,7 +28,7 @@ const ORDER_CANCELLED_MESSAGES = [
 
 // available values: product, orderNumber
 const ORDER_READY_MESSAGES = [
-  'Your ${product} is ready. You can skip the queue and collect it at the coffee stand right away, ask for order number #${orderNumber}.',
+  'Your ${product} is ready. You can skip the queue and collect it at ${orderPickupLocation} right away, ask for order number #${orderNumber}.',
 ];
 
 // available values:
@@ -104,9 +104,10 @@ function getOrderCancelledMessage(product, orderNumber) {
   return tmpl({ product, orderNumber });
 }
 
-function getOrderReadyMessage(product, orderNumber) {
+function getOrderReadyMessage(product, orderNumber, forEvent) {
+  const orderPickupLocation = config(forEvent).orderPickupLocation
   const tmpl = template(pickRandom(ORDER_READY_MESSAGES));
-  return tmpl({ product, orderNumber });
+  return tmpl({ product, orderNumber, orderPickupLocation });
 }
 
 function getSystemOfflineMessage(forEvent) {
