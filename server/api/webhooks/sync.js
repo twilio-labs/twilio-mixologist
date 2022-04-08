@@ -34,7 +34,7 @@ async function handleOrderStatusChange(requestBody) {
 
   let responseMessage;
   if (itemData.status === 'ready') {
-    responseMessage = getOrderReadyMessage(itemData.product, itemIndex);
+    responseMessage = getOrderReadyMessage(itemData.product, itemIndex, eventId);
   } else {
     responseMessage = getOrderCancelledMessage(itemData.product, itemIndex);
   }
