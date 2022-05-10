@@ -50,6 +50,11 @@ export default class Kiosk extends Component {
             ))}
           </div>
         </div>
+        <p class={style.hr}>Menu</p>
+        <div>
+          {this.state.kioskInfo.menuItems.map((product) => <p class={style.menuItems}>{product}</p>)}
+          <p class={style.menuDetails}>{this.state.kioskInfo.menuDetails}</p>
+        </div>
         <p class={style.hr}>Enjoy</p>
         <p>
           <TwilioLogo />

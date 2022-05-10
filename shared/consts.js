@@ -104,6 +104,7 @@ const DEFAULT_EVENT_CONFIGURATION = {
   mode: 'barista',
   offlineMessage: 'We are sorry but there is currently no coffee.',
   availableCoffees: createBooleanMapOfArray(AVAILABLE_DEFAULT_OPTIONS),
+  menuDetails: '',
   orderPickupLocation: 'the coffee stand',
   repoUrl: 'bit.ly/twilio-barista',
   expectedOrders: 300,
