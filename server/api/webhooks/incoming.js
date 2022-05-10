@@ -36,8 +36,9 @@ const {
 
 const { safe } = require('../../utils/async-requests.js');
 
+
 function getCustomerInformation({ From, Body, To, FromCountry }) {
-  if (!From || !Body || !To || !FromCountry) {
+  if (!From || !Body || !To) {
     return null;
   }
 
@@ -45,7 +46,7 @@ function getCustomerInformation({ From, Body, To, FromCountry }) {
   return {
     // address: From,
     openOrders: [],
-    countryCode: FromCountry,
+    countryCode: FromCountry || 'unknown',
     contact: To,
     source,
     eventId: null,
