@@ -1,4 +1,5 @@
 import { h, Component } from 'preact';
+import TwilioLogo from '../twilio-logo';
 
 import style from './style';
 
@@ -73,9 +74,7 @@ export default class Cup extends Component {
               stroke-opacity="null"
               stroke-width="2"
             />
-            <text class={style.orders} text-anchor="middle" x="161.5" y="300">
-              {value}
-            </text>
+            <TwilioLogo x={138} y={260} color="#fff" />
           </g>
         </svg>
       </div>

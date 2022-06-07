@@ -28,7 +28,7 @@ const DashboardHeader = ({ url, numberOne, numberTwo, eventType }) => {
           <TwilioLogo width={153} height={45} color="#fff" fullLogo={true} />
           <span>{dashboard.headerTitle}</span>
         </h1>
-        <h2>Text your order to {numbers}</h2>
+        <h2>Send your order to {numbers}</h2>
         <h2>
           See how we built it <span class={style.repoLink}>{url}</span>
         </h2>

@@ -4,16 +4,20 @@ export default class TwilioLogo extends Component {
   render({ fullLogo }) {
     this.props.color = this.props.color || 'rgb(241, 46, 69)';
     this.props.width = this.props.width || 50;
+    this.props.x = this.props.x || 0;
+    this.props.y = this.props.y || 0;
     return fullLogo
       ? this.renderFullLogo(this.props)
       : this.renderSmallLogo(this.props);
   }
 
-  renderSmallLogo({ width, color }) {
+  renderSmallLogo({ width, x, y, color }) {
     return (
       <svg
         viewBox="0 0 30 30"
         xmlns="http://www.w3.org/2000/svg"
+        x={x}
+        y={y}
         width={width}
         height={width}
       >
@@ -28,12 +32,14 @@ export default class TwilioLogo extends Component {
     );
   }
 
-  renderFullLogo({ width, height, color }) {
+  renderFullLogo({ width, height, x, y, color }) {
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
         height={height}
+        x={x}
+        y={y}
         viewBox="-313 376 166.2 50"
       >
         <g fill={color}>

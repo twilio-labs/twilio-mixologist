@@ -14,7 +14,6 @@ export default class ProductListings extends Component {
         dashboard.productIcons[product] || dashboard.defaultProductIcon;
       return (
         <div class={style.entryWrapper}>
-          <p class={style.entryName}>{product}</p>
           <div class={style.entry}>
             <Icon
               class={style.icon}
@@ -23,6 +22,7 @@ export default class ProductListings extends Component {
               type={eventType}
             />
           </div>
+          <p class={style.entryName}>{product}</p>
         </div>
       );
     });
