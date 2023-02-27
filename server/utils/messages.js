@@ -17,7 +17,7 @@ const EXISTING_ORDER_MESSAGES = [
 
 // available values: product, orderNumber
 const ORDER_CREATED_MESSAGES = [
-  "Thanks for ordering a ${product} from the Twilio booth. Your order number is #${orderNumber}. We'll text you back when it's ready. ${dataPolicy} In the meantime check out this repo ${repoUrl} if you want to see how we built this app. ",
+  "Thanks for ordering a ${product} from the Twilio powered Coffee Shop. Your order number is #${orderNumber}. We'll text you back when it's ready. ${dataPolicy} In the meantime check out this repo ${repoUrl} if you want to see how we built this app. ",
 ];
 
 // available values: product, orderNumber
@@ -159,15 +159,7 @@ function getOopsMessage(error) {
 
 function getPostRegistrationMessage(availableOptions, maxNumberOrders) {
   const tmpl = template(pickRandom(POST_REGISTRATION));
-  return tmpl({
-    availableOptions: commaListsAnd`${availableOptions}`,
-    maxNumberOrders
-  });
-}
-
-function getMaxOrdersMessage() {
-  const tmpl = template(pickRandom(MAX_ORDERS));
-  return tmpl();
+  return tmpl({ availableOptions: commaListsAnd`${availableOptions}` });
 }
 
 function getEventRegistrationMessage(choices) {
