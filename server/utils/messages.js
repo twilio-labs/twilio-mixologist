@@ -1,5 +1,4 @@
 const template = require('lodash.template');
-const { commaListsAnd } = require('common-tags');
 
 const { config } = require('../data/config');
 
@@ -8,7 +7,7 @@ const DATA_POLICY =
 
 // available values: originalMessage, availableOptions
 const WRONG_ORDER_MESSAGES = [
-  'Seems like your order of "${originalMessage}" is not something we can serve. Possible orders are ${availableOptions}. Write \'I need help\' to get an overview of other commands.',
+  'Seems like your order of "${originalMessage}" is not something we can serve. Possible orders are:\n${availableOptions}\nWrite \'I need help\' to get an overview of other commands.',
 ];
 
 // available values: product, orderNumber
@@ -18,7 +17,7 @@ const EXISTING_ORDER_MESSAGES = [
 
 // available values: product, orderNumber
 const ORDER_CREATED_MESSAGES = [
-  "Thanks for ordering a ${product} from the Twilio powered Coffee Shop. Your order number is #${orderNumber}. We'll text you back when it's ready. ${dataPolicy} In the meantime check out this repo ${repoUrl} if you want to see how we built this app. ",
+  "Thanks for ordering a ${product} from the Twilio powered Coffee Shop. Your order number is *#${orderNumber}*.\n We'll text you back when it's ready. ${dataPolicy} In the meantime check out this repo ${repoUrl} if you want to see how we built this app. ",
 ];
 
 // available values: product, orderNumber
@@ -73,6 +72,14 @@ const NO_ACTIVE_EVENTS = [
   'Oh no! 😕 It seems like we are currently not serving at the moment. Please check back later 🙂',
 ];
 
+function formatAvailableOptions(availableOptions) {
+  let string = '';
+  availableOptions.map(option => {
+    string+= option + '\n';
+  })
+  return string;
+}
+
 function pickRandom(arr) {
   const len = arr.length;
   const idx = Math.floor(Math.random() * len);
@@ -83,7 +90,7 @@ function getWrongOrderMessage(originalMessage, availableOptions) {
   const tmpl = template(pickRandom(WRONG_ORDER_MESSAGES));
   return tmpl({
     originalMessage,
-    availableOptions: commaListsAnd`${availableOptions}`,
+    availableOptions: formatAvailableOptions(availableOptions),
   });
 }
 
@@ -122,7 +129,7 @@ function getSystemOfflineMessage(forEvent) {
 function getHelpMessage(availableOptions) {
   const tmpl = template(pickRandom(HELP_MESSAGES));
   return tmpl({
-    availableOptions: commaListsAnd`${availableOptions}`,
+    availableOptions: formatAvailableOptions(availableOptions),
   });
 }
 
@@ -148,7 +155,9 @@ function getOopsMessage(error) {
 
 function getPostRegistrationMessage(availableOptions) {
   const tmpl = template(pickRandom(POST_REGISTRATION));
-  return tmpl({ availableOptions: commaListsAnd`${availableOptions}` });
+  return tmpl({
+    availableOptions: formatAvailableOptions(availableOptions)
+  });
 }
 
 function getEventRegistrationMessage(choices) {
