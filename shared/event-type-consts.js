@@ -71,8 +71,5 @@ export default function get(eventType) {
   if (eventType === 'smoothie') {
     return SMOOTHIE;
   }
-  if (eventType === 'smoothie') {
-    return SMOOTHIE;
-  }
   return BARISTA;
 }
