@@ -48,7 +48,7 @@ const SMOOTHIES = {
     defaultProductIcon: 'cup',
     productIcons: {
       'Berry Blast': 'strawberry',
-      'Mixed Tropical Fruit': 'grapefruit'
+      'Tropical Beach': 'grapefruit'
     }
   },
   kiosk: {
