@@ -3,7 +3,7 @@ const template = require('lodash.template');
 const { config } = require('../data/config');
 
 const DATA_POLICY =
-  'We only use your phone number to notify you about our coffee service and redact all the messages & phone numbers afterwards.';
+  'We only use your phone number to notify you about our beverage service and redact all the messages & phone numbers afterwards.';
 
 // available values: originalMessage, availableOptions
 const WRONG_ORDER_MESSAGES = [
@@ -17,7 +17,7 @@ const EXISTING_ORDER_MESSAGES = [
 
 // available values: product, orderNumber
 const ORDER_CREATED_MESSAGES = [
-  "Thanks for ordering a ${product} from the Twilio powered Coffee Shop. Your order number is *#${orderNumber}*.\n We'll text you back when it's ready. ${dataPolicy} In the meantime check out this repo ${repoUrl} if you want to see how we built this app. ",
+  "Thanks for ordering a ${product} from Twilio. Your order number is *#${orderNumber}*.\nWe'll text you back when it's ready. ${dataPolicy} In the meantime check out this repo ${repoUrl} if you want to see how we built this app. ",
 ];
 
 // available values: product, orderNumber
@@ -37,12 +37,12 @@ const SYSTEM_OFFLINE_MESSAGES = [
 
 // available values: availableOptions
 const HELP_MESSAGES = [
-  'Simply message the coffee you would like. The available options are: ${availableOptions}. Alternatively write "cancel order" to cancel your existing order or "queue" to determine your position in the queue.',
+  'Simply message the beverage you would like. The available options are:\n${availableOptions}\nAlternatively write "cancel order" to cancel your existing order or "queue" to determine your position in the queue.',
 ];
 
 // available values:
 const NO_OPEN_ORDER_MESSAGES = [
-  'Seems like you have no open order at the moment. Simply message us the name of the coffee you would like.',
+  'Seems like you have no open order at the moment. Simply message us the name of the beverage you would like.',
 ];
 
 // available values: queuePosition
@@ -61,15 +61,15 @@ const OOPS_MESSAGES = [
 ];
 
 const POST_REGISTRATION = [
-  "Thank you! Now let's get you some coffee. What would you like? The options are: ${availableOptions}",
+  "Thank you! Now let's get you some coffee. What would you like? The options are:\n${availableOptions}",
 ];
 
 const EVENT_REGISTRATION = [
-  "We are sorry but we don't know at which event you currently are. Please reply with one of the numbers below to register for that event. \n${choices}",
+  "Which event are you currently at? Please reply with the number of your event below. \n${choices}",
 ];
 
 const NO_ACTIVE_EVENTS = [
-  'Oh no! 😕 It seems like we are currently not serving at the moment. Please check back later 🙂',
+  'Oh no! 😕 It seems like we are not serving at the moment. Please check back later 🙂',
 ];
 
 function formatAvailableOptions(availableOptions) {

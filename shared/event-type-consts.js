@@ -40,9 +40,28 @@ const BARISTA = {
   },
 };
 
+const SMOOTHIES = {
+  iconBasePath: '/assets/smoothie-icons/smoothie-icons_',
+  dashboard: {
+    headerTitle: 'Smoothies',
+    headerIcon: 'blender',
+    defaultProductIcon: 'cup',
+    productIcons: {
+      'Berry Blast': 'strawberry',
+      'Mixed Tropical Fruit': 'grapefruit'
+    }
+  },
+  kiosk: {
+    title: 'Thirsty? Need a smoothie?',
+    tagLine: 'Make your smoothie order ⚡️ asynchronous ⚡️'
+  }
+}
+
 export default function get(eventType) {
   if (eventType === 'bartender') {
     return BARTENDER;
+  } else if (eventType === 'smoothies') {
+    return SMOOTHIES;
   }
   return BARISTA;
 }
