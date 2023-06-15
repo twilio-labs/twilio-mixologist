@@ -35,6 +35,7 @@ type GlobalConfigurationData = {
   orderPickupLocation: string;
   repoUrl: string;
   expectedOrders: numbers;
+  maxOrdersPerCustomer: number;
 }
 ```
 

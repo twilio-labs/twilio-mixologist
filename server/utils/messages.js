@@ -64,6 +64,10 @@ const POST_REGISTRATION = [
   "Thank you! Now let's get you some coffee. What would you like? The options are:\n${availableOptions}",
 ];
 
+const MAX_ORDERS = [
+  "It seems like you've reached the maximum numbers of orders we allowed at this event. \nSorry.",
+];
+
 const EVENT_REGISTRATION = [
   "Which event are you currently at? Please reply with the number of your event below. \n${choices}",
 ];
@@ -160,6 +164,11 @@ function getPostRegistrationMessage(availableOptions) {
   });
 }
 
+function getMaxOrdersMessage() {
+  const tmpl = template(pickRandom(MAX_ORDERS));
+  return tmpl();
+}
+
 function getEventRegistrationMessage(choices) {
   const tmpl = template(pickRandom(EVENT_REGISTRATION));
   return tmpl({ choices: choices.join('\n') });
@@ -178,6 +187,7 @@ module.exports = {
   getOrderReadyMessage,
   getSystemOfflineMessage,
   getHelpMessage,
+  getMaxOrdersMessage,
   getNoOpenOrderMessage,
   getQueuePositionMessage,
   getCancelOrderMessage,

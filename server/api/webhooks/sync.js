@@ -28,6 +28,9 @@ async function handleOrderStatusChange(requestBody) {
   const customer = await customersMap.syncMapItems(itemData.customer).fetch();
   const indexOfOrder = customer.data.openOrders.indexOf(itemIndex);
   customer.data.openOrders.splice(indexOfOrder, 1);
+  if (itemData.status === 'ready') {
+    customer.data.completedOrders++
+  }
   await customersMap.syncMapItems(customer.key).update({
     data: customer.data,
   });

@@ -6,7 +6,7 @@
 
 ### 1. Send message with order
 
-A customer sends a message to one of the channels associated to the configured Messaging Service. This can for example happen via SMS to a respective phone number.
+A customer sends a message to one of the channels associated to the configured Messaging Service. This can for example happen via WhatsApp to a respective phone number.
 
 ### 2. Message forwarded to "incoming webhook"
 

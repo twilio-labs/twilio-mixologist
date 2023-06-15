@@ -108,6 +108,7 @@ const DEFAULT_EVENT_CONFIGURATION = {
   orderPickupLocation: 'the coffee stand',
   repoUrl: 'bit.ly/twilio-barista',
   expectedOrders: 300,
+  maxOrdersPerCustomer: 4,
   visibleNumbers: [],
 };
 

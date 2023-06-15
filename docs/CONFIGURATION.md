@@ -27,6 +27,7 @@ These values can be changed in the configuration document via the admin interfac
 | `spellingMap['Spelling of Coffee']`  | `string`                  |                                              | Maps to the string of a value in `availableCoffees`                                                                       |
 | `repoUrl`                            | `string`                  | `https://github.com/dkundel/twilio-barista`  | The link the repo that should be sent in the response messages                                                            |
 | `expectedOrders`                     | `number`                  | `300`                                        | Arbitrary number of coffee orders expected. This is used to determine how filled the cup in the dashboard should be.      |
+`maxOrdersPerCustomer`                     | `number`                  | `4`                                        | Maximum numbers of orders allowed per customer.      |
 
 ## Static configuration
 

@@ -8,6 +8,7 @@ const {
   getExistingOrderMessage,
   getOrderCreatedMessage,
   getHelpMessage,
+  getMaxOrdersMessage,
   getNoOpenOrderMessage,
   getQueuePositionMessage,
   getCancelOrderMessage,
@@ -46,6 +47,7 @@ function getCustomerInformation({ From, Body, To, FromCountry }) {
   return {
     // address: From,
     openOrders: [],
+    completedOrders: 0,
     countryCode: FromCountry || 'unknown',
     contact: To,
     source,
@@ -215,7 +217,7 @@ async function cancelOrder(customer) {
 }
 
 /**
- * This is the request handler for incoming SMS and Facebook messages by handling webhook request from Twilio.
+ * This is the request handler for incoming SMS and WhatsApp messages by handling webhook request from Twilio.
  *
  * @param {any} req
  * @param {any} res
@@ -350,7 +352,17 @@ async function handleIncomingMessages(req, res) {
   }
   const coffeeOrder = messageIntent.value;
 
-  const { openOrders } = customerEntry.data;
+  const { openOrders, completedOrders } = customerEntry.data;
+  if (completedOrders >= config(eventId).maxOrdersPerCustomer) {
+    debugger
+    try {
+      await sendMessageToCustomer(customer, getMaxOrdersMessage());
+      return;
+    } catch (err) {
+      req.log.error(err);
+      return;
+    }
+  }
   if (Array.isArray(openOrders) && openOrders.length > 0) {
     try {
       const order = await orderQueueList(eventId)

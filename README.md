@@ -160,9 +160,12 @@ Authenticate with an admin user, go into the Admin section and under Other click
 
 #### 6. Acquire phone numbers
 
-Choose in the Admin section under Other a country that you want a phone number from and click acquire. It will purchase the number, configure it and you can see it in the Configuration section of your Admin part under `connectedPhoneNumbers`.
+Purchase a number and configure it in the Configuration section of your Admin part under `connectedPhoneNumbers`.
 
-#### 7. You are ready for some ☕️ action!
+#### 7. Register the webhook in the Twilio Consol
+Go to the [Twilio Console](https://console.twilio.com) and integrate the `[Domain]/api/webhook/incoming` endpoint to the messaging service you specified with the SID above. 
+
+#### 8. You are ready for some ☕️ action!
 
 You are all set. People can start sending in messages to those numbers and you will receive them in the order section of your interface.
 
