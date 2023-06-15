@@ -68,6 +68,10 @@ const MAX_ORDERS = [
   "It seems like you've reached the maximum numbers of orders we allowed at this event. Sorry.",
 ];
 
+const MAX_ORDERS = [
+  "It seems like you've reached the maximum numbers of orders we allowed at this event. \nSorry.",
+];
+
 const EVENT_REGISTRATION = [
   "Which event are you currently at? Please reply with the number of your event below. \n${choices}",
 ];
@@ -160,6 +164,11 @@ function getOopsMessage(error) {
 function getPostRegistrationMessage(availableOptions, maxNumberOrders) {
   const tmpl = template(pickRandom(POST_REGISTRATION));
   return tmpl({ availableOptions: commaListsAnd`${availableOptions}` });
+}
+
+function getMaxOrdersMessage() {
+  const tmpl = template(pickRandom(MAX_ORDERS));
+  return tmpl();
 }
 
 function getEventRegistrationMessage(choices) {
