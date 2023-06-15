@@ -65,7 +65,7 @@ const POST_REGISTRATION = [
 ];
 
 const MAX_ORDERS = [
-  "It seems like you've reached the maximum numbers of orders we allowed at this event. Sorry.",
+  "It seems like you've reached the maximum numbers of orders we allowed at this event. \nSorry.",
 ];
 
 const EVENT_REGISTRATION = [
