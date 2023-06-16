@@ -17,7 +17,7 @@ const EXISTING_ORDER_MESSAGES = [
 
 // available values: product, orderNumber
 const ORDER_CREATED_MESSAGES = [
-  "Thanks for ordering a ${product} from Twilio. Your order number is *#${orderNumber}*.\nWe'll text you back when it's ready. ${dataPolicy} In the meantime check out this repo ${repoUrl} if you want to see how we built this app. ",
+  "Thanks for ordering a ${product} from the Twilio powered Coffee Shop. Your order number is #${orderNumber}. We'll text you back when it's ready. ${dataPolicy} In the meantime check out this repo ${repoUrl} if you want to see how we built this app. ",
 ];
 
 // available values: product, orderNumber
@@ -37,7 +37,7 @@ const SYSTEM_OFFLINE_MESSAGES = [
 
 // available values: availableOptions
 const HELP_MESSAGES = [
-  'Simply message the beverage you would like. The available options are:\n${availableOptions}\nAlternatively write "cancel order" to cancel your existing order or "queue" to determine your position in the queue.',
+  'Simply message the coffee you would like. The available options are: ${availableOptions}. Alternatively write "cancel order" to cancel your existing order or "queue" to determine your position in the queue.',
 ];
 
 // available values:
@@ -61,15 +61,11 @@ const OOPS_MESSAGES = [
 ];
 
 const POST_REGISTRATION = [
-  "Thank you! Now let's get you some drinks. What would you like? The options are: ${availableOptions}\n PS: Every attendee can get up to ${maxNumberOrders} beverages.",
+  "Thank you! Now let's get you some drinks. What would you like? The options are:\n${availableOptions}\n PS: Every attendee can get up to ${maxNumberOrders} beverages.",
 ];
 
 const MAX_ORDERS = [
   "It seems like you've reached the maximum numbers of orders we allowed at this event. Sorry.",
-];
-
-const MAX_ORDERS = [
-  "It seems like you've reached the maximum numbers of orders we allowed at this event. \nSorry.",
 ];
 
 const EVENT_REGISTRATION = [
