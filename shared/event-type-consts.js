@@ -40,28 +40,36 @@ const BARISTA = {
   },
 };
 
-const SMOOTHIES = {
+
+const SMOOTHIE = {
   iconBasePath: '/assets/smoothie-icons/smoothie-icons_',
   dashboard: {
-    headerTitle: 'Smoothies',
+    headerTitle: 'Smoothie Dashboard',
     headerIcon: 'blender',
     defaultProductIcon: 'cup',
     productIcons: {
-      'Berry Blast': 'strawberry',
-      'Tropical Beach': 'grapefruit'
-    }
+      SendGrid: 'orange',
+      Lambada: 'orange',
+      Twilio: 'strawberry',
+      Colombia: 'strawberry',
+      Segment: 'pineapple',
+      Emerald: 'pineapple',
+    },
   },
   kiosk: {
-    title: 'Thirsty? Need a smoothie?',
-    tagLine: 'Make your smoothie order ⚡️ asynchronous ⚡️'
-  }
-}
+    title: 'Thirsty? Smoothie?',
+    tagLine: 'Order Smoothies via WhatsApp',
+  },
+};
 
 export default function get(eventType) {
   if (eventType === 'bartender') {
     return BARTENDER;
   } else if (eventType === 'smoothies') {
     return SMOOTHIES;
+  }
+  if (eventType === 'smoothie') {
+    return SMOOTHIE;
   }
   if (eventType === 'smoothie') {
     return SMOOTHIE;

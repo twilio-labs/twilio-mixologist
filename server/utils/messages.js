@@ -3,7 +3,7 @@ const template = require('lodash.template');
 const { config } = require('../data/config');
 
 const DATA_POLICY =
-  'We only use your phone number to notify you about our beverage service and redact all the messages & phone numbers afterwards.';
+  'We only use your phone number to notify you about our smoothie service and redact all the messages & phone numbers afterwards.';
 
 // available values: originalMessage, availableOptions
 const WRONG_ORDER_MESSAGES = [
@@ -17,7 +17,7 @@ const EXISTING_ORDER_MESSAGES = [
 
 // available values: product, orderNumber
 const ORDER_CREATED_MESSAGES = [
-  "Thanks for ordering a ${product} from the Twilio powered Coffee Shop. Your order number is #${orderNumber}. We'll text you back when it's ready. ${dataPolicy} In the meantime check out this repo ${repoUrl} if you want to see how we built this app. ",
+  "Thanks for ordering a ${product} from the Twilio booth. Your order number is #${orderNumber}. We'll text you back when it's ready. ${dataPolicy} In the meantime check out this repo ${repoUrl} if you want to see how we built this app. ",
 ];
 
 // available values: product, orderNumber
@@ -37,7 +37,7 @@ const SYSTEM_OFFLINE_MESSAGES = [
 
 // available values: availableOptions
 const HELP_MESSAGES = [
-  'Simply message the coffee you would like. The available options are: ${availableOptions}. Alternatively write "cancel order" to cancel your existing order or "queue" to determine your position in the queue.',
+  'Simply message the beverage you would like. The available options are: ${availableOptions}. Alternatively write "cancel order" to cancel your existing order or "queue" to determine your position in the queue.',
 ];
 
 // available values:
@@ -61,11 +61,11 @@ const OOPS_MESSAGES = [
 ];
 
 const POST_REGISTRATION = [
-  "Thank you! Now let's get you some coffee. What would you like? The options are: ${availableOptions}",
+  "Thank you! Now let's get you some drinks. What would you like? The options are: ${availableOptions}\n PS: Every attendee can get up to ${maxNumberOrders} beverages.",
 ];
 
 const MAX_ORDERS = [
-  "It seems like you've reached the maximum numbers of orders we allowed at this event. \nSorry.",
+  "It seems like you've reached the maximum numbers of orders we allowed at this event. Sorry.",
 ];
 
 const EVENT_REGISTRATION = [
@@ -159,7 +159,10 @@ function getOopsMessage(error) {
 
 function getPostRegistrationMessage(availableOptions, maxNumberOrders) {
   const tmpl = template(pickRandom(POST_REGISTRATION));
-  return tmpl({ availableOptions: commaListsAnd`${availableOptions}` });
+  return tmpl({
+    availableOptions: commaListsAnd`${availableOptions}`,
+    maxNumberOrders
+  });
 }
 
 function getMaxOrdersMessage() {
