@@ -63,5 +63,8 @@ export default function get(eventType) {
   } else if (eventType === 'smoothies') {
     return SMOOTHIES;
   }
+  if (eventType === 'smoothie') {
+    return SMOOTHIE;
+  }
   return BARISTA;
 }

@@ -17,7 +17,7 @@ const EXISTING_ORDER_MESSAGES = [
 
 // available values: product, orderNumber
 const ORDER_CREATED_MESSAGES = [
-  "Thanks for ordering a ${product} from Twilio. Your order number is *#${orderNumber}*.\nWe'll text you back when it's ready. ${dataPolicy} In the meantime check out this repo ${repoUrl} if you want to see how we built this app. ",
+  "Thanks for ordering a ${product} from the Twilio powered Coffee Shop. Your order number is #${orderNumber}. We'll text you back when it's ready. ${dataPolicy} In the meantime check out this repo ${repoUrl} if you want to see how we built this app. ",
 ];
 
 // available values: product, orderNumber
@@ -32,12 +32,12 @@ const ORDER_READY_MESSAGES = [
 
 // available values:
 const SYSTEM_OFFLINE_MESSAGES = [
-  'No more coffee 😱\nSeems like we are out of coffee for today. Have a great day!',
+  'No more smoothies 😱\nSeems like we are out of smoothies for today. Have a great day!',
 ];
 
 // available values: availableOptions
 const HELP_MESSAGES = [
-  'Simply message the beverage you would like. The available options are:\n${availableOptions}\nAlternatively write "cancel order" to cancel your existing order or "queue" to determine your position in the queue.',
+  'Simply message the coffee you would like. The available options are: ${availableOptions}. Alternatively write "cancel order" to cancel your existing order or "queue" to determine your position in the queue.',
 ];
 
 // available values:
@@ -61,11 +61,11 @@ const OOPS_MESSAGES = [
 ];
 
 const POST_REGISTRATION = [
-  "Thank you! Now let's get you some coffee. What would you like? The options are:\n${availableOptions}",
+  "Thank you! Now let's get you some coffee. What would you like? The options are: ${availableOptions}",
 ];
 
 const MAX_ORDERS = [
-  "It seems like you've reached the maximum numbers of orders we allowed at this event. \nSorry.",
+  "It seems like you've reached the maximum numbers of orders we allowed at this event. Sorry.",
 ];
 
 const EVENT_REGISTRATION = [
@@ -157,11 +157,9 @@ function getOopsMessage(error) {
   return tmpl({ error });
 }
 
-function getPostRegistrationMessage(availableOptions) {
+function getPostRegistrationMessage(availableOptions, maxNumberOrders) {
   const tmpl = template(pickRandom(POST_REGISTRATION));
-  return tmpl({
-    availableOptions: formatAvailableOptions(availableOptions)
-  });
+  return tmpl({ availableOptions: commaListsAnd`${availableOptions}` });
 }
 
 function getMaxOrdersMessage() {

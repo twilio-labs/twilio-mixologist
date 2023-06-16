@@ -45,13 +45,19 @@ const CUSTOMER_STATES = {
  * These are all coffee options that can actually be ordered
  */
 const AVAILABLE_DEFAULT_OPTIONS = [
-  'Espresso',
-  'Cappuccino',
-  'Latte',
-  'Americano',
-  'Flat White',
-  'Filter Coffee',
-  'Hot Chocolate',
+  'SendGrid',
+  'Lambada',
+  'Twilio',
+  'Colombia',
+  'Segment',
+  'Emerald',
+  // 'Espresso',
+  // 'Cappuccino',
+  // 'Latte',
+  // 'Americano',
+  // 'Flat White',
+  // 'Filter Coffee',
+  // 'Hot Chocolate',
 ];
 
 /**
