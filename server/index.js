@@ -36,6 +36,7 @@ Sentry.init({
     log.info('Retrieve available phone numbers');
     const connectedPhoneNumbers = await loadConnectedPhoneNumbers();
     log.info('Write available phone numbers into configuration');
+    log.info(`test var ${process.env.TWILIO_ACCOUNT_SID} ${process.env.TWILIO_SYNC_SERVICE}  ${process.env.TWILIO_NOTIFY_SERVICE}`);
     await updateGlobalConfigEntry(
       'connectedPhoneNumbers',
       connectedPhoneNumbers
