@@ -53,7 +53,7 @@ const SMOOTHIE = {
       Twilio: 'strawberry',
       Colombia: 'strawberry',
       Segment: 'pineapple',
-      Emerald: 'pineapple',
+      Smaragd: 'pineapple',
     },
   },
   kiosk: {

@@ -45,19 +45,12 @@ const CUSTOMER_STATES = {
  * These are all coffee options that can actually be ordered
  */
 const AVAILABLE_DEFAULT_OPTIONS = [
-  'SendGrid',
-  'Lambada',
   'Twilio',
   'Colombia',
+  'SendGrid',
+  'Lambada',
   'Segment',
-  'Emerald',
-  // 'Espresso',
-  // 'Cappuccino',
-  // 'Latte',
-  // 'Americano',
-  // 'Flat White',
-  // 'Filter Coffee',
-  // 'Hot Chocolate',
+  'Smaragd'
 ];
 
 /**
@@ -97,6 +90,9 @@ const SPELLING_MISTAKES = {
   'hot chocolate': 'Hot Chocolate',
   chocolate: 'Hot Chocolate',
   cocolate: 'Hot Chocolate',
+  twilio: 'Colombia',
+  sendgrid: 'Lambada',
+  segment: 'Smaragd',
 };
 
 const DEFAULT_CONFIGURATION = {
@@ -107,14 +103,14 @@ const DEFAULT_CONFIGURATION = {
 const DEFAULT_EVENT_CONFIGURATION = {
   isOn: true,
   isVisible: false,
-  mode: 'barista',
-  offlineMessage: 'We are sorry but there is currently no coffee.',
+  mode: 'smoothie',
+  offlineMessage: 'We are sorry but there are currently no smoothies.',
   availableCoffees: createBooleanMapOfArray(AVAILABLE_DEFAULT_OPTIONS),
   menuDetails: '',
-  orderPickupLocation: 'the coffee stand',
-  repoUrl: 'bit.ly/twilio-barista',
+  orderPickupLocation: 'the Twilio stand',
+  repoUrl: 'https://twil.io/twilio-smoothies',
   expectedOrders: 300,
-  maxOrdersPerCustomer: 4,
+  maxOrdersPerCustomer: 2,
   visibleNumbers: [],
 };
 
