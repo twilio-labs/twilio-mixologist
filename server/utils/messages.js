@@ -3,7 +3,7 @@ const template = require('lodash.template');
 const { config } = require('../data/config');
 
 const DATA_POLICY =
-  'We only use your phone number to notify you about our smoothie service and redact all the messages & phone numbers afterwards.';
+  '\n\nWe only use your phone number to notify you about our smoothie service and redact all the messages & phone numbers afterwards.';
 
 // available values: originalMessage, availableOptions
 const WRONG_ORDER_MESSAGES = [
@@ -12,17 +12,17 @@ const WRONG_ORDER_MESSAGES = [
 
 // available values: product, orderNumber
 const EXISTING_ORDER_MESSAGES = [
-  "We're still making you a ${product}. Check order #${orderNumber} with the barista if you think there's something wrong.",
+  "We're still making you a ${product}. Check order #${orderNumber} with our staff if you think there's something wrong.",
 ];
 
 // available values: product, orderNumber
 const ORDER_CREATED_MESSAGES = [
-  "Thanks for ordering a ${product} from the Twilio powered Coffee Shop. Your order number is #${orderNumber}. We'll text you back when it's ready. ${dataPolicy} In the meantime check out this repo ${repoUrl} if you want to see how we built this app. ",
+  "Thanks for ordering a ${product} from the Twilio powered Smoothie Bar. Your order number is #${orderNumber}. We'll text you back when it's ready. ${dataPolicy} In the meantime check out this repo ${repoUrl} if you want to see how we built this app. ",
 ];
 
 // available values: product, orderNumber
 const ORDER_CANCELLED_MESSAGES = [
-  'Your ${product} order has been cancelled. Please check with the barista if you think something is wrong. Your order number was #${orderNumber}.',
+  'Your ${product} order has been cancelled. Please check with our staff if you think something is wrong. Your order number was #${orderNumber}.',
 ];
 
 // available values: product, orderNumber
@@ -37,7 +37,7 @@ const SYSTEM_OFFLINE_MESSAGES = [
 
 // available values: availableOptions
 const HELP_MESSAGES = [
-  'Simply message the coffee you would like. The available options are: ${availableOptions}. Alternatively write "cancel order" to cancel your existing order or "queue" to determine your position in the queue.',
+  'Welcome to our booth. Simply message the smoothie you would like. The available options are: \n\n${availableOptions}\nAlternatively write "cancel order" to cancel your existing order or "queue" to determine your position in the queue.',
 ];
 
 // available values:

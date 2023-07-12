@@ -44,7 +44,7 @@ const BARISTA = {
 const SMOOTHIE = {
   iconBasePath: '/assets/smoothie-icons/smoothie-icons_',
   dashboard: {
-    headerTitle: 'Smoothie Dashboard',
+    headerTitle: 'Smoothie Bar',
     headerIcon: 'blender',
     defaultProductIcon: 'cup',
     productIcons: {
