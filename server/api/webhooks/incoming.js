@@ -150,6 +150,12 @@ function determineIntent(message, forEvent) {
     };
   }
 
+  if (msgNormalized.indexOf('send this message to order') !== -1) {
+    return {
+      intent: INTENTS.WELCOME,
+    };
+  }
+
   if (msgNormalized.indexOf('queue') !== -1) {
     return {
       intent: INTENTS.QUEUE,
@@ -322,7 +328,7 @@ async function handleIncomingMessages(req, res) {
     );
     try {
       let responseMessage;
-      if (messageIntent.intent === INTENTS.HELP) {
+      if (messageIntent.intent === INTENTS.HELP || messageIntent.intent === INTENTS.WELCOME) {
         responseMessage = getHelpMessage(availableOptions);
       } else if (messageIntent.intent === INTENTS.QUEUE) {
         const queuePosition = await getQueuePosition(customer);

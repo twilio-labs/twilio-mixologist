@@ -21,6 +21,7 @@ const TAGS = {
 };
 
 const INTENTS = {
+  WELCOME: 'welcome',
   HELP: 'help',
   QUEUE: 'queue',
   ORDER: 'order',
