@@ -42,7 +42,7 @@ These values can be configured via environment variables.
 | `TWILIO_API_KEY`              | Your Twilio API Key. www.twilio.com/console/dev-tools/api-keys                                                  |
 | `TWILIO_API_SECRET`           | Your Twilio API Key. www.twilio.com/console/dev-tools/api-keys                                                  |
 | `TWILIO_MESSAGING_SERVICE`    | Your Twilio Message Service SID. www.twilio.com/console/sms/services                                            |
-| `TWILIO_NOTIFY_SERVICE`       | Your Twilio Notify Service SID. www.twilio.com/console/notify/services                                          |
+| `TWILIO_CONVERSATIONS_SERVICE`       | Your Twilio Conversations Service SID. www.twilio.com/console/conversations/services                                          |
 | `TWILIO_SYNC_SERVICE`         | Your Twilio Sync Service SID. www.twilio.com/console/sync/services                                              |
 
 [consts file]: ../shared/consts

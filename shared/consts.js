@@ -13,13 +13,6 @@ const SYNC_NAMES = {
 
 const DEFAULT_JSON_ENTRY_KEY = 'CHOOSE_KEY';
 
-const TAGS = {
-  INTERACTED: 'interacted',
-  ALL: 'all',
-  OPEN_ORDER: 'open-order',
-  PREFIX_EVENT: 'event_',
-};
-
 const INTENTS = {
   WELCOME: 'welcome',
   HELP: 'help',
@@ -123,7 +116,6 @@ module.exports = {
   INTENTS,
   SPELLING_MISTAKES,
   SYNC_NAMES,
-  TAGS,
   COOKIES,
   CUSTOMER_STATES,
 };
