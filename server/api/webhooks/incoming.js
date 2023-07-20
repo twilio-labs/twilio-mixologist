@@ -117,10 +117,6 @@ async function removeEventForCustomer(customerEntry) {
 //   return customerEntry.update({ data });
 // }
 
-async function sendMessageToCustomer(customer, msg) {
-  return sendMessage(customer.key, msg);
-}
-
 function determineIntent(message, forEvent) {
   const msgNormalized = message.toLowerCase().trim();
   if (msgNormalized.startsWith('_register:')) {
@@ -211,14 +207,18 @@ async function cancelOrder(customer) {
   if (!orderNumber) {
     return false;
   }
-  await orderQueueList(customer.eventId)
-    .syncListItems(orderNumber)
-    .remove();
+  const orderedItemLink = orderQueueList(customer.data.eventId)
+    .syncListItems(orderNumber);
+  const orderedItem = await orderedItemLink.fetch()
+  await orderedItemLink.remove();
   customerEntry.data.openOrders = [];
   await customersMap.syncMapItems(key).update({
     data: customerEntry.data,
   });
-  return true;
+  return {
+    product: orderedItem.data.product,
+    orderNumber: orderNumber
+  };
 }
 
 /**
@@ -338,14 +338,14 @@ async function handleIncomingMessages(req, res) {
       } else if (messageIntent.intent === INTENTS.CANCEL) {
         const cancelled = await cancelOrder(customerEntry);
         if (cancelled) {
-          responseMessage = getCancelOrderMessage();
+          responseMessage = getCancelOrderMessage(cancelled.product, cancelled.orderNumber);
         } else {
           responseMessage = getNoOpenOrderMessage();
         }
       } else {
         responseMessage = getWrongOrderMessage(req.body.Body, availableOptions);
       }
-      await sendMessageToCustomer(customerEntry, responseMessage);
+      await sendMessage(customerEntry.key, responseMessage);
       res.send();
       return;
     } catch (err) {
@@ -360,7 +360,7 @@ async function handleIncomingMessages(req, res) {
   if (completedOrders >= config(eventId).maxOrdersPerCustomer) {
 
     try {
-      await sendMessageToCustomer(customerEntry, getMaxOrdersMessage());
+      await sendMessage(customerEntry.key, getMaxOrdersMessage());
       return;
     } catch (err) {
       req.log.error(err);
@@ -372,11 +372,11 @@ async function handleIncomingMessages(req, res) {
       const order = await orderQueueList(eventId)
         .syncListItems(openOrders[0])
         .fetch();
-      const responseMessage = getExistingOrderMessage(
+
+      await sendMessage(customerEntry.key, getExistingOrderMessage(
         order.data.product,
         order.index
-      );
-      await sendMessageToCustomer(customerEntry, responseMessage);
+      ));
       return;
     } catch (err) {
       req.log.error(err);
@@ -411,8 +411,7 @@ async function handleIncomingMessages(req, res) {
     //   newBindingSid
     // );
 
-    const msg = getOrderCreatedMessage(coffeeOrder, orderEntry.index, eventId);
-    await sendMessageToCustomer(customerEntry, msg);
+    await sendMessage(customerEntry.key, getOrderCreatedMessage(coffeeOrder, orderEntry.index, eventId));
     res.send();
   } catch (err) {
     req.log.error(err);

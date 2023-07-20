@@ -35,13 +35,10 @@ async function handleOrderStatusChange(requestBody) {
     data: customer.data,
   });
 
-  let responseMessage;
-  if (itemData.status === 'ready') {
-    responseMessage = getOrderReadyMessage(itemData.product, itemIndex, eventId);
-  } else {
-    responseMessage = getOrderCancelledMessage(itemData.product, itemIndex);
-  }
-  await sendMessage(customer.key, responseMessage);
+  await sendMessage(customer.key, itemData.status === 'ready' ?
+    getOrderReadyMessage(itemData.product, itemIndex, eventId) :
+    getOrderCancelledMessage(itemData.product, itemIndex)
+  );
 
   await orderQueueList(eventId)
     .syncListItems(itemIndex)

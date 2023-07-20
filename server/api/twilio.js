@@ -51,10 +51,10 @@ const allOrdersList = eventId =>
 //   return { identity, sid };
 // }
 
-async function sendMessage(conversationSID, body) { //TODO change param whereever this is called
+async function sendMessage(conversationSID, msg) {
   return conversationsClient.conversations(conversationSID).messages.create({
     author: 'system',
-    body, //TODO change later too
+    ...msg
   });
 }
 
@@ -145,24 +145,24 @@ async function sendMessage(conversationSID, body) { //TODO change param whereeve
 // }
 
 async function setup(baseUrl) {
-  await configureWebhookUrls(baseUrl); 
+  await configureWebhookUrls(baseUrl);
   await createResources();
   return setPermissions();
 }
 
-async function configureWebhookUrls(baseUrl) { 
+async function configureWebhookUrls(baseUrl) {
   // await messagingClient.update({ //TODO need to be changed to update conversation service
   //   friendlyName: 'Twilio Barista',
   //   inboundRequestUrl: urljoin(baseUrl, '/api/webhook/incoming'),
   // });
-  await syncClient.update({ 
+  await syncClient.update({
     webhookUrl: urljoin(baseUrl, '/api/webhook/sync'), //TODO this is very error prone when running from localhost / ngrok
   });
   return true;
 }
 
 async function loadConnectedPhoneNumbers() {
-  const phoneNumbers = await messagingClient.phoneNumbers.list();
+  const phoneNumbers = await messagingClient.phoneNumbers.list(); //TODO fetch WhatsApp bindings as well
   const connectedPhoneNumbers = phoneNumbers.map(p => p.phoneNumber).join(', ');
   return connectedPhoneNumbers;
 }

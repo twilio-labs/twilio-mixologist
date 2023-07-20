@@ -30,8 +30,7 @@ async function cancelOpenOrders(eventId) {
     const customerId = order.data.customer;
     const { product } = order.data;
     const orderNumber = order.index;
-    const msg = getOrderCancelledMessage(product, orderNumber);
-    await sendMessage(customerId, msg);
+    await sendMessage(customerId, getOrderCancelledMessage(product, orderNumber));
     const { data } = await customersMap.syncMapItems(customerId).fetch();
     // const newBindingSid = await deregisterOpenOrder(data.bindingSid);
     data.openOrders = [];
