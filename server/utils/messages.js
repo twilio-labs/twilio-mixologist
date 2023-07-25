@@ -2,11 +2,11 @@ const template = require('lodash.template');
 
 const { config } = require('../data/config');
 
-const FIRST_OPTION = "Twilio (Colombia)", //TODO remove these hard coded options once the length of list items is variable
+const FIRST_OPTION = "Colombia (Red like Twilio!)", //TODO remove these hard coded options once the length of list items is variable
   FIRST_DETAILS = "Strawberry, Pineapple, Apple, Sunflower Seeds 🍓🍍🍏🌻",
-  SECOND_OPTION = "SendGrid (Aquamarine)",
+  SECOND_OPTION = "Aquamarine (Blue like SendGrid!)",
   SECOND_DETAILS = "Pineapple, Banana, Coconut Milk, Dates, Flaxseed 🍍🍌🥥🌴",
-  THIRD_OPTION = "Segment (Lambada)",
+  THIRD_OPTION = "Lambada (Green like Segment!)",
   THIRD_DETAILS = "Orange, Mango, Banana, Passion Fruit, Flaxseed, Coconut Oil 🍊🥭🍌🥥";
 
 const DATA_POLICY =
