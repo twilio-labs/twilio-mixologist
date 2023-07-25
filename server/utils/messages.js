@@ -3,17 +3,20 @@ const template = require('lodash.template');
 const { config } = require('../data/config');
 
 const FIRST_OPTION = "Colombia (Red like Twilio!)", //TODO remove these hard coded options once the length of list items is variable
+  FIRST_OPTION_SHORT = "Colombia",
   FIRST_DETAILS = "Strawberry, Pineapple, Apple, Sunflower Seeds 🍓🍍🍏🌻",
   SECOND_OPTION = "Aquamarine (Blue like SendGrid!)",
+  SECOND_OPTION_SHORT = "Aquamarine",
   SECOND_DETAILS = "Pineapple, Banana, Coconut Milk, Dates, Flaxseed 🍍🍌🥥🌴",
   THIRD_OPTION = "Lambada (Green like Segment!)",
+  THIRD_OPTION_SHORT = "Lambada",
   THIRD_DETAILS = "Orange, Mango, Banana, Passion Fruit, Flaxseed, Coconut Oil 🍊🥭🍌🥥";
 
 const DATA_POLICY =
   '\n\nWe only use your phone number to notify you about our smoothie service and redact all the messages & phone numbers afterwards.';
 
 // available values: originalMessage, availableOptions
-const WRONG_ORDER_MESSAGE_SID = "HXbc61e3fabb69e915d079cf516cad9cc5";
+const WRONG_ORDER_MESSAGE_SID = "HX05961137d3caec10089ca6f306891c3a";
 
 // available values: product, orderNumber
 const EXISTING_ORDER_MESSAGES = [
@@ -41,7 +44,7 @@ const SYSTEM_OFFLINE_MESSAGES = [
 ];
 
 // available values: availableOptions
-const HELP_MESSAGE_SID = "HX0f91129ec6e3832b310f4f95533daa01";
+const HELP_MESSAGE_SID = "HX5e0e81bb562b197762151405ead72449";
 
 // available values:
 const NO_OPEN_ORDER_MESSAGES = [
@@ -63,7 +66,7 @@ const OOPS_MESSAGES = [
   'Oops something went wrong! Talk to someone from Twilio and see if they can help you.',
 ];
 
-const POST_REGISTRATION_MESSAGE_SID = "HX82a49e071f02f192f4f8c7eb19257bf4";
+const POST_REGISTRATION_MESSAGE_SID = "HX6848407e86cc10f6cdeda335f4e1ff7f";
 
 const MAX_ORDERS = [
   "It seems like you've reached the maximum numbers of orders we allowed at this event. Sorry.",
@@ -89,11 +92,14 @@ function getWrongOrderMessage(originalMessage, availableOptions) {
     contentVariables: JSON.stringify({
       0: originalMessage,
       1: FIRST_OPTION,
-      2: FIRST_DETAILS,
-      3: SECOND_OPTION,
-      4: SECOND_DETAILS,
-      5: THIRD_OPTION,
-      6: THIRD_DETAILS
+      2: SECOND_OPTION,
+      3: THIRD_OPTION,
+      4: FIRST_OPTION_SHORT,
+      5: FIRST_DETAILS,
+      6: SECOND_OPTION_SHORT,
+      7: SECOND_DETAILS,
+      8: THIRD_OPTION_SHORT,
+      9: THIRD_DETAILS
     }),
   };
 }
@@ -144,12 +150,15 @@ function getHelpMessage(availableOptions) {
   return {
     contentSid: HELP_MESSAGE_SID,
     contentVariables: JSON.stringify({
-      1: FIRST_OPTION,
-      2: FIRST_DETAILS,
-      3: SECOND_OPTION,
-      4: SECOND_DETAILS,
-      5: THIRD_OPTION,
-      6: THIRD_DETAILS
+      0: FIRST_OPTION,
+      1: SECOND_OPTION,
+      2: THIRD_OPTION,
+      3: FIRST_OPTION_SHORT,
+      4: FIRST_DETAILS,
+      5: SECOND_OPTION_SHORT,
+      6: SECOND_DETAILS,
+      7: THIRD_OPTION_SHORT,
+      8: THIRD_DETAILS
     }),
   };
 }
@@ -188,11 +197,14 @@ function getPostRegistrationMessage(availableOptions, maxNumberOrders) {
     contentVariables: JSON.stringify({
       0: maxNumberOrders,
       1: FIRST_OPTION,
-      2: FIRST_DETAILS,
-      3: SECOND_OPTION,
-      4: SECOND_DETAILS,
-      5: THIRD_OPTION,
-      6: THIRD_DETAILS
+      2: SECOND_OPTION,
+      3: THIRD_OPTION,
+      4: FIRST_OPTION_SHORT,
+      5: FIRST_DETAILS,
+      6: SECOND_OPTION_SHORT,
+      7: SECOND_DETAILS,
+      8: THIRD_OPTION_SHORT,
+      9: THIRD_DETAILS
     }),
   };
 }
