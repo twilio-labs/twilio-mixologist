@@ -29,8 +29,7 @@
     "dev": "stmux -w always -m beep,system -- [ [ \"npm run dev:preact\" ] : [ \"npm run dev:api\" ] ]",
     "dev:preact": "PORT=8080 preact watch --src client --template client/index.html",
     "dev:api": "nodemon --watch shared --watch server --exec \"npm run start:dev\"",
-    "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "snyk-protect": "snyk protect"
   },
   "devDependencies": {
     "all-contributors-cli": "^5.10.2",
