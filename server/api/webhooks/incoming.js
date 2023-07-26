@@ -254,14 +254,14 @@ async function handleIncomingMessages(req, res) {
         x => events[x].isVisible
       );
       if (choiceToEventId.length === 0) {
-        res.type('text/plain').send(getNoActiveEventsMessage());
+        await sendMessage(customerEntry.key, getNoActiveEventsMessage());
         return;
       } else if (choiceToEventId.length > 1) {
         const message = getEventRegistrationMessage(choices);
         res.cookie(COOKIES.CUSTOMER_STATE, CUSTOMER_STATES.SET);
         res.cookie(COOKIES.EVENT_MAPPING, choiceToEventId.join(','));
         res.cookie(COOKIES.ORIGINAL_MESSAGE, req.body.Body);
-        res.type('text/plain').send(message);
+        await sendMessage(customerEntry.key, message);
         return;
       }
       const autoChosenEventId = choiceToEventId[0];
@@ -274,7 +274,7 @@ async function handleIncomingMessages(req, res) {
       const eventChoices = req.cookies[COOKIES.EVENT_MAPPING].split(',');
       const choice = parseInt(req.body.Body.trim(), 10);
       if (isNaN(choice)) {
-        res.send('🙁 Please send only the number of the respective event.');
+        await sendMessage(customerEntry.key, { body: '🙁 Please send only the number of the respective event.' });
         return;
       }
       const chosenEventId = eventChoices[choice - 1];
@@ -300,19 +300,19 @@ async function handleIncomingMessages(req, res) {
       customerEntry,
       messageIntent.value
     );
-    res.type('text/plain').send(`Registered for ${messageIntent.value}`);
+    await sendMessage(customerEntry.key, { body: `Registered for ${messageIntent.value}` });
     return;
   } else if (messageIntent.intent === INTENTS.UNREGISTER) {
     customerEntry = await removeEventForCustomer(customerEntry);
-    res.type('text/plain').send(`Unregistered from all events`);
+    await sendMessage(customerEntry.key, { body: `Unregistered from all events` });
     return;
   } else if (messageIntent.intent === INTENTS.GET_EVENT) {
-    res.type('text/plain').send(`You are registered for: ${eventId}`);
+    await sendMessage(customerEntry.key, { body: `You are registered for: ${eventId}` });
     return;
   }
 
   if (!config(eventId).isOn) {
-    res.type('text/plain').send(getSystemOfflineMessage(eventId));
+    await sendMessage(customerEntry.key, getSystemOfflineMessage(eventId));
     return;
   }
   // Respond to HTTP request with empty Response object since we will use the REST API to respond to messages.

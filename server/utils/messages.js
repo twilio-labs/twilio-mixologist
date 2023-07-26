@@ -138,7 +138,9 @@ function getOrderReadyMessage(product, orderNumber, forEvent) {
 function getSystemOfflineMessage(forEvent) {
   const customMessage = config(forEvent).offlineMessage;
   if (typeof customMessage === 'string' && customMessage.trim().length > 0) {
-    return customMessage;
+    return {
+      body: customMessage
+    };
   }
   const tmpl = template(pickRandom(SYSTEM_OFFLINE_MESSAGES));
   return {
