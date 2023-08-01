@@ -44,7 +44,7 @@ const SYSTEM_OFFLINE_MESSAGES = [
 ];
 
 // available values: availableOptions
-const HELP_MESSAGE_SID = "HX5e0e81bb562b197762151405ead72449";
+const HELP_MESSAGE_SID = "HXd37955106e2f89804ce427d75c007a62";
 
 // available values:
 const NO_OPEN_ORDER_MESSAGES = [
@@ -160,7 +160,8 @@ function getHelpMessage(availableOptions) {
       5: SECOND_OPTION_SHORT,
       6: SECOND_DETAILS,
       7: THIRD_OPTION_SHORT,
-      8: THIRD_DETAILS
+      8: THIRD_DETAILS,
+      9: DATA_POLICY
     }),
   };
 }
