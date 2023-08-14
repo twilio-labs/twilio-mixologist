@@ -26,7 +26,7 @@ const restClient = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
 });
 
 const syncClient = restClient.sync.services(TWILIO_SYNC_SERVICE);
-const conversationsClient = restClient.conversations.v1; // TODO remove or maybe not (TWILIO_CONVERSATIONS_SERVICE);
+const conversationsClient = restClient.conversations.v1.services(TWILIO_CONVERSATIONS_SERVICE);
 const messagingClient = restClient.messaging.services(TWILIO_MESSAGING_SERVICE);
 
 const orderQueueList = eventId =>
@@ -348,13 +348,13 @@ async function resetMap(name) {
   await createIfNotExists(syncClient.syncMaps, name);
 }
 
-// async function resetNotify() { //TODO need an replacement? is there a reset for conversations?
-//   const bindings = await notifyClient.bindings.list();
-//   const deleteBindings = bindings.map(async ({ sid }) =>
-//     notifyClient.bindings(sid).remove()
-//   );
-//   return Promise.all(deleteBindings);
-// }
+async function resetConversations() {
+  const conversations = await conversationsClient.conversations.list();
+
+  Promise.all(conversations.map(async (conversation) =>
+    await conversation.remove()
+  ));
+}
 
 function getEventConfigName(slug) {
   return SYNC_NAMES.EVENT_CONFIG + slug;
@@ -428,7 +428,7 @@ module.exports = {
   resetList,
   setPermissions,
   resetMap,
-  // resetNotify,
+  resetConversations,
   fetchEventConfigurations,
   getEventConfigDoc,
   createEventConfiguration,

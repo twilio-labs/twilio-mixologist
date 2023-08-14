@@ -12,6 +12,7 @@ const {
   resetMap,
   loadConnectedPhoneNumbers,
   resetAllLists,
+  resetConversations,
   // deregisterOpenOrder,
   removeAllEventConfigDocs,
   restClient,
@@ -73,7 +74,7 @@ async function resetApplication() {
   const connectedPhoneNumbers = await loadConnectedPhoneNumbers();
   await updateGlobalConfigEntry('connectedPhoneNumbers', connectedPhoneNumbers);
   await resetMap(SYNC_NAMES.CUSTOMERS);
-  // await resetNotify(); TODO maybe reset conversations
+  await resetConversations(); 
   await deleteAllMessages();
   await setPermissions();
   return Promise.resolve();
