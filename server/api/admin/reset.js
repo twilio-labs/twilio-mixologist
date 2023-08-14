@@ -13,7 +13,6 @@ const {
   loadConnectedPhoneNumbers,
   resetAllLists,
   resetConversations,
-  // deregisterOpenOrder,
   removeAllEventConfigDocs,
   restClient,
 } = require('../twilio');
@@ -33,9 +32,7 @@ async function cancelOpenOrders(eventId) {
     const orderNumber = order.index;
     await sendMessage(customerId, getOrderCancelledMessage(product, orderNumber));
     const { data } = await customersMap.syncMapItems(customerId).fetch();
-    // const newBindingSid = await deregisterOpenOrder(data.bindingSid);
     data.openOrders = [];
-    // data.bindingSid = newBindingSid;
     return customersMap.syncMapItems(customerId).update({ data });
   });
   await Promise.all(closeAllOpenOrders);

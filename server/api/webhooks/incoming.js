@@ -24,10 +24,6 @@ const {
   orderQueueList,
   allOrdersList,
   sendMessage,
-  // registerAddress,
-  // registerOpenOrder,
-  // registerTagForBinding,
-  // removeTagForBinding,
 } = require('../twilio');
 const {
   INTENTS,
@@ -77,16 +73,7 @@ async function setEventForCustomer(customerEntry, eventId) {
   const eventExpiryDate = moment()
     .add(5, 'days')
     .valueOf();
-  // let bindingSid = await removeTagsForBindingWithPrefix(
-  //   customerEntry.data.bindingSid,
-  //   TAGS.PREFIX_EVENT
-  // );
-  // const bindingSid = await registerTagForBinding(
-  //   customerEntry.data.bindingSid,
-  //   TAGS.PREFIX_EVENT + eventId
-  // );
   const data = Object.assign({}, customerEntry.data, {
-    // bindingSid,
     eventId,
     eventExpiryDate,
   });
@@ -99,13 +86,6 @@ async function removeEventForCustomer(customerEntry) {
   data.eventExpiryDate = undefined;
   return customerEntry.update({ data });
 }
-
-// async function updateBindingSidForCustomer(customerEntry, bindingSid) {
-//   const data = Object.assign({}, customerEntry.data, {
-//     bindingSid,
-//   });
-//   return customerEntry.update({ data });
-// }
 
 function determineIntent(message, forEvent) {
   const msgNormalized = message.toLowerCase().trim();
