@@ -33,7 +33,7 @@ If the user ordered a drink the incoming message webhook will create a new item 
 
 ### 4. Reply message sent to user
 
-The notification is sent to the respective [Binding] using the [Twilio X] REST API.
+The reply is sent to the respective conversation using the [Twilio Conversations](https://www.twilio.com/de/docs/conversations) REST API.
 
 ### 5. Order appears on tablet
 
@@ -51,11 +51,11 @@ The code for this can be found in the [sync webhook file].
 
 ### 8. Webhook sends message to user
 
-In the [sync webhook file] we will then send a notification to the user using the [Twilio X] REST API to the respective [Binding].
+In the [sync webhook file] we will then send a message to the user using the [Twilio Conversations](https://www.twilio.com/de/docs/conversations) REST API.
 
 ### 9. Order is removed from the queue
 
-Once the notification was sent, the entry will be removed from the open orders [List] and the entry of the customer in the [Map] will be updated to clear the `openOrders` array of the customer.
+Once the message was sent, the entry will be removed from the open orders [List] and the entry of the customer in the [Map] will be updated to clear the `openOrders` array of the customer.
 
 [incoming webhook file]: ../server/api/webhooks/incoming.js
 [sync webhook file]: ../server/api/webhooks/sync.js

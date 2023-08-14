@@ -51,7 +51,7 @@ function createOrderItem(customer, coffeeOrder, originalMessage) {
   };
 }
 
-async function findOrCreateCustomer({ Author, Source, ConversationSid, MessagingServiceSid }) { //TODO adapt
+async function findOrCreateCustomer({ Author, Source, ConversationSid, MessagingServiceSid }) {
   let customerEntry;
   try {
     customerEntry = await customersMap.syncMapItems(ConversationSid).fetch();
