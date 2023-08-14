@@ -1,5 +1,8 @@
 const { MessagingResponse } = require('twilio').twiml;
 const moment = require('moment');
+const countriesList = require("countries-list")
+const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
+
 
 const { determineCoffeeFromMessage } = require('../../data/coffee-options');
 const { config } = require('../../data/config');
@@ -36,18 +39,6 @@ const {
 const { safe } = require('../../utils/async-requests.js');
 
 
-function getCustomerInformation({ From, Body, To, FromCountry, Source }) { //TODO Adapter
-  return {
-    // address: From,
-    openOrders: [],
-    completedOrders: 0,
-    countryCode: FromCountry || 'unknown',
-    contact: To,
-    source,
-    eventId: null,
-  };
-}
-
 function createOrderItem(customer, coffeeOrder, originalMessage) {
   return {
     data: {
@@ -60,18 +51,23 @@ function createOrderItem(customer, coffeeOrder, originalMessage) {
   };
 }
 
-async function findOrCreateCustomer(customer) { //TODO adapt
+async function findOrCreateCustomer({ Author, Source, ConversationSid, MessagingServiceSid }) { //TODO adapt
   let customerEntry;
   try {
-    customerEntry = await customersMap.syncMapItems(customer.ConversationSid).fetch();
+    customerEntry = await customersMap.syncMapItems(ConversationSid).fetch();
   } catch (err) {
+    debugger
+
+    const number = phoneUtil.parseAndKeepRawInput(Author.replace("whatsapp:", ""));
+    const country = Object.values(countriesList.countries).find(country => country.phone === `${number.getCountryCode()}`)
     customerEntry = await customersMap.syncMapItems.create({
-      key: customer.ConversationSid,
+      key: ConversationSid,
       data: {
         openOrders: [],
         completedOrders: 0,
-        countryCode: 'unknown', //TODO remove if not needed or parse from country code
-        source: customer.Source,
+        contact: MessagingServiceSid,
+        countryCode: country.name || 'unknown',
+        source: Source,
         eventId: null,
       },
     });
@@ -101,10 +97,6 @@ async function setEventForCustomer(customerEntry, eventId) {
 
 async function removeEventForCustomer(customerEntry) {
   const data = Object.assign({}, customerEntry.data);
-  // data.bindingSid = await removeTagForBinding( //TODO how to handle multiple events then?
-  //   data.bindingSid,
-  //   TAGS.PREFIX_EVENT + data.eventId
-  // );
   data.eventId = undefined;
   data.eventExpiryDate = undefined;
   return customerEntry.update({ data });
@@ -229,14 +221,7 @@ async function cancelOrder(customer) {
  * @returns
  */
 async function handleIncomingMessages(req, res) {
-  // const customer = getCustomerInformation(req.body);
-  // customer.identity = getIdentityFromAddress(req.body.From);
   let customerEntry = await findOrCreateCustomer(req.body);
-  // if (!customerEntry.data.bindingSid) {
-  //   const { sid } = await registerAddress(req.body.From, customer.source);
-  //   customerEntry = await updateBindingSidForCustomer(customerEntry, sid);
-  //   customer.bindingSid = sid;
-  // }
 
   if (
     !customerEntry.data.eventId ||
