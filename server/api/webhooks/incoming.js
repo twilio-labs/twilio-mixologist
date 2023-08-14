@@ -56,8 +56,6 @@ async function findOrCreateCustomer({ Author, Source, ConversationSid, Messaging
   try {
     customerEntry = await customersMap.syncMapItems(ConversationSid).fetch();
   } catch (err) {
-    debugger
-
     const number = phoneUtil.parseAndKeepRawInput(Author.replace("whatsapp:", ""));
     const country = Object.values(countriesList.countries).find(country => country.phone === `${number.getCountryCode()}`)
     customerEntry = await customersMap.syncMapItems.create({
@@ -378,23 +376,16 @@ async function handleIncomingMessages(req, res) {
     await customersMap.syncMapItems(customerEntry.key).update({
       data: customerEntry.data,
     });
+    
 
     await allOrdersList(eventId).syncListItems.create({
       data: {
         product: coffeeOrder,
         message: req.body.Body,
         source: customerEntry.data.source,
-        countryCode: customerEntry.countryCode,
+        countryCode: customerEntry.data.countryCode,
       },
     });
-
-    // const newBindingSid = await registerOpenOrder(
-    //   customerEntry.data.bindingSid
-    // );
-    // customerEntry = await updateBindingSidForCustomer(
-    //   customerEntry,
-    //   newBindingSid
-    // );
 
     await sendMessage(customerEntry.key, getOrderCreatedMessage(coffeeOrder, orderEntry.index, eventId));
     res.send();
