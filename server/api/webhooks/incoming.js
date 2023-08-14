@@ -27,9 +27,6 @@ const {
 } = require('../twilio');
 const {
   INTENTS,
-  CUSTOMER_STATES,
-  COOKIES,
-  TAGS,
 } = require('../../../shared/consts');
 
 const { safe } = require('../../utils/async-requests.js');
@@ -205,25 +202,23 @@ async function handleIncomingMessages(req, res) {
     !customerEntry.data.eventId ||
     customerEntry.data.eventExpiryDate < Date.now()
   ) {
-    if (req.cookies[COOKIES.CUSTOMER_STATE] !== CUSTOMER_STATES.SET) {
-      const { events } = config();
-      const choices = Object.values(events)
-        .filter(x => {
-          return x.isVisible;
-        })
-        .map(x => x.eventName)
-        .map((name, idx) => `${idx + 1}: ${name}`);
-      const choiceToEventId = Object.keys(events).filter(
-        x => events[x].isVisible
-      );
+    debugger
+    const { events } = config();
+    const choices = Object.values(events)
+      .filter(x => {
+        return x.isVisible;
+      })
+      .map(x => x.eventName)
+      .map((name, idx) => `${idx + 1}: ${name}`);
+    const choiceToEventId = Object.keys(events).filter(
+      x => events[x].isVisible
+    );
+    if (isNaN(+req.body.Body)) {
       if (choiceToEventId.length === 0) {
         await sendMessage(customerEntry.key, getNoActiveEventsMessage());
         return;
       } else if (choiceToEventId.length > 1) {
         const message = getEventRegistrationMessage(choices);
-        res.cookie(COOKIES.CUSTOMER_STATE, CUSTOMER_STATES.SET);
-        res.cookie(COOKIES.EVENT_MAPPING, choiceToEventId.join(','));
-        res.cookie(COOKIES.ORIGINAL_MESSAGE, req.body.Body);
         await sendMessage(customerEntry.key, message);
         return;
       }
@@ -234,24 +229,13 @@ async function handleIncomingMessages(req, res) {
       );
     } else {
       res.type('text/plain');
-      const eventChoices = req.cookies[COOKIES.EVENT_MAPPING].split(',');
       const choice = parseInt(req.body.Body.trim(), 10);
-      if (isNaN(choice)) {
-        await sendMessage(customerEntry.key, { body: '🙁 Please send only the number of the respective event.' });
-        return;
-      }
-      const chosenEventId = eventChoices[choice - 1];
+      const chosenEventId = choiceToEventId[choice - 1];
       if (!chosenEventId) {
-        res.send(
-          '🤷‍♀️ You chose an invalid number for the event. 🤷‍♂️ Please try again.'
-        );
-        return;
+        return await sendMessage(customerEntry.key, { body: '🤷‍♀️ You chose an invalid number for the event. 🤷‍♂️ Please try again.' });
       }
       customerEntry = await setEventForCustomer(customerEntry, chosenEventId);
-      req.body.Body = req.cookies[COOKIES.ORIGINAL_MESSAGE];
-      res.clearCookie(COOKIES.CUSTOMER_STATE);
-      res.clearCookie(COOKIES.EVENT_MAPPING);
-      res.clearCookie(COOKIES.ORIGINAL_MESSAGE);
+      return await sendMessage(customerEntry.key, { body: 'The event has been set 🙂. What would you like to order?' });
     }
   }
 
@@ -356,7 +340,7 @@ async function handleIncomingMessages(req, res) {
     await customersMap.syncMapItems(customerEntry.key).update({
       data: customerEntry.data,
     });
-    
+
 
     await allOrdersList(eventId).syncListItems.create({
       data: {

@@ -25,16 +25,6 @@ const INTENTS = {
   GET_EVENT: 'getEvent',
 };
 
-const COOKIES = {
-  CUSTOMER_STATE: 'CustomerState',
-  EVENT_MAPPING: 'EventMapping',
-  ORIGINAL_MESSAGE: 'PreviousMessage',
-};
-
-const CUSTOMER_STATES = {
-  SET: 'set-eventId',
-};
-
 /**
  * These are all coffee options that can actually be ordered
  */
@@ -116,6 +106,4 @@ module.exports = {
   INTENTS,
   SPELLING_MISTAKES,
   SYNC_NAMES,
-  COOKIES,
-  CUSTOMER_STATES,
 };

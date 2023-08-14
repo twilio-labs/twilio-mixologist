@@ -19,7 +19,6 @@ const {
   SYNC_NAMES,
   DEFAULT_CONFIGURATION,
   DEFAULT_EVENT_CONFIGURATION,
-  TAGS,
 } = require('../../shared/consts');
 
 const restClient = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
