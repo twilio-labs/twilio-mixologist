@@ -6,11 +6,11 @@
 
 ### 1. Send message with order
 
-A customer sends a message to one of the channels associated to the configured Messaging Service. This can for example happen via WhatsApp to a respective phone number.
+A customer sends a message to the configured Messaging Service. This happens via WhatsApp to a respective phone number.
 
 ### 2. Message forwarded to "incoming webhook"
 
-Twilio will receive this message and do an `HTTP POST` request to the configured webhook URL that has been configured during the setup period. This `HTTP POST` request contains a variety of information including a `Body` property that contains the message sent by the user, `From` the address (e.g. phone number) of the user and the `To` property that contains the address the message was sent to (like the Message Service SID).
+Twilio will receive this message and do an `HTTP POST` request to the configured webhook URL that has been configured during the setup period. This `HTTP POST` request contains a variety of information including a `Body` property that contains the message sent by the user, `Author` the address (e.g. phone number) of the user and the `To` property that contains the address the message was sent to (like the Message Service SID).
 
 The route of the webhook is `/api/webhook/incoming`. The `POST` request is being handled in the [incoming webhook file]. It will perform the following things:
 
@@ -21,11 +21,10 @@ The route of the webhook is `/api/webhook/incoming`. The `POST` request is being
 #### b) The user is already registered for an event or there is only one event:
 
 * parse message to determine intent and which drink is being ordered 
-* create a [Binding] in [Twilio X] for the user TODO Append everywhere where there is an 'X'
 * create an entry in the [Twilio Sync] customer [Map]
 * create an entry in the [Twilio Sync] open orders [List]
 * create an entry in the [Twilio Sync] all orders [List]
-* send reply message to the user via [Twilio X]
+* send reply message to the user via [Twilio Conversations]
 
 ### 3. Order created in Twilio Sync List
 
@@ -33,7 +32,7 @@ If the user ordered a drink the incoming message webhook will create a new item 
 
 ### 4. Reply message sent to user
 
-The reply is sent to the respective conversation using the [Twilio Conversations](https://www.twilio.com/de/docs/conversations) REST API.
+The reply is sent to the respective conversation using the [Twilio Conversations] REST API.
 
 ### 5. Order appears on tablet
 

@@ -10,7 +10,6 @@ const {
   customersMap,
   configurationDoc,
   resetMap,
-  loadConnectedPhoneNumbers,
   resetAllLists,
   resetConversations,
   removeAllEventConfigDocs,
@@ -68,8 +67,7 @@ async function resetApplication() {
   await removeAllEventConfigDocs();
   unsetAllEventConfigs();
   await configurationDoc.update({ data: DEFAULT_CONFIGURATION });
-  const connectedPhoneNumbers = await loadConnectedPhoneNumbers();
-  await updateGlobalConfigEntry('connectedPhoneNumbers', connectedPhoneNumbers);
+  await updateGlobalConfigEntry('connectedPhoneNumbers', []);
   await resetMap(SYNC_NAMES.CUSTOMERS);
   await resetConversations(); 
   await deleteAllMessages();

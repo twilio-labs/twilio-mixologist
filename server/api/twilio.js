@@ -27,6 +27,7 @@ const restClient = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
 
 const syncClient = restClient.sync.services(TWILIO_SYNC_SERVICE);
 const conversationsClient = restClient.conversations.v1.services(TWILIO_CONVERSATIONS_SERVICE);
+const conversationDefaultClient = restClient.conversations.v1;
 const messagingClient = restClient.messaging.services(TWILIO_MESSAGING_SERVICE);
 
 const orderQueueList = eventId =>
@@ -99,26 +100,36 @@ async function sendMessageToAllOpenOrdersForEvent(body, eventId) {
 }
 
 async function setup(baseUrl) {
+  await linkConversationService();
   await configureWebhookUrls(baseUrl);
   await createResources();
-  return setPermissions();
+  await setPermissions();
+}
+
+async function linkConversationService(baserl) {
+  const defaultConfig = await conversationDefaultClient.configuration();
+  await defaultConfig.update({
+    defaultMessagingServiceSid: TWILIO_MESSAGING_SERVICE,
+    defaultChatServiceSid: TWILIO_CONVERSATIONS_SERVICE
+  })
 }
 
 async function configureWebhookUrls(baseUrl) {
-  // await messagingClient.update({ // TODO need to be changed to update conversation service 
-  //   friendlyName: 'Twilio Barista',
-  //   inboundRequestUrl: urljoin(baseUrl, '/api/webhook/incoming'),
-  // });
-  await syncClient.update({
-    webhookUrl: urljoin(baseUrl, '/api/webhook/sync'), //TODO this is very error prone when running from localhost / ngrok
-  });
-  return true;
-}
 
-async function loadConnectedPhoneNumbers() {
-  const phoneNumbers = await messagingClient.phoneNumbers.list(); //TODO fetch WhatsApp bindings as well
-  const connectedPhoneNumbers = phoneNumbers.map(p => p.phoneNumber).join(', ');
-  return connectedPhoneNumbers;
+  if (baseUrl.indexOf("localhost") >= 0) {
+    throw new Error("Can't set sync callback URL to localhost, please use another domain.");
+  }
+
+  const conversationConfigFetched = await conversationsClient.fetch();
+  await conversationConfigFetched.configuration().webhooks().update({
+    filters: ['onMessageAdded'],
+    postWebhookUrl: urljoin(baseUrl, '/api/webhook/incoming'),
+    method: 'POST'
+  })
+
+  await syncClient.update({
+    webhookUrl: urljoin(baseUrl, '/api/webhook/sync')
+  });
 }
 
 function createToken(user) {
@@ -371,7 +382,6 @@ module.exports = {
   setup,
   createToken,
   createConfigurationDoc,
-  loadConnectedPhoneNumbers,
   sendMessageToAll,
   sendMessageToAllForEvent,
   sendMessageToAllOpenOrders,
