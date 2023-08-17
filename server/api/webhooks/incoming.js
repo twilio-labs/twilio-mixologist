@@ -202,7 +202,6 @@ async function handleIncomingMessages(req, res) {
     !customerEntry.data.eventId ||
     customerEntry.data.eventExpiryDate < Date.now()
   ) {
-    debugger
     const { events } = config();
     const choices = Object.values(events)
       .filter(x => {

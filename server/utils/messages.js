@@ -1,22 +1,31 @@
 const template = require('lodash.template');
+const axios = require('axios');
 
 const { config } = require('../data/config');
 
-const FIRST_OPTION = "Colombia (Red like Twilio!)", //TODO remove these hard coded options once the length of list items is variable
-  FIRST_OPTION_SHORT = "Colombia",
-  FIRST_DETAILS = "Strawberry, Pineapple, Apple, Sunflower Seeds 🍓🍍🍏🌻",
-  SECOND_OPTION = "Aquamarine (Blue like SendGrid!)",
-  SECOND_OPTION_SHORT = "Aquamarine",
-  SECOND_DETAILS = "Pineapple, Banana, Coconut Milk, Dates, Flaxseed 🍍🍌🥥🌴",
-  THIRD_OPTION = "Lambada (Green like Segment!)",
-  THIRD_OPTION_SHORT = "Lambada",
-  THIRD_DETAILS = "Orange, Mango, Banana, Passion Fruit, Flaxseed, Coconut Oil 🍊🥭🍌🥥";
+let templates = [];
+
+axios.get('https://content.twilio.com/v1/Content', {
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  auth: {
+    username: process.env.TWILIO_API_KEY,
+    password: process.env.TWILIO_API_SECRET
+  },
+}).then(res => {
+
+  templates = res.data.contents.filter(c => c.friendly_name.startsWith(process.env.CONTENT_PREFIXES));
+}).catch(error => {
+  console.error("Couldn't fetch templates.");
+  process.exit(0)
+})
+
+const MENU_ITEMS = process.env.MENU_ITEMS.split("|").map(rawItem => rawItem.split(":"));//TODO remove when coming via availableOptions
 
 const DATA_POLICY =
   '\n\nWe only use your phone number to notify you about our smoothie service and redact all the messages & phone numbers afterwards.';
 
-// available values: originalMessage, availableOptions
-const WRONG_ORDER_MESSAGE_SID = "HX05961137d3caec10089ca6f306891c3a";
 
 // available values: product, orderNumber
 const EXISTING_ORDER_MESSAGES = [
@@ -43,9 +52,6 @@ const SYSTEM_OFFLINE_MESSAGES = [
   'No more smoothies 😱\nSeems like we are out of smoothies for today. Have a great day!',
 ];
 
-// available values: availableOptions
-const HELP_MESSAGE_SID = "HXd37955106e2f89804ce427d75c007a62";
-
 // available values:
 const NO_OPEN_ORDER_MESSAGES = [
   'Seems like you have no open order at the moment. Simply message us the name of the beverage you would like.',
@@ -66,8 +72,6 @@ const OOPS_MESSAGES = [
   'Oops something went wrong! Talk to someone from Twilio and see if they can help you.',
 ];
 
-const POST_REGISTRATION_MESSAGE_SID = "HX6848407e86cc10f6cdeda335f4e1ff7f";
-
 const MAX_ORDERS = [
   "It seems like you've reached the maximum numbers of orders we allowed at this event. Sorry.",
 ];
@@ -86,22 +90,22 @@ function pickRandom(arr) {
   return arr[idx];
 }
 
-function getWrongOrderMessage(originalMessage, availableOptions) {
+function getWrongOrderMessage(originalMessage, availableOptions) { //TODO make dependable to available options
+
+  const variables = [originalMessage, ...MENU_ITEMS.flat()];
+  const contentVariables = {};
+  for (const key of variables.keys()) {
+    contentVariables[key] = variables[key];
+  }
+
+  const templateName = `${process.env.CONTENT_PREFIXES}wrong_order_${MENU_ITEMS.length}`;
+  const template = templates.find(t => t.friendly_name === templateName);
+
   return {
-    contentSid: WRONG_ORDER_MESSAGE_SID,
-    contentVariables: JSON.stringify({
-      0: originalMessage,
-      1: FIRST_OPTION,
-      2: SECOND_OPTION,
-      3: THIRD_OPTION,
-      4: FIRST_OPTION_SHORT,
-      5: FIRST_DETAILS,
-      6: SECOND_OPTION_SHORT,
-      7: SECOND_DETAILS,
-      8: THIRD_OPTION_SHORT,
-      9: THIRD_DETAILS
-    }),
+    contentSid: template.sid,
+    contentVariables: JSON.stringify(contentVariables),
   };
+
 }
 
 function getExistingOrderMessage(product, orderNumber) {
@@ -148,21 +152,20 @@ function getSystemOfflineMessage(forEvent) {
   }
 }
 
-function getHelpMessage(availableOptions) {
+function getHelpMessage(availableOptions) {  //TODO make dependable to available options
+
+  const variables = MENU_ITEMS.flat();
+  const contentVariables = {};
+  for (const key of variables.keys()) {
+    contentVariables[key] = variables[key];
+  }
+
+  const templateName = `${process.env.CONTENT_PREFIXES}help_privacy_${MENU_ITEMS.length}`;
+  const template = templates.find(t => t.friendly_name === templateName);
+
   return {
-    contentSid: HELP_MESSAGE_SID,
-    contentVariables: JSON.stringify({
-      0: FIRST_OPTION,
-      1: SECOND_OPTION,
-      2: THIRD_OPTION,
-      3: FIRST_OPTION_SHORT,
-      4: FIRST_DETAILS,
-      5: SECOND_OPTION_SHORT,
-      6: SECOND_DETAILS,
-      7: THIRD_OPTION_SHORT,
-      8: THIRD_DETAILS,
-      9: DATA_POLICY
-    }),
+    contentSid: template.sid,
+    contentVariables: JSON.stringify(contentVariables),
   };
 }
 
@@ -194,22 +197,22 @@ function getOopsMessage(error) {
   }
 }
 
-function getPostRegistrationMessage(availableOptions, maxNumberOrders) {
+function getPostRegistrationMessage(availableOptions, maxNumberOrders) {   //TODO make dependable to available options
+
+  const variables = [maxNumberOrders, ...MENU_ITEMS.flat()];
+  const contentVariables = {};
+  for (const key of variables.keys()) {
+    contentVariables[key] = variables[key];
+  }
+
+  const templateName = `${process.env.CONTENT_PREFIXES}post_registration_${MENU_ITEMS.length}`;
+  const template = templates.find(t => t.friendly_name === templateName);
+
   return {
-    contentSid: POST_REGISTRATION_MESSAGE_SID,
-    contentVariables: JSON.stringify({
-      0: maxNumberOrders,
-      1: FIRST_OPTION,
-      2: SECOND_OPTION,
-      3: THIRD_OPTION,
-      4: FIRST_OPTION_SHORT,
-      5: FIRST_DETAILS,
-      6: SECOND_OPTION_SHORT,
-      7: SECOND_DETAILS,
-      8: THIRD_OPTION_SHORT,
-      9: THIRD_DETAILS
-    }),
+    contentSid: template.sid,
+    contentVariables: JSON.stringify(contentVariables),
   };
+
 }
 
 function getMaxOrdersMessage() {
