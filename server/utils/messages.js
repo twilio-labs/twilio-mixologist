@@ -19,17 +19,15 @@ axios.get('https://content.twilio.com/v1/Content', {
   process.exit(0)
 })
 
-const MENU_ITEMS = process.env.MENU_ITEMS.split("|").map(rawItem => rawItem.split(":")); //TODO remove when coming via availableOptions
+function getWrongOrderMessage(originalMessage, availableOptions) {
 
-function getWrongOrderMessage(originalMessage, availableOptions) { //TODO make dependable to available options
-
-  const variables = [originalMessage, ...MENU_ITEMS.flat()];
+  const variables = [originalMessage, ...availableOptions.map(o => [o.title, o.shortTitle, o.description]).flat()];
   const contentVariables = {};
   for (const key of variables.keys()) {
     contentVariables[key] = variables[key];
   }
 
-  const templateName = `${process.env.CONTENT_PREFIXES}wrong_order_${MENU_ITEMS.length}`;
+  const templateName = `${process.env.CONTENT_PREFIXES}wrong_order_${availableOptions.length}`;
   const template = templates.find(t => t.friendly_name === templateName);
 
   return {
@@ -78,16 +76,16 @@ function getSystemOfflineMessage(forEvent) {
   }
 }
 
-function getHelpMessage(forEvent, availableOptions) {  //TODO make dependable to available options
+function getHelpMessage(forEvent, availableOptions) {
   const { mode } = config(forEvent);
   const beverage = mode === "smoothie" ? "smoothie" : "coffee";
-  const variables = [beverage, ...MENU_ITEMS.flat()];
+  const variables = [beverage, ...availableOptions.map(o => [o.title, o.shortTitle, o.description]).flat()];
   const contentVariables = {};
   for (const key of variables.keys()) {
     contentVariables[key] = variables[key];
   }
 
-  const templateName = `${process.env.CONTENT_PREFIXES}help_privacy_${MENU_ITEMS.length}`;
+  const templateName = `${process.env.CONTENT_PREFIXES}help_privacy_${availableOptions.length}`;
   const template = templates.find(t => t.friendly_name === templateName);
 
   return {
@@ -120,16 +118,16 @@ function getOopsMessage(error) {
   }
 }
 
-function getPostRegistrationMessage(forEvent, availableOptions, maxNumberOrders) {   //TODO make dependable to available options
+function getPostRegistrationMessage(forEvent, availableOptions, maxNumberOrders) {
   const { mode } = config(forEvent);
   const beverage = mode === "smoothie" ? "smoothies" : "coffee";
-  const variables = [beverage, maxNumberOrders, ...MENU_ITEMS.flat()];
+  const variables = [beverage, maxNumberOrders, ...availableOptions.map(o => [o.title, o.shortTitle, o.description]).flat()];
   const contentVariables = {};
   for (const key of variables.keys()) {
     contentVariables[key] = variables[key];
   }
 
-  const templateName = `${process.env.CONTENT_PREFIXES}post_registration_${MENU_ITEMS.length}`;
+  const templateName = `${process.env.CONTENT_PREFIXES}post_registration_${availableOptions.length}`;
   const template = templates.find(t => t.friendly_name === templateName);
 
   return {

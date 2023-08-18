@@ -16,8 +16,8 @@ const {
 const { SYNC_NAMES } = require('../../../shared/consts');
 
 async function handleCreateEventRequest(req, res, next) {
-  const { eventName } = req.body;
-  const data = await createEventConfig(eventName);
+  const { eventName, mode } = req.body;
+  const data = await createEventConfig(eventName, mode);
   const eventId = data.slug;
   await createOrderQueue(eventId);
   await createAllOrdersList(eventId);

@@ -266,14 +266,12 @@ async function handleIncomingMessages(req, res) {
   res.type('text/xml').send(twiml.toString());
 
   if (messageIntent.intent !== INTENTS.ORDER) {
-    const availableOptionsMap = config(eventId).availableCoffees;
-    const availableOptions = Object.keys(availableOptionsMap).filter(
-      key => availableOptionsMap[key]
-    );
+    const { fullMenu, availableMenu } = config(eventId);
+    const filteredMenu = fullMenu.filter(item => availableMenu[item.shortTitle]);
     try {
       let responseMessage;
       if (messageIntent.intent === INTENTS.HELP || messageIntent.intent === INTENTS.WELCOME) {
-        responseMessage = getHelpMessage(eventId, availableOptions);
+        responseMessage = getHelpMessage(eventId, filteredMenu);
       } else if (messageIntent.intent === INTENTS.QUEUE) {
         const queuePosition = await getQueuePosition(customerEntry);
         if (Number.isNaN(queuePosition)) {
@@ -289,7 +287,7 @@ async function handleIncomingMessages(req, res) {
           responseMessage = getNoOpenOrderMessage();
         }
       } else {
-        responseMessage = getWrongOrderMessage(req.body.Body, availableOptions);
+        responseMessage = getWrongOrderMessage(req.body.Body, filteredMenu);
       }
       await sendMessage(customerEntry.key, responseMessage);
       res.send();

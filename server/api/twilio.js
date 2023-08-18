@@ -6,6 +6,10 @@ const PromiseThrottle = require('promise-throttle');
 const { AccessToken } = twilio.jwt;
 const { SyncGrant } = AccessToken;
 
+function createBooleanMapOfArray(array) {
+  return array.reduce((map, entry) => ({ ...map, [entry.shortTitle]: true }), {});
+}
+
 const {
   TWILIO_API_KEY,
   TWILIO_API_SECRET,
@@ -19,6 +23,8 @@ const {
   SYNC_NAMES,
   DEFAULT_CONFIGURATION,
   DEFAULT_EVENT_CONFIGURATION,
+  AVAILABLE_BARISTA_OPTIONS,
+  AVAILABLE_SMOOTHIE_OPTIONS
 } = require('../../shared/consts');
 
 const restClient = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
@@ -325,12 +331,14 @@ function getEventConfigName(slug) {
   return SYNC_NAMES.EVENT_CONFIG + slug;
 }
 
-async function createEventConfiguration(eventName, customData) {
+async function createEventConfiguration(eventName, mode, customData) {
   const slug = kebabCase(eventName);
   const data = Object.assign(
     {},
     DEFAULT_EVENT_CONFIGURATION,
     {
+      availableMenu: createBooleanMapOfArray(mode === "smoothie" ? AVAILABLE_SMOOTHIE_OPTIONS : AVAILABLE_BARISTA_OPTIONS),
+      fullMenu: mode === "smoothie" ? AVAILABLE_SMOOTHIE_OPTIONS : AVAILABLE_BARISTA_OPTIONS,
       eventName,
       slug,
     },

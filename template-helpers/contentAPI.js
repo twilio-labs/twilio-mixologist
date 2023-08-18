@@ -4,14 +4,8 @@ const { getHelpPrivacyTemplate, getWrongOrderTemplate, getPostRegistrationTempla
 
 console.log(`Initialized client with account sid ${process.env.TWILIO_ACCOUNT_SID}`);
 
-const menuItems = process.env.MENU_ITEMS.split("|").map(rawItem => {
-    const elements = rawItem.split(":");
-    return {
-        shortTitle: elements[0],
-        title: elements[1],
-        description: elements[2]
-    }
-});
+const MAX_ITEMS_ON_MENU = 9;
+
 
 (async () => {
     const { data } = await axios.get('https://content.twilio.com/v1/Content', {
@@ -41,9 +35,7 @@ const menuItems = process.env.MENU_ITEMS.split("|").map(rawItem => {
 
     }
 
-    const neededTemplates = menuItems.length;
-
-    for (let numOptions = 2; numOptions <= neededTemplates; numOptions++) {
+    for (let numOptions = 2; numOptions <= MAX_ITEMS_ON_MENU; numOptions++) {
 
         // 1. Check the help-privacy-templates
         templateName = `${process.env.CONTENT_PREFIXES}help_privacy_${numOptions}`;
