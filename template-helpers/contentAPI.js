@@ -27,6 +27,20 @@ const menuItems = process.env.MENU_ITEMS.split("|").map(rawItem => {
     let templateName;
     const templates = data.contents;
 
+    if (process.env.OVERRIDE_TEMPLATES) {
+
+        await Promise.all(templates
+            .filter(t => t.friendly_name.startsWith(process.env.CONTENT_PREFIXES))
+            .map(t => axios.delete(`https://content.twilio.com/v1/Content/${t.sid}`, {
+                auth: {
+                    username: process.env.TWILIO_API_KEY,
+                    password: process.env.TWILIO_API_SECRET
+                },
+            })))
+        console.log(`Deleted ${templates.length} templates.`);
+
+    }
+
     const neededTemplates = menuItems.length;
 
     for (let numOptions = 2; numOptions <= neededTemplates; numOptions++) {

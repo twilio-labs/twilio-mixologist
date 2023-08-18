@@ -171,7 +171,7 @@ async function cancelOrder(customer) {
     return false;
   }
   const orderNumber = customerEntry.data.openOrders[0];
-  if (!orderNumber) {
+  if (orderNumber === undefined) {
     return false;
   }
   const orderedItemLink = orderQueueList(customer.data.eventId)
@@ -273,7 +273,7 @@ async function handleIncomingMessages(req, res) {
     try {
       let responseMessage;
       if (messageIntent.intent === INTENTS.HELP || messageIntent.intent === INTENTS.WELCOME) {
-        responseMessage = getHelpMessage(availableOptions);
+        responseMessage = getHelpMessage(eventId, availableOptions);
       } else if (messageIntent.intent === INTENTS.QUEUE) {
         const queuePosition = await getQueuePosition(customerEntry);
         if (Number.isNaN(queuePosition)) {

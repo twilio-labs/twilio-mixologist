@@ -32,12 +32,6 @@ Sentry.init({
   try {
     log.info('Load config from Twilio Sync');
     await loadConfig();
-    log.info('Retrieve available phone numbers');
-    // log.info('Write available phone numbers into configuration');
-    // await updateGlobalConfigEntry(
-    //   'connectedPhoneNumbers',
-    //   connectedPhoneNumbers
-    // );
     app.listen(PORT, () => {
       log.info(`Server is listening on port ${PORT}`);
     });
