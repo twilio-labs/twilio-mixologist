@@ -1,17 +1,20 @@
 const twilio = require('twilio');
 const urljoin = require('url-join');
 const kebabCase = require('lodash.kebabcase');
+const PromiseThrottle = require('promise-throttle');
 
 const { AccessToken } = twilio.jwt;
 const { SyncGrant } = AccessToken;
 
-const { getIdentityFromAddress } = require('../utils/identity');
+function createBooleanMapOfArray(array) {
+  return array.reduce((map, entry) => ({ ...map, [entry.shortTitle]: true }), {});
+}
 
 const {
   TWILIO_API_KEY,
   TWILIO_API_SECRET,
   TWILIO_ACCOUNT_SID,
-  TWILIO_NOTIFY_SERVICE,
+  TWILIO_CONVERSATIONS_SERVICE,
   TWILIO_SYNC_SERVICE,
   TWILIO_MESSAGING_SERVICE,
 } = process.env;
@@ -20,7 +23,8 @@ const {
   SYNC_NAMES,
   DEFAULT_CONFIGURATION,
   DEFAULT_EVENT_CONFIGURATION,
-  TAGS,
+  AVAILABLE_BARISTA_OPTIONS,
+  AVAILABLE_SMOOTHIE_OPTIONS
 } = require('../../shared/consts');
 
 const restClient = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
@@ -28,7 +32,8 @@ const restClient = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
 });
 
 const syncClient = restClient.sync.services(TWILIO_SYNC_SERVICE);
-const notifyClient = restClient.notify.services(TWILIO_NOTIFY_SERVICE);
+const conversationsClient = restClient.conversations.v1.services(TWILIO_CONVERSATIONS_SERVICE);
+const conversationDefaultClient = restClient.conversations.v1;
 const messagingClient = restClient.messaging.services(TWILIO_MESSAGING_SERVICE);
 
 const orderQueueList = eventId =>
@@ -39,135 +44,98 @@ const metricsMap = syncClient.syncMaps(SYNC_NAMES.METRICS);
 const allOrdersList = eventId =>
   syncClient.syncLists(SYNC_NAMES.ALL_ORDERS + eventId);
 
-async function registerAddress(address, bindingType) {
-  const identity = getIdentityFromAddress(address);
-  const endpoint = `${identity}:${bindingType}`;
-  const tag = [TAGS.INTERACTED];
-  const { sid } = await notifyClient.bindings.create({
-    identity,
-    address,
-    endpoint,
-    bindingType,
-    tag,
+async function sendMessage(conversationSID, msg) {
+  return conversationsClient.conversations(conversationSID).messages.create({
+    author: 'system',
+    ...msg
   });
-  return { identity, sid };
-}
-
-async function sendMessage(identity, body) {
-  const notification = await notifyClient.notifications.create({
-    identity,
-    body,
-  });
-  return notification;
 }
 
 async function sendMessageToAll(body) {
-  const notification = await notifyClient.notifications.create({
-    tag: TAGS.ALL,
-    body,
+  const throttle = new PromiseThrottle({
+    requestsPerSecond: 100,
+    promiseImplementation: Promise,
   });
-  return notification;
+  const customers = await customersMap.syncMapItems.list();
+
+  return Promise.all(customers.map(customer => {
+    return throttle.add(sendMessage.bind(this, customer.key, { body }))
+  }));
 }
 
 async function sendMessageToAllForEvent(body, eventId) {
-  const notification = await notifyClient.notifications.create({
-    tag: TAGS.PREFIX_EVENT + eventId,
-    body,
+  const throttle = new PromiseThrottle({
+    requestsPerSecond: 100,
+    promiseImplementation: Promise,
   });
-  return notification;
-}
-
-async function registerTagForBinding(bindingSid, tag) {
-  const originalBinding = await notifyClient.bindings(bindingSid).fetch();
-  const newBindingData = {
-    identity: originalBinding.identity,
-    address: originalBinding.address,
-    endpoint: originalBinding.endpoint,
-    bindingType: originalBinding.bindingType,
-  };
-  newBindingData.tag = [
-    ...(originalBinding.tags || []).filter(t => t !== tag),
-    tag,
-  ];
-  const { sid } = await notifyClient.bindings.create(newBindingData);
-  return sid;
-}
-
-async function removeTagForBinding(bindingSid, tagToRemove) {
-  const originalBinding = await notifyClient.bindings(bindingSid).fetch();
-  const newBindingData = {
-    identity: originalBinding.identity,
-    address: originalBinding.address,
-    endpoint: originalBinding.endpoint,
-    bindingType: originalBinding.bindingType,
-  };
-  newBindingData.tag = (originalBinding.tags || []).filter(
-    tag => tag !== tagToRemove
+  const customersAtEvent = (await customersMap.syncMapItems.list()).filter(
+    ({ data }) => data.eventId === eventId
   );
-  const { sid } = await notifyClient.bindings.create(newBindingData);
-  return sid;
-}
 
-async function removeTagsForBindingWithPrefix(bindingSid, tagPrefix) {
-  const originalBinding = await notifyClient.bindings(bindingSid).fetch();
-  const newBindingData = {
-    identity: originalBinding.identity,
-    address: originalBinding.address,
-    endpoint: originalBinding.endpoint,
-    bindingType: originalBinding.bindingType,
-  };
-  newBindingData.tag = (originalBinding.tags || []).filter(
-    tag => !tag.startsWith(tagPrefix)
-  );
-  const { sid } = await notifyClient.bindings.create(newBindingData);
-  return sid;
-}
-
-async function registerOpenOrder(bindingSid) {
-  return registerTagForBinding(bindingSid, TAGS.OPEN_ORDER);
-}
-
-async function deregisterOpenOrder(bindingSid) {
-  return removeTagForBinding(bindingSid, TAGS.OPEN_ORDER);
+  return Promise.all(customersAtEvent.map(customer => {
+    return throttle.add(sendMessage.bind(this, customer.key, { body }))
+  }));
 }
 
 async function sendMessageToAllOpenOrders(body) {
-  const notification = await notifyClient.notifications.create({
-    tag: TAGS.OPEN_ORDER,
-    body,
+  const throttle = new PromiseThrottle({
+    requestsPerSecond: 100,
+    promiseImplementation: Promise,
   });
-  return notification;
+  const customersWithOpenOrders = (await customersMap.syncMapItems.list()).filter(
+    ({ data }) => data.openOrders.length > 0
+  );
+
+  return Promise.all(customersWithOpenOrders.map(customer => {
+    return throttle.add(sendMessage.bind(this, customer.key, { body }))
+  }));
 }
 
 async function sendMessageToAllOpenOrdersForEvent(body, eventId) {
-  const notification = await notifyClient.notification.create({
-    tag: TAGS.PREFIX_EVENT + eventId,
-    body,
+  const throttle = new PromiseThrottle({
+    requestsPerSecond: 100,
+    promiseImplementation: Promise,
   });
-  return notification;
+  const customersAtEventWithOpenOrders = (await customersMap.syncMapItems.list()).filter(
+    ({ data }) => data.eventId === eventId && data.openOrders.length > 0
+  );
+
+  return Promise.all(customersAtEventWithOpenOrders.map(customer => {
+    return throttle.add(sendMessage.bind(this, customer.key, { body }))
+  }));
 }
 
 async function setup(baseUrl) {
+  await linkConversationService();
   await configureWebhookUrls(baseUrl);
   await createResources();
-  return setPermissions();
+  await setPermissions();
+}
+
+async function linkConversationService(baserl) {
+  const defaultConfig = await conversationDefaultClient.configuration();
+  await defaultConfig.update({
+    defaultMessagingServiceSid: TWILIO_MESSAGING_SERVICE,
+    defaultChatServiceSid: TWILIO_CONVERSATIONS_SERVICE
+  })
 }
 
 async function configureWebhookUrls(baseUrl) {
-  await messagingClient.update({
-    friendlyName: 'Twilio Barista',
-    inboundRequestUrl: urljoin(baseUrl, '/api/webhook/incoming'),
-  });
-  await syncClient.update({
-    webhookUrl: urljoin(baseUrl, '/api/webhook/sync'),
-  });
-  return true;
-}
 
-async function loadConnectedPhoneNumbers() {
-  const phoneNumbers = await messagingClient.phoneNumbers.list();
-  const connectedPhoneNumbers = phoneNumbers.map(p => p.phoneNumber).join(', ');
-  return connectedPhoneNumbers;
+  if (baseUrl.indexOf("localhost") >= 0) {
+    throw new Error("Can't set sync callback URL to localhost, please use another domain.");
+  }
+
+  const conversationConfigFetched = await conversationsClient.fetch();
+  await conversationConfigFetched.configuration().webhooks().update({
+    filters: ['onMessageAdded'],
+    postWebhookUrl: urljoin(baseUrl, '/api/webhook/incoming'),
+    method: 'POST'
+  })
+
+  await syncClient.update({
+    webhookUrl: urljoin(baseUrl, '/api/webhook/sync')
+  });
 }
 
 function createToken(user) {
@@ -259,7 +227,7 @@ async function setPermissions() {
   ]);
 }
 
-const createConfigurationDoc = function() {
+const createConfigurationDoc = function () {
   return createIfNotExists(
     syncClient.documents,
     SYNC_NAMES.CONFIGURATION,
@@ -272,11 +240,11 @@ async function createOrderQueue(eventId) {
   return resetList(name);
 }
 
-const createCustomerMap = function() {
+const createCustomerMap = function () {
   return createIfNotExists(syncClient.syncMaps, SYNC_NAMES.CUSTOMERS);
 };
 
-const createMetricsMap = function() {
+const createMetricsMap = function () {
   return createIfNotExists(syncClient.syncMaps, SYNC_NAMES.METRICS);
 };
 
@@ -351,24 +319,26 @@ async function resetMap(name) {
   await createIfNotExists(syncClient.syncMaps, name);
 }
 
-async function resetNotify() {
-  const bindings = await notifyClient.bindings.list();
-  const deleteBindings = bindings.map(async ({ sid }) =>
-    notifyClient.bindings(sid).remove()
-  );
-  return Promise.all(deleteBindings);
+async function resetConversations() {
+  const conversations = await conversationsClient.conversations.list();
+
+  Promise.all(conversations.map(async (conversation) =>
+    await conversation.remove()
+  ));
 }
 
 function getEventConfigName(slug) {
   return SYNC_NAMES.EVENT_CONFIG + slug;
 }
 
-async function createEventConfiguration(eventName, customData) {
+async function createEventConfiguration(eventName, mode, customData) {
   const slug = kebabCase(eventName);
   const data = Object.assign(
     {},
     DEFAULT_EVENT_CONFIGURATION,
     {
+      availableMenu: createBooleanMapOfArray(mode === "smoothie" ? AVAILABLE_SMOOTHIE_OPTIONS : AVAILABLE_BARISTA_OPTIONS),
+      fullMenu: mode === "smoothie" ? AVAILABLE_SMOOTHIE_OPTIONS : AVAILABLE_BARISTA_OPTIONS,
       eventName,
       slug,
     },
@@ -408,10 +378,9 @@ function getEventConfigDoc(slug) {
 module.exports = {
   SYNC_NAMES,
   restClient,
-  notifyClient,
+  conversationsClient,
   syncClient,
   sendMessage,
-  registerAddress,
   messagingClient,
   orderQueueList,
   configurationDoc,
@@ -421,17 +390,14 @@ module.exports = {
   setup,
   createToken,
   createConfigurationDoc,
-  loadConnectedPhoneNumbers,
   sendMessageToAll,
   sendMessageToAllForEvent,
   sendMessageToAllOpenOrders,
   sendMessageToAllOpenOrdersForEvent,
-  registerOpenOrder,
-  deregisterOpenOrder,
   resetList,
   setPermissions,
   resetMap,
-  resetNotify,
+  resetConversations,
   fetchEventConfigurations,
   getEventConfigDoc,
   createEventConfiguration,
@@ -439,9 +405,5 @@ module.exports = {
   resetAllLists,
   createAllOrdersList,
   createOrderQueue,
-  registerTagForBinding,
-  removeTagForBinding,
-  removeTagsForBindingWithPrefix,
-  getIdentityFromAddress,
   removeAllEventConfigDocs,
 };

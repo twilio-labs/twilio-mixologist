@@ -12,13 +12,13 @@ router.get('/numbers', numbers.get);
 router.get('/events', events.get);
 router.get('/metrics/:eventId', metrics.get);
 router.post(
-  '/notification',
+  '/message',
   gateForAdmin,
   parseJsonBody,
-  require('./notification').handler
+  require('./message').handler
 );
 
-router.post('/numbers', gateForAdmin, parseJsonBody, numbers.post);
+// router.post('/numbers', gateForAdmin, parseJsonBody, numbers.post);
 router.post('/events', gateForAdmin, parseJsonBody, events.create);
 router.post('/reset', gateForAdmin, require('./reset').handler);
 router.post('/setup', gateForAdmin, require('./setup').handler);

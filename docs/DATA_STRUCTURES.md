@@ -25,16 +25,17 @@ This is a [Twilio Sync Document] with the key prefix `event_` followed by the ID
 type GlobalConfigurationData = {
   isVisible: boolean;
   isOn: boolean;
-  mode: 'barista' | 'bartender';
+  mode: 'barista' | 'bartender' | 'smoothie';
   visibleNumbers: string[];
   offlineMessage: string;
-  availableCoffees: {
-    SomeCoffee: boolean;
+  availableMenu: {
+    SomeBeverage: boolean;
   };
   menuDetails: string;
   orderPickupLocation: string;
   repoUrl: string;
   expectedOrders: numbers;
+  maxOrdersPerCustomer: number;
 }
 ```
 

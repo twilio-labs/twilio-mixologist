@@ -1,6 +1,3 @@
-function createBooleanMapOfArray(array) {
-  return array.reduce((map, entry) => ({ ...map, [entry]: true }), {});
-}
 
 const SYNC_NAMES = {
   ORDER_QUEUE: 'orderQueue_',
@@ -13,14 +10,8 @@ const SYNC_NAMES = {
 
 const DEFAULT_JSON_ENTRY_KEY = 'CHOOSE_KEY';
 
-const TAGS = {
-  INTERACTED: 'interacted',
-  ALL: 'all',
-  OPEN_ORDER: 'open-order',
-  PREFIX_EVENT: 'event_',
-};
-
 const INTENTS = {
+  WELCOME: 'welcome',
   HELP: 'help',
   QUEUE: 'queue',
   ORDER: 'order',
@@ -31,28 +22,74 @@ const INTENTS = {
   GET_EVENT: 'getEvent',
 };
 
-const COOKIES = {
-  CUSTOMER_STATE: 'CustomerState',
-  EVENT_MAPPING: 'EventMapping',
-  ORIGINAL_MESSAGE: 'PreviousMessage',
-};
-
-const CUSTOMER_STATES = {
-  SET: 'set-eventId',
-};
-
 /**
  * These are all coffee options that can actually be ordered
  */
-const AVAILABLE_DEFAULT_OPTIONS = [
-  'Espresso',
-  'Cappuccino',
-  'Latte',
-  'Americano',
-  'Flat White',
-  'Filter Coffee',
-  'Hot Chocolate',
-];
+const AVAILABLE_BARISTA_OPTIONS = [
+  {
+    shortTitle: 'Coffee',
+    title: 'Coffee',
+    description: 'TBD'
+  }, {
+    shortTitle: 'Espresso',
+    title: 'Espresso',
+    description: 'TBD'
+  }, {
+    shortTitle: 'Espresso Macchiato',
+    title: 'Latte Macchiato',
+    description: 'TBD'
+  }, {
+    shortTitle: 'Latte Macchiato',
+    title: 'Latte Macchiato',
+    description: 'Two-thirds of it is steamed milk, poured over a shot of espresso.'
+  }, {
+    shortTitle: 'Cappuccino',
+    title: 'Cappuccino',
+    description: 'Stronger than Latte. Equal parts of espresso, milk and cream.'
+  }, {
+    shortTitle: 'Americano',
+    title: 'Americano',
+    description: 'Hot water with an espresso shot extracted on top of the hot water.'
+  }, {
+    shortTitle: 'Flat White',
+    title: 'Flat White',
+    description: 'Same as a cappuccino except it does not have any foam or chocolate on top.'
+  }, {
+    shortTitle: 'Matcha',
+    title: 'Matcha',
+    description: 'Powder made from ground-up green tea leaves brewed into tea.'
+  }, {
+    shortTitle: 'Mocha',
+    title: 'Mocha',
+    description: 'Combines espresso with hot milk and chocolate / variant of the latte.'
+  }, {
+    shortTitle: 'Chai',
+    title: 'Chai',
+    description: 'TBD'
+  }, {
+    shortTitle: 'Tea',
+    title: 'Tea',
+    description: 'TBD'
+  }
+]
+const AVAILABLE_SMOOTHIE_OPTIONS = [
+  {
+    title: 'Colombia (Red like Twilio!)',
+    shortTitle: 'Colombia',
+    description: 'Strawberry, Pineapple, Apple, Sunflower Seeds 🍓🍍🍏🌻'
+  },
+  {
+    title: 'Aquamarine (Blue like SendGrid!)',
+    shortTitle: 'Aquamarine',
+    description: 'Pineapple, Banana, Coconut Milk, Dates, Flaxseed 🍍🍌🥥🌴'
+  },
+  {
+    title: 'Lambada (Green like Segment!)',
+    shortTitle: 'Lambada',
+    description: 'Orange, Mango, Banana, Passion Fruit, Flaxseed, Coconut Oil 🍊🥭🍌🥥'
+  }
+]
+
 
 /**
  * This is a rudamentary solution to solve typos. All these
@@ -91,6 +128,9 @@ const SPELLING_MISTAKES = {
   'hot chocolate': 'Hot Chocolate',
   chocolate: 'Hot Chocolate',
   cocolate: 'Hot Chocolate',
+  twilio: 'Colombia',
+  sendgrid: 'Lambada',
+  segment: 'Smaragd',
 };
 
 const DEFAULT_CONFIGURATION = {
@@ -102,24 +142,22 @@ const DEFAULT_EVENT_CONFIGURATION = {
   isOn: true,
   isVisible: false,
   mode: 'barista',
-  offlineMessage: 'We are sorry but there is currently no coffee.',
-  availableCoffees: createBooleanMapOfArray(AVAILABLE_DEFAULT_OPTIONS),
+  offlineMessage: 'We are sorry but there are currently no beverages.',
   menuDetails: '',
-  orderPickupLocation: 'the coffee stand',
-  repoUrl: 'bit.ly/twilio-barista',
+  orderPickupLocation: 'the Twilio stand',
+  repoUrl: 'https://twil.io/twilio-barista',
   expectedOrders: 300,
+  maxOrdersPerCustomer: 2,
   visibleNumbers: [],
 };
 
 module.exports = {
-  AVAILABLE_DEFAULT_OPTIONS,
   DEFAULT_CONFIGURATION,
   DEFAULT_EVENT_CONFIGURATION,
   DEFAULT_JSON_ENTRY_KEY,
   INTENTS,
   SPELLING_MISTAKES,
   SYNC_NAMES,
-  TAGS,
-  COOKIES,
-  CUSTOMER_STATES,
+  AVAILABLE_BARISTA_OPTIONS,
+  AVAILABLE_SMOOTHIE_OPTIONS
 };
