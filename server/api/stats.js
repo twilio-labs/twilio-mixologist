@@ -24,7 +24,7 @@ async function fetchStats(eventId) {
     mode,
   } = config(eventId);
   const phoneNumbers = visibleNumbers
-    // .split(',') 
+    .split(',') 
     .map(n => n.trim())
     .slice(0, 2);
   const product = getAvailableProducts(availableMenu);
