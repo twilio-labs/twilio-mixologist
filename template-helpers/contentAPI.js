@@ -4,7 +4,7 @@ const { getHelpPrivacyTemplate, getWrongOrderTemplate, getPostRegistrationTempla
 
 console.log(`Initialized client with account sid ${process.env.TWILIO_ACCOUNT_SID}`);
 
-const MAX_ITEMS_ON_MENU = 9;
+const MAX_ITEMS_ON_MENU = 10;
 
 
 (async () => {
