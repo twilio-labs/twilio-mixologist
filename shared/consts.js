@@ -35,9 +35,21 @@ const AVAILABLE_BARISTA_OPTIONS = [
     title: "Espresso",
     description: "Strong black coffee"
   }, {
-    shortTitle: "Espresso Macchiato",
-    title: "Espresso Macchiato",
-    description: "Espresso with a dash of milk"
+    shortTitle: "Double Espresso",
+    title: "Double Espresso",
+    description: "Double shot of espresso"
+  }, {
+    shortTitle: "Flat White",
+    title: "Flat White",
+    description: "Espresso with velvety milk"
+  }, {
+    shortTitle: "Macchiato",
+    title: "Macchiato",
+    description: "Espresso \"stained\" with a splash of milk"
+  }, {
+    shortTitle: "Double Macchiato",
+    title: "Double Macchiato",
+    description: "Two shots of espresso marked with milk"
   }, {
     shortTitle: "Latte Macchiato",
     title: "Latte Macchiato",
@@ -47,13 +59,13 @@ const AVAILABLE_BARISTA_OPTIONS = [
     title: "Cappuccino",
     description: "Espresso with steamed milk"
   }, {
+    shortTitle: "Espresso Macchiato",
+    title: "Espresso Macchiato",
+    description: "Espresso with a dash of milk"
+  }, {
     shortTitle: "Americano",
     title: "Americano",
     description: "Espresso with hot water"
-  }, {
-    shortTitle: "Flat White",
-    title: "Flat White",
-    description: "Espresso with velvety milk"
   }, {
     shortTitle: "Matcha",
     title: "Matcha",
