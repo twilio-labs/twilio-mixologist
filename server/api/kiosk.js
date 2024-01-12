@@ -5,7 +5,9 @@ const emojiFlags = require('emoji-flags');
 async function handler(req, res) {
   const { eventId } = req.query;
   const { visibleNumbers, mode, availableMenu, menuDetails } = config(eventId);
+  console.log('visibleNumbers: ', visibleNumbers)
   const filteredNumbers = visibleNumbers.split(',').map(num => num.trim());
+  console.log('NUMBERS: ', filteredNumbers)
 
   try {
     const phoneNumbers = (await Promise.all(
@@ -22,6 +24,7 @@ async function handler(req, res) {
             emoji,
           };
         } catch (err) {
+          console.error(err)
           return undefined;
         }
       })
