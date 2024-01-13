@@ -73,11 +73,15 @@ const AVAILABLE_BARISTA_OPTIONS = [
   }, {
     shortTitle: "Mocha",
     title: "Mocha",
-    description: "Whisked powdered green tea"
+    description: "Espresso with chocolate and milk"
   }, {
     shortTitle: "Chai",
     title: "Chai",
     description: "Spiced tea with milk"
+  }, {
+    shortTitle: "Hot Chocolate",
+    title: "Hot Chocolate",
+    description: "Drinkable chocolate with milk"
   }
 ]
 const AVAILABLE_SMOOTHIE_OPTIONS = [
