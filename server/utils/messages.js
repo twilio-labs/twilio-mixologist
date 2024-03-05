@@ -86,7 +86,6 @@ function getHelpMessage(forEvent, availableOptions) {
   }
 
   const templateName = `${process.env.CONTENT_PREFIXES}help_privacy_${availableOptions.length}`;
-  console.log('TEMPLATE NAME: ', templateName)
   const template = templates.find(t => t.friendly_name === templateName);
 
   return {
