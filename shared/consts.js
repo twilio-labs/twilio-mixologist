@@ -57,7 +57,7 @@ const AVAILABLE_BARISTA_OPTIONS = [
   }, {
     shortTitle: "Cappuccino",
     title: "Cappuccino",
-    description: "Espresso with steamed milk"
+    description: "Espresso with steamed milk foam"
   }, {
     shortTitle: "Espresso Macchiato",
     title: "Espresso Macchiato",
@@ -82,6 +82,22 @@ const AVAILABLE_BARISTA_OPTIONS = [
     shortTitle: "Hot Chocolate",
     title: "Hot Chocolate",
     description: "Drinkable chocolate with milk"
+  }, {
+    shortTitle: "Cafe Cubano",
+    title: "Cafe Cubano",
+    description: "Sweetened espresso"
+  }, {
+    shortTitle: "Cafe con Leche",
+    title: "Cafe con Leche",
+    description: "Coffee with milk, lightly sweet"
+  }, {
+    shortTitle: "Latte",
+    title: "Latte",
+    description: "Espresso with steamed milk"
+  }, {
+    shortTitle: "Cortadito",
+    title: "Cortadito",
+    description: "Sweetened espresso with milk"
   }
 ]
 const AVAILABLE_SMOOTHIE_OPTIONS = [
