@@ -29,9 +29,6 @@ const DashboardHeader = ({ url, numberOne, numberTwo, eventType }) => {
           <span>{dashboard.headerTitle}</span>
         </h1>
         <h2>Send your order to {numbers}</h2>
-        <h2>
-          See how we built it <span class={style.repoLink}>{url}</span>
-        </h2>
       </hgroup>
       {icon}
     </header>

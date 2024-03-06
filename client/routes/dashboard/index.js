@@ -37,6 +37,7 @@ export default class Dashboard extends Component {
       repoUrl,
       phoneNumbers,
       eventType,
+      menuDetails
     } = this.state.stats;
     const percentage = totalOrders / expectedOrders * 100;
     return (
@@ -48,11 +49,9 @@ export default class Dashboard extends Component {
           eventType={eventType}
         />
         <div class={style.main}>
-          {/* <div class={style.cupContainer}>
-            <Cup percentage={percentage} value={totalOrders} />
-          </div> */}
           <div class={style.listingsContainer}>
             <ProductListings products={product} eventType={eventType} />
+            <h5 class={style.menuDetails}>{menuDetails}</h5>
           </div>
         </div>
         <footer class={style.footer}>

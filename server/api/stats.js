@@ -22,6 +22,7 @@ async function fetchStats(eventId) {
     visibleNumbers,
     repoUrl,
     mode,
+    menuDetails
   } = config(eventId);
   const phoneNumbers = visibleNumbers
     .map(n => n.trim())
@@ -51,6 +52,7 @@ async function fetchStats(eventId) {
       phoneNumbers,
       repoUrl,
       eventType: mode,
+      menuDetails: menuDetails
     }
   );
   return stats;

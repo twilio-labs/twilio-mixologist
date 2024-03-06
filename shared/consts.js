@@ -47,10 +47,6 @@ const AVAILABLE_BARISTA_OPTIONS = [
     title: "Macchiato",
     description: "Espresso \"stained\" with a splash of milk"
   }, {
-    shortTitle: "Double Macchiato",
-    title: "Double Macchiato",
-    description: "Two shots of espresso marked with milk"
-  }, {
     shortTitle: "Latte Macchiato",
     title: "Latte Macchiato",
     description: "Milk marked with espresso"
@@ -82,6 +78,10 @@ const AVAILABLE_BARISTA_OPTIONS = [
     shortTitle: "Hot Chocolate",
     title: "Hot Chocolate",
     description: "Drinkable chocolate with milk"
+  }, {
+    shortTitle: "Hot Tea",
+    title: "Hot Tea",
+    description: "Assorted tea available"
   }, {
     shortTitle: "Cafe Cubano",
     title: "Cafe Cubano",
