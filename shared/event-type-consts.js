@@ -61,11 +61,13 @@ const SMOOTHIE = {
       Colombia: 'strawberry',
       Segment: 'pineapple',
       Smaragd: 'pineapple',
+      'Berry Blast': 'strawberry',
+      'Tropical Beach': 'pineapple'
     },
   },
   kiosk: {
     title: 'Thirsty? Smoothie?',
-    tagLine: 'Order Smoothies via WhatsApp',
+    tagLine: 'Make your smoothie order ⚡️ asynchronous ⚡️',
   },
 };
 

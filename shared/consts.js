@@ -115,6 +115,16 @@ const AVAILABLE_SMOOTHIE_OPTIONS = [
     title: "Lambada (Green like Segment!)",
     shortTitle: "Lambada",
     description: "Orange, Mango, Banana, Passion Fruit, Flaxseed, Coconut Oil 🍊🥭🍌🥥"
+  },
+  {
+    title: "Berry Blast",
+    shortTitle: "Berry Blast",
+    description: "Mixed Seasonal Berries | Low-Fat Yogurt | Crushed Ice"
+  },
+  {
+    title: "Tropical Beach",
+    shortTitle: "Tropical Beach",
+    description: "Mixed Tropical Fruit | Low-Fat Yogurt | Crushed Ice"
   }
 ]
 
