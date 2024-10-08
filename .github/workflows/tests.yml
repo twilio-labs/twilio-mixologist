@@ -1,0 +1,52 @@
+name: Tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: npm install -g pnpm && pnpm install
+      - name: Run script tests
+        run: pnpm test
+        env:
+          TWILIO_ACCOUNT_SID: ${{ vars.TWILIO_ACCOUNT_SID }}
+          TWILIO_API_KEY: ${{ secrets.TWILIO_API_KEY }}
+          TWILIO_API_SECRET: ${{ secrets.TWILIO_API_SECRET }}
+          TWILIO_MESSAGING_SERVICE_SID: ${{ vars.TWILIO_MESSAGING_SERVICE_SID }}
+          TWILIO_SYNC_SERVICE_SID: ${{ vars.TWILIO_SYNC_SERVICE_SID }}
+          TWILIO_VERIFY_SERVICE_SID: ${{ vars.TWILIO_VERIFY_SERVICE_SID }}
+          TWILIO_CONVERSATIONS_SERVICE_SID: ${{ vars.TWILIO_CONVERSATIONS_SERVICE_SID }}
+          MIXOLOGIST_LOGIN: ${{ vars.MIXOLOGIST_LOGIN }}
+          ADMIN_LOGIN: ${{ vars.ADMIN_LOGIN }}
+
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install --with-deps
+      - name: Run Playwright tests
+        run: pnpm exec playwright test
+        env:
+          TWILIO_ACCOUNT_SID: ${{ vars.TWILIO_ACCOUNT_SID }}
+          TWILIO_API_KEY: ${{ secrets.TWILIO_API_KEY }}
+          TWILIO_API_SECRET: ${{ secrets.TWILIO_API_SECRET }}
+          TWILIO_MESSAGING_SERVICE_SID: ${{ vars.TWILIO_MESSAGING_SERVICE_SID }}
+          TWILIO_SYNC_SERVICE_SID: ${{ vars.TWILIO_SYNC_SERVICE_SID }}
+          TWILIO_VERIFY_SERVICE_SID: ${{ vars.TWILIO_VERIFY_SERVICE_SID }}
+          TWILIO_CONVERSATIONS_SERVICE_SID: ${{ vars.TWILIO_CONVERSATIONS_SERVICE_SID }}
+          MIXOLOGIST_LOGIN: ${{ vars.MIXOLOGIST_LOGIN }}
+          ADMIN_LOGIN: ${{ vars.ADMIN_LOGIN }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+      - name: Build the project
+        run: pnpm build
