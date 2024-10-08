@@ -42,4 +42,6 @@ package-lock.json
 /playwright/.cache/
 
 
-attendees.csv
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
