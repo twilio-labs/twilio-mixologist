@@ -19,7 +19,7 @@ const authConfig = {
 
 describe("Test if configuration is set up right", () => {
   test("sync service sid to be defined", () => {
-    expect(TWILIO_SYNC_SERVICE_SID).toBeDefined();
+    expect(TWILIO_SYNC_SERVICE_SID).not.toBe("");
   });
 
   test("sync service has activated ACL", async () => {
@@ -177,7 +177,7 @@ describe("Test if configuration is set up right", () => {
   });
 
   test("verify service has email channel enabled", async () => {
-    expect(TWILIO_VERIFY_SERVICE_SID).toBeDefined();
+    expect(TWILIO_VERIFY_SERVICE_SID).not.toBe("");
 
     // use axios because the twilio sdk doesn't support expose the mailer_sid property
     const { data } = await axios.get(
