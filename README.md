@@ -34,9 +34,7 @@ Different versions of this system have been used at events such as:
 * All combined into a single [NextJS](https://nextjs.org/) web application
 
 ### Pending Features
-- [ ] Enable SMS channel
 - [ ] Integration with Segment
-- [ ] TODO
 - [ ] Your suggestions
 
 ### Channels
@@ -44,6 +42,7 @@ Different versions of this system have been used at events such as:
 The current [Twilio Channels] are:
 
 * [WhatsApp][twilio whatsapp]
+* [SMS][twilio messaging]
 
 
 ## Setup
