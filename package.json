@@ -49,7 +49,7 @@
     "dotenv": "^16.4.5",
     "google-libphonenumber": "^3.2.37",
     "lucide-react": "^0.414.0",
-    "next": "14.2.5",
+    "next": "14.2.10",
     "prettier": "^3.3.3",
     "react": "^18.3.1",
     "react-day-picker": "^9.0.1",
