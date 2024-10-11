@@ -12,13 +12,26 @@ const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
   accountSid: TWILIO_ACCOUNT_SID,
 });
 
-const eventName = "wwc-2024";
+const eventName = process.argv.pop();
+
+if (!eventName || eventName.startsWith("/") || eventName.includes("=")) {
+  console.error("Please provide an event name as the last argument, e.g. 'pnpm clear-orders wearedevs24'");
+  process.exit(1);
+}
 
 (async () => {
-  await updateSyncMapItem("Events", eventName, {
-    cancelledCount: 0,
-    deliveredCount: 0,
-  });
+  try {
+    await updateSyncMapItem("Events", eventName, {
+      cancelledCount: 0,
+      deliveredCount: 0,
+    });
+  } catch (e: any) {
+    if (e.code === 20404) {
+      console.error(`Event ${eventName} not found`);
+      process.exit(0);
+    }
+    console.error(e);
+  }
 
   console.log(
     `Reset event stats "cancelledCount" and "deliveredCount" for ${eventName}`,
