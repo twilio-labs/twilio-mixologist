@@ -71,7 +71,7 @@ export default function OrdersList({
             value="cancelled"
           >
             Cancelled
-            {event?.cancelledCount && (
+            {event?.cancelledCount != undefined && (
               <Badge className="ml-1">{event?.cancelledCount}</Badge>
             )}
           </TabsTrigger>
@@ -81,7 +81,7 @@ export default function OrdersList({
             value="delivered"
           >
             Delivered
-            {event?.deliveredCount && (
+            {event?.deliveredCount != undefined && (
               <Badge className="ml-1">{event?.deliveredCount}</Badge>
             )}
           </TabsTrigger>
