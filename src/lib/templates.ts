@@ -196,7 +196,10 @@ export async function getReadyToOrderMessage(
     contentVariables[key] = value;
   });
 
-  const templateName = `${SERVICE_INSTANCE_PREFIX.toLowerCase()}_ready_to_order_${availableOptions.length}`;
+
+  const limitess = maxNumberOrders >= 50 ? "_limitless" : "";
+
+  const templateName = `${SERVICE_INSTANCE_PREFIX.toLowerCase()}_ready_to_order${limitess}_${availableOptions.length}`;
   const template = templates.find((t) => t.friendly_name === templateName);
 
   if (!template) {
