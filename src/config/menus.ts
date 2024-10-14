@@ -80,7 +80,7 @@ export default {
         shortTitle: "British Breakfast Tea",
         title: "British Breakfast Tea",
         description: "Blend of black teas",
-      }
+      },
       {
         shortTitle: "Espresso Macchiato",
         title: "Espresso Macchiato",
@@ -121,7 +121,7 @@ export default {
         shortTitle: "Earl Grey",
         title: "Earl Grey",
         description: "Blend of black tea scented with oil of bergamot",
-      }
+      },
       {
         shortTitle: "Chai",
         title: "Chai",
@@ -131,9 +131,16 @@ export default {
         shortTitle: "Chocolate",
         title: "Hot Chocolate",
         description: "Hot cocoa",
-      }
+      },
     ],
-    modifiers: ["Milk", "Soy Milk", "Almond Milk", "Oat Milk", "Coconut Milk", "Rice Milk"],
+    modifiers: [
+      "Milk",
+      "Soy Milk",
+      "Almond Milk",
+      "Oat Milk",
+      "Coconut Milk",
+      "Rice Milk",
+    ],
   },
   smoothie: {
     items: [
