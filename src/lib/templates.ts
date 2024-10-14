@@ -233,7 +233,7 @@ export async function getReadyToOrderWithoutEmailValidationMessage(
 
   const limitess = maxNumberOrders >= 50 ? "_limitless" : "";
 
-  const templateName = `${SERVICE_INSTANCE_PREFIX.toLowerCase()}_ready_to_order_${limitess}without_email_${availableOptions.length}`;
+  const templateName = `${SERVICE_INSTANCE_PREFIX.toLowerCase()}_ready_to_order${limitess}_without_email_${availableOptions.length}`;
   const template = templates.find((t) => t.friendly_name === templateName);
 
   if (!template) {
