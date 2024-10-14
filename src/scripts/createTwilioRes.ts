@@ -9,6 +9,8 @@ import {
   getWrongOrderTemplate,
   getReadyToOrderTemplate,
   getReadyToOrderWithoutEmailValidationTemplate,
+  getReadyToOrderLimitlessTemplate,
+  getReadyToOrderLimitlessWithoutEmailValidationTemplate,
   getEventRegistrationTemplate,
   WhatsAppTemplate,
 } from "./getTemplates";
@@ -95,13 +97,42 @@ async function createWhatsAppTemplates() {
         );
         console.log(`Created Template "${templateName}" ${template.sid}`);
       }
+
+      // 5. Check the post_registration_limitless-templates
+      templateName = `${CONTENT_PREFIX}ready_to_order_limitless_${numOptions}`;
+      if (templates.find((c) => c.friendly_name === templateName)) {
+        console.log(
+          `Skip creating Template because "${templateName}" already exists`,
+        );
+      } else {
+        template = await createWhatsAppTemplate(
+          getReadyToOrderLimitlessTemplate(numOptions, templateName),
+        );
+        console.log(`Created Template "${templateName}" ${template.sid}`);
+      }
+
+      // 6. Check the post_registration_limitless_without_email-templates
+      templateName = `${CONTENT_PREFIX}ready_to_order_limitless_without_email_${numOptions}`;
+      if (templates.find((c) => c.friendly_name === templateName)) {
+        console.log(
+          `Skip creating Template because "${templateName}" already exists`,
+        );
+      } else {
+        template = await createWhatsAppTemplate(
+          getReadyToOrderLimitlessWithoutEmailValidationTemplate(
+            numOptions,
+            templateName,
+          ),
+        );
+        console.log(`Created Template "${templateName}" ${template.sid}`);
+      }
     }
     for (
       let numOptions = 2;
       numOptions <= MAX_CONCURRENT_EVENTS;
       numOptions++
     ) {
-      // 4. Check the event_registration-templates
+      // 6. Check the event_registration-templates
       templateName = `${CONTENT_PREFIX}event_registration_${numOptions}`;
       if (templates.find((c) => c.friendly_name === templateName)) {
         console.log(

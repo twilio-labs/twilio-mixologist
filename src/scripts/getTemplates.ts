@@ -135,6 +135,52 @@ export function getReadyToOrderTemplate(
   };
 }
 
+export function getReadyToOrderLimitlessTemplate(
+  numOptions: number,
+  templateName: string,
+): WhatsAppTemplateConfig {
+  // The first variable defines the mode and second is not used
+  // and then 3 additional vars (short title, full title, desc) per options  => numOptions * 3 + 1
+
+  const variables = Array.from(Array(numOptions * 3 + 1).keys()).reduce(
+    (accu: any, idx) => {
+      accu[idx] = "";
+      return accu;
+    },
+    {},
+  );
+
+  const indiciesOfFullTitles = [],
+    items = [];
+  for (let i = 0; i < numOptions; i++) {
+    indiciesOfFullTitles.push(`- {{${i * 3 + 2}}}`);
+    items.push({
+      item: `{{${i * 3 + 3}}}`,
+      id: `{{${i * 3 + 3}}}`,
+      description: `{{${i * 3 + 4}}}`,
+    });
+  }
+
+  const body = `Thank you! Your email address has been verified. What would you like? The options are:\n${indiciesOfFullTitles.join(
+    "\n",
+  )}\n`;
+
+  return {
+    friendly_name: templateName,
+    language: "en",
+    variables,
+    types: {
+      "twilio/list-picker": {
+        body,
+        items,
+        button: "More Details",
+      },
+      "twilio/text": {
+        body: body,
+      },
+    },
+  };
+}
 
 export function getReadyToOrderWithoutEmailValidationTemplate(
   numOptions: number,
@@ -164,6 +210,53 @@ export function getReadyToOrderWithoutEmailValidationTemplate(
   const body = `What would you like? The options are:\n${indiciesOfFullTitles.join(
     "\n",
   )}\nPS: Every attendee can get up to {{0}} {{1}}.`;
+
+  return {
+    friendly_name: templateName,
+    language: "en",
+    variables,
+    types: {
+      "twilio/list-picker": {
+        body,
+        items,
+        button: "More Details",
+      },
+      "twilio/text": {
+        body: body,
+      },
+    },
+  };
+}
+
+export function getReadyToOrderLimitlessWithoutEmailValidationTemplate(
+  numOptions: number,
+  templateName: string,
+): WhatsAppTemplateConfig {
+  // The first variable defines the mode and second is not used
+  // and then 3 additional vars (short title, full title, desc) per options  => numOptions * 3 + 1
+
+  const variables = Array.from(Array(numOptions * 3 + 1).keys()).reduce(
+    (accu: any, idx) => {
+      accu[idx] = "";
+      return accu;
+    },
+    {},
+  );
+
+  const indiciesOfFullTitles = [],
+    items = [];
+  for (let i = 0; i < numOptions; i++) {
+    indiciesOfFullTitles.push(`- {{${i * 3 + 2}}}`);
+    items.push({
+      item: `{{${i * 3 + 3}}}`,
+      id: `{{${i * 3 + 3}}}`,
+      description: `{{${i * 3 + 4}}}`,
+    });
+  }
+
+  const body = `What would you like? The options are:\n${indiciesOfFullTitles.join(
+    "\n",
+  )}\n`;
 
   return {
     friendly_name: templateName,

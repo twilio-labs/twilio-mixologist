@@ -67,9 +67,19 @@ export default {
         description: "Milk marked with espresso",
       },
       {
+        shortTitle: "Caffè Latte",
+        title: "Caffè Latte",
+        description: "Espresso with steamed milk",
+      },
+      {
         shortTitle: "Cappuccino",
         title: "Cappuccino",
         description: "Espresso with steamed milk",
+      },
+      {
+        shortTitle: "British Breakfast Tea",
+        title: "British Breakfast Tea",
+        description: "Blend of black teas",
       },
       {
         shortTitle: "Espresso Macchiato",
@@ -103,12 +113,34 @@ export default {
         description: "Classic, diverse, hot beverage infused with leaves",
       },
       {
+        shortTitle: "Apple Chamomile",
+        title: "Apple Chamomile",
+        description: "Apple and chamomile tea",
+      },
+      {
+        shortTitle: "Earl Grey",
+        title: "Earl Grey",
+        description: "Blend of black tea scented with oil of bergamot",
+      },
+      {
         shortTitle: "Chai",
         title: "Chai",
         description: "Spiced tea with milk",
       },
+      {
+        shortTitle: "Chocolate",
+        title: "Hot Chocolate",
+        description: "Hot cocoa",
+      },
     ],
-    modifiers: ["Milk", "Soy Milk", "Almond Milk", "Oat Milk", "Coconut Milk", "Rice Milk"],
+    modifiers: [
+      "Milk",
+      "Soy Milk",
+      "Almond Milk",
+      "Oat Milk",
+      "Coconut Milk",
+      "Rice Milk",
+    ],
   },
   smoothie: {
     items: [
