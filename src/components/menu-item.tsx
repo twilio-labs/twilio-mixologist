@@ -59,6 +59,14 @@ export default function MenuItem({
         className="m-2 mr-6"
       />
     ),
+    "Caffè Latte": (
+      <LatteMacchiatoIcon
+        width="3rem"
+        height="3rem"
+        fill="text-black"
+        className="m-2 mr-6"
+      />
+    ),
     "Flat White": (
       <FlatWhiteIcon
         width="3rem"
@@ -67,6 +75,7 @@ export default function MenuItem({
         className="m-2 mr-6"
       />
     ),
+
     Macchiato: (
       <EspressoMacchiatoIcon
         width="3rem"
@@ -115,6 +124,14 @@ export default function MenuItem({
         className="m-2 mr-6"
       />
     ),
+    "Chocolate": (
+      <CoffeeCupIcon
+        width="3rem"
+        height="3rem"
+        fill="text-black"
+        className="m-2 mr-6"
+      />
+    ),
     Mocha: (
       <CupIcon
         width="3rem"
@@ -124,6 +141,30 @@ export default function MenuItem({
       />
     ),
     "Black Tea": (
+      <CupIcon
+        width="3rem"
+        height="3rem"
+        fill="text-black"
+        className="m-2 mr-6"
+      />
+    ),
+    "British Breakfast Tea": (
+      <CupIcon
+        width="3rem"
+        height="3rem"
+        fill="text-black"
+        className="m-2 mr-6"
+      />
+    ),
+    "Apple Chamomile": (
+      <CupIcon
+        width="3rem"
+        height="3rem"
+        fill="text-black"
+        className="m-2 mr-6"
+      />
+    ),
+    "Earl Grey": (
       <CupIcon
         width="3rem"
         height="3rem"
