@@ -193,7 +193,6 @@ export async function getReadyToOrderMessage(
   const variables = [
     maxOrders,
     sampleOrder,
-    modeToBeverage(mode, true),
     ...availableOptions
       .map((o) => [o.title, o.shortTitle, o.description])
       .flat(),
