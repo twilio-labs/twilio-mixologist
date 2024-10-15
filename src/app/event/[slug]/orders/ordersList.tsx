@@ -18,12 +18,7 @@ import {
   getOrderReadyReminderMessage,
 } from "@/lib/templates";
 
-import {
-  Check,
-  Trash2Icon,
-  BellRing,
-  UserCheck,
-} from "lucide-react";
+import { Check, Trash2Icon, BellRing, UserCheck } from "lucide-react";
 
 export default function OrdersList({
   ordersList,

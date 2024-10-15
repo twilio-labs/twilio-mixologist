@@ -89,13 +89,12 @@ export async function POST(request: Request) {
         await sleep(2000);
         const dataPolicy = templates.getDataPolicy(newEvent.selection.mode);
         addMessageToConversation(conversationSid, dataPolicy);
-        const message =
-          await templates.getReadyToOrderMessage(
-            newEvent,
-            newEvent.selection.items,
-            newEvent.maxOrders,
-            true
-          );
+        const message = await templates.getReadyToOrderMessage(
+          newEvent,
+          newEvent.selection.items,
+          newEvent.maxOrders,
+          true,
+        );
         addMessageToConversation(
           conversationSid,
           "",
@@ -136,13 +135,12 @@ export async function POST(request: Request) {
           await sleep(2000);
           const dataPolicy = templates.getDataPolicy(newEvent.selection.mode);
           addMessageToConversation(conversationSid, dataPolicy);
-          const message =
-            await templates.getReadyToOrderMessage(
-              newEvent,
-              newEvent.selection.items,
-              newEvent.maxOrders,
-              true
-            );
+          const message = await templates.getReadyToOrderMessage(
+            newEvent,
+            newEvent.selection.items,
+            newEvent.maxOrders,
+            true,
+          );
           addMessageToConversation(
             conversationSid,
             "",
@@ -184,13 +182,12 @@ export async function POST(request: Request) {
         newEvent.welcomeMessage,
       );
       addMessageToConversation(conversationSid, welcomeBackMessage);
-      const message =
-        await templates.getReadyToOrderMessage(
-          newEvent,
-          newEvent.selection.items,
-          newEvent.maxOrders,
-          true
-        );
+      const message = await templates.getReadyToOrderMessage(
+        newEvent,
+        newEvent.selection.items,
+        newEvent.maxOrders,
+        true,
+      );
       await updateOrCreateSyncMapItem(
         NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP,
         conversationSid,
@@ -235,13 +232,12 @@ export async function POST(request: Request) {
         );
 
         await sleep(500);
-        const message =
-          await templates.getReadyToOrderMessage(
-            newEvent,
-            newEvent.selection.items,
-            newEvent.maxOrders,
-            true
-          );
+        const message = await templates.getReadyToOrderMessage(
+          newEvent,
+          newEvent.selection.items,
+          newEvent.maxOrders,
+          true,
+        );
         addMessageToConversation(
           conversationSid,
           "",
@@ -355,7 +351,7 @@ export async function POST(request: Request) {
         event,
         event.selection.items,
         event.maxOrders,
-        false
+        false,
       );
       addMessageToConversation(
         conversationSid,

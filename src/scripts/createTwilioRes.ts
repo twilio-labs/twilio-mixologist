@@ -40,7 +40,6 @@ async function createWhatsAppTemplates() {
       for await (const t of templates) {
         await deleteWhatsAppTemplate(t.sid); // Sequentially delete all templates to avoid rate limiting
       }
-
     } catch (e: any) {
       console.error("Error deleting WhatsApp Templates ", e.message);
     }

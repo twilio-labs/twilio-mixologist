@@ -8,7 +8,7 @@ export async function GET(
   request: Request,
   { params }: { params: { slug: string } },
 ): Promise<Response> {
-  const headersList = headers(); 
+  const headersList = headers();
   const role = getAuthenticatedRole(headersList.get("Authorization") || "");
 
   if (role !== Privilege.ADMIN) {

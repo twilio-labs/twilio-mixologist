@@ -43,9 +43,9 @@ export async function POST(
         listItem.data?.status === "queued" || listItem.data?.status === "ready",
     );
 
-    queuedOrders.forEach(order => {
-      addMessageToConversation(order.data.key, message)
-    })
+    queuedOrders.forEach((order) => {
+      addMessageToConversation(order.data.key, message);
+    });
 
     return new Response(null, { status: 201 });
   } catch (e: any) {

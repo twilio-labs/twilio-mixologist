@@ -124,7 +124,7 @@ export default function MenuItem({
         className="m-2 mr-6"
       />
     ),
-    "Chocolate": (
+    Chocolate: (
       <CoffeeCupIcon
         width="3rem"
         height="3rem"

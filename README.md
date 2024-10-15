@@ -8,32 +8,32 @@
 Twilio Mixologist is an application that allows you to solve the problem of long queues at stands at events. Attendees can order their coffee, smoothie or whatever you serve via Twilio-powered channels, Mixologists get all orders on a website that can be accessed via a tablet and once an order is done the attendee will be notified via the system to come and pick it up. No more queueing and efficient coffee ☕️ ordering! 🎉
 
 If you want to learn more about how this project was started, check out the this blog post:
->  [Serving Coffee with Twilio Programmable SMS and React](https://www.twilio.com/en-us/blog/serving-coffee-with-sms-and-react-html)
+
+> [Serving Coffee with Twilio Programmable SMS and React](https://www.twilio.com/en-us/blog/serving-coffee-with-sms-and-react-html)
 
 Different versions of this system have been used at events such as:
 
-* [NDC Oslo](https://ndcoslo.com) 2016, 2017
-* [CSSConf EU](https://2017.cssconf.eu/) && [JSConf EU](https://2017.jsconf.eu/) 2017
-* [WeAreDevelopers World Congress](https://www.wearedevelopers.com/world-congress) 2023, 2024
-* [Mobile World Congress Barcelona](https://www.mwcbarcelona.com/) 2023, 2024
-* [Money 20/20](https://www.money2020.com/) 2023
-* [Twilio SIGNAL](https://signal.twilio.com/) 2023, 2024
-
-
+- [NDC Oslo](https://ndcoslo.com) 2016, 2017
+- [CSSConf EU](https://2017.cssconf.eu/) && [JSConf EU](https://2017.jsconf.eu/) 2017
+- [WeAreDevelopers World Congress](https://www.wearedevelopers.com/world-congress) 2023, 2024
+- [Mobile World Congress Barcelona](https://www.mwcbarcelona.com/) 2023, 2024
+- [Money 20/20](https://www.money2020.com/) 2023
+- [Twilio SIGNAL](https://signal.twilio.com/) 2023, 2024
 
 ## Features
 
-* Receive orders using [Twilio Messaging]
-* Store orders and real-time synchronization them between back-end and front-end using [Twilio Sync]
-* Easy dynamic application configuration using [Twilio Sync]
-* Managing message threads using [Twilio Conversations]
-* Permission management based on [Twilio Sync]
-* Easy way to reset the application from the admin interface
-* Support multiple events that happen in parallel
-* Query for location in the queue as well as canceling the order as a user
-* All combined into a single [NextJS](https://nextjs.org/) web application
+- Receive orders using [Twilio Messaging]
+- Store orders and real-time synchronization them between back-end and front-end using [Twilio Sync]
+- Easy dynamic application configuration using [Twilio Sync]
+- Managing message threads using [Twilio Conversations]
+- Permission management based on [Twilio Sync]
+- Easy way to reset the application from the admin interface
+- Support multiple events that happen in parallel
+- Query for location in the queue as well as canceling the order as a user
+- All combined into a single [NextJS](https://nextjs.org/) web application
 
 ### Pending Features
+
 - [ ] Integration with Segment
 - [ ] Your suggestions
 
@@ -41,17 +41,16 @@ Different versions of this system have been used at events such as:
 
 The current [Twilio Channels] are:
 
-* [WhatsApp][twilio whatsapp]
-* [SMS][twilio messaging]
-
+- [WhatsApp][twilio whatsapp]
+- [SMS][twilio messaging]
 
 ## Setup
 
 ### Requirements
 
-* [Node.js] version 20 or higher
-* [pnpm]
-* A Twilio account - [Sign up here](https://www.twilio.com/try-twilio)
+- [Node.js] version 20 or higher
+- [pnpm]
+- A Twilio account - [Sign up here](https://www.twilio.com/try-twilio)
 
 ## Setup
 
@@ -136,13 +135,12 @@ All third party contributors acknowledge that any contributions they provide wil
 
 ## Icons Used
 
-* [Mixologist Icons by Oliver Pitsch](https://www.smashingmagazine.com/2016/03/freebie-Mixologist-iconset-50-icons-eps-png-svg/)
-* [Bar by BirVa Mehta from Noun Project](https://thenounproject.com/term/bar/1323725/)
+- [Mixologist Icons by Oliver Pitsch](https://www.smashingmagazine.com/2016/03/freebie-Mixologist-iconset-50-icons-eps-png-svg/)
+- [Bar by BirVa Mehta from Noun Project](https://thenounproject.com/term/bar/1323725/)
 
 ## License
 
-MIT 
-
+MIT
 
 [twilio console]: https://www.twilio.com/console
 [twilio rest api]: https://www.twilio.com/docs/api/rest

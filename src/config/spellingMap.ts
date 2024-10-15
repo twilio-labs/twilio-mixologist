@@ -37,5 +37,5 @@ export default {
   "hot chocolate": "Hot Chocolate",
   chocolate: "Hot Chocolate",
   cocolate: "Hot Chocolate",
-  "soya": "soy",
+  soya: "soy",
 } as SpellingMap;

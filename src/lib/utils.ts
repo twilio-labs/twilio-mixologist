@@ -62,11 +62,7 @@ export async function getOrderItemFromMessage(event: Event, message: string) {
     (a, b) => b.shortTitle.length - a.shortTitle.length,
   );
   for (const item in sortedItems) {
-    if (
-      spellcheckedBody.includes(
-        sortedItems[item].shortTitle.toLowerCase(),
-      )
-    ) {
+    if (spellcheckedBody.includes(sortedItems[item].shortTitle.toLowerCase())) {
       orderItem = sortedItems[item];
       break;
     }

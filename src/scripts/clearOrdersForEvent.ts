@@ -15,7 +15,9 @@ const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
 const eventName = process.argv.pop();
 
 if (!eventName || eventName.startsWith("/") || eventName.includes("=")) {
-  console.error("Please provide an event name as the last argument, e.g. 'pnpm clear-orders wearedevs24'");
+  console.error(
+    "Please provide an event name as the last argument, e.g. 'pnpm clear-orders wearedevs24'",
+  );
   process.exit(1);
 }
 

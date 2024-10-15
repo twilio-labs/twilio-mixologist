@@ -1,19 +1,18 @@
-
-
 import { headers } from "next/headers";
 
-import {
-    fetchSyncListItems,
-    addMessageToConversation
-} from "@/lib/twilio";
+import { fetchSyncListItems, addMessageToConversation } from "@/lib/twilio";
 import { Privilege, getAuthenticatedRole } from "@/middleware";
 
 export async function POST(request: Request) {
-const headersList = headers();
-    const role = getAuthenticatedRole(headersList.get("Authorization") || "");
+  const headersList = headers();
+  const role = getAuthenticatedRole(headersList.get("Authorization") || "");
 
-  const hasPermissions = Privilege.ADMIN === role || Privilege.MIXOLOGIST === role;
-  if (!process.env.NEXT_PUBLIC_EVENTS_MAP || !process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP ) {
+  const hasPermissions =
+    Privilege.ADMIN === role || Privilege.MIXOLOGIST === role;
+  if (
+    !process.env.NEXT_PUBLIC_EVENTS_MAP ||
+    !process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP
+  ) {
     console.error("No config doc specified");
     return new Response("No config doc specified", {
       status: 500,
@@ -31,16 +30,20 @@ const headersList = headers();
     );
   }
 
-    const { event, message } = await request.json();
-    try {
-        const listItems = await fetchSyncListItems(event);
-      const queuedOrders = listItems.filter(listItem => (listItem.data?.status === 'queued' || listItem.data?.status === 'ready') && !listItem.data?.manual);
-      
-      queuedOrders.forEach(order => {
-            addMessageToConversation(order.data.key, message);
-      })
-      return new Response(null, {status: 201})
+  const { event, message } = await request.json();
+  try {
+    const listItems = await fetchSyncListItems(event);
+    const queuedOrders = listItems.filter(
+      (listItem) =>
+        (listItem.data?.status === "queued" ||
+          listItem.data?.status === "ready") &&
+        !listItem.data?.manual,
+    );
 
+    queuedOrders.forEach((order) => {
+      addMessageToConversation(order.data.key, message);
+    });
+    return new Response(null, { status: 201 });
   } catch (e: any) {
     console.error(e);
     return new Response(e.message, { status: 500, statusText: e.message });

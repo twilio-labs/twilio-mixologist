@@ -77,7 +77,7 @@ export async function updateConfig() {
   );
   await configDoc.update({ data: newConfig });
 }
-  
+
 (async () => {
-    updateConfig()
+  updateConfig();
 })();
