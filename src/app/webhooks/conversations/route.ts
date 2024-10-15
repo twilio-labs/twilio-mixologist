@@ -90,10 +90,11 @@ export async function POST(request: Request) {
         const dataPolicy = templates.getDataPolicy(newEvent.selection.mode);
         addMessageToConversation(conversationSid, dataPolicy);
         const message =
-          await templates.getReadyToOrderWithoutEmailValidationMessage(
+          await templates.getReadyToOrderMessage(
             newEvent,
             newEvent.selection.items,
             newEvent.maxOrders,
+            true
           );
         addMessageToConversation(
           conversationSid,
@@ -136,10 +137,11 @@ export async function POST(request: Request) {
           const dataPolicy = templates.getDataPolicy(newEvent.selection.mode);
           addMessageToConversation(conversationSid, dataPolicy);
           const message =
-            await templates.getReadyToOrderWithoutEmailValidationMessage(
+            await templates.getReadyToOrderMessage(
               newEvent,
               newEvent.selection.items,
               newEvent.maxOrders,
+              true
             );
           addMessageToConversation(
             conversationSid,
@@ -183,10 +185,11 @@ export async function POST(request: Request) {
       );
       addMessageToConversation(conversationSid, welcomeBackMessage);
       const message =
-        await templates.getReadyToOrderWithoutEmailValidationMessage(
+        await templates.getReadyToOrderMessage(
           newEvent,
           newEvent.selection.items,
           newEvent.maxOrders,
+          true
         );
       await updateOrCreateSyncMapItem(
         NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP,
@@ -233,10 +236,11 @@ export async function POST(request: Request) {
 
         await sleep(500);
         const message =
-          await templates.getReadyToOrderWithoutEmailValidationMessage(
+          await templates.getReadyToOrderMessage(
             newEvent,
             newEvent.selection.items,
             newEvent.maxOrders,
+            true
           );
         addMessageToConversation(
           conversationSid,
@@ -351,6 +355,7 @@ export async function POST(request: Request) {
         event,
         event.selection.items,
         event.maxOrders,
+        false
       );
       addMessageToConversation(
         conversationSid,

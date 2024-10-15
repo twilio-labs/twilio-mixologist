@@ -86,13 +86,14 @@ export function getWrongOrderTemplate(
   };
 }
 
-const CONFIRMATION_VERIFIED_EMAIL = `Thank you! Your email address has been verified. `;
-const ORDER_LIMITATION_NOTE = `PS: Every attendee can get up to {{0}} {{1}}.`;
+const CONFIRMATION_VERIFIED_EMAIL = `Thank you! Your email address has been verified.`;
 function getAvailableOptions(indiciesOfFullTitles: string[]) {
   return `What would you like? The options are:\n${indiciesOfFullTitles.join(
     "\n",
-  )}\n`;
+  )}`;
 }
+const SAMPLE_ORDER = `Or send a message containing your order, e.g. " {{1}}".`;
+const ORDER_LIMITATION_NOTE = `\n\nPS: Every attendee can get up to {{0}}.`;
 export function getReadyToOrderTemplate(
   numOptions: number,
   templateName: string,
@@ -118,7 +119,7 @@ export function getReadyToOrderTemplate(
     });
   }
 
-  const body = `${CONFIRMATION_VERIFIED_EMAIL}${getAvailableOptions(indiciesOfFullTitles)}${ORDER_LIMITATION_NOTE}`;
+  const body = `${CONFIRMATION_VERIFIED_EMAIL} ${getAvailableOptions(indiciesOfFullTitles)}${ORDER_LIMITATION_NOTE}\n${SAMPLE_ORDER}`;
 
   return {
     friendly_name: templateName,
@@ -163,7 +164,7 @@ export function getReadyToOrderLimitlessTemplate(
     });
   }
 
-  const body = `${CONFIRMATION_VERIFIED_EMAIL}${getAvailableOptions(indiciesOfFullTitles)}`;
+  const body = `${CONFIRMATION_VERIFIED_EMAIL} ${getAvailableOptions(indiciesOfFullTitles)}\n${SAMPLE_ORDER}`;
 
   return {
     friendly_name: templateName,
@@ -207,7 +208,7 @@ export function getReadyToOrderWithoutEmailValidationTemplate(
     });
   }
 
-  const body = `${getAvailableOptions(indiciesOfFullTitles)}${ORDER_LIMITATION_NOTE}`;
+  const body = `${getAvailableOptions(indiciesOfFullTitles)}\n${SAMPLE_ORDER}${ORDER_LIMITATION_NOTE}`;
   return {
     friendly_name: templateName,
     language: "en",
@@ -251,7 +252,7 @@ export function getReadyToOrderLimitlessWithoutEmailValidationTemplate(
     });
   }
 
-  const body = getAvailableOptions(indiciesOfFullTitles);
+  const body = `${getAvailableOptions(indiciesOfFullTitles)}\n${SAMPLE_ORDER}`;
 
   return {
     friendly_name: templateName,

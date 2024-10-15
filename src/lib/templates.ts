@@ -181,46 +181,18 @@ export async function getReadyToOrderMessage(
   event: Event,
   availableOptions: any[],
   maxNumberOrders: number,
+  emailValidationSuffix: boolean,
 ) {
   const templates = await getTemplates();
-  const { mode } = event.selection;
-  const variables = [
-    maxNumberOrders,
-    modeToBeverage(mode, true),
-    ...availableOptions
-      .map((o) => [o.title, o.shortTitle, o.description])
-      .flat(),
-  ];
-  const contentVariables: any = {};
-  variables.forEach((value, key) => {
-    contentVariables[key] = value;
-  });
-
-
-  const limitess = maxNumberOrders >= 50 ? "_limitless" : "";
-
-  const templateName = `${SERVICE_INSTANCE_PREFIX.toLowerCase()}_ready_to_order${limitess}_${availableOptions.length}`;
-  const template = templates.find((t) => t.friendly_name === templateName);
-
-  if (!template) {
-    throw new Error(`Template ${templateName} not found`);
+  const { mode, items, modifiers } = event.selection;
+  const maxOrders = `${maxNumberOrders} ${modeToBeverage(mode, true)}`;
+  let sampleOrder = items[1].title;
+  if (modifiers.length > 0) {
+    sampleOrder += ` with ${modifiers[0]}`;
   }
-
-  return {
-    contentSid: template.sid,
-    contentVariables: JSON.stringify(contentVariables),
-  };
-}
-
-export async function getReadyToOrderWithoutEmailValidationMessage(
-  event: Event,
-  availableOptions: any[],
-  maxNumberOrders: number,
-) {
-  const templates = await getTemplates();
-  const { mode } = event.selection;
   const variables = [
-    maxNumberOrders,
+    maxOrders,
+    sampleOrder,
     modeToBeverage(mode, true),
     ...availableOptions
       .map((o) => [o.title, o.shortTitle, o.description])
@@ -232,8 +204,9 @@ export async function getReadyToOrderWithoutEmailValidationMessage(
   });
 
   const limitess = maxNumberOrders >= 50 ? "_limitless" : "";
+  const emailSuffix = emailValidationSuffix ? "_without_email" : "";
 
-  const templateName = `${SERVICE_INSTANCE_PREFIX.toLowerCase()}_ready_to_order${limitess}_without_email_${availableOptions.length}`;
+  const templateName = `${SERVICE_INSTANCE_PREFIX.toLowerCase()}_ready_to_order${limitess}${emailSuffix}_${availableOptions.length}`;
   const template = templates.find((t) => t.friendly_name === templateName);
 
   if (!template) {
