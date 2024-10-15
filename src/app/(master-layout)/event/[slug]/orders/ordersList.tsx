@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
-import { Event } from "@/app/event/[slug]/page";
+import { Event } from "@/app/(master-layout)/event/[slug]/page";
 
 import {
   getOrderCancelledMessage,

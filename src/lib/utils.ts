@@ -2,7 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import spellingMap from "@/config/spellingMap";
 import { MenuItem } from "@/config/menus";
-import { Event } from "@/app/event/[slug]/page";
+import { Event } from "@/app/(master-layout)/event/[slug]/page";
 import { ICountry, countries } from "countries-list";
 import { PhoneNumberUtil } from "google-libphonenumber";
 

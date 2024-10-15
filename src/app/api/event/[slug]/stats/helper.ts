@@ -2,7 +2,7 @@
 
 import { fetchSyncListItems, findSyncMapItems } from "@/lib/twilio";
 import { Stages } from "@/lib/utils";
-import { Event } from "@/app/event/[slug]/page";
+import { Event } from "@/app/(master-layout)/event/[slug]/page";
 import { modes } from "@/config/menus";
 import { headers } from "next/headers";
 import { getAuthenticatedRole, Privilege } from "@/middleware";

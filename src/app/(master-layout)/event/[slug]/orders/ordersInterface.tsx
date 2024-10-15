@@ -2,7 +2,7 @@
 
 import { useSyncList, useSyncMap } from "@/provider/syncProvider";
 
-import { Event } from "@/app/event/[slug]/page";
+import { Event } from "@/app/(master-layout)/event/[slug]/page";
 import { EventState } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
 import HeaderControls from "./headerControls";

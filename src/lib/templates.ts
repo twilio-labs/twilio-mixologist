@@ -1,5 +1,5 @@
 const axios = require("axios");
-import { Event } from "@/app/event/[slug]/page";
+import { Event } from "@/app/(master-layout)/event/[slug]/page";
 import { modes } from "@/config/menus";
 
 const { SERVICE_INSTANCE_PREFIX = "" } = process.env;

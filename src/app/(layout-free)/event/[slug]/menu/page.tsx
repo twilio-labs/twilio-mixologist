@@ -1,7 +1,7 @@
 "use client";
 
+import { Event } from "@/app/(master-layout)/event/[slug]/page";
 import MenuItem from "./menu-item";
-import { Event } from "../page";
 import { useSyncMap } from "@/provider/syncProvider";
 import { useEffect, useState } from "react";
 
@@ -32,7 +32,7 @@ function MenuPage({ params }: { params: { slug: string } }) {
     //     <p className="text-sm">SEND YOUR ORDER TO +1-866-866-5302</p>
     //   </div>
     // </header>
-    <main className="flex-grow bg-gray-900 text-white p-8">
+    <main className="flex-grow bg-gray-900 text-white p-8 select-none">
       <div className="container mx-auto">
         <div className="grid grid-cols-5 gap-8">
           {internalEvent.selection?.items.map((item: any, index: Number) => (

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { getOrderItemFromMessage } from "@/lib/utils";
-import { Event } from "@/app/event/[slug]/page";
+import { Event } from "@/app/(master-layout)/event/[slug]/page";
 
 const mockedEvent: Event = {
   name: "test event",

@@ -10,7 +10,7 @@ import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import BroadcastPopoverContent from "./broadcast-popover-content";
 import CustomOrderPopoverContent from "./custom-order-popover-content";
 
-import { Event } from "@/app/event/[slug]/page";
+import { Event } from "@/app/(master-layout)/event/[slug]/page";
 import { EventState } from "@/lib/utils";
 
 import {
