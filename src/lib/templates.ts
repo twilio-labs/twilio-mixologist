@@ -188,7 +188,7 @@ export async function getReadyToOrderMessage(
   const maxOrders = `${maxNumberOrders} ${modeToBeverage(mode, true)}`;
   let sampleOrder = items[1].title;
   if (modifiers.length > 0) {
-    sampleOrder += ` with ${modifiers[0]}`;
+    sampleOrder += ` with ${modifiers[modifiers.length - 1]}`;
   }
   const variables = [
     maxOrders,

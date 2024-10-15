@@ -92,7 +92,7 @@ function getAvailableOptions(indiciesOfFullTitles: string[]) {
     "\n",
   )}`;
 }
-const SAMPLE_ORDER = `Or send a message containing your order, e.g. " {{1}}".`;
+const SAMPLE_ORDER = `Or send a message containing your order, e.g. "{{1}}".`;
 const ORDER_LIMITATION_NOTE = `\n\nPS: Every attendee can get up to {{0}}.`;
 export function getReadyToOrderTemplate(
   numOptions: number,
@@ -119,7 +119,7 @@ export function getReadyToOrderTemplate(
     });
   }
 
-  const body = `${CONFIRMATION_VERIFIED_EMAIL} ${getAvailableOptions(indiciesOfFullTitles)}${ORDER_LIMITATION_NOTE}\n${SAMPLE_ORDER}`;
+  const body = `${CONFIRMATION_VERIFIED_EMAIL} ${getAvailableOptions(indiciesOfFullTitles)}\n${SAMPLE_ORDER}${ORDER_LIMITATION_NOTE}`;
 
   return {
     friendly_name: templateName,
