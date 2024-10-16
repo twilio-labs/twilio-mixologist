@@ -4,6 +4,8 @@ import { Event } from "@/app/(master-layout)/event/[slug]/page";
 import MenuItem from "./menu-item";
 import { useSyncMap } from "@/provider/syncProvider";
 import { useEffect, useState } from "react";
+import Header from "./header";
+
 
 function MenuPage({ params }: { params: { slug: string } }) {
   const [eventsMap, _, mapInitialized] = useSyncMap(
@@ -25,16 +27,15 @@ function MenuPage({ params }: { params: { slug: string } }) {
     return <div>Loading...</div>;
   }
 
+
+  const itemsCount = internalEvent.selection.items.length;
+  const columns = itemsCount % 3 === 0 ? 3 : itemsCount % 4 === 0 ? 4 : 5;
+
   return (
-    // <header className="bg-red-600 text-white p-4">
-    //   <div className="container mx-auto flex justify-between items-center">
-    //     <h1 className="text-2xl font-bold">Mixologist</h1>
-    //     <p className="text-sm">SEND YOUR ORDER TO +1-866-866-5302</p>
-    //   </div>
-    // </header>
-    <main className="flex-grow bg-gray-900 text-white p-8 select-none">
-      <div className="container mx-auto">
-        <div className="grid grid-cols-5 gap-8">
+    <>
+      <Header number={internalEvent.senders[0]} />
+      <main className="flex grow pb-8 items-center justify-center bg-gray-900 text-white select-none">
+        <div className={`grid grid-cols-${columns} gap-8  `}>
           {internalEvent.selection?.items.map((item: any, index: Number) => (
             <div key={`item-${index}`} className="flex flex-col items-center">
               <div className="p-4 rounded-full mb-2">
@@ -47,8 +48,8 @@ function MenuPage({ params }: { params: { slug: string } }) {
             </div>
           ))}
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
 

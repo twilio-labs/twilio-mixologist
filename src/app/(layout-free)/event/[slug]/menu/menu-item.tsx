@@ -15,8 +15,8 @@ export default function MenuItem({
     <div className="flex flex-col">
       {IconComponent ? (
         <IconComponent
-          width="6rem"
-          height="6rem"
+          width="8rem"
+          height="8rem"
           fill="text-black"
           className="m-2 mx-auto"
         />

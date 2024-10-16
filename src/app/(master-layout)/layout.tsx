@@ -8,14 +8,12 @@ import { SettingsIcon } from "lucide-react";
 import { Inter } from "next/font/google";
 import SessionButton from "@/components/session-button";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export const metadata: Metadata = {
   title: "Twilio Mixologist",
   description: "Get a free beverage from the Twilio Mixologist",
 };
 
-export default function RootLayout({
+export default function MainLayout({
   children,
 }: {
   children: React.ReactNode;
