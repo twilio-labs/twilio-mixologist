@@ -1,8 +1,8 @@
-import { h, Component } from 'preact';
+import { h, Component } from "preact";
 
 export default class TwilioLogo extends Component {
   render({ fullLogo }) {
-    this.props.color = this.props.color || 'rgb(241, 46, 69)';
+    this.props.color = this.props.color || "rgb(241, 46, 69)";
     this.props.width = this.props.width || 50;
     this.props.x = this.props.x || 0;
     this.props.y = this.props.y || 0;

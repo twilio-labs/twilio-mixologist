@@ -6,7 +6,6 @@ import { useSyncMap } from "@/provider/syncProvider";
 import { useEffect, useState } from "react";
 import Header from "./header";
 
-
 function MenuPage({ params }: { params: { slug: string } }) {
   const [eventsMap, _, mapInitialized] = useSyncMap(
     process.env.NEXT_PUBLIC_EVENTS_MAP || "",
@@ -26,7 +25,6 @@ function MenuPage({ params }: { params: { slug: string } }) {
   if (!internalEvent || !internalEvent.selection) {
     return <div>Loading...</div>;
   }
-
 
   const itemsCount = internalEvent.selection.items.length;
   const columns = itemsCount % 3 === 0 ? 3 : itemsCount % 4 === 0 ? 4 : 5;
