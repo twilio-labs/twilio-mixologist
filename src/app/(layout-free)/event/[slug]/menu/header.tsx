@@ -7,7 +7,7 @@ export default function Header({ number }: { number: string }) {
         <CoffeeShopIcon
           width="10rem"
           height="10rem"
-          fill="text-white svg-hack fill-white"
+          style={{ fill: "white" }}
         />
         <div className="flex items-center ">
           <object
@@ -23,7 +23,7 @@ export default function Header({ number }: { number: string }) {
         <CoffeeShopIcon
           width="10rem"
           height="10rem"
-          fill="text-white fill-green"
+          style={{ fill: "white" }}
         />
       </div>
     </header>

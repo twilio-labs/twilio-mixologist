@@ -5,7 +5,7 @@ export function AmericanoIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -96,7 +96,7 @@ export function AmericanoIcon2(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -186,7 +186,7 @@ export function AeroPressIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -218,7 +218,7 @@ export function CafeLatteIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -460,7 +460,7 @@ export function CappuccinoIcon2(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -665,7 +665,7 @@ export function CappuccinoIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -922,7 +922,7 @@ export function CarafeIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -953,7 +953,7 @@ export function CheckexIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -994,7 +994,7 @@ export function CoffeaArabicaIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -1080,7 +1080,7 @@ export function CoffeeBeanIcon2(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -1138,7 +1138,7 @@ export function CoffeeBeanIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -1177,7 +1177,7 @@ export function FilterCoffeeIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -1343,7 +1343,7 @@ export function CoffeeGrinderIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -1379,7 +1379,7 @@ export function GrinderMachineIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -1471,7 +1471,7 @@ export function CoffeeGrinderIcon2(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -1506,7 +1506,7 @@ export function CoffeePadIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -1566,7 +1566,7 @@ export function CoffeePadsIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -1981,7 +1981,6 @@ export function CoffeeShopIcon(props: any) {
     width="24"
     height="24"
     viewBox="0 0 256 256"
-    style={{fill: "white"}}
     stroke="currentColor"
     strokeWidth="2"
     strokeLinecap="round"
@@ -2077,7 +2076,7 @@ export function CoffeeCupIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -2106,7 +2105,7 @@ export function CoffeePotIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -2144,7 +2143,7 @@ export function CortadoIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -2396,7 +2395,7 @@ export function CoffeeIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -2455,7 +2454,7 @@ export function EspressoIcon2(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -2512,7 +2511,7 @@ export function EspressoDopioIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -2571,7 +2570,7 @@ export function EspressoMacchiatoIcon2(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -2644,7 +2643,7 @@ export function EspressoMacchiatoIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -2773,7 +2772,7 @@ export function EspressoMachineIcon2(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -2832,7 +2831,7 @@ export function EspressoMachineIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -2885,7 +2884,7 @@ export function EspressoMakerIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -2924,7 +2923,7 @@ export function EspressoMilkFoamIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -3150,7 +3149,7 @@ export function EspressoIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -3209,7 +3208,7 @@ export function FilterCoffeeMakerIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -3256,7 +3255,7 @@ export function FilterConeIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -3282,7 +3281,7 @@ export function FlatWhiteIcon2(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -3442,7 +3441,7 @@ export function FlatWhiteIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -3586,7 +3585,7 @@ export function FrappuccinoIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -3621,7 +3620,7 @@ export function FrenchPressIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -3659,7 +3658,7 @@ export function JarGroundCoffeeIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -4590,7 +4589,7 @@ export function LatteMacchiatoIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -4823,7 +4822,7 @@ export function MilkBottleIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -4860,7 +4859,7 @@ export function MilkBoxIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -4900,7 +4899,7 @@ export function MilkJugIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -4931,7 +4930,7 @@ export function MilkPackageIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -5002,7 +5001,7 @@ export function MoccacinoIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -5084,7 +5083,7 @@ export function CupIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -5142,7 +5141,7 @@ export function ModernCoffeeGrinderIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -5229,7 +5228,7 @@ export function PortafilterIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -5255,7 +5254,7 @@ export function SyphoneCoffeeMakerIcon2(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -5294,7 +5293,7 @@ export function SyphoneCoffeeMakerIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -5333,7 +5332,7 @@ export function TamperIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 256 256"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -5358,7 +5357,7 @@ export function SmoothieOrangeIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 1200 1200"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -5381,7 +5380,7 @@ export function SmoothiePineappleIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 375 375"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -5473,7 +5472,7 @@ export function SmoothieStrawberryIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 1200 1200"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -5496,7 +5495,7 @@ export function SmoothieCupIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 1200 1200"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -5515,7 +5514,7 @@ export function SmoothieBlenderIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 1200 1200"
-      style={{fill: "white"}}
+      fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
