@@ -67,7 +67,7 @@ export function getWrongOrderTemplate(
     });
   }
 
-  const body = `Seems like your order of "{{0}}" is not something we can serve. ${getAvailableOptions(indiciesOfFullTitles)}Write "I need help" to get an overview of other commands.`;
+  const body = `Seems like your order of "{{0}}" is not something we can serve. ${getAvailableOptions(indiciesOfFullTitles)}\nWrite "I need help" to get an overview of other commands.`;
 
   return {
     friendly_name: templateName,
