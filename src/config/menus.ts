@@ -140,6 +140,11 @@ export default {
       "Oat Milk",
       "Coconut Milk",
       "Rice Milk",
+      "Vanilla Syrup",
+      "Chocolate Caramel Syrup",
+      "Hazelnut Syrup",
+      "Brown Sugar Stick",
+      "White Sugar Stick",
     ],
   },
   smoothie: {
