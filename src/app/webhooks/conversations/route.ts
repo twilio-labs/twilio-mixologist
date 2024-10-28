@@ -80,7 +80,7 @@ export async function POST(request: Request) {
           event: newEvent.slug,
           orderCount: 0,
           stage: Stages.NEW_USER,
-          country: country?.name,
+          country: country?.name === "Canada" ? "United States" : country?.name,
         },
         TwoWeeksInSeconds,
       );
@@ -127,7 +127,7 @@ export async function POST(request: Request) {
             event: newEvent.slug,
             orderCount: 0,
             stage: Stages.NEW_USER,
-            country: country?.name,
+            country: country?.name === "Canada" ? "United States" : country?.name,
           },
           TwoWeeksInSeconds,
         );
