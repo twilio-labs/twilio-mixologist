@@ -127,7 +127,8 @@ export async function POST(request: Request) {
             event: newEvent.slug,
             orderCount: 0,
             stage: Stages.NEW_USER,
-            country: country?.name === "Canada" ? "United States" : country?.name,
+            country:
+              country?.name === "Canada" ? "United States" : country?.name,
           },
           TwoWeeksInSeconds,
         );
@@ -390,6 +391,12 @@ export async function POST(request: Request) {
     const { contentSid, contentVariables } =
       await templates.getHelpMessage(event);
     addMessageToConversation(conversationSid, "", contentSid, contentVariables);
+    setTimeout(() => {
+      const modifiersNote = templates.getModifiersMessage(
+        event.selection.modifiers,
+      );
+      addMessageToConversation(conversationSid, modifiersNote);
+    }, 1000);
     return new Response("", { status: 200 });
   } else if (incomingMessage.includes("queue")) {
     const queuePosition = await getQueuePosition(

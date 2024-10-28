@@ -114,6 +114,12 @@ export async function getHelpMessage(event: Event) {
   };
 }
 
+export function getModifiersMessage(modifiers: string[]) {
+  return `You can add the following add-ons to your order:\n${modifiers
+    .map((m) => `- ${m}`)
+    .join("\n")}`;
+}
+
 export function getExistingOrderMessage(product: string, orderNumber: number) {
   return `We're still making you a ${product}.\n\nIf you'd like to change or modify your order reply with 'Change order to {your new choice}'. \n\nCheck order #${orderNumber} with our staff if you think there's something wrong`;
 }
