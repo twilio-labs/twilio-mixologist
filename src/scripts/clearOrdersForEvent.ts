@@ -42,7 +42,7 @@ if (!eventName || eventName.startsWith("/") || eventName.includes("=")) {
   const orderItems = await client.sync.v1
     .services(TWILIO_SYNC_SERVICE_SID)
     .syncLists(eventName)
-    .syncListItems.list({ limit: 1000 });
+    .syncListItems.list({ limit: 1000 }); // TODO should delete all here
   await Promise.all(
     orderItems.map(async (item) => {
       await client.sync.v1

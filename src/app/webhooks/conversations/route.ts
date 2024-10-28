@@ -102,11 +102,13 @@ export async function POST(request: Request) {
           message.contentVariables,
         );
 
-        await sleep(1000);
-        const modifiersNote = templates.getModifiersMessage(
-          newEvent.selection.modifiers,
-        );
-        addMessageToConversation(conversationSid, modifiersNote);
+        if (newEvent.selection.modifiers.length > 1) {
+          await sleep(1000);
+          const modifiersNote = templates.getModifiersMessage(
+            newEvent.selection.modifiers,
+          );
+          addMessageToConversation(conversationSid, modifiersNote);
+        }
       }
 
       return new Response("Assigned event to attendee", { status: 201 });
@@ -155,11 +157,13 @@ export async function POST(request: Request) {
             message.contentVariables,
           );
 
-          await sleep(1000);
-          const modifiersNote = templates.getModifiersMessage(
-            newEvent.selection.modifiers,
-          );
-          addMessageToConversation(conversationSid, modifiersNote);
+          if (newEvent.selection.modifiers.length > 1) {
+            await sleep(1000);
+            const modifiersNote = templates.getModifiersMessage(
+              newEvent.selection.modifiers,
+            );
+            addMessageToConversation(conversationSid, modifiersNote);
+          }
         }
         return new Response("Assigned event to attendee", { status: 201 });
       }
@@ -202,11 +206,13 @@ export async function POST(request: Request) {
         true,
       );
 
-      await sleep(500);
-      const modifiersNote = templates.getModifiersMessage(
-        newEvent.selection.modifiers,
-      );
-      addMessageToConversation(conversationSid, modifiersNote);
+      if (newEvent.selection.modifiers.length > 1) {
+        await sleep(500);
+        const modifiersNote = templates.getModifiersMessage(
+          newEvent.selection.modifiers,
+        );
+        addMessageToConversation(conversationSid, modifiersNote);
+      }
 
       await updateOrCreateSyncMapItem(
         NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP,
@@ -265,11 +271,13 @@ export async function POST(request: Request) {
           message.contentVariables,
         );
 
-        await sleep(500);
-        const modifiersNote = templates.getModifiersMessage(
-          newEvent.selection.modifiers,
-        );
-        addMessageToConversation(conversationSid, modifiersNote);
+        if (newEvent.selection.modifiers.length > 1) {
+          await sleep(500);
+          const modifiersNote = templates.getModifiersMessage(
+            newEvent.selection.modifiers,
+          );
+          addMessageToConversation(conversationSid, modifiersNote);
+        }
 
         return new Response("Assigned event to attendee", { status: 201 });
       }
@@ -387,11 +395,13 @@ export async function POST(request: Request) {
         message.contentVariables,
       );
 
-      await sleep(1000);
-      const modifiersNote = templates.getModifiersMessage(
-        event.selection.modifiers,
-      );
-      addMessageToConversation(conversationSid, modifiersNote);
+      if (event.selection.modifiers.length > 1) {
+        await sleep(1000);
+        const modifiersNote = templates.getModifiersMessage(
+          event.selection.modifiers,
+        );
+        addMessageToConversation(conversationSid, modifiersNote);
+      }
 
       await sleep(1000);
       const dataPolicy = templates.getDataPolicy(event.selection.mode);
@@ -424,11 +434,13 @@ export async function POST(request: Request) {
       await templates.getHelpMessage(event);
     addMessageToConversation(conversationSid, "", contentSid, contentVariables);
 
-    await sleep(1000);
-    const modifiersNote = templates.getModifiersMessage(
-      event.selection.modifiers,
-    );
-    addMessageToConversation(conversationSid, modifiersNote);
+    if (event.selection.modifiers.length > 1) {
+      await sleep(1000);
+      const modifiersNote = templates.getModifiersMessage(
+        event.selection.modifiers,
+      );
+      addMessageToConversation(conversationSid, modifiersNote);
+    }
 
     return new Response("", { status: 200 });
   } else if (incomingMessage.includes("queue")) {
