@@ -86,7 +86,7 @@ export async function POST(request: Request) {
       );
 
       if (!newEvent.enableLeadCollection) {
-        await sleep(2000);
+        await sleep(1000);
         const dataPolicy = templates.getDataPolicy(newEvent.selection.mode);
         addMessageToConversation(conversationSid, dataPolicy);
         const message = await templates.getReadyToOrderMessage(
@@ -101,6 +101,12 @@ export async function POST(request: Request) {
           message.contentSid,
           message.contentVariables,
         );
+
+        await sleep(1000);
+        const modifiersNote = templates.getModifiersMessage(
+          newEvent.selection.modifiers,
+        );
+        addMessageToConversation(conversationSid, modifiersNote);
       }
 
       return new Response("Assigned event to attendee", { status: 201 });
@@ -133,7 +139,7 @@ export async function POST(request: Request) {
           TwoWeeksInSeconds,
         );
         if (!newEvent.enableLeadCollection) {
-          await sleep(2000);
+          await sleep(1000);
           const dataPolicy = templates.getDataPolicy(newEvent.selection.mode);
           addMessageToConversation(conversationSid, dataPolicy);
           const message = await templates.getReadyToOrderMessage(
@@ -148,6 +154,12 @@ export async function POST(request: Request) {
             message.contentSid,
             message.contentVariables,
           );
+
+          await sleep(1000);
+          const modifiersNote = templates.getModifiersMessage(
+            newEvent.selection.modifiers,
+          );
+          addMessageToConversation(conversationSid, modifiersNote);
         }
         return new Response("Assigned event to attendee", { status: 201 });
       }
@@ -189,6 +201,13 @@ export async function POST(request: Request) {
         newEvent.maxOrders,
         true,
       );
+
+      await sleep(500);
+      const modifiersNote = templates.getModifiersMessage(
+        newEvent.selection.modifiers,
+      );
+      addMessageToConversation(conversationSid, modifiersNote);
+
       await updateOrCreateSyncMapItem(
         NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP,
         conversationSid,
@@ -245,6 +264,13 @@ export async function POST(request: Request) {
           message.contentSid,
           message.contentVariables,
         );
+
+        await sleep(500);
+        const modifiersNote = templates.getModifiersMessage(
+          newEvent.selection.modifiers,
+        );
+        addMessageToConversation(conversationSid, modifiersNote);
+
         return new Response("Assigned event to attendee", { status: 201 });
       }
 
@@ -361,7 +387,13 @@ export async function POST(request: Request) {
         message.contentVariables,
       );
 
-      await sleep(2000);
+      await sleep(1000);
+      const modifiersNote = templates.getModifiersMessage(
+        event.selection.modifiers,
+      );
+      addMessageToConversation(conversationSid, modifiersNote);
+
+      await sleep(1000);
       const dataPolicy = templates.getDataPolicy(event.selection.mode);
       addMessageToConversation(conversationSid, dataPolicy);
 
@@ -391,12 +423,13 @@ export async function POST(request: Request) {
     const { contentSid, contentVariables } =
       await templates.getHelpMessage(event);
     addMessageToConversation(conversationSid, "", contentSid, contentVariables);
-    setTimeout(() => {
-      const modifiersNote = templates.getModifiersMessage(
-        event.selection.modifiers,
-      );
-      addMessageToConversation(conversationSid, modifiersNote);
-    }, 1000);
+
+    await sleep(1000);
+    const modifiersNote = templates.getModifiersMessage(
+      event.selection.modifiers,
+    );
+    addMessageToConversation(conversationSid, modifiersNote);
+
     return new Response("", { status: 200 });
   } else if (incomingMessage.includes("queue")) {
     const queuePosition = await getQueuePosition(
