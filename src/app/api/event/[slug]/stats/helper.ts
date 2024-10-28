@@ -89,6 +89,12 @@ export async function calcStatsForEvent(
   }, {});
   let previousSum = 0;
   const summedUpStages = Object.keys(Stages)
+    // skip if lead collection is disabled and stage is one of the following: VERIFING, VERIFIED_USER
+    .filter(
+      (stage: any) =>
+        event.enableLeadCollection ||
+        ![Stages.VERIFYING, Stages.VERIFIED_USER].includes(stage),
+    )
     .reverse()
     .map((stage) => {
       let sum = (attendeeStages[stage] || 0) + previousSum;
