@@ -44,6 +44,14 @@ function StatsPage({ params }: { params: { slug: string } }) {
       });
   }, []);
 
+  function listStages(stats: MixologistStats | undefined) {
+    if (!stats) return;
+    const stages = stats.summedUpStages.map((stage) => {
+      return stage.id;
+    });
+    return `The stages are: ${stages.join(", ")}`;
+  }
+
   return (
     <main className="p-4 md:p-6 lg:p-8 space-y-8">
       {!stats && (
@@ -207,7 +215,7 @@ function StatsPage({ params }: { params: { slug: string } }) {
                     Attendee Funnel
                   </CardTitle>
                   <CardDescription className="text-xs">
-                    See how many attendees are at each stage
+                    See how many attendees are at each stage {listStages(stats)}
                   </CardDescription>
                 </div>
                 <User2Icon className="w-4 h-4 text-gray-500 " />
