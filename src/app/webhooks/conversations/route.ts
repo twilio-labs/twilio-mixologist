@@ -45,6 +45,11 @@ export async function POST(request: Request) {
   if (webHookType !== "onMessageAdded") {
     return new Response("Wrong event type", { status: 200 });
   }
+  if (!incomingMessageBody && data.get("Media")) {
+    const noMediaMessage = templates.getNoMediaHandlerMessage();
+    addMessageToConversation(conversationSid, noMediaMessage);
+    return new Response("Send no media note", { status: 200 });
+  }
 
   const author = data.get("Author") as string,
     address = redact(author);

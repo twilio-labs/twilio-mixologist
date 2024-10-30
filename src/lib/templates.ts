@@ -145,6 +145,10 @@ export function getOopsMessage(error: any) {
   return `Oops, something went wrong! Talk to someone from Twilio and see if they can help you.`;
 }
 
+export function getNoMediaHandlerMessage() {
+  return "Sorry, we don't support media messages. Please send a text message to order a drink on us.";
+}
+
 export function getInvalidEmailMessage() {
   return "Invalid email address. Please reply with a valid business email address.";
 }
