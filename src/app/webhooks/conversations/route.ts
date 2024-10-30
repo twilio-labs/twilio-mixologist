@@ -14,6 +14,8 @@ import {
   updateSyncListItem,
   fetchSyncListItem,
   fetchSyncListItems,
+  removeSyncMapItem,
+  deleteConversation,
 } from "@/lib/twilio";
 
 import {
@@ -438,7 +440,21 @@ export async function POST(request: Request) {
   }
   const incomingMessage = incomingMessageBody.toLowerCase();
 
-  if (incomingMessage.includes("help")) {
+  if (incomingMessage.includes("forget me")) {
+    // remove the user from the active customers map
+    await removeSyncMapItem(NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP, conversationSid);
+
+    addMessageToConversation(
+      conversationSid,
+      templates.getForgotAttendeeMessage(),
+    );
+
+    sleep(1000);
+    //remove conversation from the conversations service
+    deleteConversation(conversationSid);
+
+    return new Response("Forgot attendee", { status: 200 });
+  } else if (incomingMessage.includes("help")) {
     const { contentSid, contentVariables } =
       await templates.getHelpMessage(event);
     addMessageToConversation(conversationSid, "", contentSid, contentVariables);

@@ -149,6 +149,10 @@ export function getNoMediaHandlerMessage() {
   return "Sorry, we don't support media messages. Please send a text message to order a drink on us.";
 }
 
+export function getForgotAttendeeMessage() {
+  return "Your data has been removed from our system. Please send another message to start over.";
+}
+
 export function getInvalidEmailMessage() {
   return "Invalid email address. Please reply with a valid business email address.";
 }
