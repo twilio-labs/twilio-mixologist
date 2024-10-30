@@ -117,9 +117,13 @@ pnpm test # run unit tests
 pnpm test:e2e # run e2e tests
 ```
 
-## Deploy
+## Tips for production
 
-TBD
+Here are a few helpful notes:
+
+- If you are using the SMS channel, make sure to [set the SMS Geo Permissions](https://www.twilio.com/docs/messaging/guides/sms-geo-permissions)to make sure senders from the entire world can interact with the Mixologist.
+- Edit the [opt-out management settings](https://help.twilio.com/articles/360034798533-Getting-Started-with-Advanced-Opt-Out-for-Messaging-Services) of the messaging service to avoid that users accidentally unsubscribe from the list.
+- Regularly run `pnpm check-for-errors` and see if unforeseen errors occurred when the users tried to order.
 
 ## How To Use
 
