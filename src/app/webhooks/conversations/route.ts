@@ -307,8 +307,12 @@ export async function POST(request: Request) {
       const email = incomingMessageBody.match(regexForEmail)[0];
       try {
         check = await createVerification(email);
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
+        const message = templates.getErrorDuringEmailVerificationMessage(
+          error.message,
+        );
+        addMessageToConversation(conversationSid, message);
         return new Response("Error During Verifiction", { status: 500 });
       }
       const message = templates.getSentEmailMessage();

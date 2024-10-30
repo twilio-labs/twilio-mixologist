@@ -149,6 +149,10 @@ export function getInvalidEmailMessage() {
   return "Invalid email address. Please reply with a valid business email address.";
 }
 
+export function getErrorDuringEmailVerificationMessage(error: string) {
+  return `An error occurred during email verification: ${error}`;
+}
+
 export function getSentEmailMessage() {
   return "We have sent you an email with a verification code. Please reply with the code we sent to your email address.\nIf you did not receive the email, please check your spam folder or enter a new email address.";
 }
