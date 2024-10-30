@@ -7,7 +7,11 @@ export async function POST(request: Request) {
   const headersList = headers();
   const role = getAuthenticatedRole(headersList.get("Authorization") || "");
 
-  const isPrivileged = [Privilege.ADMIN, Privilege.MIXOLOGIST].includes(role);
+  const isPrivileged = [
+    Privilege.ADMIN,
+    Privilege.MIXOLOGIST,
+    Privilege.KIOSK,
+  ].includes(role);
 
   if (!process.env.NEXT_PUBLIC_EVENTS_MAP) {
     console.error("No config doc specified");

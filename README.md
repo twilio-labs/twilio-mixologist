@@ -64,6 +64,7 @@ The current [Twilio Channels] are:
    # Application related values
    MIXOLOGIST_LOGIN=someuser:assword
    ADMIN_LOGIN=someadmin:password
+   KIOSK_LOGIN=somekiosk:somepassword
    SERVICE_INSTANCE_PREFIX=Mixologist
    ACTIVE_CUSTOMERS_MAP=ActiveCustomers
    UNLIMITED_ORDERS=CommaSeparatedNumbersToWhichTheLimitDoesNotApply
