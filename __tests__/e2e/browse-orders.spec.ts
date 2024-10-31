@@ -166,7 +166,7 @@ test.describe("[mixologist]", () => {
     await page.goto("/event/test-event/orders");
 
     await page.getByRole("button", { name: "Create a Manual Order" }).click();
-    await page.getByPlaceholder("Attendee name").fill("Test Name");
+    await page.getByPlaceholder("Customer name").fill("Test Name");
     await page.getByLabel("Order Item").click();
     await page.getByLabel("Espresso", { exact: true }).click();
     await page
