@@ -68,7 +68,7 @@ export async function POST(request: Request) {
         conversationSid,
         templates.getNoActiveEventsMessage(),
       );
-      return new Response("No active event available", { status: 500 });
+      return new Response("No active event available", { status: 200 });
     } else if (activeEvents.length == 1) {
       let newEvent = activeEvents[0].data;
       const welcomeMessage = templates.getWelcomeMessage(
@@ -197,7 +197,7 @@ export async function POST(request: Request) {
         conversationSid,
         templates.getNoActiveEventsMessage(),
       );
-      return new Response("No active event available", { status: 500 });
+      return new Response("No active event available", { status: 200 });
     } else if (activeEvents.length == 1) {
       let newEvent = activeEvents[0].data;
       const welcomeBackMessage = templates.getWelcomeBackMessage(
