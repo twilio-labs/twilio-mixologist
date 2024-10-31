@@ -125,6 +125,7 @@ Here are a few helpful notes:
 - If you are using the SMS channel, make sure to [set the SMS Geo Permissions](https://www.twilio.com/docs/messaging/guides/sms-geo-permissions)to make sure senders from the entire world can interact with the Mixologist.
 - Edit the [opt-out management settings](https://help.twilio.com/articles/360034798533-Getting-Started-with-Advanced-Opt-Out-for-Messaging-Services) of the messaging service to avoid that users accidentally unsubscribe from the list.
 - Regularly run `pnpm check-for-errors` and see if unforeseen errors occurred when the users tried to order.
+- The Kiosk interface is a self-service interface that you can make available to attendees via a table or phone. The page allows the manual entry of an order without the need to put a phone number down. This form can be accessed via `https://<mixologist.server>/<event-slug>/kiosk` and the credentials are defined in the environment variable `KIOSK_LOGIN`.
 
 ## How To Use
 
