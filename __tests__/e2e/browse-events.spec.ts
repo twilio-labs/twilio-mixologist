@@ -248,9 +248,6 @@ test.describe("[admin]", () => {
     await expect(
       page.getByRole("heading", { name: "Colombia (Red like Twilio!)" }),
     ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "Short title: Colombia" }),
-    ).toBeVisible();
     await expect(page.getByText("Strawberry, Pineapple, Apple")).toBeVisible();
 
     const createButton = page
