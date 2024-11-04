@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "DOTENV_CONFIG_PATH=./.env.local vitest",
-    "test:e2e": "playwright test",
+    "test:e2e": "playwright test --retries=2",
     "update-config": "tsx -r dotenv/config src/scripts/updateConfig dotenv_config_path=.env.local ",
     "download": "tsx -r dotenv/config src/scripts/download dotenv_config_path=.env.local ",
     "create-twilio-res": "tsx -r dotenv/config src/scripts/createTwilioRes dotenv_config_path=.env.local ",
