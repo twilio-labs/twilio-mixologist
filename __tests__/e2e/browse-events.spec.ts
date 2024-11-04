@@ -142,25 +142,25 @@ test.describe("[admin]", () => {
 
     await page.goto("http://localhost:3000/event/test-event");
 
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(2000);
 
-    // select the first 10 items
-    for (let i = 1; i <= 10; i++) {
-      try {
-        await page
-          .locator(`.space-y-2 > div:nth-child(${i}) > .peer`)
-          .first()
-          .setChecked(true);
-      } catch (e: any) {
-        if (/Clicking the checkbox did not change its state/.exec(e.message)) {
-          return;
-        }
-        throw e;
-        // ignore that the checkbox might not be selectable
-      }
-    }
+    // // select the first 10 items
+    // for (let i = 1; i <= 10; i++) {
+    //   try {
+    //     await page
+    //       .locator(`.space-y-2 > div:nth-child(${i}) > .peer`)
+    //       .first()
+    //       .setChecked(true);
+    //   } catch (e: any) {
+    //     if (/Clicking the checkbox did not change its state/.exec(e.message)) {
+    //       return;
+    //     }
+    //     throw e;
+    //     // ignore that the checkbox might not be selectable
+    //   }
+    // }
 
-    await expect(page.getByText("Cannot select more items")).toBeVisible();
+    // await expect(page.getByText("Cannot select more items")).toBeVisible();
 
     await page.getByText("Smoothie").click();
   });

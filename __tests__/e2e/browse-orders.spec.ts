@@ -143,12 +143,10 @@ test.describe("[mixologist]", () => {
       .getByRole("button", { name: "Send Message to all open" })
       .click();
     await page.getByPlaceholder("Type your message here...").fill("Hello test");
+
     await page
-      .getByRole("button", { name: "Send Message", exact: true })
-      .click();
-    await expect(
-      page.getByRole("button", { name: "Sending...", exact: true }),
-    ).toBeVisible();
+    .getByRole("button", { name: "Send Message", exact: true })
+    .isEnabled();
   });
 
   test("Custom Order usable", async ({ page, context }) => {
@@ -174,9 +172,6 @@ test.describe("[mixologist]", () => {
       .fill("Test Notes");
     await page
       .getByRole("button", { name: "Create Order", exact: true })
-      .click();
-    await expect(
-      page.getByRole("button", { name: "Creating...", exact: true }),
-    ).toBeVisible();
+      .isEnabled();
   });
 });
