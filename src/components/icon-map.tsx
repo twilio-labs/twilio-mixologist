@@ -13,6 +13,7 @@ import {
   CoffeeCupIcon,
   CupIcon,
   CoffeeIcon,
+  FrappuccinoIcon,
 } from "@/components/icons";
 
 const iconMap: { [key: string]: any } = {
@@ -30,6 +31,8 @@ const iconMap: { [key: string]: any } = {
   Matcha: CoffeeCupIcon,
   Chocolate: CoffeeCupIcon,
   Mocha: CupIcon,
+  "Iced Latte": FrappuccinoIcon,
+  "Iced Americano": FrappuccinoIcon,
   "Black Tea": CupIcon,
   "British Breakfast Tea": CupIcon,
   "Apple Chamomile": CupIcon,
