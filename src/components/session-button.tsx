@@ -25,7 +25,9 @@ export default async function SessionButton(
         <form
           action={async function clearPrivilegeCookies() {
             "use server";
-            cookiesStore.delete("privilege");
+
+            const cs = await cookies();
+            cs.delete("privilege");
             redirect("/");
           }}
         >

@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { isClientAuth } from "@/lib/customHooks";
 import { notFound } from "next/navigation";
-
 import { useToast } from "@/components/ui/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
@@ -24,7 +23,7 @@ import {
 
 import LoadingSpinner from "@/components/loading-spinner";
 import { MenuSelect, Selection } from "@/components/menu-select";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, use } from "react";
 import { Privilege } from "@/middleware";
 import { AlertTriangleIcon } from "lucide-react";
 import QrCodePopoverContent from "./qr-code-popovercontent";
@@ -47,7 +46,7 @@ export interface Event {
   deliveredCount?: number;
 }
 
-function EventPage({ params }: { params: { slug: string } }) {
+function EventPage({ params }: { params: Promise<{ slug: string }> }) {
   if (
     !process.env.NEXT_PUBLIC_CONFIG_DOC ||
     !process.env.NEXT_PUBLIC_EVENTS_MAP
@@ -55,19 +54,20 @@ function EventPage({ params }: { params: { slug: string } }) {
     throw new Error("No config doc specified");
   }
 
-  const isNewEvent = params.slug === "new";
+  const { slug } = use(params);
+  const isNewEvent = slug === "new";
   const router = useRouter();
   const { toast } = useToast();
 
   const [eventsMap, updateEventsMap, mapInitialized] = useSyncMap(
     process.env.NEXT_PUBLIC_EVENTS_MAP || "",
-    isNewEvent ? [] : [params.slug],
+    isNewEvent ? [] : [slug],
   );
 
   useEffect(() => {
     if (!isNewEvent && mapInitialized) {
       // @ts-ignore // TODO fix this TS issue
-      const existingEvent = eventsMap?.get(params.slug) as Event;
+      const existingEvent = eventsMap?.get(slug) as Event;
       updateInternalEvent(existingEvent);
     }
   }, [eventsMap, mapInitialized]);
@@ -96,7 +96,7 @@ function EventPage({ params }: { params: { slug: string } }) {
     if (!isNewEvent) {
       timerRef.current = setTimeout(() => {
         // @ts-ignore // TODO fix this TS issue
-        updateEventsMap(params.slug, newEvent);
+        updateEventsMap(slug, newEvent);
       }, 1000);
     }
   }

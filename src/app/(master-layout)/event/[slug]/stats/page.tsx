@@ -15,16 +15,17 @@ import OrdersChart from "./ordersChart";
 import { modes } from "@/config/menus";
 import FunnelChart from "./funnelChart";
 import { MixologistStats } from "@/app/api/event/[slug]/stats/helper";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import CountriesChart from "./countriesChart";
 import { Privilege } from "@/middleware";
 
-function StatsPage({ params }: { params: { slug: string } }) {
+function StatsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { toast } = useToast();
+  const { slug } = use(params);
   const [stats, setStats] = useState<MixologistStats>();
 
   useEffect(() => {
-    fetch(`/api/event/${params.slug}/stats`, {
+    fetch(`/api/event/${slug}/stats`, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -60,7 +61,7 @@ function StatsPage({ params }: { params: { slug: string } }) {
 
       <div className="w-full">
         <h2 className="text-2xl font-semibold mb-6 text-center">
-          Statistics for {params.slug}
+          Statistics for {slug}
         </h2>
         <section>
           {/* <header className="flex items-center h-16 px-4 shrink-0 md:px-6">

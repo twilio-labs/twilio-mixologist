@@ -58,12 +58,11 @@ export async function PUT(
   request: Request,
   props: { params: Promise<{ slug: string }> },
 ) {
-  const [headersList, params, json] = await Promise.all([
+  const [headersList, params, unfilteredData] = await Promise.all([
     headers(),
     props.params,
     request.json(),
   ]);
-  const { unfilteredData } = json;
   const role = getAuthenticatedRole(headersList.get("Authorization") || "");
 
   if (role !== Privilege.MIXOLOGIST && role !== Privilege.ADMIN) {
