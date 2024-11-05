@@ -178,7 +178,7 @@ export function getWelcomeMessage(
     customWelcomeMessage ||
     `Welcome at the Twilio Booth! Are you ready for a ${modeToBeverage(mode)} on us? 🎉`;
   const leadCollectionSuffix = willCollectedLeads
-    ? "\nReply with your business email address to get started. We will then send you an email to verify your address."
+    ? "\nReply with your full name to get started."
     : "";
   return `${welcomeMessage}\n${leadCollectionSuffix}`;
 }
@@ -238,6 +238,10 @@ export async function getReadyToOrderMessage(
 
 export function getDataPolicy(mode: string) {
   return `We only use your phone number to notify you about our ${mode} service and redact all the messages & phone numbers afterward.`;
+}
+
+export function getPromptForEmail(){
+  return "Thanks. Please enter your business email address. We will then use Twilio Verify and SendGrid to send you an one-time password.";
 }
 
 export function getMaxOrdersMessage() {

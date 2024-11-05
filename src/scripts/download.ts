@@ -7,6 +7,7 @@ const {
   TWILIO_API_SECRET = "",
   TWILIO_ACCOUNT_SID = "",
   TWILIO_SYNC_SERVICE_SID = "",
+  SEGMENT_TRAIT_CHECK = "",
 } = process.env;
 
 const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
@@ -39,11 +40,11 @@ if (!eventName || eventName.startsWith("/") || eventName.includes("=")) {
           a.event === eventName,
       );
     const csv = attendees.map((attendee) => {
-      return `${attendee.email},${attendee.event},${attendee.stage}`;
+      return `${attendee.fullName},${attendee.email},${attendee.country},${attendee.foundInSegment},${attendee[SEGMENT_TRAIT_CHECK]},${attendee.event},${attendee.stage}`;
     });
     writeFileSync(
       `attendees-${eventName}.csv`,
-      `Email,Event,Stage\n${csv.join("\n")}`,
+      `FullName,Email,Country,FoundInSegment,CompletedSignup,Event,Stage\n${csv.join("\n")}`,
     );
   } catch (e) {
     console.error(e);

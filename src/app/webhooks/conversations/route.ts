@@ -16,6 +16,7 @@ import {
   fetchSyncListItems,
   removeSyncMapItem,
   deleteConversation,
+  fetchSegmentTraits,
 } from "@/lib/twilio";
 
 import {
@@ -33,6 +34,11 @@ const TwoWeeksInSeconds = 2 * 7 * 24 * 60 * 60;
 const regexForEmail = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/;
 const regexFor6ConsecutiveDigits = /\d{6}/;
 
+const {
+  SEGMENT_SPACE_ID = "",
+  SEGMENT_PROFILE_KEY = "",
+  SEGMENT_TRAIT_CHECK = "",
+} = process.env;
 const NEXT_PUBLIC_EVENTS_MAP = process.env.NEXT_PUBLIC_EVENTS_MAP || "",
   NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP =
     process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP || "",
@@ -93,7 +99,7 @@ export async function POST(request: Request) {
       );
 
       if (!newEvent.enableLeadCollection) {
-        await sleep(1000);
+        await sleep(2000);
         const dataPolicy = templates.getDataPolicy(newEvent.selection.mode);
         addMessageToConversation(conversationSid, dataPolicy);
         const message = await templates.getReadyToOrderMessage(
@@ -110,7 +116,7 @@ export async function POST(request: Request) {
         );
 
         if (newEvent.selection.modifiers.length > 1) {
-          await sleep(1000);
+          await sleep(1500);
           const modifiersNote = templates.getModifiersMessage(
             newEvent.selection.modifiers,
           );
@@ -148,7 +154,7 @@ export async function POST(request: Request) {
           TwoWeeksInSeconds,
         );
         if (!newEvent.enableLeadCollection) {
-          await sleep(1000);
+          await sleep(2000);
           const dataPolicy = templates.getDataPolicy(newEvent.selection.mode);
           addMessageToConversation(conversationSid, dataPolicy);
           const message = await templates.getReadyToOrderMessage(
@@ -165,7 +171,7 @@ export async function POST(request: Request) {
           );
 
           if (newEvent.selection.modifiers.length > 1) {
-            await sleep(1000);
+            await sleep(1500);
             const modifiersNote = templates.getModifiersMessage(
               newEvent.selection.modifiers,
             );
@@ -299,10 +305,25 @@ export async function POST(request: Request) {
       return new Response("Requesting Event", { status: 200 });
     }
   }
-
   if (
     event.enableLeadCollection &&
     conversationRecord.stage === Stages.NEW_USER
+  ) {
+    const message = templates.getPromptForEmail();
+    addMessageToConversation(conversationSid, message);
+    await updateSyncMapItem(
+      NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP,
+      conversationSid,
+      {
+        fullName: incomingMessageBody.trim(),
+        stage: Stages.NAME_CONFIRMED,
+      },
+      TwoWeeksInSeconds,
+    );
+    return new Response("Prompt for Email", { status: 200 });
+  } else if (
+    event.enableLeadCollection &&
+    conversationRecord.stage === Stages.NAME_CONFIRMED
   ) {
     if (!incomingMessageBody || !regexForEmail.test(incomingMessageBody)) {
       const message = templates.getInvalidEmailMessage();
@@ -385,11 +406,30 @@ export async function POST(request: Request) {
         addMessageToConversation(conversationSid, message);
         return new Response("Invalid Verification", { status: 200 });
       }
+      let foundInSegment = false,
+        checkedTrait;
+      if (
+        SEGMENT_SPACE_ID &&
+        SEGMENT_PROFILE_KEY &&
+        SEGMENT_TRAIT_CHECK &&
+        verification.to // skip in the tests
+      ) {
+        const traits = await fetchSegmentTraits(
+          verification.to,
+          SEGMENT_TRAIT_CHECK,
+        );
+        if (traits) {
+          foundInSegment = true;
+          checkedTrait = traits[SEGMENT_TRAIT_CHECK];
+        }
+      }
       await updateSyncMapItem(
         NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP,
         conversationSid,
         {
           stage: Stages.VERIFIED_USER,
+          [SEGMENT_TRAIT_CHECK]: checkedTrait,
+          foundInSegment,
         },
         TwoWeeksInSeconds,
       );
@@ -407,14 +447,14 @@ export async function POST(request: Request) {
       );
 
       if (event.selection.modifiers.length > 1) {
-        await sleep(1000);
+        await sleep(1500);
         const modifiersNote = templates.getModifiersMessage(
           event.selection.modifiers,
         );
         addMessageToConversation(conversationSid, modifiersNote);
       }
 
-      await sleep(1000);
+      await sleep(2000);
       const dataPolicy = templates.getDataPolicy(event.selection.mode);
       addMessageToConversation(conversationSid, dataPolicy);
 
@@ -449,7 +489,7 @@ export async function POST(request: Request) {
       templates.getForgotAttendeeMessage(),
     );
 
-    sleep(1000);
+    sleep(1500);
     //remove conversation from the conversations service
     deleteConversation(conversationSid);
 
@@ -460,7 +500,7 @@ export async function POST(request: Request) {
     addMessageToConversation(conversationSid, "", contentSid, contentVariables);
 
     if (event.selection.modifiers.length > 1) {
-      await sleep(1000);
+      await sleep(1500);
       const modifiersNote = templates.getModifiersMessage(
         event.selection.modifiers,
       );

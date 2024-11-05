@@ -76,6 +76,10 @@ The current [Twilio Channels] are:
    TWILIO_ACCOUNT_SID=
    TWILIO_API_KEY=
    TWILIO_API_SECRET=
+
+   SEGMENT_SPACE_ID="your_segment_space_id"
+   SEGMENT_PROFILE_KEY="your_segment_profile_key"
+   SEGMENT_TRAIT_CHECK="your_segment_trait_check"
    ```
 
    Go into the [Twilio Console] and [generate an API Key and Secret](https://www.twilio.com/console/dev-tools/api-keys). Make sure to store the information safely.
@@ -109,6 +113,11 @@ pnpm dev
 
 9. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+
+## How To Use
+
+[Here's a diagram of what happens when the user sends a message to the application](resources/user-flow-diagram.png)
+
 ## Testing
 
 This projects comes with a test suit that runs on every push to `main` and `feat/` branches. Unit tests cover basic capabilities (access control checks, template generator). And e2e tests cover the main functionality of the website since the data is loaded async and RSC's are currently not supported by unit test frameworks.
@@ -118,7 +127,9 @@ pnpm test # run unit tests
 pnpm test:e2e # run e2e tests
 ```
 
-## Tips for production
+## Optional Setup
+
+### Tips for production
 
 Here are a few helpful notes:
 
@@ -128,9 +139,24 @@ Here are a few helpful notes:
 - The Kiosk interface is a self-service interface that you can make available to attendees via a table or phone. The page allows the manual entry of an order without the need to put a phone number down. This form can be accessed via `https://<mixologist.server>/<event-slug>/kiosk` and the credentials are defined in the environment variable `KIOSK_LOGIN`.
 - Users can send the command "forget me" to remove all data stored about this user. It removes the user from the Sync data store and removes the Conversation resource. This can be used for debugging as well as to be GDPR-compliant.
 
-## How To Use
 
-[Here's a diagram of what happens when the user sends a message to the application](resources/user-flow-diagram.png)
+### Segment Integration
+
+This project includes an optional integration with Segment's Profiles API. If you provide the `SEGMENT_SPACE_ID` and `SEGMENT_PROFILE_KEY` environment variables, the application will fetch user traits from Segment using the provided email address once the verification step is completed. The `SEGMENT_TRAIT_CHECK` environment variable allows you to specify a specific trait to check for in the user's profile.
+
+To set up Segment integration:
+
+1. **Create a Segment account** if you don't have one. Sign up [here](https://segment.com/).
+
+2. **Create a Segment Space** and obtain your `SEGMENT_SPACE_ID`.
+
+3. **Generate a Segment Profile API Key** and obtain your `SEGMENT_PROFILE_KEY`.
+
+4. **Specify a Trait to Check** by setting the `SEGMENT_TRAIT_CHECK` environment variable to the desired trait key.
+
+For more details on Segment and how to use the Profiles API, refer to the [Segment documentation](https://segment.com/docs/).
+
+
 
 ## Code of Conduct
 

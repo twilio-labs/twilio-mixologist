@@ -23,6 +23,8 @@ const {
   TWILIO_MESSAGING_SERVICE_SID = "",
   SERVICE_INSTANCE_PREFIX = "",
   PUBLIC_BASE_URL = "",
+  SEGMENT_SPACE_ID = "",
+  SEGMENT_PROFILE_KEY = "",
 } = process.env;
 
 const OneWeekInSeconds = 7 * 24 * 60 * 60;
@@ -574,5 +576,25 @@ export async function addMessageToConversation(
   } catch (err) {
     console.log(err);
     return;
+  }
+}
+
+export async function fetchSegmentTraits(email: string) {
+  try {
+    const response = await axios.get(
+      `https://profiles.segment.com/v1/spaces/${SEGMENT_SPACE_ID}/collections/users/profiles/email:${email}/traits`,
+      {
+        headers: {
+          Authorization: `Basic ${btoa(SEGMENT_PROFILE_KEY + ":")}`,
+        },
+      }
+    );
+    return response.data.traits;
+  } catch (e: any) {
+    if (e.response?.status === 404) {
+      return null;
+    } else {
+      throw e;
+    }
   }
 }

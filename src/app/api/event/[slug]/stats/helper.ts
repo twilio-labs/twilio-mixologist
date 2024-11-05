@@ -93,7 +93,7 @@ export async function calcStatsForEvent(
     .filter(
       (stage: any) =>
         event.enableLeadCollection ||
-        ![Stages.VERIFYING, Stages.VERIFIED_USER].includes(stage),
+        ![Stages.VERIFYING, Stages.VERIFIED_USER, Stages.NAME_CONFIRMED].includes(stage),
     )
     .reverse()
     .map((stage) => {

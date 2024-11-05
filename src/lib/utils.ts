@@ -37,6 +37,7 @@ export enum EventState {
 
 export enum Stages {
   NEW_USER = "NEW_USER",
+  NAME_CONFIRMED = "NAME_CONFIRMED",
   VERIFYING = "VERIFYING",
   VERIFIED_USER = "VERIFIED_USER",
   FIRST_ORDER = "FIRST_ORDER",
