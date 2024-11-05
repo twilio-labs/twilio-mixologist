@@ -20,6 +20,7 @@ import {
   BanIcon,
   PlusIcon,
 } from "lucide-react";
+import { is } from "date-fns/locale";
 
 export default function HeaderControls({
   event,
@@ -37,12 +38,14 @@ export default function HeaderControls({
     getCookie("privilege") as Privilege,
   );
 
+  if(!isPriviledged) return null;
+
   return (
     <div>
       <Button
         className="rounded-full bg-slate-200 hover:bg-slate-400 h-15 w-15 p-5"
         data-testid="pause-orders"
-        disabled={!isPriviledged || event.state === EventState.ENDED}
+        disabled={event.state === EventState.ENDED}
         onClick={async (ev) => {
           (ev.target as HTMLInputElement).disabled = true;
           await updateEvent({
@@ -72,7 +75,6 @@ export default function HeaderControls({
         >
           <Button
             title="Create a Manual Order"
-            disabled={!isPriviledged}
             onClick={() => openCustomOrderPopover(true)}
             className="p-5"
           >
@@ -97,7 +99,6 @@ export default function HeaderControls({
         >
           <Button
             title="Send Message to all open orders"
-            disabled={!isPriviledged}
             onClick={() => openBroadcastPopover(true)}
             className="p-5"
           >
