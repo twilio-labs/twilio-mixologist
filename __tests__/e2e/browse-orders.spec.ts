@@ -42,7 +42,7 @@ test.describe("[no login]", () => {
       page.getByText('Original Message - "A Delivered Order"'),
     ).toBeVisible();
 
-    await expect(page.getByTestId("pause-orders")).toBeDisabled();
+    await expect(page.getByTestId("pause-orders")).toBeHidden();
   });
 
   test("Scroll through extra orders", async ({ page }) => {
@@ -66,7 +66,7 @@ test.describe("[no login]", () => {
 
     await expect(
       page.getByRole("button", { name: "Send Message to all open" }),
-    ).toBeDisabled();
+    ).toBeHidden();
   });
 
   test("Custom Order usable", async ({ page, context }) => {
@@ -74,7 +74,7 @@ test.describe("[no login]", () => {
 
     await expect(
       page.getByRole("button", { name: "Create a Manual Order" }),
-    ).toBeDisabled();
+    ).toBeHidden();
   });
 });
 

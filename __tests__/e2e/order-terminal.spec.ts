@@ -46,7 +46,7 @@ test.describe("[no login] ", () => {
       page.getByText('Original Message - "A Delivered Order"'),
     ).toBeVisible();
 
-    await expect(page.getByTestId("pause-orders")).toBeDisabled();
+    await expect(page.getByTestId("pause-orders")).toBeHidden();
   });
 
   test("Only elements with permissions should be visible / page 2/2", async ({
@@ -93,7 +93,7 @@ test.describe("[no login] ", () => {
       page.getByText('Original Message - "A Delivered Order"'),
     ).toBeVisible();
 
-    await expect(page.getByTestId("pause-orders")).toBeDisabled();
+    await expect(page.getByTestId("pause-orders")).toBeHidden();
   });
 
   test("Should show right header for page 2/4", async ({ page }) => {
