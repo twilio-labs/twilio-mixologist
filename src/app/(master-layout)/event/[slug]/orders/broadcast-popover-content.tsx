@@ -41,7 +41,6 @@ export default function BroadcastPopoverContent({
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              event: eventSlug,
               message,
             }),
           }).then((res) => {
