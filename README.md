@@ -126,6 +126,7 @@ Here are a few helpful notes:
 - Edit the [opt-out management settings](https://help.twilio.com/articles/360034798533-Getting-Started-with-Advanced-Opt-Out-for-Messaging-Services) of the messaging service to avoid that users accidentally unsubscribe from the list.
 - Regularly run `pnpm check-for-errors` and see if unforeseen errors occurred when the users tried to order.
 - The Kiosk interface is a self-service interface that you can make available to attendees via a table or phone. The page allows the manual entry of an order without the need to put a phone number down. This form can be accessed via `https://<mixologist.server>/<event-slug>/kiosk` and the credentials are defined in the environment variable `KIOSK_LOGIN`.
+- Users can send the command "forget me" to remove all data stored about this user. It removes the user from the Sync data store and removes the Conversation resource. This can be used for debugging as well as to be GDPR-compliant.
 
 ## How To Use
 
