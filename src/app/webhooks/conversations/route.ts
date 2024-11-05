@@ -529,16 +529,13 @@ export async function POST(request: Request) {
         incomingMessageBody,
       );
       if (orderItem.shortTitle !== "") {
-        const newOrder = {
-          item: orderItem,
-          ...(orderModifier.length >= 1 && { modifiers: orderModifier }),
-          originalText: incomingMessageBody,
-          status: "queued",
-        };
         try {
-          updateOrder(event.slug, lastOrder.index, lastOrder.data, {
-            ...lastOrder.data.order,
-            ...newOrder,
+          updateOrder(event.slug, lastOrder.index, {
+            ...lastOrder.data,
+            item: orderItem,
+            ...(orderModifier.length >= 1 && { modifiers: orderModifier }),
+            originalText: incomingMessageBody,
+            status: "queued",
           });
 
           const message = templates.getChangedOrderMessage(

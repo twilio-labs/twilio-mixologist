@@ -21,10 +21,6 @@ import nextConfig from "../../next.config";
 const CONTENT_PREFIX = nextConfig?.env?.CONTENT_PREFIX;
 console.log(`Parsed content prefix is ${CONTENT_PREFIX}`);
 
-if (!CONTENT_PREFIX) {
-  throw new Error("CONTENT_PREFIX is not set in the environment variables");
-}
-
 const { OVERRIDE_TEMPLATES } = process.env;
 
 (async () => {
@@ -33,6 +29,10 @@ const { OVERRIDE_TEMPLATES } = process.env;
 })();
 
 async function createWhatsAppTemplates() {
+  if (!CONTENT_PREFIX) {
+    throw new Error("CONTENT_PREFIX is not set in the environment variables");
+  }
+
   let templateName: string, template: WhatsAppTemplate;
   const MAX_ITEMS_ON_MENU = 10; // given by the WhatsApp API
   const MAX_CONCURRENT_EVENTS = 5; // given by the WhatsApp API
