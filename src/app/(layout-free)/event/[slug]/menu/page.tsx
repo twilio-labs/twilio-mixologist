@@ -3,7 +3,8 @@ import MenuItem from "./menu-item";
 import Header from "./header";
 import { getSyncService } from "@/lib/twilio";
 
-async function MenuPage({ params }: { params: { slug: string } }) {
+async function MenuPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   if (!process.env.NEXT_PUBLIC_EVENTS_MAP) {
     throw new Error("No config doc specified");
   }

@@ -4,7 +4,8 @@ import { fetchSyncListItems, addMessageToConversation } from "@/lib/twilio";
 import { Privilege, getAuthenticatedRole } from "@/middleware";
 
 export async function POST(request: Request) {
-  const headersList = headers();
+  const [headersList, json] = await Promise.all([headers(), request.json()]);
+  const { message, event } = json;
   const role = getAuthenticatedRole(headersList.get("Authorization") || "");
 
   const hasPermissions =
@@ -30,7 +31,6 @@ export async function POST(request: Request) {
     );
   }
 
-  const { event, message } = await request.json();
   try {
     const listItems = await fetchSyncListItems(event);
     const queuedOrders = listItems.filter(

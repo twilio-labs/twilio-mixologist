@@ -14,12 +14,17 @@ import {
   getEventRegistrationTemplate,
   WhatsAppTemplate,
 } from "./getTemplates";
-import { env } from "../../next.config";
+import nextConfig from "../../next.config";
 
 // this script runs mostly sequentially. Use a throttled queue later to optimize if needed
 
-// @ts-ignore, defined in next.config.js
-const { CONTENT_PREFIX } = env;
+const CONTENT_PREFIX = nextConfig?.env?.CONTENT_PREFIX;
+console.log(`Parsed content prefix is ${CONTENT_PREFIX}`);
+
+if (!CONTENT_PREFIX) {
+  throw new Error("CONTENT_PREFIX is not set in the environment variables");
+}
+
 const { OVERRIDE_TEMPLATES } = process.env;
 
 (async () => {

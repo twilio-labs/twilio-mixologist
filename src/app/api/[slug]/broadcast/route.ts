@@ -1,14 +1,17 @@
 import { headers } from "next/headers";
-
 import { fetchSyncListItems, addMessageToConversation } from "@/lib/twilio";
 import { Privilege, getAuthenticatedRole } from "@/middleware";
-import { sleep } from "@/lib/utils";
 
 export async function POST(
   request: Request,
-  { params }: { params: { slug: string } },
+  props: { params: Promise<{ slug: string }> },
 ) {
-  const headersList = headers();
+  const [headersList, params, json] = await Promise.all([
+    headers(),
+    props.params,
+    request.json(),
+  ]);
+  const message = json.message;
   const role = getAuthenticatedRole(headersList.get("Authorization") || "");
 
   const hasPermissions =
@@ -34,7 +37,6 @@ export async function POST(
     );
   }
 
-  const { message } = await request.json();
   const event = params.slug;
   try {
     const listItems = await fetchSyncListItems(event);

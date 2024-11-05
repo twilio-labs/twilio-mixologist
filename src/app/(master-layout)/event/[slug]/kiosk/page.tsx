@@ -3,12 +3,14 @@ import { cookies } from "next/headers";
 import OrderForm from "./order-form";
 import { getSyncService } from "@/lib/twilio";
 
-export default async function KioskPage({
-  params,
-}: {
-  params: { slug: string };
+export default async function KioskPage(props: {
+  params: Promise<{ slug: string }>;
 }) {
-  const cookieStore = cookies();
+  const [cookieStore, params, syncService] = await Promise.all([
+    cookies(),
+    props.params,
+    getSyncService(),
+  ]);
   const hasPermissions = [Privilege.ADMIN, Privilege.KIOSK].includes(
     cookieStore.get("privilege")?.value as Privilege,
   );
@@ -17,7 +19,6 @@ export default async function KioskPage({
     throw new Error("No config doc specified");
   }
 
-  const syncService = await getSyncService();
   try {
     const events = await syncService
       .syncMaps()(process.env.NEXT_PUBLIC_EVENTS_MAP)

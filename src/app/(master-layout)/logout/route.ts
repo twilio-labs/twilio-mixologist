@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
 export async function GET() {
-  cookies().delete("privilege");
+  const cookieStore = await cookies();
+  cookieStore.delete("privilege");
   redirect(`/`);
 }

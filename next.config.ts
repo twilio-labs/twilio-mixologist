@@ -1,8 +1,7 @@
-/** @type {import('next').NextConfig} */
-module.exports = {
-  experimental: {
-    instrumentationHook: true,
-  },
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
+  experimental: {},
   env: {
     CONTENT_PREFIX: "mixologist_",
     NEXT_PUBLIC_CONFIG_DOC: "Config",
@@ -10,3 +9,5 @@ module.exports = {
     NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP: "ActiveCustomers",
   },
 };
+
+export default nextConfig;

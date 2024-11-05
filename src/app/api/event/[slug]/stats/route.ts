@@ -6,9 +6,9 @@ import { calcStatsForEvent } from "./helper";
 
 export async function GET(
   request: Request,
-  { params }: { params: { slug: string } },
+  props: { params: Promise<{ slug: string }> },
 ): Promise<Response> {
-  const headersList = headers();
+  const [params, headersList] = await Promise.all([props.params, headers()]);
   const role = getAuthenticatedRole(headersList.get("Authorization") || "");
 
   if (role !== Privilege.ADMIN) {

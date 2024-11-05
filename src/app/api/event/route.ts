@@ -8,7 +8,8 @@ import { Privilege, getAuthenticatedRole } from "@/middleware";
 import { revalidatePath } from "next/cache";
 
 export async function POST(request: Request) {
-  const headersList = headers();
+  const [headersList, json] = await Promise.all([headers(), request.json()]);
+  const { event } = json;
   const role = getAuthenticatedRole(headersList.get("Authorization") || "");
   const isAdmin = Privilege.ADMIN === role;
 
@@ -29,7 +30,6 @@ export async function POST(request: Request) {
       },
     );
   }
-  const event = await request.json();
 
   //Validation
   if (

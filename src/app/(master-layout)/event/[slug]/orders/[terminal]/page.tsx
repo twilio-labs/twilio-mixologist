@@ -1,11 +1,12 @@
 import { notFound } from "next/navigation";
 import OrdersInterface from "../ordersInterface";
 
-export default function TerminalPage({
-  params,
-}: {
-  params: { slug: string; terminal: string };
-}) {
+export default async function TerminalPage(
+  props: {
+    params: Promise<{ slug: string; terminal: string }>;
+  }
+) {
+  const params = await props.params;
   const { slug, terminal } = params;
 
   const terminalRegex = /^(\d+)-(\d+)$/;
@@ -26,7 +27,7 @@ export default function TerminalPage({
   return (
     <main className="p-4 md:p-6 lg:p-8 space-y-8">
       <OrdersInterface
-        slug={params.slug}
+        slug={slug}
         terminalId={terminalId}
         terminalCount={terminalCount}
       />

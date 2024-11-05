@@ -13,12 +13,12 @@ export const metadata: Metadata = {
   description: "Get a free beverage from the Twilio Mixologist",
 };
 
-export default function MainLayout({
+export default async function MainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const cookiesStore = cookies();
+  const cookiesStore = await cookies();
   const isAdmin =
     (cookiesStore.get("privilege")?.value as Privilege) === Privilege.ADMIN;
   return (

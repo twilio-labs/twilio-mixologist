@@ -4,7 +4,8 @@ import { pushToSyncList } from "@/lib/twilio";
 import { Privilege, getAuthenticatedRole } from "@/middleware";
 
 export async function POST(request: Request) {
-  const headersList = headers();
+  const [headersList, json] = await Promise.all([headers(), request.json()]);
+  const { data } = json;
   const role = getAuthenticatedRole(headersList.get("Authorization") || "");
 
   const isPrivileged = [
@@ -30,7 +31,7 @@ export async function POST(request: Request) {
       },
     );
   }
-  const data = await request.json();
+
   try {
     const newOrder = await pushToSyncList(data.event, data.order);
   } catch (e: any) {

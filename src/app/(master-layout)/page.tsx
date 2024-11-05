@@ -9,7 +9,8 @@ import { cookies } from "next/headers";
 import { getSyncService } from "@/lib/twilio";
 
 export default async function Home() {
-  const cookieStore = cookies();
+  const [cookieStore, syncService] = await Promise.all([cookies(), getSyncService()]);
+
   const isAdmin = [Privilege.ADMIN].includes(
     cookieStore.get("privilege")?.value as Privilege,
   );
@@ -18,7 +19,6 @@ export default async function Home() {
     throw new Error("No config doc specified");
   }
 
-  const syncService = await getSyncService();
   try {
     const events = await syncService
       .syncMaps()(process.env.NEXT_PUBLIC_EVENTS_MAP)

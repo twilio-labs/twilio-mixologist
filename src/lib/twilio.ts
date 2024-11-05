@@ -429,7 +429,7 @@ export async function createServiceInstances() {
 }
 
 export async function createToken() {
-  const headersList = headers();
+  const headersList = await headers();
   const role = getAuthenticatedRole(headersList.get("Authorization") || "");
   const syncGrant = new SyncGrant({
     serviceSid: TWILIO_SYNC_SERVICE_SID,
