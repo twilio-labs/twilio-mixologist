@@ -1,11 +1,9 @@
 import { notFound } from "next/navigation";
 import OrdersInterface from "../ordersInterface";
 
-export default async function TerminalPage(
-  props: {
-    params: Promise<{ slug: string; terminal: string }>;
-  }
-) {
+export default async function TerminalPage(props: {
+  params: Promise<{ slug: string; terminal: string }>;
+}) {
   const params = await props.params;
   const { slug, terminal } = params;
 

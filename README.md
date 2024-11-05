@@ -113,7 +113,6 @@ pnpm dev
 
 9. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-
 ## How To Use
 
 [Here's a diagram of what happens when the user sends a message to the application](resources/user-flow-diagram.png)
@@ -139,7 +138,6 @@ Here are a few helpful notes:
 - The Kiosk interface is a self-service interface that you can make available to attendees via a table or phone. The page allows the manual entry of an order without the need to put a phone number down. This form can be accessed via `https://<mixologist.server>/<event-slug>/kiosk` and the credentials are defined in the environment variable `KIOSK_LOGIN`.
 - Users can send the command "forget me" to remove all data stored about this user. It cancels pending orders, removes the user from the Sync data store and removes the Conversation resource. This can be used for debugging as well as to be GDPR-compliant.
 
-
 ### Segment Integration
 
 This project includes an optional integration with Segment's Profiles API. If you provide the `SEGMENT_SPACE_ID` and `SEGMENT_PROFILE_KEY` environment variables, the application will fetch user traits from Segment using the provided email address once the verification step is completed. The `SEGMENT_TRAIT_CHECK` environment variable allows you to specify a specific trait to check for in the user's profile.
@@ -155,8 +153,6 @@ To set up Segment integration:
 4. **Specify a Trait to Check** by setting the `SEGMENT_TRAIT_CHECK` environment variable to the desired trait key.
 
 For more details on Segment and how to use the Profiles API, refer to the [Segment documentation](https://segment.com/docs/).
-
-
 
 ## Code of Conduct
 

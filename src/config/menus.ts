@@ -99,7 +99,7 @@ export default {
       {
         shortTitle: "Iced Americano",
         title: "Iced Americano",
-        description: "Espresso shots with cold water and ice."
+        description: "Espresso shots with cold water and ice.",
       },
       {
         shortTitle: "Matcha",

@@ -240,7 +240,7 @@ export function getDataPolicy(mode: string) {
   return `We only use your phone number to notify you about our ${mode} service and redact all the messages & phone numbers afterward.`;
 }
 
-export function getPromptForEmail(){
+export function getPromptForEmail() {
   return "Thanks. Please enter your business email address. We will then use Twilio Verify and SendGrid to send you an one-time password.";
 }
 

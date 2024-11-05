@@ -9,7 +9,10 @@ import { cookies } from "next/headers";
 import { getSyncService } from "@/lib/twilio";
 
 export default async function Home() {
-  const [cookieStore, syncService] = await Promise.all([cookies(), getSyncService()]);
+  const [cookieStore, syncService] = await Promise.all([
+    cookies(),
+    getSyncService(),
+  ]);
 
   const isAdmin = [Privilege.ADMIN].includes(
     cookieStore.get("privilege")?.value as Privilege,
