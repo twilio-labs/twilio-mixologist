@@ -32,13 +32,13 @@ if (!eventName || eventName.startsWith("/") || eventName.includes("=")) {
     const mapItems = await map.syncMapItems.list({ limit: 1000 }); //TODO should fetch all here
     const attendees = mapItems
       .map((item) => item.data)
-      .filter(
-        (a) =>
-          (a.stage === Stages.VERIFIED_USER ||
-            a.stage === Stages.FIRST_ORDER ||
-            a.stage === Stages.REPEAT_CUSTOMER) &&
-          a.event === eventName,
-      );
+      // .filter(
+      //   (a) =>
+      //     (a.stage === Stages.VERIFIED_USER ||
+      //       a.stage === Stages.FIRST_ORDER ||
+      //       a.stage === Stages.REPEAT_CUSTOMER) &&
+      //     a.event === eventName,
+      // );
     const csv = attendees.map((attendee) => {
       return `${attendee.fullName},${attendee.email},${attendee.country},${attendee.foundInSegment},${attendee[SEGMENT_TRAIT_CHECK]},${attendee.event},${attendee.stage}`;
     });

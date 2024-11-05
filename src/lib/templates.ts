@@ -150,7 +150,7 @@ export function getNoMediaHandlerMessage() {
 }
 
 export function getForgotAttendeeMessage() {
-  return "Your data has been removed from our system. Please send another message to start over.";
+  return "Your data has been removed from our system and all pending orders were cancelled successfully. Please send another message to start over.";
 }
 
 export function getInvalidEmailMessage() {

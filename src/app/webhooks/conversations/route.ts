@@ -29,6 +29,7 @@ import {
 
 import { Order } from "@/config/menus";
 import * as templates from "@/lib/templates";
+import { cancelOrder, updateOrder } from "./coffee-helper";
 
 const TwoWeeksInSeconds = 2 * 7 * 24 * 60 * 60;
 const regexForEmail = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/;
@@ -481,17 +482,20 @@ export async function POST(request: Request) {
   const incomingMessage = incomingMessageBody.toLowerCase();
 
   if (incomingMessage.includes("forget me")) {
-    // remove the user from the active customers map
-    await removeSyncMapItem(NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP, conversationSid);
+    await Promise.all([
+      // cancel order
+      cancelOrder(event, lastOrder?.index, lastOrder?.data, conversationSid),
+      // remove the user from the active customers map
+      removeSyncMapItem(NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP, conversationSid),
+      addMessageToConversation(
+        conversationSid,
+        templates.getForgotAttendeeMessage(),
+      ),
+    ]);
 
-    addMessageToConversation(
-      conversationSid,
-      templates.getForgotAttendeeMessage(),
-    );
-
-    sleep(1500);
+    sleep(500);
     //remove conversation from the conversations service
-    deleteConversation(conversationSid);
+    await deleteConversation(conversationSid);
 
     return new Response("Forgot attendee", { status: 200 });
   } else if (incomingMessage.includes("help")) {
@@ -567,29 +571,13 @@ export async function POST(request: Request) {
       return new Response(null, { status: 201 });
     }
   } else if (incomingMessage.includes("cancel")) {
-    if (lastOrder?.data?.status === "queued") {
-      try {
-        updateOrder(event.slug, lastOrder.index, lastOrder.data, {
-          status: "cancelled",
-        });
+    await cancelOrder(
+      event,
+      lastOrder?.index,
+      lastOrder?.data,
+      conversationSid,
+    );
 
-        await updateSyncMapItem(NEXT_PUBLIC_EVENTS_MAP, event.slug, {
-          cancelledCount: Number(event.cancelledCount) + 1,
-        });
-
-        const message = templates.getCancelOrderMessage(
-          lastOrder.data.item.shortTitle,
-          lastOrder.index,
-        );
-        addMessageToConversation(conversationSid, message);
-      } catch (error) {
-        const message = templates.getOopsMessage(error);
-        addMessageToConversation(conversationSid, message);
-      }
-    } else {
-      const message = templates.getNoOpenOrderMessage();
-      addMessageToConversation(conversationSid, message);
-    }
     return new Response("", { status: 200 });
   } else {
     if (lastOrder?.data.status === "queued") {
@@ -718,17 +706,6 @@ async function getQueuePosition(event: string, orderNumber: number) {
     (item) => item.index === orderNumber,
   );
   return queuePosition >= 0 ? queuePosition : NaN;
-}
-
-async function updateOrder(
-  event: string,
-  index: number,
-  oldData: Order,
-  newData: any,
-) {
-  const updated = { ...oldData, ...newData };
-  const item = await updateSyncListItem(event, index, { ...updated });
-  return item;
 }
 
 function redact(address: string) {
