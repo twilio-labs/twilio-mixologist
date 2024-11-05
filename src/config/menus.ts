@@ -67,6 +67,11 @@ export default {
         description: "Milk marked with espresso",
       },
       {
+        shortTitle: "Iced Latte",
+        title: "Iced Latte",
+        description: "Espresso with cold milk and ice",
+      },
+      {
         shortTitle: "Caffè Latte",
         title: "Caffè Latte",
         description: "Espresso with steamed milk",
@@ -90,6 +95,11 @@ export default {
         shortTitle: "Americano",
         title: "Americano",
         description: "Espresso with hot water",
+      },
+      {
+        shortTitle: "Iced Americano",
+        title: "Iced Americano",
+        description: "Espresso shots with cold water and ice."
       },
       {
         shortTitle: "Matcha",
