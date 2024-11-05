@@ -18,14 +18,14 @@ export default function MenuItem({
         <IconComponent
           width="3rem"
           height="3rem"
-          style={{fill: "black"}}
+          style={{ fill: "black" }}
           className="m-2 mr-6"
         />
       ) : (
         <XIcon
           width="3rem"
           height="3rem"
-          style={{fill: "black"}}
+          style={{ fill: "black" }}
           className="m-2 mr-6"
         />
       )}

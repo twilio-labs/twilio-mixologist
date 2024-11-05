@@ -17,7 +17,7 @@ export default function MenuItem({
         <IconComponent
           width="8rem"
           height="8rem"
-          style={{fill: "white"}}
+          style={{ fill: "white" }}
           className="m-2 mx-auto"
         />
       ) : (
@@ -25,7 +25,7 @@ export default function MenuItem({
           width="3rem"
           height="3rem"
           fill="text-black"
-          style={{fill: "white"}}
+          style={{ fill: "white" }}
           className="m-2 mx-auto"
         />
       )}

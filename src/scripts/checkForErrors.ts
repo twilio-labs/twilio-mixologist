@@ -68,6 +68,10 @@ const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
     messagesPage = await messagesPage.nextPage();
   }
 
-  console.log("Go to https://console.twilio.com/us1/monitor/logs/sms to see more details about a given message");
-  console.log("Also check https://console.twilio.com/us1/monitor/logs/debugger/errors for other errors");
+  console.log(
+    "Go to https://console.twilio.com/us1/monitor/logs/sms to see more details about a given message",
+  );
+  console.log(
+    "Also check https://console.twilio.com/us1/monitor/logs/debugger/errors for other errors",
+  );
 })();

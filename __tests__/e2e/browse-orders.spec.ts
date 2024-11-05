@@ -145,8 +145,8 @@ test.describe("[mixologist]", () => {
     await page.getByPlaceholder("Type your message here...").fill("Hello test");
 
     await page
-    .getByRole("button", { name: "Send Message", exact: true })
-    .isEnabled();
+      .getByRole("button", { name: "Send Message", exact: true })
+      .isEnabled();
   });
 
   test("Custom Order usable", async ({ page, context }) => {

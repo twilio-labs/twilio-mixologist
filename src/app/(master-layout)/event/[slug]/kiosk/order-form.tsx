@@ -21,7 +21,7 @@ export default function OrderForm({
   eventSlug,
   orderCreated,
   askForSender,
-  showToast
+  showToast,
 }: {
   selection: Selection;
   eventSlug: string;
@@ -84,11 +84,12 @@ export default function OrderForm({
               modifiers: [],
               note: "",
             });
-            showToast && toast({
-              title: "Order Created",
-              // @ts-ignore
-              description: `Your order for a ${order.item.title} has been created`,
-            });
+            showToast &&
+              toast({
+                title: "Order Created",
+                // @ts-ignore
+                description: `Your order for a ${order.item.title} has been created`,
+              });
           }
         });
       }}

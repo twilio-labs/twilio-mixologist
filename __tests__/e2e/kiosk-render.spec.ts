@@ -1,8 +1,6 @@
 import { test, expect, type Locator } from "@playwright/test";
 import { Privilege } from "@/middleware";
 
-
-
 test.describe("[no login]", () => {
   test("Should not see the page", async ({ page }) => {
     await page.goto("/event/test-event/kiosk");
@@ -32,7 +30,7 @@ test.describe("[kiosk]", () => {
     await page
       .getByPlaceholder("Without regular milk or similar...")
       .fill("Test Notes");
-      await page
+    await page
       .getByRole("button", { name: "Create Order", exact: true })
       .isEnabled();
   });

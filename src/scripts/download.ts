@@ -41,7 +41,10 @@ if (!eventName || eventName.startsWith("/") || eventName.includes("=")) {
     const csv = attendees.map((attendee) => {
       return `${attendee.email},${attendee.event},${attendee.stage}`;
     });
-    writeFileSync(`attendees-${eventName}.csv`, `Email,Event,Stage\n${csv.join("\n")}`);
+    writeFileSync(
+      `attendees-${eventName}.csv`,
+      `Email,Event,Stage\n${csv.join("\n")}`,
+    );
   } catch (e) {
     console.error(e);
   }
