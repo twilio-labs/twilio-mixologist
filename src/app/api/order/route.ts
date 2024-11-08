@@ -4,10 +4,14 @@ import { pushToSyncList } from "@/lib/twilio";
 import { Privilege, getAuthenticatedRole } from "@/middleware";
 
 export async function POST(request: Request) {
-  const headersList = headers();
+  const [headersList, data] = await Promise.all([headers(), request.json()]);
   const role = getAuthenticatedRole(headersList.get("Authorization") || "");
 
-  const isPrivileged = [Privilege.ADMIN, Privilege.MIXOLOGIST].includes(role);
+  const isPrivileged = [
+    Privilege.ADMIN,
+    Privilege.MIXOLOGIST,
+    Privilege.KIOSK,
+  ].includes(role);
 
   if (!process.env.NEXT_PUBLIC_EVENTS_MAP) {
     console.error("No config doc specified");
@@ -26,9 +30,9 @@ export async function POST(request: Request) {
       },
     );
   }
-  const data = await request.json();
+
   try {
-    const newOrder = await pushToSyncList(data.event, data.order);
+    await pushToSyncList(data.event, data.order);
   } catch (e: any) {
     console.error(e);
     return new Response(e.message, { status: 500, statusText: e.message });

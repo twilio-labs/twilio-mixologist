@@ -3,6 +3,7 @@ import { NextResponse, NextRequest } from "next/server";
 export enum Privilege {
   ADMIN = "admin",
   MIXOLOGIST = "mixologist",
+  KIOSK = "kiosk",
   UNKNOWN = "unknown",
 }
 
@@ -10,6 +11,7 @@ const [ADMIN_USER, ADMIN_PASS] = (process.env.ADMIN_LOGIN || ":").split(":");
 const [MIXOLOGIST_USER, MIXOLOGIST_PASS] = (
   process.env.MIXOLOGIST_LOGIN || ":"
 ).split(":");
+const [KIOSK_USER, KIOSK_PASS] = (process.env.KIOSK_LOGIN || ":").split(":");
 
 export function middleware(req: NextRequest) {
   const response = NextResponse.next();
@@ -40,6 +42,8 @@ export function getAuthenticatedRole(authheader: string | null) {
     return Privilege.ADMIN;
   } else if (user === MIXOLOGIST_USER && pass === MIXOLOGIST_PASS) {
     return Privilege.MIXOLOGIST;
+  } else if (user === KIOSK_USER && pass === KIOSK_PASS) {
+    return Privilege.KIOSK;
   } else {
     return Privilege.UNKNOWN;
   }

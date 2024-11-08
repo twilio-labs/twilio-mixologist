@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { getOrderItemFromMessage } from "@/lib/utils";
-import { Event } from "@/app/event/[slug]/page";
+import { Event } from "@/app/(master-layout)/event/[slug]/page";
 
 const mockedEvent: Event = {
   name: "test event",
@@ -44,9 +44,9 @@ const mockedEvent: Event = {
         description: "Two shots of espresso marked with milk",
       },
       {
-        shortTitle: "Latte Macchiato",
-        title: "Latte Macchiato",
-        description: "Milk marked with espresso",
+        shortTitle: "Caffè Latte",
+        title: "Caffè Latte",
+        description: "Espresso with steamed milk",
       },
     ],
     modifiers: ["Milk", "Soy Milk", "Almond Milk", "Oat Milk", "Coconut Milk"],

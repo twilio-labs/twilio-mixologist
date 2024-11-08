@@ -42,6 +42,7 @@ jobs:
           TWILIO_CONVERSATIONS_SERVICE_SID: ${{ vars.TWILIO_CONVERSATIONS_SERVICE_SID }}
           MIXOLOGIST_LOGIN: ${{ vars.MIXOLOGIST_LOGIN }}
           ADMIN_LOGIN: ${{ vars.ADMIN_LOGIN }}
+          KIOSK_LOGIN: ${{ vars.KIOSK_LOGIN }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:

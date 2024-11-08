@@ -2,7 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import spellingMap from "@/config/spellingMap";
 import { MenuItem } from "@/config/menus";
-import { Event } from "@/app/event/[slug]/page";
+import { Event } from "@/app/(master-layout)/event/[slug]/page";
 import { ICountry, countries } from "countries-list";
 import { PhoneNumberUtil } from "google-libphonenumber";
 
@@ -37,6 +37,7 @@ export enum EventState {
 
 export enum Stages {
   NEW_USER = "NEW_USER",
+  NAME_CONFIRMED = "NAME_CONFIRMED",
   VERIFYING = "VERIFYING",
   VERIFIED_USER = "VERIFIED_USER",
   FIRST_ORDER = "FIRST_ORDER",
@@ -62,11 +63,7 @@ export async function getOrderItemFromMessage(event: Event, message: string) {
     (a, b) => b.shortTitle.length - a.shortTitle.length,
   );
   for (const item in sortedItems) {
-    if (
-      spellcheckedBody.includes(
-        sortedItems[item].shortTitle.toLowerCase(),
-      )
-    ) {
+    if (spellcheckedBody.includes(sortedItems[item].shortTitle.toLowerCase())) {
       orderItem = sortedItems[item];
       break;
     }

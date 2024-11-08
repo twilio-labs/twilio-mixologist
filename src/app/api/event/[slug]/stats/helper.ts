@@ -2,7 +2,7 @@
 
 import { fetchSyncListItems, findSyncMapItems } from "@/lib/twilio";
 import { Stages } from "@/lib/utils";
-import { Event } from "@/app/event/[slug]/page";
+import { Event } from "@/app/(master-layout)/event/[slug]/page";
 import { modes } from "@/config/menus";
 import { headers } from "next/headers";
 import { getAuthenticatedRole, Privilege } from "@/middleware";
@@ -89,6 +89,16 @@ export async function calcStatsForEvent(
   }, {});
   let previousSum = 0;
   const summedUpStages = Object.keys(Stages)
+    // skip if lead collection is disabled and stage is one of the following: VERIFING, VERIFIED_USER
+    .filter(
+      (stage: any) =>
+        event.enableLeadCollection ||
+        ![
+          Stages.VERIFYING,
+          Stages.VERIFIED_USER,
+          Stages.NAME_CONFIRMED,
+        ].includes(stage),
+    )
     .reverse()
     .map((stage) => {
       let sum = (attendeeStages[stage] || 0) + previousSum;

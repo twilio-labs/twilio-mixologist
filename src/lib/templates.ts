@@ -1,5 +1,5 @@
 const axios = require("axios");
-import { Event } from "@/app/event/[slug]/page";
+import { Event } from "@/app/(master-layout)/event/[slug]/page";
 import { modes } from "@/config/menus";
 
 const { SERVICE_INSTANCE_PREFIX = "" } = process.env;
@@ -114,6 +114,12 @@ export async function getHelpMessage(event: Event) {
   };
 }
 
+export function getModifiersMessage(modifiers: string[]) {
+  return `You can add the following add-ons to your order:\n${modifiers
+    .map((m) => `- ${m}`)
+    .join("\n")}`;
+}
+
 export function getExistingOrderMessage(product: string, orderNumber: number) {
   return `We're still making you a ${product}.\n\nIf you'd like to change or modify your order reply with 'Change order to {your new choice}'. \n\nCheck order #${orderNumber} with our staff if you think there's something wrong`;
 }
@@ -139,8 +145,20 @@ export function getOopsMessage(error: any) {
   return `Oops, something went wrong! Talk to someone from Twilio and see if they can help you.`;
 }
 
+export function getNoMediaHandlerMessage() {
+  return "Sorry, we don't support media messages. Please send a text message to order a drink on us.";
+}
+
+export function getForgotAttendeeMessage() {
+  return "Your data has been removed from our system and all pending orders were cancelled successfully. Please send another message to start over.";
+}
+
 export function getInvalidEmailMessage() {
   return "Invalid email address. Please reply with a valid business email address.";
+}
+
+export function getErrorDuringEmailVerificationMessage(error: string) {
+  return `An error occurred during email verification: ${error}`;
 }
 
 export function getSentEmailMessage() {
@@ -160,7 +178,7 @@ export function getWelcomeMessage(
     customWelcomeMessage ||
     `Welcome at the Twilio Booth! Are you ready for a ${modeToBeverage(mode)} on us? 🎉`;
   const leadCollectionSuffix = willCollectedLeads
-    ? "\nReply with your business email address to get started. We will then send you an email to verify your address."
+    ? "\nReply with your full name to get started."
     : "";
   return `${welcomeMessage}\n${leadCollectionSuffix}`;
 }
@@ -181,47 +199,18 @@ export async function getReadyToOrderMessage(
   event: Event,
   availableOptions: any[],
   maxNumberOrders: number,
+  emailValidationSuffix: boolean,
 ) {
   const templates = await getTemplates();
-  const { mode } = event.selection;
-  const variables = [
-    maxNumberOrders,
-    modeToBeverage(mode, true),
-    ...availableOptions
-      .map((o) => [o.title, o.shortTitle, o.description])
-      .flat(),
-  ];
-  const contentVariables: any = {};
-  variables.forEach((value, key) => {
-    contentVariables[key] = value;
-  });
-
-
-  const limitess = maxNumberOrders >= 50 ? "_limitless" : "";
-
-  const templateName = `${SERVICE_INSTANCE_PREFIX.toLowerCase()}_ready_to_order${limitess}_${availableOptions.length}`;
-  const template = templates.find((t) => t.friendly_name === templateName);
-
-  if (!template) {
-    throw new Error(`Template ${templateName} not found`);
+  const { mode, items, modifiers } = event.selection;
+  const maxOrders = `${maxNumberOrders} ${modeToBeverage(mode, true)}`;
+  let sampleOrder = items[1].title;
+  if (modifiers.length > 0) {
+    sampleOrder += ` with ${modifiers[modifiers.length - 1]}`;
   }
-
-  return {
-    contentSid: template.sid,
-    contentVariables: JSON.stringify(contentVariables),
-  };
-}
-
-export async function getReadyToOrderWithoutEmailValidationMessage(
-  event: Event,
-  availableOptions: any[],
-  maxNumberOrders: number,
-) {
-  const templates = await getTemplates();
-  const { mode } = event.selection;
   const variables = [
-    maxNumberOrders,
-    modeToBeverage(mode, true),
+    maxOrders,
+    sampleOrder,
     ...availableOptions
       .map((o) => [o.title, o.shortTitle, o.description])
       .flat(),
@@ -232,8 +221,9 @@ export async function getReadyToOrderWithoutEmailValidationMessage(
   });
 
   const limitess = maxNumberOrders >= 50 ? "_limitless" : "";
+  const emailSuffix = emailValidationSuffix ? "_without_email" : "";
 
-  const templateName = `${SERVICE_INSTANCE_PREFIX.toLowerCase()}_ready_to_order${limitess}_without_email_${availableOptions.length}`;
+  const templateName = `${SERVICE_INSTANCE_PREFIX.toLowerCase()}_ready_to_order${limitess}${emailSuffix}_${availableOptions.length}`;
   const template = templates.find((t) => t.friendly_name === templateName);
 
   if (!template) {
@@ -248,6 +238,10 @@ export async function getReadyToOrderWithoutEmailValidationMessage(
 
 export function getDataPolicy(mode: string) {
   return `We only use your phone number to notify you about our ${mode} service and redact all the messages & phone numbers afterward.`;
+}
+
+export function getPromptForEmail() {
+  return "Thanks. Please enter your business email address. We will then use Twilio Verify and SendGrid to send you an one-time password.";
 }
 
 export function getMaxOrdersMessage() {

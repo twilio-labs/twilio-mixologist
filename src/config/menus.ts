@@ -61,10 +61,15 @@ export default {
         title: "Double Macchiato",
         description: "Two shots of espresso marked with milk",
       },
+      // { disable and prefer Caffè Latte to avoid confusion
+      //   shortTitle: "Latte Macchiato",
+      //   title: "Latte Macchiato",
+      //   description: "Milk marked with espresso",
+      // },
       {
-        shortTitle: "Latte Macchiato",
-        title: "Latte Macchiato",
-        description: "Milk marked with espresso",
+        shortTitle: "Iced Latte",
+        title: "Iced Latte",
+        description: "Espresso with cold milk and ice",
       },
       {
         shortTitle: "Caffè Latte",
@@ -90,6 +95,11 @@ export default {
         shortTitle: "Americano",
         title: "Americano",
         description: "Espresso with hot water",
+      },
+      {
+        shortTitle: "Iced Americano",
+        title: "Iced Americano",
+        description: "Espresso shots with cold water and ice.",
       },
       {
         shortTitle: "Matcha",
@@ -140,6 +150,11 @@ export default {
       "Oat Milk",
       "Coconut Milk",
       "Rice Milk",
+      "Vanilla Syrup",
+      "Chocolate Caramel Syrup",
+      "Hazelnut Syrup",
+      "Brown Sugar Stick",
+      "White Sugar Stick",
     ],
   },
   smoothie: {

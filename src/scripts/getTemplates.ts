@@ -23,9 +23,7 @@ export function getHelpPrivacyTemplate(
     });
   }
 
-  const body = `Welcome to the Twilio booth! Message the {{0}} you would like and we'll start preparing it. The available options are:\n${indiciesOfFullTitles.join(
-    "\n",
-  )}`;
+  const body = `Welcome to the Twilio booth! Message the {{0}} you would like and we'll start preparing it. ${getAvailableOptions(indiciesOfFullTitles)}`;
 
   return {
     friendly_name: templateName,
@@ -69,9 +67,7 @@ export function getWrongOrderTemplate(
     });
   }
 
-  const body = `Seems like your order of "{{0}}" is not something we can serve. Possible orders are:\n${indiciesOfFullTitles.join(
-    "\n",
-  )}\nWrite "I need help" to get an overview of other commands.`;
+  const body = `Seems like your order of "{{0}}" is not something we can serve. ${getAvailableOptions(indiciesOfFullTitles)}\nWrite "I need help" to get an overview of other commands.`;
 
   return {
     friendly_name: templateName,
@@ -89,6 +85,15 @@ export function getWrongOrderTemplate(
     },
   };
 }
+
+const CONFIRMATION_VERIFIED_EMAIL = `Thank you! Your email address has been verified.`;
+function getAvailableOptions(indiciesOfFullTitles: string[]) {
+  return `What would you like? The options are:\n${indiciesOfFullTitles.join(
+    "\n",
+  )}`;
+}
+const SAMPLE_ORDER = `Or send a message containing your order, e.g. "{{1}}".`;
+const ORDER_LIMITATION_NOTE = `\n\nPS: Every attendee can get up to {{0}}.`;
 export function getReadyToOrderTemplate(
   numOptions: number,
   templateName: string,
@@ -114,9 +119,7 @@ export function getReadyToOrderTemplate(
     });
   }
 
-  const body = `Thank you! Your email address has been verified. What would you like? The options are:\n${indiciesOfFullTitles.join(
-    "\n",
-  )}\nPS: Every attendee can get up to {{0}} {{1}}.`;
+  const body = `${CONFIRMATION_VERIFIED_EMAIL} ${getAvailableOptions(indiciesOfFullTitles)}\n${SAMPLE_ORDER}${ORDER_LIMITATION_NOTE}`;
 
   return {
     friendly_name: templateName,
@@ -161,9 +164,7 @@ export function getReadyToOrderLimitlessTemplate(
     });
   }
 
-  const body = `Thank you! Your email address has been verified. What would you like? The options are:\n${indiciesOfFullTitles.join(
-    "\n",
-  )}\n`;
+  const body = `${CONFIRMATION_VERIFIED_EMAIL} ${getAvailableOptions(indiciesOfFullTitles)}\n${SAMPLE_ORDER}`;
 
   return {
     friendly_name: templateName,
@@ -207,10 +208,7 @@ export function getReadyToOrderWithoutEmailValidationTemplate(
     });
   }
 
-  const body = `What would you like? The options are:\n${indiciesOfFullTitles.join(
-    "\n",
-  )}\nPS: Every attendee can get up to {{0}} {{1}}.`;
-
+  const body = `${getAvailableOptions(indiciesOfFullTitles)}\n${SAMPLE_ORDER}${ORDER_LIMITATION_NOTE}`;
   return {
     friendly_name: templateName,
     language: "en",
@@ -254,9 +252,7 @@ export function getReadyToOrderLimitlessWithoutEmailValidationTemplate(
     });
   }
 
-  const body = `What would you like? The options are:\n${indiciesOfFullTitles.join(
-    "\n",
-  )}\n`;
+  const body = `${getAvailableOptions(indiciesOfFullTitles)}\n${SAMPLE_ORDER}`;
 
   return {
     friendly_name: templateName,
@@ -297,9 +293,7 @@ export function getEventRegistrationTemplate(
     });
   }
 
-  const body = `Which event are you currently at? Please reply with the name of your event below. The options are:\n${indiciesOfFullTitles.join(
-    "\n",
-  )}\n`;
+  const body = `Which event are you currently at? Please reply with the name of your event below. ${getAvailableOptions(indiciesOfFullTitles)}`;
 
   return {
     friendly_name: templateName,

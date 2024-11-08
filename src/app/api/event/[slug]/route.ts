@@ -9,7 +9,7 @@ import { Privilege, getAuthenticatedRole } from "@/middleware";
 const NEXT_PUBLIC_EVENTS_MAP = process.env.NEXT_PUBLIC_EVENTS_MAP || "";
 
 export async function DELETE(request: Request) {
-  const headersList = headers();
+  const headersList = await headers();
   const role = getAuthenticatedRole(headersList.get("Authorization") || "");
   const isAdmin = Privilege.ADMIN === role;
 
@@ -56,16 +56,19 @@ export async function DELETE(request: Request) {
 
 export async function PUT(
   request: Request,
-  { params }: { params: { slug: string } },
+  props: { params: Promise<{ slug: string }> },
 ) {
-  const headersList = headers();
+  const [headersList, params, unfilteredData] = await Promise.all([
+    headers(),
+    props.params,
+    request.json(),
+  ]);
   const role = getAuthenticatedRole(headersList.get("Authorization") || "");
 
   if (role !== Privilege.MIXOLOGIST && role !== Privilege.ADMIN) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const unfilteredData = await request.json();
   const filteredData = Object.keys(unfilteredData)
     .filter((key) =>
       ["state", "cancelledCount", "deliveredCount"].includes(key),

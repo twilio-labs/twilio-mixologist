@@ -1,12 +1,15 @@
 "use server";
 
-
-
 export async function register() {
   if (process.env.NEXT_RUNTIME === "nodejs") {
-    const { getVerifyService,getMessagingService,getSyncService,getConversationService} = await import("@/lib/twilio");
-    const { updateConfig } = await import("@/scripts/updateConfig")
-    const { createTwilioRes }= await import("@/scripts/createTwilioRes")
+    const {
+      getVerifyService,
+      getMessagingService,
+      getSyncService,
+      getConversationService,
+    } = await import("@/lib/twilio");
+    const { updateConfig } = await import("@/scripts/updateConfig");
+    const { createTwilioRes } = await import("@/scripts/createTwilioRes");
 
     await checkIfAllEnvVarsAreSet();
 
@@ -21,8 +24,6 @@ export async function register() {
     } catch (e: any) {
       throw new Error(e.message);
     }
-
-
   }
 }
 

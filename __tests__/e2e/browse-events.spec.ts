@@ -115,7 +115,7 @@ test.describe("[admin]", () => {
     await expect(page.getByText("Barista")).toBeVisible();
 
     await expect(
-      page.getByRole("heading", { name: "Latte Macchiato", exact: true }),
+      page.getByRole("heading", { name: "Caffè Latte", exact: true }),
     ).toBeVisible();
     await expect(
       page.locator(".space-y-2 > div:nth-child(2) > .peer").first(),
@@ -142,7 +142,7 @@ test.describe("[admin]", () => {
 
     await page.goto("http://localhost:3000/event/test-event");
 
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(2000);
 
     // select the first 10 items
     for (let i = 1; i <= 10; i++) {
@@ -247,9 +247,6 @@ test.describe("[admin]", () => {
     await expect(page.getByText("Barista")).toBeVisible();
     await expect(
       page.getByRole("heading", { name: "Colombia (Red like Twilio!)" }),
-    ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "Short title: Colombia" }),
     ).toBeVisible();
     await expect(page.getByText("Strawberry, Pineapple, Apple")).toBeVisible();
 

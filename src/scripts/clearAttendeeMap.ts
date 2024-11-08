@@ -18,7 +18,7 @@ const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
   const mapItems = await client.sync.v1
     .services(TWILIO_SYNC_SERVICE_SID)
     .syncMaps("ActiveCustomers")
-    .syncMapItems.list({ limit: 1000 });
+    .syncMapItems.list({ limit: 1000 }); // TODO go over all users here, not just 1000, use pagination
 
   mapItems.map((item) => {
     throttle(async () => {

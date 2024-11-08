@@ -42,4 +42,5 @@ package-lock.json
 /playwright/.cache/
 
 
-attendees.csv
+
+attendees-*.csv

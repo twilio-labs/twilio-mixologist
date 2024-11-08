@@ -14,10 +14,13 @@ import {
   getEventRegistrationTemplate,
   WhatsAppTemplate,
 } from "./getTemplates";
-import { env } from "../../next.config";
+import nextConfig from "../../next.config";
 
-// @ts-ignore, defined in next.config.js
-const { CONTENT_PREFIX } = env;
+// this script runs mostly sequentially. Use a throttled queue later to optimize if needed
+
+const CONTENT_PREFIX = nextConfig?.env?.CONTENT_PREFIX;
+console.log(`Parsed content prefix is ${CONTENT_PREFIX}`);
+
 const { OVERRIDE_TEMPLATES } = process.env;
 
 (async () => {
@@ -26,6 +29,10 @@ const { OVERRIDE_TEMPLATES } = process.env;
 })();
 
 async function createWhatsAppTemplates() {
+  if (!CONTENT_PREFIX) {
+    throw new Error("CONTENT_PREFIX is not set in the environment variables");
+  }
+
   let templateName: string, template: WhatsAppTemplate;
   const MAX_ITEMS_ON_MENU = 10; // given by the WhatsApp API
   const MAX_CONCURRENT_EVENTS = 5; // given by the WhatsApp API
@@ -34,7 +41,13 @@ async function createWhatsAppTemplates() {
   );
 
   if (OVERRIDE_TEMPLATES) {
-    await Promise.all(templates.map((t) => deleteWhatsAppTemplate(t.sid)));
+    try {
+      for await (const t of templates) {
+        await deleteWhatsAppTemplate(t.sid); // Sequentially delete all templates to avoid rate limiting
+      }
+    } catch (e: any) {
+      console.error("Error deleting WhatsApp Templates ", e.message);
+    }
     console.log(`Deleted ${templates.length} templates.`);
     templates = (await getAllWhatsAppTemplates()).filter((t) =>
       t.friendly_name.startsWith(CONTENT_PREFIX),
@@ -145,8 +158,8 @@ async function createWhatsAppTemplates() {
         console.log(`Created Template "${templateName}" ${template.sid}`);
       }
     }
-  } catch (e) {
-    console.error(e);
+  } catch (e: any) {
+    console.error("Error creating WhatsApp Templates ", e.message);
   }
 }
 export async function createTwilioRes() {

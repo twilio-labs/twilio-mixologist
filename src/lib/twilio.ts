@@ -23,6 +23,8 @@ const {
   TWILIO_MESSAGING_SERVICE_SID = "",
   SERVICE_INSTANCE_PREFIX = "",
   PUBLIC_BASE_URL = "",
+  SEGMENT_SPACE_ID = "",
+  SEGMENT_PROFILE_KEY = "",
 } = process.env;
 
 const OneWeekInSeconds = 7 * 24 * 60 * 60;
@@ -222,6 +224,19 @@ export async function updateSyncMapItem(
   return updatedData;
 }
 
+export async function removeSyncMapItem(
+  syncMapUniqueName: string,
+  syncMapItemKey: string,
+) {
+  const syncService = await getSyncService();
+  const syncMap = await syncService.syncMaps()(syncMapUniqueName);
+  try {
+    return syncMap.syncMapItems(syncMapItemKey).remove();
+  } catch (err: any) {
+    throw new Error("Remove a syncMap record failed", { cause: err });
+  }
+}
+
 export async function findSyncMapItems(
   syncMapUniqueName: string,
   filters: any = {},
@@ -306,6 +321,16 @@ export async function getConversationService() {
     TWILIO_CONVERSATIONS_SERVICE_SID,
   );
   return conversationsClient.fetch();
+}
+
+export async function deleteConversation(conversationSid: string) {
+  if (!TWILIO_CONVERSATIONS_SERVICE_SID) {
+    throw new Error("Missing sid for for conversations service");
+  }
+  const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
+    accountSid: TWILIO_ACCOUNT_SID,
+  });
+  return client.conversations.v1.conversations(conversationSid).remove();
 }
 
 export async function getPossibleSenders() {
@@ -404,7 +429,7 @@ export async function createServiceInstances() {
 }
 
 export async function createToken() {
-  const headersList = headers();
+  const headersList = await headers();
   const role = getAuthenticatedRole(headersList.get("Authorization") || "");
   const syncGrant = new SyncGrant({
     serviceSid: TWILIO_SYNC_SERVICE_SID,
@@ -551,5 +576,29 @@ export async function addMessageToConversation(
   } catch (err) {
     console.log(err);
     return;
+  }
+}
+
+export async function fetchSegmentTraits(
+  email: string,
+  specificTrait?: string,
+) {
+  let url = `https://profiles.segment.com/v1/spaces/${SEGMENT_SPACE_ID}/collections/users/profiles/email:${email}/traits`;
+  if (specificTrait) {
+    url += `?include=${specificTrait}`;
+  }
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Basic ${btoa(SEGMENT_PROFILE_KEY + ":")}`,
+      },
+    });
+    return response.data.traits;
+  } catch (e: any) {
+    if (e.response?.status === 404) {
+      return null;
+    } else {
+      throw e;
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { env } from "../../next.config";
+import nextConfig from "../../next.config";
 
 import {
   getPossibleSenders,
@@ -21,14 +21,10 @@ interface PossibleSender {
   sender: string;
 }
 
-const {
-  // @ts-ignore, defined in next.config.js
-  NEXT_PUBLIC_CONFIG_DOC,
-  // @ts-ignore, defined in next.config.js
-  NEXT_PUBLIC_EVENTS_MAP,
-  // @ts-ignore, defined in next.config.js
-  NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP,
-} = env;
+const NEXT_PUBLIC_CONFIG_DOC = nextConfig?.env?.NEXT_PUBLIC_CONFIG_DOC;
+const NEXT_PUBLIC_EVENTS_MAP = nextConfig?.env?.NEXT_PUBLIC_EVENTS_MAP;
+const NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP =
+  nextConfig?.env?.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP;
 
 export function mergeConfig(
   newConfig: Configuration,
@@ -58,6 +54,14 @@ export function mergeConfig(
 }
 
 export async function updateConfig() {
+  if (
+    !NEXT_PUBLIC_EVENTS_MAP ||
+    !NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP ||
+    !NEXT_PUBLIC_CONFIG_DOC
+  ) {
+    throw new Error("Missing environment variables");
+  }
+
   const possibleSenders = await getPossibleSenders();
 
   await createSyncMapIfNotExists(NEXT_PUBLIC_EVENTS_MAP);
@@ -77,7 +81,7 @@ export async function updateConfig() {
   );
   await configDoc.update({ data: newConfig });
 }
-  
+
 (async () => {
-    updateConfig()
+  updateConfig();
 })();

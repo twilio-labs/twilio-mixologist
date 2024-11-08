@@ -5,10 +5,10 @@ import { redirect } from "next/navigation";
 
 import { LogOutIcon, UserIcon } from "lucide-react";
 
-export default function SessionButton(
+export default async function SessionButton(
   props: React.HTMLAttributes<HTMLDivElement>,
 ) {
-  const cookiesStore = cookies();
+  const cookiesStore = await cookies();
   const loggedIn = [Privilege.ADMIN, Privilege.MIXOLOGIST].includes(
     cookiesStore.get("privilege")?.value as Privilege,
   );
@@ -25,7 +25,9 @@ export default function SessionButton(
         <form
           action={async function clearPrivilegeCookies() {
             "use server";
-            cookies().delete("privilege");
+
+            const cs = await cookies();
+            cs.delete("privilege");
             redirect("/");
           }}
         >
