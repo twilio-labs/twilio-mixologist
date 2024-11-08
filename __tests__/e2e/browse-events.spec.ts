@@ -115,7 +115,7 @@ test.describe("[admin]", () => {
     await expect(page.getByText("Barista")).toBeVisible();
 
     await expect(
-      page.getByRole("heading", { name: "Latte Macchiato", exact: true }),
+      page.getByRole("heading", { name: "Caffè Latte", exact: true }),
     ).toBeVisible();
     await expect(
       page.locator(".space-y-2 > div:nth-child(2) > .peer").first(),

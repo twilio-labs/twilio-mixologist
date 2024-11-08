@@ -44,9 +44,9 @@ const mockedEvent: Event = {
         description: "Two shots of espresso marked with milk",
       },
       {
-        shortTitle: "Latte Macchiato",
-        title: "Latte Macchiato",
-        description: "Milk marked with espresso",
+        shortTitle: "Caffè Latte",
+        title: "Caffè Latte",
+        description: "Espresso with steamed milk",
       },
     ],
     modifiers: ["Milk", "Soy Milk", "Almond Milk", "Oat Milk", "Coconut Milk"],
