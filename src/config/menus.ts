@@ -61,11 +61,11 @@ export default {
         title: "Double Macchiato",
         description: "Two shots of espresso marked with milk",
       },
-      {
-        shortTitle: "Latte Macchiato",
-        title: "Latte Macchiato",
-        description: "Milk marked with espresso",
-      },
+      // { disable and prefer Caffè Latte to avoid confusion
+      //   shortTitle: "Latte Macchiato",
+      //   title: "Latte Macchiato",
+      //   description: "Milk marked with espresso",
+      // },
       {
         shortTitle: "Iced Latte",
         title: "Iced Latte",
