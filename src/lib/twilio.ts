@@ -107,6 +107,13 @@ export async function getVerifyService() {
   return verifyClient;
 }
 
+export async function getLookupService() {
+  const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
+    accountSid: TWILIO_ACCOUNT_SID,
+  });
+  return client.lookups.v2;
+}
+
 export async function createVerification(to: string) {
   const verifyService = await getVerifyService();
   const verification = await verifyService.verifications.create({
@@ -321,6 +328,39 @@ export async function getConversationService() {
     TWILIO_CONVERSATIONS_SERVICE_SID,
   );
   return conversationsClient.fetch();
+}
+
+export async function getConversationsOfSender(phone: string) {
+  if (!TWILIO_CONVERSATIONS_SERVICE_SID) {
+    throw new Error("Missing sid for for conversations service");
+  }
+  const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
+    accountSid: TWILIO_ACCOUNT_SID,
+  });
+  return client.conversations.v1.participantConversations.list({
+    address: phone,
+    limit: 20,
+  });
+}
+
+export async function createConversationWithParticipant(sender: string) {
+  if (!TWILIO_CONVERSATIONS_SERVICE_SID) {
+    throw new Error("Missing sid for for conversations service");
+  }
+  const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
+    accountSid: TWILIO_ACCOUNT_SID,
+  });
+  const usingWhatsApp = sender.startsWith("whatsapp:");
+  const identity = `Mixologist Kiosk Customer ${new Date().toISOString()}`;
+  const conversation =
+    await client.conversations.v1.conversationWithParticipants.create({
+      friendlyName: identity,
+      participant: [
+        `{"messaging_binding": {"address": "${sender}", "proxy_address": "${usingWhatsApp ? "whatsapp:" : ""}+4915735986800"}}`,
+        `{"identity": "${identity}"}`,
+      ],
+    });
+  return conversation;
 }
 
 export async function deleteConversation(conversationSid: string) {

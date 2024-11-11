@@ -82,3 +82,13 @@ export async function getOrderItemFromMessage(event: Event, message: string) {
 
   return { orderItem, orderModifier: orderModifier.join(", ") };
 }
+
+export async function redact(address: string) {
+  let redacted =
+    address.substring(0, 4) + "****" + address.substring(address.length - 3);
+  return redacted;
+}
+
+export const TwoWeeksInSeconds = 2 * 7 * 24 * 60 * 60;
+export const regexForEmail = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/;
+export const regexFor6ConsecutiveDigits = /\d{6}/;

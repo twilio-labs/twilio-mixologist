@@ -4,8 +4,12 @@ import { modes } from "@/config/menus";
 
 const { SERVICE_INSTANCE_PREFIX = "" } = process.env;
 
-function capitalizeFirstLetter(string: string) {
-  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+function buildContentVariables(variables: any[]) {
+  const contentVariables: any = {};
+  variables.forEach((value, key) => {
+    contentVariables[key] = value;
+  });
+  return JSON.stringify(contentVariables);
 }
 
 function modeToBeverage(mode: modes, plural: boolean = false) {
@@ -40,17 +44,6 @@ export async function getWrongOrderMessage(
 ) {
   const templates = await getTemplates();
 
-  const variables = [
-    originalMessage,
-    ...availableOptions
-      .map((o) => [o.title, o.shortTitle, o.description])
-      .flat(),
-  ];
-  const contentVariables: any = {};
-  variables.forEach((value, key) => {
-    contentVariables[key] = value;
-  });
-
   const templateName = `${SERVICE_INSTANCE_PREFIX.toLowerCase()}_wrong_order_${availableOptions.length}`;
   const template = templates.find((t) => t.friendly_name === templateName);
   if (!template) {
@@ -58,17 +51,34 @@ export async function getWrongOrderMessage(
   }
   return {
     contentSid: template.sid,
-    contentVariables: JSON.stringify(contentVariables),
+    contentVariables: buildContentVariables([
+      originalMessage,
+      ...availableOptions
+        .map((o) => [o.title, o.shortTitle, o.description])
+        .flat(),
+    ]),
   };
 }
 
-export function getOrderCreatedMessage(
+export async function getOrderCreatedMessage(
   product: string,
   orderNumber: number,
-  event: Event,
+  mode: string,
 ) {
-  const { mode } = event.selection;
-  return `Thanks for ordering a *${product}* from the Twilio-powered ${capitalizeFirstLetter(mode)} Bar.\n\nYour order number is *#${orderNumber}*.\n\nWe'll text you back when the order is ready -- or send "queue" to determine your current position.\nSend  "change order to <new order>" to change your existing order or "cancel order" to cancel it.`;
+  const templates = await getTemplates();
+
+  const templateName =
+    mode === modes.barista
+      ? `${SERVICE_INSTANCE_PREFIX.toLowerCase()}_order_confirmation_barista`
+      : `${SERVICE_INSTANCE_PREFIX.toLowerCase()}_order_confirmation_smoothie`;
+  const template = templates.find((t) => t.friendly_name === templateName);
+  if (!template) {
+    throw new Error(`Template ${templateName} not found`);
+  }
+  return {
+    contentSid: template.sid,
+    contentVariables: buildContentVariables([product, orderNumber]),
+  };
 }
 
 export function getOrderCancelledMessage(product: string, orderNumber: string) {
@@ -95,22 +105,17 @@ export async function getHelpMessage(event: Event) {
   const templates = await getTemplates();
 
   const { mode, items: availableOptions } = event.selection;
-  const variables = [
-    modeToBeverage(mode, true),
-    ...availableOptions
-      .map((o) => [o.title, o.shortTitle, o.description])
-      .flat(),
-  ];
-  const contentVariables: any = {};
-  variables.forEach((value, key) => {
-    contentVariables[key] = value;
-  });
 
   const templateName = `${SERVICE_INSTANCE_PREFIX.toLowerCase()}_help_privacy_${availableOptions.length}`;
   const template = templates.find((t) => t.friendly_name === templateName);
   return {
     contentSid: template.sid,
-    contentVariables: JSON.stringify(contentVariables),
+    contentVariables: buildContentVariables([
+      modeToBeverage(mode, true),
+      ...availableOptions
+        .map((o) => [o.title, o.shortTitle, o.description])
+        .flat(),
+    ]),
   };
 }
 
@@ -208,17 +213,6 @@ export async function getReadyToOrderMessage(
   if (modifiers.length > 0) {
     sampleOrder += ` with ${modifiers[modifiers.length - 1]}`;
   }
-  const variables = [
-    maxOrders,
-    sampleOrder,
-    ...availableOptions
-      .map((o) => [o.title, o.shortTitle, o.description])
-      .flat(),
-  ];
-  const contentVariables: any = {};
-  variables.forEach((value, key) => {
-    contentVariables[key] = value;
-  });
 
   const limitess = maxNumberOrders >= 50 ? "_limitless" : "";
   const emailSuffix = emailValidationSuffix ? "_without_email" : "";
@@ -232,7 +226,13 @@ export async function getReadyToOrderMessage(
 
   return {
     contentSid: template.sid,
-    contentVariables: JSON.stringify(contentVariables),
+    contentVariables: buildContentVariables([
+      maxOrders,
+      sampleOrder,
+      ...availableOptions
+        .map((o) => [o.title, o.shortTitle, o.description])
+        .flat(),
+    ]),
   };
 }
 
@@ -250,21 +250,15 @@ export function getMaxOrdersMessage() {
 
 export async function getEventRegistrationMessage(eventOptions: any[]) {
   const templates = await getTemplates();
-  const variables = [
-    ...eventOptions.map((o) => [o.data.name, o.data.name]).flat(),
-  ];
-
-  const contentVariables: any = {};
-  variables.forEach((value, key) => {
-    contentVariables[key] = value;
-  });
 
   const templateName = `${SERVICE_INSTANCE_PREFIX.toLowerCase()}_event_registration_${eventOptions.length}`;
   const template = templates.find((t) => t.friendly_name === templateName);
 
   return {
     contentSid: template.sid,
-    contentVariables: JSON.stringify(contentVariables),
+    contentVariables: buildContentVariables([
+      ...eventOptions.map((o) => [o.data.name, o.data.name]).flat(),
+    ]),
   };
 }
 

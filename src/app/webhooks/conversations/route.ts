@@ -25,15 +25,15 @@ import {
   getOrderItemFromMessage,
   EventState,
   sleep,
+  TwoWeeksInSeconds,
+  regexForEmail,
+  regexFor6ConsecutiveDigits,
+  redact,
 } from "@/lib/utils";
 
 import { Order } from "@/config/menus";
 import * as templates from "@/lib/templates";
 import { cancelOrder, updateOrder } from "./coffee-helper";
-
-const TwoWeeksInSeconds = 2 * 7 * 24 * 60 * 60;
-const regexForEmail = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/;
-const regexFor6ConsecutiveDigits = /\d{6}/;
 
 const {
   SEGMENT_SPACE_ID = "",
@@ -61,7 +61,7 @@ export async function POST(request: Request) {
   }
 
   const author = data.get("Author") as string,
-    address = redact(author);
+    address = await redact(author);
 
   const { data: conversationRecord } = await createSyncMapItemIfNotExists(
     NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP,
@@ -612,12 +612,17 @@ export async function POST(request: Request) {
       const orderNumber = await addOrder(event.slug, order);
 
       const orderName = `${orderItem.shortTitle}${orderModifier.length > 1 ? ` with ${orderModifier}` : ""}`;
-      const message = templates.getOrderCreatedMessage(
+      const orderCreatedMessage = await templates.getOrderCreatedMessage(
         orderName,
         orderNumber,
-        event,
+        event.selection.mode,
       );
-      addMessageToConversation(conversationSid, message);
+      addMessageToConversation(
+        conversationSid,
+        undefined,
+        orderCreatedMessage.contentSid,
+        orderCreatedMessage.contentVariables,
+      );
 
       order.orderNumber = orderNumber;
       await updateSyncMapItem(
@@ -703,10 +708,4 @@ async function getQueuePosition(event: string, orderNumber: number) {
     (item) => item.index === orderNumber,
   );
   return queuePosition >= 0 ? queuePosition : NaN;
-}
-
-function redact(address: string) {
-  let redacted =
-    address.substring(0, 4) + "****" + address.substring(address.length - 3);
-  return redacted;
 }
