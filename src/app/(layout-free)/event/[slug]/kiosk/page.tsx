@@ -36,7 +36,6 @@ export default async function KioskPage(props: {
         {hasPermissions && (
           <OrderForm
             eventSlug={params.slug}
-            showToast={true}
             selection={event?.data.selection}
           />
         )}

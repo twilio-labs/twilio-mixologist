@@ -12,7 +12,7 @@ export default function MenuItem({
 }) {
   const IconComponent = iconMap[shortTitle];
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col cursor-pointer">
       {IconComponent ? (
         <IconComponent
           width="8rem"
@@ -31,7 +31,7 @@ export default function MenuItem({
       )}
       <div className="text-center">
         <h3 className="font-semibold">{title}</h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-sm mt-2 text-gray-800 ">
           {description}
         </p>
       </div>

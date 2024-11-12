@@ -11,18 +11,14 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import MenuItem from "@/app/(layout-free)/event/[slug]/menu/menu-item";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Switch } from "@/components/ui/switch";
+import { MessageCircleMoreIcon, MessageSquareIcon } from "lucide-react";
 
 export default function OrderForm({
   selection,
   eventSlug,
-  orderCreated,
-  showToast,
 }: {
   selection: Selection;
   eventSlug: string;
-  showToast: boolean;
-  orderCreated?: () => void;
 }) {
   const [pending, setPending] = useState(false);
 
@@ -52,7 +48,7 @@ export default function OrderForm({
 
   return (
     <div className="text-3xl flex flex-col space-y-12 w-full my-auto">
-      <div className={`grid grid-cols-3 gap-8  `}>
+      <div className={`grid grid-cols-3 gap-8 select-none`}>
         {selection?.items.map((item: MenuItemInterface, index: Number) => (
           <div
             key={`${item.title}-${index}`}
@@ -89,39 +85,42 @@ export default function OrderForm({
           />
         </>
       )}
-      {/* have a SMS vs WhatsApp switch button */}
-      <Label className="text-3xl" aria-required htmlFor="whatsapp">
-        Communication Channel
-      </Label>
-      <div className="flex items-center space-x-2 my-4 mt-20">
-        <label className="text-2xl" htmlFor="whatsapp">
-          Use SMS
-        </label>
-        <Switch
-          id="whatsapp"
-          required
-          className="mx-2"
-          onCheckedChange={(checked: boolean) =>
-            setOrder({ ...order, whatsapp: checked })
-          }
-        />
-        <label className="text-2xl" htmlFor="whatsapp">
-          Use WhatsApp
-        </label>
-      </div>
-
       <Label className="text-3xl" aria-required htmlFor="phone">
         Phone number
       </Label>
-      <Input
-        id="phone"
-        className="text-3xl"
-        type="tel"
-        required
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setOrder({ ...order, phone: e.target.value })
-        }
-      />
+      <div className="flex items-center space-x-2 my-4 mt-20 align-sp">
+        <Input
+          id="phone"
+          className="text-3xl w-4/5"
+          type="tel"
+          required
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setOrder({ ...order, phone: e.target.value })
+          }
+        />
+        <span
+          className="text-2xl whitespace-nowrap mx-8 cursor-pointer"
+          onClick={() => {
+            setOrder({ ...order, whatsapp: !order.whatsapp });
+          }}
+        >
+          {order.whatsapp ? "Via WhatsApp" : "Via SMS"}
+        </span>
+
+        <button
+          title="Use WhatsApp"
+          className={`rounded-lg p-1 bg-green-500 hover:bg-green-300`}
+          onClick={() => {
+            setOrder({ ...order, whatsapp: !order.whatsapp });
+          }}
+        >
+          {order.whatsapp ? (
+            <MessageCircleMoreIcon className={`h-12 w-12 text-white`} />
+          ) : (
+            <MessageSquareIcon className={`h-12 w-12 text-white`} />
+          )}
+        </button>
+      </div>
 
       <div className="flex items-center space-x-2 my-4 mt-20">
         <Checkbox
@@ -165,7 +164,6 @@ export default function OrderForm({
           }).then((res) => {
             setPending(false);
             if (res.ok) {
-              orderCreated && orderCreated();
               setOrder({
                 item: {
                   title: "",
@@ -178,18 +176,18 @@ export default function OrderForm({
                 agreed: false,
                 whatsapp: false,
               });
-              showToast &&
-                toast({
-                  title: "Order Created",
-                  // @ts-ignore
-                  description: `Your order for a ${order.item.title} has been created. Check your phone for the confirmation.`,
-                });
+
+              toast({
+                title: "Order Created",
+                // @ts-ignore
+                description: `Your order for a ${order.item.title} has been created. Check your phone for the confirmation.`,
+              });
             }
           });
         }}
         type="submit"
         disabled={pending || incomplete}
-        className="w-full bg-slate-300 hover:bg-slate-400 "
+        className="text-3XL uppercase p-8 w-full bg-slate-300 hover:bg-slate-400 "
       >
         {pending ? "Creating..." : "Create Order"}
       </Button>
