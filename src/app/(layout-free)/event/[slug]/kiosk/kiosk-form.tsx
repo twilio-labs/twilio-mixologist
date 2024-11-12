@@ -39,7 +39,7 @@ export default function OrderForm({
     event: eventSlug,
     phone: "",
     modifiers: [],
-    whatsapp: false,
+    whatsapp: true,
     agreed: false,
   });
 
@@ -187,7 +187,7 @@ export default function OrderForm({
                 phone: "",
                 modifiers: [],
                 agreed: false,
-                whatsapp: false,
+                whatsapp: true,
               });
 
               toast({
