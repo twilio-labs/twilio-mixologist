@@ -311,6 +311,71 @@ export function getEventRegistrationTemplate(
   };
 }
 
+export function getOrderCancelledTemplate(
+  templateName: string,
+): WhatsAppTemplateConfig {
+  const body =
+    "Your {{0}} order (*#{{1}}*) has been cancelled. Please check with our staff if you think something is wrong.";
+
+  return {
+    friendly_name: templateName,
+    language: "en",
+    variables: {
+      "0": "order item",
+      "1": "order number",
+    },
+    types: {
+      "twilio/text": {
+        body,
+      },
+    },
+  };
+}
+
+export function getOrderReadyTemplate(
+  templateName: string,
+): WhatsAppTemplateConfig {
+  const body =
+    "*Your {{0}} is ready*. You can skip the queue and collect it at {{2}} right away. Ask for order number #{{1}}.";
+
+  return {
+    friendly_name: templateName,
+    language: "en",
+    variables: {
+      "0": "order item",
+      "1": "order number",
+      "2": "order pickup location",
+    },
+    types: {
+      "twilio/text": {
+        body,
+      },
+    },
+  };
+}
+
+export function getOrderReminderTemplate(
+  templateName: string,
+): WhatsAppTemplateConfig {
+  const body =
+    "Heya! Don't forget your {{0}}. You can skip the queue and collect it at {{2}}. Ask for order number #{{1}}.";
+
+  return {
+    friendly_name: templateName,
+    language: "en",
+    variables: {
+      "0": "order item",
+      "1": "order number",
+      "2": "order pickup location",
+    },
+    types: {
+      "twilio/text": {
+        body,
+      },
+    },
+  };
+}
+
 export function getOrderConfirmationTemplate(
   templateName: string,
   isBarista: boolean,

@@ -6,12 +6,9 @@ import { Privilege, getAuthenticatedRole } from "@/middleware";
 import { headers } from "next/headers";
 import axios from "axios";
 import AccessToken, { SyncGrant } from "twilio/lib/jwt/AccessToken";
-import {
-  WhatsAppTemplate,
-  WhatsAppTemplateConfig,
-} from "@/scripts/getTemplates";
 import { ServiceInstance } from "twilio/lib/rest/sync/v1/service";
 import throttledQueue from "throttled-queue";
+import { WhatsAppTemplate, WhatsAppTemplateConfig } from "@/scripts/buildContentTemplates";
 const throttle = throttledQueue(25, 1000);
 const {
   TWILIO_API_KEY = "",

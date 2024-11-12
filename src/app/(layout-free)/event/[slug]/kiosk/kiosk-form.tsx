@@ -207,7 +207,7 @@ export default function OrderForm({
         disabled={pending || incomplete}
         className="text-3XL uppercase p-8 w-full bg-slate-300 hover:bg-slate-400 "
       >
-        {pending ? "Creating..." : "Create Order"}
+        {pending ? "Ordering..." : "Create Order"}
       </Button>
     </div>
   );

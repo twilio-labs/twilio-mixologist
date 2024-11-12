@@ -10,7 +10,6 @@ import {
   updateOrCreateSyncMapItem,
 } from "@/lib/twilio";
 import { Privilege, getAuthenticatedRole } from "@/middleware";
-import { getOrderCreatedMessage } from "@/lib/templates";
 import {
   getCountryFromPhone,
   redact,
@@ -18,6 +17,7 @@ import {
   TwoWeeksInSeconds,
 } from "@/lib/utils";
 import { Order } from "@/config/menus";
+import { getOrderCreatedMessage } from "@/scripts/fetchContentTemplates";
 
 const NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP =
   process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP || "";

@@ -4,23 +4,12 @@ import {
   getAllWhatsAppTemplates,
   createWhatsAppTemplate,
 } from "@/lib/twilio";
-import {
-  getHelpPrivacyTemplate,
-  getWrongOrderTemplate,
-  getReadyToOrderTemplate,
-  getReadyToOrderWithoutEmailValidationTemplate,
-  getReadyToOrderLimitlessTemplate,
-  getReadyToOrderLimitlessWithoutEmailValidationTemplate,
-  getEventRegistrationTemplate,
-  WhatsAppTemplate,
-  getOrderConfirmationTemplate,
-} from "./getTemplates";
 import nextConfig from "../../next.config";
+import { getEventRegistrationTemplate, getHelpPrivacyTemplate, getOrderConfirmationTemplate, getReadyToOrderLimitlessTemplate, getReadyToOrderLimitlessWithoutEmailValidationTemplate, getReadyToOrderTemplate, getReadyToOrderWithoutEmailValidationTemplate, getWrongOrderTemplate, WhatsAppTemplate } from "./buildContentTemplates";
 
 // this script runs mostly sequentially. Use a throttled queue later to optimize if needed
 
 const CONTENT_PREFIX = nextConfig?.env?.CONTENT_PREFIX;
-console.log(`Parsed content prefix is ${CONTENT_PREFIX}`);
 
 let { OVERRIDE_TEMPLATES } = process.env;
 
@@ -144,11 +133,34 @@ async function createWhatsAppTemplates() {
       getOrderConfirmationTemplate(templateName, false),
       templates,
     );
-
     templateName = `${CONTENT_PREFIX}order_confirmation_smoothie`;
     checkIfExistsOrCreateTemplate(
       templateName,
       getOrderConfirmationTemplate(templateName, true),
+      templates,
+    );
+
+    // 8. Order cancelled templates
+    templateName = `${CONTENT_PREFIX}order_cancelled`;
+    checkIfExistsOrCreateTemplate(
+      templateName,
+      getOrderConfirmationTemplate(templateName, false),
+      templates,
+    );
+
+    // 9. Order ready templates
+    templateName = `${CONTENT_PREFIX}order_ready`;
+    checkIfExistsOrCreateTemplate(
+      templateName,
+      getOrderConfirmationTemplate(templateName, false),
+      templates,
+    );
+
+    // 10. Order reminder templates
+    templateName = `${CONTENT_PREFIX}order_reminder`;
+    checkIfExistsOrCreateTemplate(
+      templateName,
+      getOrderConfirmationTemplate(templateName, false),
       templates,
     );
   } catch (e: any) {

@@ -1,5 +1,5 @@
+import { getHelpPrivacyTemplate } from "@/scripts/buildContentTemplates";
 import { describe, expect, test } from "vitest";
-import { getHelpPrivacyTemplate } from "@/scripts/getTemplates";
 
 describe("getHelpPrivacyTemplate", () => {
   test("should return an object with the correct structure", () => {
