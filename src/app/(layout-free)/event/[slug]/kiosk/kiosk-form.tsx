@@ -195,6 +195,11 @@ export default function OrderForm({
                 // @ts-ignore
                 description: `Your order for a ${order.item.title} has been created. Check your phone for the confirmation.`,
               });
+            } else {
+              toast({
+                title: "Error",
+                description: res?.statusText + ". Please try again and let our staff know if the problem persists.",
+              });
             }
           });
         }}
