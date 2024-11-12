@@ -70,7 +70,7 @@ export default function OrderForm({
       {selection.modifiers.length > 0 && (
         <>
           <Label className="text-3xl" htmlFor="modifiers">
-            Would you like any extras?
+            Would you like milk with your order?
           </Label>
           <MultiSelect
             placeholder=""
@@ -95,6 +95,7 @@ export default function OrderForm({
           id="phone"
           className="text-3xl w-4/5"
           type="tel"
+          value={order.phone}
           required
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setOrder({ ...order, phone: e.target.value })
