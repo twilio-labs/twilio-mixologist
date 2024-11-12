@@ -107,20 +107,26 @@ export default function OrderForm({
             setOrder({ ...order, whatsapp: !order.whatsapp });
           }}
         >
-          {order.whatsapp ? "Via WhatsApp" : "Via SMS"}
+          {order.whatsapp ? "via WhatsApp" : "via SMS"}
         </span>
 
         <button
           title="Use WhatsApp"
-          className={`rounded-lg p-1 bg-green-500 hover:bg-green-300`}
+          className={`rounded-lg p-2 bg-green-500 hover:bg-green-300`}
           onClick={() => {
             setOrder({ ...order, whatsapp: !order.whatsapp });
           }}
         >
           {order.whatsapp ? (
-            <MessageCircleMoreIcon className={`h-12 w-12 text-white`} />
+            <img
+              src="/channel-icons/whatsapp.svg"
+              className={`h-10 w-10 text-white`}
+            />
           ) : (
-            <MessageSquareIcon className={`h-12 w-12 text-white`} />
+            <img
+              src="/channel-icons/sms.svg"
+              className={`h-10 w-10 text-white`}
+            />
           )}
         </button>
       </div>
@@ -134,7 +140,10 @@ export default function OrderForm({
             setOrder({ ...order, agreed: checked });
           }}
         />
-        <label htmlFor="privacy" className="font-medium  text-2xl leading-none ">
+        <label
+          htmlFor="privacy"
+          className="font-medium  text-2xl leading-none "
+        >
           I consent that Twilio can reach out to me with regard to my coffee
           order. All data will be deleted after the event.
         </label>
