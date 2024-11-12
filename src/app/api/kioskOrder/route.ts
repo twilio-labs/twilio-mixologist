@@ -5,6 +5,7 @@ import {
   createConversationWithParticipant,
   getConversationsOfSender,
   getLookupService,
+  getSyncService,
   pushToSyncList,
   updateOrCreateSyncMapItem,
 } from "@/lib/twilio";
@@ -50,16 +51,25 @@ export async function POST(request: Request) {
     const lookupService = await getLookupService();
     const phoneNumber = await lookupService.phoneNumbers(data.phone).fetch();
 
-    console.log(`phone number is valid: ${phoneNumber.valid}`); // TODO potentially check sms_pumping_risk here
+    // TODO potentially check sms_pumping_risk here
     if (!phoneNumber.valid) {
       return new Response("Phone number is invalid", {
         status: 400,
         statusText: "Phone number is invalid",
       });
     }
-    // await deleteConversation("CH3652bd9990b24adda9d9630ee290b935");
 
-    // 2. Create new conversation
+    // 2. Fetch event data
+    const syncService = await getSyncService();
+    const events = await syncService
+      .syncMaps()(process.env.NEXT_PUBLIC_EVENTS_MAP)
+      .fetch();
+    const items = await events.syncMapItems().list();
+    const event = items.find((item: any) => item.data.slug === data.event);
+
+    console.log(`event found: ${JSON.stringify(event)}`); // TODO potentially check if event is active here
+
+    // 3. Create new conversation
     const sender = data.whatsapp ? `whatsapp:${data.phone}` : data.phone;
     const participantConversations = await getConversationsOfSender(sender);
     const activeConversations = participantConversations.filter(
@@ -68,7 +78,11 @@ export async function POST(request: Request) {
     let conversationSid;
     if (activeConversations.length === 0) {
       // create a new conversation
-      const c = await createConversationWithParticipant(sender);
+      const senders = event?.data?.senders;
+      const phoneNumber = senders?.find(
+        (s: string) => !s.startsWith("whatsapp"),
+      ); // assuming here that this sender is also whatsapp-enabled
+      const c = await createConversationWithParticipant(sender, phoneNumber);
       conversationSid = c.sid;
     } else if (activeConversations.length === 1) {
       // add message to existing conversation
@@ -80,7 +94,7 @@ export async function POST(request: Request) {
       });
     }
 
-    // 3. Add attendee to sync list
+    // 4. Add attendee to sync list
     // incorrect but doesn't matter for this single-use event, should check if attendee is already in list
     const country = getCountryFromPhone(data.phone);
     await updateOrCreateSyncMapItem(
@@ -95,7 +109,7 @@ export async function POST(request: Request) {
       TwoWeeksInSeconds,
     );
 
-    // 4. Add order to sync list
+    // 5. Add order to sync list
     const order: Order = {
       key: conversationSid,
       address: await redact(sender),
@@ -106,11 +120,11 @@ export async function POST(request: Request) {
     };
     const receipt = await pushToSyncList(data.event, order);
 
-    // 5. Send order confirmation message
+    // 6. Send order confirmation message
     const message = await getOrderCreatedMessage(
       data.item.shortTitle,
       receipt.index,
-      "barista", // TODO look up event kind from slug
+      event?.data?.selection?.mode,
     );
 
     await addMessageToConversation(

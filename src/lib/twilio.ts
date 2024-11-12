@@ -343,7 +343,10 @@ export async function getConversationsOfSender(phone: string) {
   });
 }
 
-export async function createConversationWithParticipant(sender: string) {
+export async function createConversationWithParticipant(
+  sender: string,
+  twilioNumber: string,
+) {
   if (!TWILIO_CONVERSATIONS_SERVICE_SID) {
     throw new Error("Missing sid for for conversations service");
   }
@@ -356,7 +359,7 @@ export async function createConversationWithParticipant(sender: string) {
     await client.conversations.v1.conversationWithParticipants.create({
       friendlyName: identity,
       participant: [
-        `{"messaging_binding": {"address": "${sender}", "proxy_address": "${usingWhatsApp ? "whatsapp:" : ""}+4915735986800"}}`,
+        `{"messaging_binding": {"address": "${sender}", "proxy_address": "${usingWhatsApp ? "whatsapp:" : ""}${twilioNumber}"}}`,
         `{"identity": "${identity}"}`,
       ],
     });
