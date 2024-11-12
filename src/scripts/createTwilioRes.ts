@@ -5,7 +5,7 @@ import {
   createWhatsAppTemplate,
 } from "@/lib/twilio";
 import nextConfig from "../../next.config";
-import { getEventRegistrationTemplate, getHelpPrivacyTemplate, getOrderConfirmationTemplate, getReadyToOrderLimitlessTemplate, getReadyToOrderLimitlessWithoutEmailValidationTemplate, getReadyToOrderTemplate, getReadyToOrderWithoutEmailValidationTemplate, getWrongOrderTemplate, WhatsAppTemplate } from "./buildContentTemplates";
+import { getEventRegistrationTemplate, getHelpPrivacyTemplate, getOrderCancelledTemplate, getOrderConfirmationTemplate, getOrderReadyTemplate, getOrderReminderTemplate, getReadyToOrderLimitlessTemplate, getReadyToOrderLimitlessWithoutEmailValidationTemplate, getReadyToOrderTemplate, getReadyToOrderWithoutEmailValidationTemplate, getWrongOrderTemplate, WhatsAppTemplate } from "./buildContentTemplates";
 
 // this script runs mostly sequentially. Use a throttled queue later to optimize if needed
 
@@ -144,7 +144,7 @@ async function createWhatsAppTemplates() {
     templateName = `${CONTENT_PREFIX}order_cancelled`;
     checkIfExistsOrCreateTemplate(
       templateName,
-      getOrderConfirmationTemplate(templateName, false),
+      getOrderCancelledTemplate(templateName),
       templates,
     );
 
@@ -152,7 +152,7 @@ async function createWhatsAppTemplates() {
     templateName = `${CONTENT_PREFIX}order_ready`;
     checkIfExistsOrCreateTemplate(
       templateName,
-      getOrderConfirmationTemplate(templateName, false),
+      getOrderReadyTemplate(templateName),
       templates,
     );
 
@@ -160,7 +160,7 @@ async function createWhatsAppTemplates() {
     templateName = `${CONTENT_PREFIX}order_reminder`;
     checkIfExistsOrCreateTemplate(
       templateName,
-      getOrderConfirmationTemplate(templateName, false),
+      getOrderReminderTemplate(templateName),
       templates,
     );
   } catch (e: any) {
