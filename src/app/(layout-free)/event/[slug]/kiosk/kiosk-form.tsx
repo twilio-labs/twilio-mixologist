@@ -70,7 +70,7 @@ export default function OrderForm({
       {selection.modifiers.length > 0 && (
         <>
           <Label className="text-3xl" htmlFor="modifiers">
-            Would you like milk with your order?
+            Would you like any extras with your order?
           </Label>
           <MultiSelect
             placeholder=""
