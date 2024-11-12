@@ -94,6 +94,7 @@ export async function POST(request: Request) {
       const c = await createConversationWithParticipant(sender, phoneNumber);
       conversationSid = c.sid;
     } catch (e) {
+      console.error(e);
       return new Response("Failed to create conversation", {
         status: 500,
         statusText: "Failed to create conversation",

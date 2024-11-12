@@ -21,8 +21,9 @@ function buildContentVariables(variables: any[]) {
 }
 
 async function getTemplate(templateName: string) {
+  let match;
   try {
-    const { data } = await axios.get("https://content.twilio.com/v1/Content", {
+    const { data } = await axios.get("https://content.twilio.com/v1/Content?PageSize=250", { // TODO: Page through all templates
       headers: {
         "Content-Type": "application/json",
       },
@@ -32,16 +33,15 @@ async function getTemplate(templateName: string) {
       },
     });
 
-    const match = data.contents.find(
-      (t: any) => t.friendly_name === templateName,
-    );
-    if (!match) {
-      throw new Error(`Template ${templateName} not found`);
-    }
-    return match;
+    match = data.contents.find((t: any) => t.friendly_name === templateName);
   } catch (err) {
+    console.error(err);
     throw new Error("Failed to fetch Templates");
   }
+  if (!match) {
+    throw new Error(`Template ${templateName} not found`);
+  }
+  return match;
 }
 
 export async function getWrongOrderMessage(
