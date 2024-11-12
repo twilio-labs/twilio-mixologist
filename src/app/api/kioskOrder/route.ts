@@ -99,14 +99,9 @@ export async function POST(request: Request) {
         statusText: "Failed to create conversation",
       });
     }
-  } else if (activeConversations.length === 1) {
+  } else {
     // add message to existing conversation
     conversationSid = activeConversations[0].conversationSid;
-  } else {
-    return new Response("Multiple active conversations found", {
-      status: 400,
-      statusText: "Multiple active conversations found",
-    });
   }
 
   // 4. Add attendee to sync list
