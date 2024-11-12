@@ -5,7 +5,20 @@ import {
   createWhatsAppTemplate,
 } from "@/lib/twilio";
 import nextConfig from "../../next.config";
-import { getEventRegistrationTemplate, getHelpPrivacyTemplate, getOrderCancelledTemplate, getOrderConfirmationTemplate, getOrderReadyTemplate, getOrderReminderTemplate, getReadyToOrderLimitlessTemplate, getReadyToOrderLimitlessWithoutEmailValidationTemplate, getReadyToOrderTemplate, getReadyToOrderWithoutEmailValidationTemplate, getWrongOrderTemplate, WhatsAppTemplate } from "./buildContentTemplates";
+import {
+  getEventRegistrationTemplate,
+  getHelpPrivacyTemplate,
+  getOrderCancelledTemplate,
+  getOrderConfirmationTemplate,
+  getOrderReadyTemplate,
+  getOrderReminderTemplate,
+  getReadyToOrderLimitlessTemplate,
+  getReadyToOrderLimitlessWithoutEmailValidationTemplate,
+  getReadyToOrderTemplate,
+  getReadyToOrderWithoutEmailValidationTemplate,
+  getWrongOrderTemplate,
+  WhatsAppTemplate,
+} from "./buildContentTemplates";
 
 // this script runs mostly sequentially. Use a throttled queue later to optimize if needed
 
@@ -46,12 +59,12 @@ async function createWhatsAppTemplates() {
   );
 
   if (Boolean(OVERRIDE_TEMPLATES)) {
-    try {
-      for await (const t of templates) {
+    for await (const t of templates) {
+      try {
         await deleteWhatsAppTemplate(t.sid); // Sequentially delete all templates to avoid rate limiting
+      } catch (e: any) {
+        console.error("Error deleting WhatsApp Templates ", e.message);
       }
-    } catch (e: any) {
-      console.error("Error deleting WhatsApp Templates ", e.message);
     }
     console.log(`Deleted ${templates.length} templates.`);
     templates = (await getAllWhatsAppTemplates()).filter((t) =>
