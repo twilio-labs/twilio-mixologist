@@ -47,15 +47,17 @@ export default function OrderForm({
     !order.item || !order.phone || !order.agreed || !order.item?.title;
 
   return (
-    <div className="text-3xl flex flex-col space-y-12 w-full my-auto">
-      <div className={`grid grid-cols-3 gap-8 select-none`}>
+    <div className="text-3xl flex flex-col space-y-8 w-full my-auto">
+      <div className={`grid grid-cols-3 gap-6 select-none`}>
         {selection?.items.map((item: MenuItemInterface, index: Number) => (
           <div
             key={`${item.title}-${index}`}
             onClick={() => {
               setOrder({ ...order, item: item });
             }}
-            className={`p-10 rounded-lg mb-2 ${item.title === order.item?.title ? "bg-gray-400" : "bg-gray-200"}   `}
+            className={`px-10 pb-8 rounded-lg mb-2 ${item.title === order.item?.title ? "bg-gray-400" : "bg-gray-200"}   `}
+            // {/* Use these parameters to adapt to a different screen size */}
+            // and also font size and space-y-8 above
           >
             <MenuItem
               title={item.title}
@@ -88,7 +90,7 @@ export default function OrderForm({
       <Label className="text-3xl" aria-required htmlFor="phone">
         Phone number
       </Label>
-      <div className="flex items-center space-x-2 my-4 mt-20 align-sp">
+      <div className="flex items-center space-x-2">
         <Input
           id="phone"
           className="text-3xl w-4/5"
@@ -99,7 +101,7 @@ export default function OrderForm({
           }
         />
         <span
-          className="text-2xl whitespace-nowrap mx-8 cursor-pointer"
+          className="text-2xl whitespace-nowrap cursor-pointer"
           onClick={() => {
             setOrder({ ...order, whatsapp: !order.whatsapp });
           }}
@@ -122,15 +124,16 @@ export default function OrderForm({
         </button>
       </div>
 
-      <div className="flex items-center space-x-2 my-4 mt-20">
+      <div className="flex items-center space-x-2 ">
         <Checkbox
           id="privacy"
           checked={order.agreed}
+          className="w-10 h-10 mr-5"
           onCheckedChange={(checked: boolean) => {
             setOrder({ ...order, agreed: checked });
           }}
         />
-        <label htmlFor="privacy" className="font-medium leading-none ">
+        <label htmlFor="privacy" className="font-medium  text-2xl leading-none ">
           I consent that Twilio can reach out to me with regard to my coffee
           order. All data will be deleted after the event.
         </label>
