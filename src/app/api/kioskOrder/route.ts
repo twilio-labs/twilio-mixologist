@@ -48,7 +48,7 @@ export async function POST(request: Request) {
 
   // 1. Validate user input
   const lookupService = await getLookupService();
-  const phoneNumber = await lookupService.phoneNumbers(data.phone).fetch();
+  const lookupResult = await lookupService.phoneNumbers(data.phone).fetch();
   if (!data.phone || !data?.item?.title || !data.event) {
     return new Response("Missing required fields", {
       status: 400,
@@ -57,7 +57,7 @@ export async function POST(request: Request) {
   }
 
   // TODO potentially check sms_pumping_risk here
-  if (!phoneNumber.valid) {
+  if (!lookupResult.valid) {
     return new Response("Phone number is invalid", {
       status: 400,
       statusText: "Phone number is invalid",
@@ -80,7 +80,7 @@ export async function POST(request: Request) {
   }
 
   // 3. Create new conversation
-  const sender = data.whatsapp ? `whatsapp:${data.phone}` : data.phone;
+  const sender = data.whatsapp ? `whatsapp:${lookupResult.phoneNumber}` : lookupResult.phoneNumber;
   const participantConversations = await getConversationsOfSender(sender);
   const activeConversations = participantConversations.filter(
     (conv) => conv.conversationState === "active",
@@ -108,7 +108,7 @@ export async function POST(request: Request) {
   // 4. Add attendee to sync list
   // incorrect but doesn't matter for this single-use event, should check if attendee is already in list
   try {
-    const country = getCountryFromPhone(data.phone);
+    const country = getCountryFromPhone(lookupResult.phoneNumber);
     await updateOrCreateSyncMapItem(
       NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP,
       conversationSid,
