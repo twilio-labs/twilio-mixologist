@@ -316,6 +316,8 @@ export function getOrderCancelledTemplate(
 ): WhatsAppTemplateConfig {
   const body =
     "Your {{0}} order (*#{{1}}*) has been cancelled. Please check with our staff if you think something is wrong.";
+  // if you change the text, consider adding a flag that indicates that the template needs to be approved
+  // and this reuqest could happen automatically after the template is created
 
   return {
     friendly_name: templateName,
@@ -337,6 +339,8 @@ export function getOrderReadyTemplate(
 ): WhatsAppTemplateConfig {
   const body =
     "*Your {{0}} is ready*. You can skip the queue and collect it at {{2}} right away. Ask for order number #{{1}}.";
+  // if you change the text, consider adding a flag that indicates that the template needs to be approved
+  // and this reuqest could happen automatically after the template is created
 
   return {
     friendly_name: templateName,
@@ -359,6 +363,8 @@ export function getOrderReminderTemplate(
 ): WhatsAppTemplateConfig {
   const body =
     "Heya! Don't forget your {{0}}. You can skip the queue and collect it at {{2}}. Ask for order number #{{1}}.";
+  // if you change the text, consider adding a flag that indicates that the template needs to be approved
+  // and this reuqest could happen automatically after the template is created
 
   return {
     friendly_name: templateName,
@@ -383,6 +389,8 @@ export function getOrderConfirmationTemplate(
   const header_text = "Your {{0}} order is confirmed!";
   const body =
     '*Your order number is #{{1}}*\n\nWe\'ll text you back when the order is ready -- or send "queue" to determine your current position\n\nSend  "change order to <new order>" to change your existing order or "cancel order" to cancel it.';
+  // if you change the text, consider adding a flag that indicates that the template needs to be approved
+  // and this reuqest could happen automatically after the template is created
 
   const footer = isBarista
     ? "Thanks for ordering from the Twilio-powered Barista Bar!"
