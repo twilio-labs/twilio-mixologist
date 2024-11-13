@@ -1,7 +1,7 @@
 import { Privilege } from "@/middleware";
 import { cookies } from "next/headers";
-import OrderForm from "./kiosk-form";
 import { getSyncService } from "@/lib/twilio";
+import OrderForm from "@/app/(master-layout)/event/[slug]/orders/order-form";
 
 export default async function KioskPage(props: {
   params: Promise<{ slug: string }>;
@@ -29,12 +29,13 @@ export default async function KioskPage(props: {
 
     return (
       <div className="p-4 space-y-8 flex-1">
-        <p className="text-6xl font-bold">Welcome to SIGNAL London!</p>
         <p className="text-4xl">
-          Order your coffee here and pick it up at the barista station.
+          Order your beverage here and pick it up at the Twilio booth.
         </p>
         {hasPermissions && (
           <OrderForm
+            askForSender={true}
+            showToast={true}
             eventSlug={params.slug}
             selection={event?.data.selection}
           />

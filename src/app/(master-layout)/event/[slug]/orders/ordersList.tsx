@@ -247,7 +247,6 @@ export default function OrdersList({
                               data.item.shortTitle,
                               index,
                             );
-                            debugger;
                             addMessageToConversation(
                               data.key,
                               "",
