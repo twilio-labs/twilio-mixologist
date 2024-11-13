@@ -48,7 +48,9 @@ export async function POST(request: Request) {
 
   // 1. Validate user input
   const lookupService = await getLookupService();
-  const lookupResult = await lookupService.phoneNumbers(data.phone).fetch();
+  const lookupResult = await lookupService
+    .phoneNumbers(data.phone)
+    .fetch({ fields: "sms_pumping_risk" });
   if (!data.phone || !data?.item?.title || !data.event) {
     return new Response("Missing required fields", {
       status: 400,
@@ -56,12 +58,21 @@ export async function POST(request: Request) {
     });
   }
 
-  // TODO potentially check sms_pumping_risk here
   if (!lookupResult.valid) {
     return new Response("Phone number is invalid", {
       status: 400,
       statusText: "Phone number is invalid",
     });
+  }
+  if (lookupResult?.smsPumpingRisk?.sms_pumping_risk_score >= 60) {
+    return new Response(
+      "Phone number is at high risk of SMS pumping. Please try again later.",
+      {
+        status: 400,
+        statusText:
+          "Phone number is at high risk of SMS pumping. Please try again later.",
+      },
+    );
   }
 
   // 2. Fetch event data
@@ -80,7 +91,9 @@ export async function POST(request: Request) {
   }
 
   // 3. Create new conversation
-  const sender = data.whatsapp ? `whatsapp:${lookupResult.phoneNumber}` : lookupResult.phoneNumber;
+  const sender = data.whatsapp
+    ? `whatsapp:${lookupResult.phoneNumber}`
+    : lookupResult.phoneNumber;
   const participantConversations = await getConversationsOfSender(sender);
   const activeConversations = participantConversations.filter(
     (conv) => conv.conversationState === "active",
