@@ -26,7 +26,7 @@ async function MenuPage(props: { params: Promise<{ slug: string }> }) {
     }
 
     const itemsCount = internalEvent.selection.items.length;
-    const columns = itemsCount % 3 === 0 ? 3 : itemsCount % 4 === 0 ? 4 : 5;
+    const columns = 2;
 
     return (
       <>
