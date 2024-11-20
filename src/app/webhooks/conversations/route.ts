@@ -483,18 +483,13 @@ export async function POST(request: Request) {
     }
   }
 
-  if (event.state === EventState.CLOSED) {
-    const message = getPausedEventMessage();
-    addMessageToConversation(conversationSid, message);
-    return new Response("Event Orders Paused", { status: 200 });
-  }
+  const incomingMessage = incomingMessageBody.toLowerCase();
   if (conversationRecord?.lastOrderNumber >= 0) {
     lastOrder = await fetchOrder(
       event.slug,
       conversationRecord?.lastOrderNumber,
     );
   }
-  const incomingMessage = incomingMessageBody.toLowerCase();
 
   if (incomingMessage.includes("forget me")) {
     await Promise.all([
@@ -510,17 +505,6 @@ export async function POST(request: Request) {
     await deleteConversation(conversationSid);
 
     return new Response("Forgot attendee", { status: 200 });
-  } else if (incomingMessage.includes("help")) {
-    const { contentSid, contentVariables } = await getHelpMessage(event);
-    addMessageToConversation(conversationSid, "", contentSid, contentVariables);
-
-    if (event.selection.modifiers.length > 1) {
-      await sleep(1500);
-      const modifiersNote = getModifiersMessage(event.selection.modifiers);
-      addMessageToConversation(conversationSid, modifiersNote);
-    }
-
-    return new Response("", { status: 200 });
   } else if (incomingMessage.includes("queue")) {
     const queuePosition = await getQueuePosition(
       event.slug,
@@ -532,6 +516,25 @@ export async function POST(request: Request) {
         : getNoOpenOrderMessage();
     addMessageToConversation(conversationSid, message);
     return new Response(null, { status: 201 });
+  }
+
+  if (event.state === EventState.CLOSED) {
+    const message = getPausedEventMessage();
+    addMessageToConversation(conversationSid, message);
+    return new Response("Event Orders Paused", { status: 200 });
+  }
+
+  if (incomingMessage.includes("help")) {
+    const { contentSid, contentVariables } = await getHelpMessage(event);
+    addMessageToConversation(conversationSid, "", contentSid, contentVariables);
+
+    if (event.selection.modifiers.length > 1) {
+      await sleep(1500);
+      const modifiersNote = getModifiersMessage(event.selection.modifiers);
+      addMessageToConversation(conversationSid, modifiersNote);
+    }
+
+    return new Response("", { status: 200 });
   } else if (incomingMessage.includes("change")) {
     if (lastOrder?.data?.status === "queued") {
       const { orderItem, orderModifier } = await getOrderItemFromMessage(
