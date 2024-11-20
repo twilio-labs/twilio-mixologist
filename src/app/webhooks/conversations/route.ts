@@ -526,9 +526,10 @@ export async function POST(request: Request) {
       event.slug,
       conversationRecord.lastOrderNumber,
     );
-    const message = conversationRecord.lastOrderNumber
-      ? getQueuePositionMessage(queuePosition)
-      : getNoOpenOrderMessage();
+    const message =
+      conversationRecord.lastOrderNumber && !isNaN(queuePosition)
+        ? getQueuePositionMessage(queuePosition)
+        : getNoOpenOrderMessage();
     addMessageToConversation(conversationSid, message);
     return new Response(null, { status: 201 });
   } else if (incomingMessage.includes("change")) {
