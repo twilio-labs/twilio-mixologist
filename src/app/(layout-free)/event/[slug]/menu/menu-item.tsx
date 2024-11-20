@@ -31,7 +31,7 @@ export default function MenuItem({
       )}
       <div className="text-center">
         <h3 className="font-semibold">{title}</h3>
-        <p className="text-sm mt-2 text-gray-800 ">
+        <p className="text-sm mt-2">
           {description}
         </p>
       </div>
