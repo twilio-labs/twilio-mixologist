@@ -12,13 +12,12 @@ import { useToast } from "@/components/ui/use-toast";
 
 import { Event } from "@/app/(master-layout)/event/[slug]/page";
 
+import { Check, Trash2Icon, BellRing, UserCheck } from "lucide-react";
 import {
   getOrderCancelledMessage,
   getOrderReadyMessage,
   getOrderReadyReminderMessage,
-} from "@/lib/templates";
-
-import { Check, Trash2Icon, BellRing, UserCheck } from "lucide-react";
+} from "@/scripts/fetchContentTemplates";
 
 export default function OrdersList({
   ordersList,
@@ -131,18 +130,23 @@ export default function OrdersList({
                         Date.now() - dateUpdated < 3 * 60 * 1000 &&
                         data?.reminded
                       }
-                      onClick={(
+                      onClick={async (
                         ev: React.MouseEvent<HTMLButtonElement, MouseEvent> & {
                           target: HTMLButtonElement;
                         },
                       ) => {
                         ev.target.disabled = true;
-                        const message = getOrderReadyReminderMessage(
+                        const message = await getOrderReadyReminderMessage(
                           data.item.shortTitle,
                           index,
                           event.pickupLocation,
                         );
-                        addMessageToConversation(data.key, message);
+                        addMessageToConversation(
+                          data.key,
+                          "",
+                          message.contentSid,
+                          message.contentVariables,
+                        );
                         updateOrder(index, { reminded: true });
                         toast({
                           title: "Customer Reminded",
@@ -157,7 +161,7 @@ export default function OrdersList({
                     <Button
                       className=" hover:bg-green-300 flex items-center justify-center"
                       title="Order Made"
-                      onClick={(
+                      onClick={async (
                         ev: React.MouseEvent<HTMLButtonElement, MouseEvent> & {
                           target: HTMLButtonElement;
                         },
@@ -166,12 +170,17 @@ export default function OrdersList({
                         updateOrder(index, { status: "ready" });
 
                         if (!data?.manual) {
-                          const message = getOrderReadyMessage(
+                          const message = await getOrderReadyMessage(
                             data.item.shortTitle,
                             index,
                             event.pickupLocation,
                           );
-                          addMessageToConversation(data.key, message);
+                          addMessageToConversation(
+                            data.key,
+                            "",
+                            message.contentSid,
+                            message.contentVariables,
+                          );
                         }
 
                         toast({
@@ -234,11 +243,16 @@ export default function OrdersList({
                           });
 
                           if (!data?.manual) {
-                            const message = getOrderCancelledMessage(
+                            const message = await getOrderCancelledMessage(
                               data.item.shortTitle,
                               index,
                             );
-                            addMessageToConversation(data.key, message);
+                            addMessageToConversation(
+                              data.key,
+                              "",
+                              message.contentSid,
+                              message.contentVariables,
+                            );
                           }
                           toast({
                             title: "Order Cancelled",

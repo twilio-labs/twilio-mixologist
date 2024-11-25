@@ -38,7 +38,7 @@ export default function HeaderControls({
     getCookie("privilege") as Privilege,
   );
 
-  if(!isPriviledged) return null;
+  if (!isPriviledged) return null;
 
   return (
     <div>

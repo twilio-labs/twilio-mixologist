@@ -1,7 +1,7 @@
 import { Privilege } from "@/middleware";
 import { cookies } from "next/headers";
-import OrderForm from "./order-form";
 import { getSyncService } from "@/lib/twilio";
+import OrderForm from "@/app/(master-layout)/event/[slug]/orders/order-form";
 
 export default async function KioskPage(props: {
   params: Promise<{ slug: string }>;
@@ -28,18 +28,20 @@ export default async function KioskPage(props: {
     const event = items.find((item) => item.data.slug === params.slug);
 
     return (
-      <main className="p-4 md:p-6 lg:p-8 space-y-8 flex-1">
-        <h1 className="text-3xl font-bold">Kiosk</h1>
+      <div className="p-4 space-y-8 flex-1">
+        <p className="text-4xl">
+          Order your beverage here and pick it up at the Twilio booth.
+        </p>
         {hasPermissions && (
           <OrderForm
-            eventSlug={params.slug}
             askForSender={true}
             showToast={true}
+            eventSlug={params.slug}
             selection={event?.data.selection}
           />
         )}
-        {!hasPermissions && <p>Unauthorized</p>}
-      </main>
+        {!hasPermissions && <p className="text-4xl">Unauthorized</p>}
+      </div>
     );
   } catch (e: any) {
     console.error(e);

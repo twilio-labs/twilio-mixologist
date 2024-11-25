@@ -6,12 +6,9 @@ import { Privilege, getAuthenticatedRole } from "@/middleware";
 import { headers } from "next/headers";
 import axios from "axios";
 import AccessToken, { SyncGrant } from "twilio/lib/jwt/AccessToken";
-import {
-  WhatsAppTemplate,
-  WhatsAppTemplateConfig,
-} from "@/scripts/getTemplates";
 import { ServiceInstance } from "twilio/lib/rest/sync/v1/service";
 import throttledQueue from "throttled-queue";
+import { WhatsAppTemplate, WhatsAppTemplateConfig } from "@/scripts/buildContentTemplates";
 const throttle = throttledQueue(25, 1000);
 const {
   TWILIO_API_KEY = "",
@@ -105,6 +102,13 @@ export async function getVerifyService() {
   });
   const verifyClient = client.verify.v2.services(TWILIO_VERIFY_SERVICE_SID);
   return verifyClient;
+}
+
+export async function getLookupService() {
+  const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
+    accountSid: TWILIO_ACCOUNT_SID,
+  });
+  return client.lookups.v2;
 }
 
 export async function createVerification(to: string) {
@@ -321,6 +325,42 @@ export async function getConversationService() {
     TWILIO_CONVERSATIONS_SERVICE_SID,
   );
   return conversationsClient.fetch();
+}
+
+export async function getConversationsOfSender(phone: string) {
+  if (!TWILIO_CONVERSATIONS_SERVICE_SID) {
+    throw new Error("Missing sid for for conversations service");
+  }
+  const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
+    accountSid: TWILIO_ACCOUNT_SID,
+  });
+  return client.conversations.v1.participantConversations.list({
+    address: phone,
+    limit: 20,
+  });
+}
+
+export async function createConversationWithParticipant(
+  sender: string,
+  twilioNumber: string,
+) {
+  if (!TWILIO_CONVERSATIONS_SERVICE_SID) {
+    throw new Error("Missing sid for for conversations service");
+  }
+  const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
+    accountSid: TWILIO_ACCOUNT_SID,
+  });
+  const usingWhatsApp = sender.startsWith("whatsapp:");
+  const identity = `Mixologist Kiosk Customer ${new Date().toISOString()}`;
+  const conversation =
+    await client.conversations.v1.conversationWithParticipants.create({
+      friendlyName: identity,
+      participant: [
+        `{"messaging_binding": {"address": "${sender}", "proxy_address": "${usingWhatsApp ? "whatsapp:" : ""}${twilioNumber}"}}`,
+        `{"identity": "${identity}"}`,
+      ],
+    });
+  return conversation;
 }
 
 export async function deleteConversation(conversationSid: string) {

@@ -25,15 +25,42 @@ import {
   getOrderItemFromMessage,
   EventState,
   sleep,
+  TwoWeeksInSeconds,
+  regexForEmail,
+  regexFor6ConsecutiveDigits,
+  redact,
 } from "@/lib/utils";
 
 import { Order } from "@/config/menus";
-import * as templates from "@/lib/templates";
 import { cancelOrder, updateOrder } from "./coffee-helper";
-
-const TwoWeeksInSeconds = 2 * 7 * 24 * 60 * 60;
-const regexForEmail = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/;
-const regexFor6ConsecutiveDigits = /\d{6}/;
+import {
+  getEventRegistrationMessage,
+  getHelpMessage,
+  getOrderCreatedMessage,
+  getReadyToOrderMessage,
+  getWrongOrderMessage,
+} from "@/scripts/fetchContentTemplates";
+import {
+  getChangedOrderMessage,
+  getDataPolicy,
+  getErrorDuringEmailVerificationMessage,
+  getExistingOrderMessage,
+  getForgotAttendeeMessage,
+  getInvalidEmailMessage,
+  getInvalidVerificationCodeMessage,
+  getMaxOrdersMessage,
+  getModifiersMessage,
+  getNoActiveEventsMessage,
+  getNoMediaHandlerMessage,
+  getNoOpenOrderMessage,
+  getOopsMessage,
+  getPausedEventMessage,
+  getPromptForEmail,
+  getQueuePositionMessage,
+  getSentEmailMessage,
+  getWelcomeBackMessage,
+  getWelcomeMessage,
+} from "@/lib/stringTemplates";
 
 const {
   SEGMENT_SPACE_ID = "",
@@ -55,13 +82,13 @@ export async function POST(request: Request) {
     return new Response("Wrong event type", { status: 200 });
   }
   if (!incomingMessageBody && data.get("Media")) {
-    const noMediaMessage = templates.getNoMediaHandlerMessage();
+    const noMediaMessage = getNoMediaHandlerMessage();
     addMessageToConversation(conversationSid, noMediaMessage);
     return new Response("Send no media note", { status: 200 });
   }
 
   const author = data.get("Author") as string,
-    address = redact(author);
+    address = await redact(author);
 
   const { data: conversationRecord } = await createSyncMapItemIfNotExists(
     NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP,
@@ -71,14 +98,11 @@ export async function POST(request: Request) {
   if (!conversationRecord.event) {
     const activeEvents = await getActiveEvents();
     if (activeEvents.length == 0) {
-      addMessageToConversation(
-        conversationSid,
-        templates.getNoActiveEventsMessage(),
-      );
+      addMessageToConversation(conversationSid, getNoActiveEventsMessage());
       return new Response("No active event available", { status: 200 });
     } else if (activeEvents.length == 1) {
       let newEvent = activeEvents[0].data;
-      const welcomeMessage = templates.getWelcomeMessage(
+      const welcomeMessage = getWelcomeMessage(
         newEvent.selection.mode,
         newEvent.welcomeMessage,
         newEvent.enableLeadCollection,
@@ -101,9 +125,9 @@ export async function POST(request: Request) {
 
       if (!newEvent.enableLeadCollection) {
         await sleep(2000);
-        const dataPolicy = templates.getDataPolicy(newEvent.selection.mode);
+        const dataPolicy = getDataPolicy(newEvent.selection.mode);
         addMessageToConversation(conversationSid, dataPolicy);
-        const message = await templates.getReadyToOrderMessage(
+        const message = await getReadyToOrderMessage(
           newEvent,
           newEvent.selection.items,
           newEvent.maxOrders,
@@ -118,7 +142,7 @@ export async function POST(request: Request) {
 
         if (newEvent.selection.modifiers.length > 1) {
           await sleep(1500);
-          const modifiersNote = templates.getModifiersMessage(
+          const modifiersNote = getModifiersMessage(
             newEvent.selection.modifiers,
           );
           addMessageToConversation(conversationSid, modifiersNote);
@@ -133,7 +157,7 @@ export async function POST(request: Request) {
       });
       if (matches.length === 1) {
         const newEvent = matches[0].data;
-        const welcomeMessage = templates.getWelcomeMessage(
+        const welcomeMessage = getWelcomeMessage(
           newEvent.selection.mode,
           newEvent.welcomeMessage,
           newEvent.enableLeadCollection,
@@ -156,9 +180,9 @@ export async function POST(request: Request) {
         );
         if (!newEvent.enableLeadCollection) {
           await sleep(2000);
-          const dataPolicy = templates.getDataPolicy(newEvent.selection.mode);
+          const dataPolicy = getDataPolicy(newEvent.selection.mode);
           addMessageToConversation(conversationSid, dataPolicy);
-          const message = await templates.getReadyToOrderMessage(
+          const message = await getReadyToOrderMessage(
             newEvent,
             newEvent.selection.items,
             newEvent.maxOrders,
@@ -173,7 +197,7 @@ export async function POST(request: Request) {
 
           if (newEvent.selection.modifiers.length > 1) {
             await sleep(1500);
-            const modifiersNote = templates.getModifiersMessage(
+            const modifiersNote = getModifiersMessage(
               newEvent.selection.modifiers,
             );
             addMessageToConversation(conversationSid, modifiersNote);
@@ -182,7 +206,7 @@ export async function POST(request: Request) {
         return new Response("Assigned event to attendee", { status: 201 });
       }
 
-      const message = await templates.getEventRegistrationMessage(activeEvents);
+      const message = await getEventRegistrationMessage(activeEvents);
       addMessageToConversation(
         conversationSid,
         "",
@@ -200,20 +224,17 @@ export async function POST(request: Request) {
   if (!event) {
     const activeEvents = await getActiveEvents();
     if (activeEvents.length == 0) {
-      addMessageToConversation(
-        conversationSid,
-        templates.getNoActiveEventsMessage(),
-      );
+      addMessageToConversation(conversationSid, getNoActiveEventsMessage());
       return new Response("No active event available", { status: 200 });
     } else if (activeEvents.length == 1) {
       let newEvent = activeEvents[0].data;
-      const welcomeBackMessage = templates.getWelcomeBackMessage(
+      const welcomeBackMessage = getWelcomeBackMessage(
         newEvent.selection.mode,
         newEvent.name,
         newEvent.welcomeMessage,
       );
       addMessageToConversation(conversationSid, welcomeBackMessage);
-      const message = await templates.getReadyToOrderMessage(
+      const message = await getReadyToOrderMessage(
         newEvent,
         newEvent.selection.items,
         newEvent.maxOrders,
@@ -222,9 +243,7 @@ export async function POST(request: Request) {
 
       if (newEvent.selection.modifiers.length > 1) {
         await sleep(500);
-        const modifiersNote = templates.getModifiersMessage(
-          newEvent.selection.modifiers,
-        );
+        const modifiersNote = getModifiersMessage(newEvent.selection.modifiers);
         addMessageToConversation(conversationSid, modifiersNote);
       }
 
@@ -253,7 +272,7 @@ export async function POST(request: Request) {
       });
       if (matches.length === 1) {
         const newEvent = matches[0].data;
-        const welcomeMessage = templates.getWelcomeBackMessage(
+        const welcomeMessage = getWelcomeBackMessage(
           newEvent.selection.mode,
           newEvent.name,
           newEvent.welcomeMessage,
@@ -272,7 +291,7 @@ export async function POST(request: Request) {
         );
 
         await sleep(500);
-        const message = await templates.getReadyToOrderMessage(
+        const message = await getReadyToOrderMessage(
           newEvent,
           newEvent.selection.items,
           newEvent.maxOrders,
@@ -287,7 +306,7 @@ export async function POST(request: Request) {
 
         if (newEvent.selection.modifiers.length > 1) {
           await sleep(500);
-          const modifiersNote = templates.getModifiersMessage(
+          const modifiersNote = getModifiersMessage(
             newEvent.selection.modifiers,
           );
           addMessageToConversation(conversationSid, modifiersNote);
@@ -296,7 +315,7 @@ export async function POST(request: Request) {
         return new Response("Assigned event to attendee", { status: 201 });
       }
 
-      const message = await templates.getEventRegistrationMessage(activeEvents);
+      const message = await getEventRegistrationMessage(activeEvents);
       addMessageToConversation(
         conversationSid,
         "",
@@ -310,7 +329,7 @@ export async function POST(request: Request) {
     event.enableLeadCollection &&
     conversationRecord.stage === Stages.NEW_USER
   ) {
-    const message = templates.getPromptForEmail();
+    const message = getPromptForEmail();
     addMessageToConversation(conversationSid, message);
     await updateSyncMapItem(
       NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP,
@@ -327,7 +346,7 @@ export async function POST(request: Request) {
     conversationRecord.stage === Stages.NAME_CONFIRMED
   ) {
     if (!incomingMessageBody || !regexForEmail.test(incomingMessageBody)) {
-      const message = templates.getInvalidEmailMessage();
+      const message = getInvalidEmailMessage();
       addMessageToConversation(conversationSid, message);
       return new Response("Invalid Email", { status: 200 });
     } else {
@@ -338,13 +357,11 @@ export async function POST(request: Request) {
         check = await createVerification(email);
       } catch (error: any) {
         console.error(error);
-        const message = templates.getErrorDuringEmailVerificationMessage(
-          error.message,
-        );
+        const message = getErrorDuringEmailVerificationMessage(error.message);
         addMessageToConversation(conversationSid, message);
         return new Response("Error During Verifiction", { status: 500 });
       }
-      const message = templates.getSentEmailMessage();
+      const message = getSentEmailMessage();
       addMessageToConversation(conversationSid, message);
       await updateSyncMapItem(
         NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP,
@@ -375,7 +392,7 @@ export async function POST(request: Request) {
         console.error(error);
         return new Response("Error During Verifiction", { status: 500 });
       }
-      const message = templates.getSentEmailMessage();
+      const message = getSentEmailMessage();
       addMessageToConversation(conversationSid, message);
       await updateSyncMapItem(
         NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP,
@@ -391,7 +408,7 @@ export async function POST(request: Request) {
       !regexFor6ConsecutiveDigits.test(incomingMessageBody) ||
       incomingMessageBody === null
     ) {
-      const message = templates.getInvalidVerificationCodeMessage();
+      const message = getInvalidVerificationCodeMessage();
       addMessageToConversation(conversationSid, message);
       return new Response("No Verification Code Sent", { status: 200 });
     }
@@ -403,7 +420,7 @@ export async function POST(request: Request) {
         code,
       );
       if (!verification.valid) {
-        const message = templates.getInvalidVerificationCodeMessage();
+        const message = getInvalidVerificationCodeMessage();
         addMessageToConversation(conversationSid, message);
         return new Response("Invalid Verification", { status: 200 });
       }
@@ -434,7 +451,7 @@ export async function POST(request: Request) {
         },
         TwoWeeksInSeconds,
       );
-      const message = await templates.getReadyToOrderMessage(
+      const message = await getReadyToOrderMessage(
         event,
         event.selection.items,
         event.maxOrders,
@@ -449,37 +466,30 @@ export async function POST(request: Request) {
 
       if (event.selection.modifiers.length > 1) {
         await sleep(1500);
-        const modifiersNote = templates.getModifiersMessage(
-          event.selection.modifiers,
-        );
+        const modifiersNote = getModifiersMessage(event.selection.modifiers);
         addMessageToConversation(conversationSid, modifiersNote);
       }
 
       await sleep(2000);
-      const dataPolicy = templates.getDataPolicy(event.selection.mode);
+      const dataPolicy = getDataPolicy(event.selection.mode);
       addMessageToConversation(conversationSid, dataPolicy);
 
       return new Response("Email was verified", { status: 200 });
     } catch (error) {
       console.error(error);
-      const message = templates.getInvalidVerificationCodeMessage();
+      const message = getInvalidVerificationCodeMessage();
       addMessageToConversation(conversationSid, message);
       return new Response("Error During Verifiction", { status: 500 });
     }
   }
 
-  if (event.state === EventState.CLOSED) {
-    const message = templates.getPausedEventMessage();
-    addMessageToConversation(conversationSid, message);
-    return new Response("Event Orders Paused", { status: 200 });
-  }
+  const incomingMessage = incomingMessageBody.toLowerCase();
   if (conversationRecord?.lastOrderNumber >= 0) {
     lastOrder = await fetchOrder(
       event.slug,
       conversationRecord?.lastOrderNumber,
     );
   }
-  const incomingMessage = incomingMessageBody.toLowerCase();
 
   if (incomingMessage.includes("forget me")) {
     await Promise.all([
@@ -487,10 +497,7 @@ export async function POST(request: Request) {
       cancelOrder(event, lastOrder?.index, lastOrder?.data, conversationSid),
       // remove the user from the active customers map
       removeSyncMapItem(NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP, conversationSid),
-      addMessageToConversation(
-        conversationSid,
-        templates.getForgotAttendeeMessage(),
-      ),
+      addMessageToConversation(conversationSid, getForgotAttendeeMessage()),
     ]);
 
     sleep(500);
@@ -498,30 +505,36 @@ export async function POST(request: Request) {
     await deleteConversation(conversationSid);
 
     return new Response("Forgot attendee", { status: 200 });
-  } else if (incomingMessage.includes("help")) {
-    const { contentSid, contentVariables } =
-      await templates.getHelpMessage(event);
-    addMessageToConversation(conversationSid, "", contentSid, contentVariables);
-
-    if (event.selection.modifiers.length > 1) {
-      await sleep(1500);
-      const modifiersNote = templates.getModifiersMessage(
-        event.selection.modifiers,
-      );
-      addMessageToConversation(conversationSid, modifiersNote);
-    }
-
-    return new Response("", { status: 200 });
   } else if (incomingMessage.includes("queue")) {
     const queuePosition = await getQueuePosition(
       event.slug,
       conversationRecord.lastOrderNumber,
     );
-    const message = conversationRecord.lastOrderNumber
-      ? templates.getQueuePositionMessage(queuePosition)
-      : templates.getNoOpenOrderMessage();
+    const message =
+      conversationRecord.lastOrderNumber && !isNaN(queuePosition)
+        ? getQueuePositionMessage(queuePosition)
+        : getNoOpenOrderMessage();
     addMessageToConversation(conversationSid, message);
     return new Response(null, { status: 201 });
+  }
+
+  if (event.state === EventState.CLOSED) {
+    const message = getPausedEventMessage();
+    addMessageToConversation(conversationSid, message);
+    return new Response("Event Orders Paused", { status: 200 });
+  }
+
+  if (incomingMessage.includes("help")) {
+    const { contentSid, contentVariables } = await getHelpMessage(event);
+    addMessageToConversation(conversationSid, "", contentSid, contentVariables);
+
+    if (event.selection.modifiers.length > 1) {
+      await sleep(1500);
+      const modifiersNote = getModifiersMessage(event.selection.modifiers);
+      addMessageToConversation(conversationSid, modifiersNote);
+    }
+
+    return new Response("", { status: 200 });
   } else if (incomingMessage.includes("change")) {
     if (lastOrder?.data?.status === "queued") {
       const { orderItem, orderModifier } = await getOrderItemFromMessage(
@@ -538,19 +551,19 @@ export async function POST(request: Request) {
             status: "queued",
           });
 
-          const message = templates.getChangedOrderMessage(
+          const message = getChangedOrderMessage(
             lastOrder.index,
             `${orderItem.shortTitle}${orderModifier.length > 1 ? ` with ${orderModifier}` : ""}`,
           );
           addMessageToConversation(conversationSid, message);
           return new Response(null, { status: 201 });
         } catch (error) {
-          const message = templates.getOopsMessage(error);
+          const message = getOopsMessage(error);
           addMessageToConversation(conversationSid, message);
           return new Response(null, { status: 201 });
         }
       } else if (orderItem.shortTitle === "") {
-        const wrongOrderMessage = await templates.getWrongOrderMessage(
+        const wrongOrderMessage = await getWrongOrderMessage(
           incomingMessageBody,
           event.selection.items,
         );
@@ -563,7 +576,7 @@ export async function POST(request: Request) {
         return new Response(null, { status: 201 });
       }
     } else {
-      const message = templates.getNoOpenOrderMessage();
+      const message = getNoOpenOrderMessage();
       addMessageToConversation(conversationSid, message);
       return new Response(null, { status: 201 });
     }
@@ -578,7 +591,7 @@ export async function POST(request: Request) {
     return new Response("", { status: 200 });
   } else {
     if (lastOrder?.data.status === "queued") {
-      const message = templates.getExistingOrderMessage(
+      const message = getExistingOrderMessage(
         lastOrder.data.item.shortTitle,
         lastOrder.index,
       );
@@ -588,7 +601,7 @@ export async function POST(request: Request) {
       conversationRecord?.orderCount > event.maxOrders &&
       !UNLIMTED_ORDERS.includes(author.replace("whatsapp:", ""))
     ) {
-      const message = templates.getMaxOrdersMessage();
+      const message = getMaxOrdersMessage();
       addMessageToConversation(conversationSid, message);
       return new Response("", { status: 200 });
     }
@@ -612,12 +625,17 @@ export async function POST(request: Request) {
       const orderNumber = await addOrder(event.slug, order);
 
       const orderName = `${orderItem.shortTitle}${orderModifier.length > 1 ? ` with ${orderModifier}` : ""}`;
-      const message = templates.getOrderCreatedMessage(
+      const orderCreatedMessage = await getOrderCreatedMessage(
         orderName,
         orderNumber,
-        event,
+        event.selection.mode,
       );
-      addMessageToConversation(conversationSid, message);
+      addMessageToConversation(
+        conversationSid,
+        undefined,
+        orderCreatedMessage.contentSid,
+        orderCreatedMessage.contentVariables,
+      );
 
       order.orderNumber = orderNumber;
       await updateSyncMapItem(
@@ -632,7 +650,7 @@ export async function POST(request: Request) {
         TwoWeeksInSeconds,
       );
     } else {
-      const wrongOrderMessage = await templates.getWrongOrderMessage(
+      const wrongOrderMessage = await getWrongOrderMessage(
         incomingMessageBody,
         event.selection.items,
       );
@@ -703,10 +721,4 @@ async function getQueuePosition(event: string, orderNumber: number) {
     (item) => item.index === orderNumber,
   );
   return queuePosition >= 0 ? queuePosition : NaN;
-}
-
-function redact(address: string) {
-  let redacted =
-    address.substring(0, 4) + "****" + address.substring(address.length - 3);
-  return redacted;
 }

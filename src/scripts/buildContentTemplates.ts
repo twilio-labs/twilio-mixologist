@@ -311,6 +311,104 @@ export function getEventRegistrationTemplate(
   };
 }
 
+export function getOrderCancelledTemplate(
+  templateName: string,
+): WhatsAppTemplateConfig {
+  const body =
+    "Your {{0}} order (*#{{1}}*) has been cancelled. Please check with our staff if you think something is wrong.";
+
+  return {
+    friendly_name: templateName,
+    language: "en",
+    variables: {
+      "0": "order item",
+      "1": "order number",
+    },
+    types: {
+      "twilio/text": {
+        body,
+      },
+    },
+  };
+}
+
+export function getOrderReadyTemplate(
+  templateName: string,
+): WhatsAppTemplateConfig {
+  const body =
+    "*Your {{0}} is ready*. You can skip the queue and collect it at {{2}} right away. Ask for order number #{{1}}.";
+
+  return {
+    friendly_name: templateName,
+    language: "en",
+    variables: {
+      "0": "order item",
+      "1": "order number",
+      "2": "order pickup location",
+    },
+    types: {
+      "twilio/text": {
+        body,
+      },
+    },
+  };
+}
+
+export function getOrderReminderTemplate(
+  templateName: string,
+): WhatsAppTemplateConfig {
+  const body =
+    "Heya! Don't forget your {{0}}. You can skip the queue and collect it at {{2}}. Ask for order number #{{1}}.";
+
+  return {
+    friendly_name: templateName,
+    language: "en",
+    variables: {
+      "0": "order item",
+      "1": "order number",
+      "2": "order pickup location",
+    },
+    types: {
+      "twilio/text": {
+        body,
+      },
+    },
+  };
+}
+
+export function getOrderConfirmationTemplate(
+  templateName: string,
+  isBarista: boolean,
+): WhatsAppTemplateConfig {
+  const header_text = "Your {{0}} order is confirmed!";
+  const body =
+    '*Your order number is #{{1}}*\n\nWe\'ll text you back when the order is ready -- or send "queue" to determine your current position\n\nSend  "change order to <new order>" to change your existing order or "cancel order" to cancel it.';
+
+  const footer = isBarista
+    ? "Thanks for ordering from the Twilio-powered Barista Bar!"
+    : "Thanks for ordering from the Twilio-powered Smoothie Bar!";
+
+  return {
+    friendly_name: templateName,
+    language: "en",
+    variables: {
+      "0": "order item",
+      "1": "order number",
+    },
+    types: {
+      // "twilio/card": {
+      //   // header_text, TODO consider adding back once whatsapp/card is supported by conversation API
+      //   // body,
+      //    footer,
+      //   title: `*${header_text}*\n${body}`,
+      // },
+      "twilio/text": {
+        body: `${header_text}\n\n${body}`,
+      },
+    },
+  };
+}
+
 export interface WhatsAppTemplateConfig {
   friendly_name: string;
   language: string;
@@ -334,6 +432,11 @@ export interface WhatsAppTemplateConfig {
         title: string;
         id: string;
       }>;
+    };
+    "twilio/card"?: {
+      title?: string;
+      subtitle: string;
+      media?: string[];
     };
   };
   links?: {

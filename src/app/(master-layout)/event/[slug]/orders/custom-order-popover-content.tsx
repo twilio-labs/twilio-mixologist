@@ -1,6 +1,6 @@
 import { PopoverContent } from "@/components/ui/popover";
 import { Selection } from "../../../../../components/menu-select";
-import OrderForm from "../kiosk/order-form";
+import OrderForm from "./order-form";
 
 export default function CustomOrderPopoverContent({
   selection,

@@ -48,7 +48,10 @@ function ConfigPage() {
                     });
                   }}
                 >
-                  <MessageSquareIcon className={`h-6 w-6 text-white`} />
+                  <img
+                    src="/channel-icons/sms.svg"
+                    className={`h-6 w-6 text-white`}
+                  />
                 </button>
                 <button
                   title={
@@ -68,7 +71,10 @@ function ConfigPage() {
                     });
                   }}
                 >
-                  <MessageCircleMoreIcon className={`h-6 w-6 text-white`} />
+                  <img
+                    src="/channel-icons/whatsapp.svg"
+                    className={`h-6 w-6 text-white`}
+                  />
                 </button>
               </div>
             ))
