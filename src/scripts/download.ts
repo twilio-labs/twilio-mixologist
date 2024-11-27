@@ -24,21 +24,32 @@ if (!eventName || eventName.startsWith("/") || eventName.includes("=")) {
 }
 
 (async () => {
-  //fetch all attendees and write to csv file with header columns
-  const map = await client.sync.v1
+  let customerPage = await client.sync.v1
     .services(TWILIO_SYNC_SERVICE_SID)
-    .syncMaps("ActiveCustomers");
+    .syncMaps("ActiveCustomers")
+    .syncMapItems.page({ pageSize: 200 });
+
+  let verifiedAttendees: any[] = [];
+
+  while (customerPage && customerPage.instances.length > 0) {
+    const attendees = customerPage.instances
+      .map((item) => item.data)
+      .filter(
+        (a) =>
+          (a.stage === Stages.VERIFIED_USER ||
+            a.stage === Stages.FIRST_ORDER ||
+            a.stage === Stages.REPEAT_CUSTOMER) &&
+          a.event === eventName,
+      );
+
+    verifiedAttendees = verifiedAttendees.concat(attendees);
+
+    // @ts-ignore
+    customerPage = await customerPage.nextPage();
+  }
+
   try {
-    const mapItems = await map.syncMapItems.list({ limit: 1000 }); //TODO should fetch all here
-    const attendees = mapItems.map((item) => item.data);
-    // .filter(
-    //   (a) =>
-    //     (a.stage === Stages.VERIFIED_USER ||
-    //       a.stage === Stages.FIRST_ORDER ||
-    //       a.stage === Stages.REPEAT_CUSTOMER) &&
-    //     a.event === eventName,
-    // );
-    const csv = attendees.map((attendee) => {
+    const csv = verifiedAttendees.map((attendee) => {
       return `${attendee.fullName},${attendee.email},${attendee.country},${attendee.foundInSegment},${attendee[SEGMENT_TRAIT_CHECK]},${attendee.event},${attendee.stage}`;
     });
     writeFileSync(

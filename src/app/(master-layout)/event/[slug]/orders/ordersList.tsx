@@ -102,7 +102,6 @@ export default function OrdersList({
   function listComponent(orders: any[]) {
     return orders.map((order) => {
       const { data, index, dateUpdated } = order;
-      // TODO Nathaniel refactor this to make sure the height is always the same, no matter the status
       return (
         <div
           key={index}

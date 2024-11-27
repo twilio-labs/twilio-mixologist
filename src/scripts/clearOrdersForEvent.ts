@@ -1,4 +1,5 @@
-import { getSyncService, updateSyncMapItem } from "@/lib/twilio";
+import { updateSyncMapItem } from "@/lib/twilio";
+import throttledQueue from "throttled-queue";
 import twilio from "twilio";
 
 const {
@@ -8,6 +9,7 @@ const {
   TWILIO_SYNC_SERVICE_SID = "",
 } = process.env;
 
+const throttle = throttledQueue(20, 1000); // 20 requests per second
 const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
   accountSid: TWILIO_ACCOUNT_SID,
 });
@@ -39,19 +41,30 @@ if (!eventName || eventName.startsWith("/") || eventName.includes("=")) {
     `Reset event stats "cancelledCount" and "deliveredCount" for ${eventName}`,
   );
 
-  const orderItems = await client.sync.v1
+  let orderPage = await client.sync.v1
     .services(TWILIO_SYNC_SERVICE_SID)
     .syncLists(eventName)
-    .syncListItems.list({ limit: 1000 }); // TODO should delete all here
-  await Promise.all(
-    orderItems.map(async (item) => {
-      await client.sync.v1
-        .services(TWILIO_SYNC_SERVICE_SID)
-        .syncLists(eventName)
-        .syncListItems(item.index)
-        .remove();
-    }),
-  );
+    .syncListItems.page({ pageSize: 200 });
 
-  console.log(`All ${orderItems.length} orders removed for ${eventName}`);
+  let counter = 0;
+
+  while (orderPage && orderPage.instances.length > 0) {
+    orderPage.instances.map((item) => {
+      counter++;
+      throttle(async () => {
+        return client.sync.v1
+          .services(TWILIO_SYNC_SERVICE_SID)
+          .syncLists(eventName)
+          .syncListItems(item.index)
+          .remove();
+      });
+    });
+
+    // @ts-ignore
+    orderPage = await orderPage.nextPage();
+  }
+
+  throttle(() => {
+    console.log(`All ${counter} orders removed for ${eventName}`);
+  });
 })();
