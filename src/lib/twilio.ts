@@ -447,8 +447,6 @@ export async function createServiceInstances() {
   }
   const conversationsConfig = conversationsService.configuration()();
   await conversationsConfig.update({
-    // messagingServiceSid: TWILIO_MESSAGING_SERVICE_SID, // TODO Nathaniel check if this is needed, apparently not in TS
-    // defaultChatServiceSid: TWILIO_CONVERSATIONS_SERVICE_SID,
   });
   await conversationsService
     .configuration()
