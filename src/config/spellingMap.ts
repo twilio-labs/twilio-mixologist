@@ -31,7 +31,7 @@ export default {
   lattey: "Latte",
   larte: "Latte",
   lattee: "Latte",
-  latte: "Latte",
+  latte: "Caffè Latte",
   "white americano": "Americano",
   "hot chocolate": "Hot Chocolate",
   chocolate: "Hot Chocolate",
