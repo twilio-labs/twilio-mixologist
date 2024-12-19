@@ -1,9 +1,16 @@
-
 import { Event } from "@/app/(master-layout)/event/[slug]/page";
 import { modes } from "@/config/menus";
 
 function modeToBeverage(mode: modes, plural: boolean = false) {
-  return mode === "smoothie" ? (plural ? "smoothies" : "smoothie") : "coffee";
+  return mode === "smoothie"
+    ? plural
+      ? "smoothies"
+      : "smoothie"
+    : mode === "cocktail"
+      ? plural
+        ? "drinks"
+        : "drink"
+      : "coffee";
 }
 
 export function getModifiersMessage(modifiers: string[]) {
@@ -86,7 +93,6 @@ export function getWelcomeBackMessage(
 
   return `We're glad to see you again. You're now at ${event}.\n${welcomeMessageSuffix}`;
 }
-
 
 export function getDataPolicy(mode: string) {
   return `We only use your phone number to notify you about our ${mode} service and redact all the messages & phone numbers afterward.`;
