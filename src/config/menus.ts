@@ -7,6 +7,7 @@ export interface MenuItem {
 export enum modes {
   barista = "barista",
   smoothie = "smoothie",
+  cocktail = "cocktail",
 }
 
 export type Menus = {
@@ -177,6 +178,30 @@ export default {
         shortTitle: "Lambada",
         description:
           "Orange, Mango, Banana, Passion Fruit, Flaxseed, Coconut Oil 🍊🥭🍌🥥",
+      },
+    ],
+  },
+  cocktail: {
+    items: [
+      {
+        title: "The SMSpresso - Espresso Martini",
+        shortTitle: "Espresso Martini",
+        description: "Vodka, Espresso, Coffee Liqueur, Sugar Syrup",
+      },
+      {
+        title: "The Cloud Coffee - White Russian",
+        shortTitle: "White Russian",
+        description: "Vodka, Coffee Liqueur, Cream",
+      },
+      {
+        title: "The Twilio Roast - Irish Coffee",
+        shortTitle: "Irish Coffee",
+        description: "Whiskey, Coffee, Cream",
+      },
+      {
+        title: "The API Pour - Mudslide",
+        shortTitle: "Mudslide",
+        description: "Vodka, Coffee Liqueur, Irish Cream, Cream",
       },
     ],
   },
