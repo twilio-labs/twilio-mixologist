@@ -15,21 +15,31 @@ const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
 
 (async () => {
   //fetch all attendees and write to csv file with header columns
-  const mapItems = await client.sync.v1
+  let customerPage = await client.sync.v1
     .services(TWILIO_SYNC_SERVICE_SID)
     .syncMaps("ActiveCustomers")
-    .syncMapItems.list({ limit: 1000 }); // TODO go over all users here, not just 1000, use pagination
+    .syncMapItems.page({ pageSize: 200 });
 
-  mapItems.map((item) => {
-    throttle(async () => {
-      return client.sync.v1
-        .services(TWILIO_SYNC_SERVICE_SID)
-        .syncMaps("ActiveCustomers")
-        .syncMapItems(item.key)
-        .remove();
+  let counter = 0;
+
+  while (customerPage && customerPage.instances.length > 0) {
+    
+    customerPage.instances.map((item) => {
+      counter++;
+      throttle(async () => {
+        return client.sync.v1
+          .services(TWILIO_SYNC_SERVICE_SID)
+          .syncMaps("ActiveCustomers")
+          .syncMapItems(item.key)
+          .remove();
+      });
     });
-  });
+
+    // @ts-ignore
+    customerPage = await customerPage.nextPage();
+  }
+
   throttle(() => {
-    console.log(`Removed ${mapItems.length} attendees`);
+    console.log(`Removed ${counter} attendees`);
   });
 })();
