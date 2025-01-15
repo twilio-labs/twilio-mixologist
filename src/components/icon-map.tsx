@@ -14,6 +14,7 @@ import {
   CupIcon,
   CoffeeIcon,
   FrappuccinoIcon,
+  CarafeIcon,
 } from "@/components/icons";
 
 const iconMap: { [key: string]: any } = {
@@ -42,6 +43,10 @@ const iconMap: { [key: string]: any } = {
   Colombia: SmoothieStrawberryIcon,
   Aquamarine: SmoothiePineappleIcon,
   Lambada: SmoothieOrangeIcon,
+  "Espresso Martini": CarafeIcon,
+  "White Russian": CarafeIcon,
+  "Irish Coffee": CarafeIcon,
+  Mudslide: CarafeIcon,
 };
 
 export default iconMap;
