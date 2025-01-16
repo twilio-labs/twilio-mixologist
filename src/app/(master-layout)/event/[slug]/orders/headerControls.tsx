@@ -20,7 +20,6 @@ import {
   BanIcon,
   PlusIcon,
 } from "lucide-react";
-import { is } from "date-fns/locale";
 
 export default function HeaderControls({
   event,

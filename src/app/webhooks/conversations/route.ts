@@ -354,7 +354,7 @@ export async function POST(request: Request) {
       // @ts-ignore cannot be null bc of if statement above
       const email = incomingMessageBody.match(regexForEmail)[0];
       try {
-        check = await createVerification(email);
+        check = await createVerification(email, event.name);
       } catch (error: any) {
         console.error(error);
         const message = getErrorDuringEmailVerificationMessage(error.message);
@@ -387,7 +387,7 @@ export async function POST(request: Request) {
       // @ts-ignore cannot be null bc of if statement above
       const email = incomingMessageBody.match(regexForEmail)[0];
       try {
-        check = await createVerification(email);
+        check = await createVerification(email, event.name);
       } catch (error) {
         console.error(error);
         return new Response("Error During Verifiction", { status: 500 });

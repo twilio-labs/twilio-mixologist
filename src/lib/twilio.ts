@@ -8,7 +8,10 @@ import axios from "axios";
 import AccessToken, { SyncGrant } from "twilio/lib/jwt/AccessToken";
 import { ServiceInstance } from "twilio/lib/rest/sync/v1/service";
 import throttledQueue from "throttled-queue";
-import { WhatsAppTemplate, WhatsAppTemplateConfig } from "@/scripts/buildContentTemplates";
+import {
+  WhatsAppTemplate,
+  WhatsAppTemplateConfig,
+} from "@/scripts/buildContentTemplates";
 const throttle = throttledQueue(25, 1000);
 const {
   TWILIO_API_KEY = "",
@@ -111,11 +114,16 @@ export async function getLookupService() {
   return client.lookups.v2;
 }
 
-export async function createVerification(to: string) {
+export async function createVerification(to: string, eventName: string) {
   const verifyService = await getVerifyService();
   const verification = await verifyService.verifications.create({
     to,
     channel: "email",
+    channelConfiguration: {
+      substitutions: {
+        "event-name": eventName,
+      },
+    },
   });
   return verification;
 }
@@ -446,8 +454,7 @@ export async function createServiceInstances() {
     output += `TWILIO_CONVERSATIONS_SERVICE_SID=${conversationsService.sid}\n`;
   }
   const conversationsConfig = conversationsService.configuration()();
-  await conversationsConfig.update({
-  });
+  await conversationsConfig.update({});
   await conversationsService
     .configuration()
     .webhooks()
