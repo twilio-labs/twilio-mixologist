@@ -88,7 +88,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
     welcomeMessage: "",
   });
 
-  const timerRef = useRef<NodeJS.Timeout>();
+  const timerRef = useRef<NodeJS.Timeout>(undefined);
   function updateEvent(newEvent: Event) {
     clearTimeout(timerRef.current);
     updateInternalEvent(newEvent);
