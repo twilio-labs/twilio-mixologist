@@ -42,6 +42,7 @@ export interface Event {
   pickupLocation: string;
   maxOrders: number;
   welcomeMessage: string;
+  assistantId?: string;
   cancelledCount?: number;
   deliveredCount?: number;
 }
@@ -266,7 +267,6 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
               }}
               options={options}
             />
-
             <Popover>
               <PopoverTrigger>
                 <span className="text-xs font-bold underline text-blue-700 cursor-pointer">
@@ -275,7 +275,6 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
               </PopoverTrigger>
               <QrCodePopoverContent senders={internalEvent.senders} />
             </Popover>
-
             <div className="mt-2">
               <Label aria-required htmlFor="pickupLocation">
                 Pickup Location
@@ -294,7 +293,17 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
                 }}
               />
             </div>
-
+            {internalEvent.assistantId && (
+              <div className="space-y-2">
+                <Label htmlFor="assistantId">Assistant ID</Label>
+                <Input
+                  id="assistantId"
+                  placeholder="Assistant ID"
+                  value={internalEvent.assistantId}
+                  disabled
+                />
+              </div>
+            )}
             <div className="space-y-2">
               <Label htmlFor="welcomeMessage">Custom Welcome Message</Label>
               <Textarea
@@ -325,7 +334,15 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
           <MenuSelect
             menus={config.menus}
             selection={internalEvent.selection}
-            onSelectionChange={(newSelection) => {
+            onSelectionChange={async (newSelection) => {
+              // make async for now to avoid delay, may need to change in the future
+              fetch(`/api/event/${internalEvent.slug}/selection`, {
+                method: "PUT",
+                body: JSON.stringify({
+                  selection: newSelection,
+                  assistantId: internalEvent.assistantId,
+                }),
+              });
               updateEvent({
                 ...internalEvent,
                 selection: newSelection,

@@ -12,6 +12,15 @@ import {
   WhatsAppTemplate,
   WhatsAppTemplateConfig,
 } from "@/scripts/buildContentTemplates";
+import {
+  getEditOrderTool,
+  getFetchOrderInfoTool,
+  getForgetUserTool,
+  getSubmitOrdersTool,
+  getSystemPrompt,
+} from "./aiAssistantTempaltes";
+import { modes } from "@/config/menus";
+import { Event } from "@/app/(master-layout)/event/[slug]/page";
 const throttle = throttledQueue(25, 1000);
 const {
   TWILIO_API_KEY = "",
@@ -94,6 +103,135 @@ export async function getMessagingService() {
     TWILIO_MESSAGING_SERVICE_SID,
   );
   return messagingClient.fetch();
+}
+
+export async function createAiAssistant(event: Event) {
+  const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
+    accountSid: TWILIO_ACCOUNT_SID,
+  });
+
+  const assistant = await client.assistants.v1.assistants.create({
+    name: `AI Barista Assistant for ${event.name}`,
+    personality_prompt: getSystemPrompt(event.selection.mode),
+  });
+
+  const tools = [
+    getSubmitOrdersTool(
+      `${PUBLIC_BASE_URL}/webhooks/ai-assistants/order?event=${event.slug}`,
+      event.selection.items,
+      event.selection.modifiers,
+    ),
+    getEditOrderTool(
+      `${PUBLIC_BASE_URL}/webhooks/ai-assistants/editOrder?event=${event.slug}`,
+      event.selection.items,
+      event.selection.modifiers,
+    ),
+    getFetchOrderInfoTool(
+      `${PUBLIC_BASE_URL}/webhooks/ai-assistants/order?event=${event.slug}`,
+    ),
+
+    getForgetUserTool(
+      `${PUBLIC_BASE_URL}/webhooks/ai-assistants/forgetUser?event=${event.slug}`,
+    ),
+    //TODO add tool to send template messages
+  ];
+
+  tools.forEach(async (toolConfig) => {
+    const orderTool = await client.assistants.v1.tools.create(
+      // @ts-ignore
+      toolConfig,
+    );
+    try {
+      await client.assistants.v1
+        .assistants(assistant.id)
+        .assistantsTools(orderTool.id)
+        .create();
+    } catch (e) {
+      console.error(e); //TODO this throw an error even if the tool is added
+    }
+  });
+
+  return assistant;
+}
+
+export async function updateAiAssistant(aiAssistantID: string, event: Event) {
+  const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
+    accountSid: TWILIO_ACCOUNT_SID,
+  });
+
+  const assistant = await client.assistants.v1
+    .assistants(aiAssistantID)
+    .fetch();
+
+  const oldToolsToRemove = assistant.tools.filter(
+    (tool) => tool.name === "Submit Order" || tool.name === "Edit Order",
+  );
+  if (oldToolsToRemove?.length > 0) {
+    await Promise.all(
+      oldToolsToRemove.map((toRemove) =>
+        client.assistants.v1.tools(toRemove.id).remove(),
+      ),
+    );
+    console.log(`Removed ${oldToolsToRemove.length} tools`);
+  }
+
+  const newTools = [
+    getSubmitOrdersTool(
+      `${PUBLIC_BASE_URL}/webhooks/ai-assistants/order?event=${event.slug}`,
+      event.selection.items,
+      event.selection.modifiers,
+    ),
+    getEditOrderTool(
+      `${PUBLIC_BASE_URL}/webhooks/ai-assistants/editOrder?event=${event.slug}`,
+      event.selection.items,
+      event.selection.modifiers,
+    ),
+  ];
+
+  newTools.forEach(async (toolConfig) => {
+    const orderTool = await client.assistants.v1.tools.create(
+      // @ts-ignore
+      toolConfig,
+    );
+    try {
+      await client.assistants.v1
+        .assistants(assistant.id)
+        .assistantsTools(orderTool.id)
+        .create();
+      console.log(`Added tool ${orderTool.name}`);
+    } catch (e) {
+      console.error(e); //TODO this throw an error even if the tool is added
+    }
+  });
+
+  return assistant;
+}
+
+export async function deleteAiAssistant(aiAssistantID: string) {
+  const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
+    accountSid: TWILIO_ACCOUNT_SID,
+  });
+
+  return client.assistants.v1.assistants(aiAssistantID).remove();
+}
+
+export async function askAiAssistant(
+  aiAssistantID: string,
+  message: string,
+  sender: string,
+  event: string,
+  conversationSid: string,
+) {
+  const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
+    accountSid: TWILIO_ACCOUNT_SID,
+  });
+
+  await client.assistants.v1.assistants(aiAssistantID).messages.create({
+    body: message,
+    identity: sender,
+    session_id: `${event}:${conversationSid}`,
+    webhook: `https://mobert.ngrok.io/webhooks/ai-assistants/proxy?event=${event}`,
+  });
 }
 
 export async function getVerifyService() {

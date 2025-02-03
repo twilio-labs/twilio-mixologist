@@ -71,6 +71,9 @@ importers:
       '@radix-ui/themes':
         specifier: ^3.1.6
         version: 3.1.6(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-alpha/assistants-react':
+        specifier: ^0.0.1
+        version: 0.0.1(bp4f3ntyfcs6yzovh43wbjlpl4)
       axios:
         specifier: ^1.7.9
         version: 1.7.9
@@ -98,6 +101,9 @@ importers:
       google-libphonenumber:
         specifier: ^3.2.40
         version: 3.2.40
+      jsonwebtoken:
+        specifier: ^9.0.2
+        version: 9.0.2
       lucide-react:
         specifier: ^0.471.1
         version: 0.471.1(react@19.0.0)
@@ -326,14 +332,44 @@ packages:
   '@emotion/babel-plugin@11.13.5':
     resolution: {integrity: sha512-pxHCpT2ex+0q+HH91/zsdHkw/lXd468DIN2zvfvLtPKLLMo6gQj7oLObq8PhkrxOZb/gGCq03S3Z7PDhS8pduQ==}
 
+  '@emotion/cache@11.10.5':
+    resolution: {integrity: sha512-dGYHWyzTdmK+f2+EnIGBpkz1lKc4Zbj2KHd4cX3Wi8/OWr5pKslNjc3yABKH4adRGCvSX4VDC0i04mrrq0aiRA==}
+
   '@emotion/cache@11.14.0':
     resolution: {integrity: sha512-L/B1lc/TViYk4DcpGxtAVbx0ZyiKM5ktoIyafGkH6zg/tj+mA+NE//aPYKG0k8kCHSHVJrpLpcAlOBEXQ3SavA==}
 
   '@emotion/hash@0.9.2':
     resolution: {integrity: sha512-MyqliTZGuOm3+5ZRSaaBGP3USLw6+EGykkwZns2EPC5g8jJ4z9OrdZY9apkl3+UP9+sdz76YYkwCKP5gh8iY3g==}
 
+  '@emotion/is-prop-valid@0.8.8':
+    resolution: {integrity: sha512-u5WtneEAr5IDG2Wv65yhunPSMLIpuKsbuOktRojfrEiEvRyC85LgPMZI63cr7NUqT8ZIGdSVg8ZKGxIug4lXcA==}
+
+  '@emotion/is-prop-valid@1.3.1':
+    resolution: {integrity: sha512-/ACwoqx7XQi9knQs/G0qKvv5teDMhD7bXYns9N/wM8ah8iNb8jZ2uNO0YOgiq2o2poIvVtJS2YALasQuMSQ7Kw==}
+
+  '@emotion/memoize@0.7.4':
+    resolution: {integrity: sha512-Ja/Vfqe3HpuzRsG1oBtWTHk2PGZ7GR+2Vz5iYGelAw8dx32K0y7PjVuxK6z1nMpZOqAFsRUPCkK1YjJ56qJlgw==}
+
+  '@emotion/memoize@0.7.5':
+    resolution: {integrity: sha512-igX9a37DR2ZPGYtV6suZ6whr8pTFtyHL3K/oLUotxpSVO2ASaprmAe2Dkq7tBo7CRY7MMDrAa9nuQP9/YG8FxQ==}
+
+  '@emotion/memoize@0.8.1':
+    resolution: {integrity: sha512-W2P2c/VRW1/1tLox0mVUalvnWXxavmv/Oum2aPsRcoDJuob75FC3Y8FbpfLwUegRcxINtGUMPq0tFCvYNTBXNA==}
+
   '@emotion/memoize@0.9.0':
     resolution: {integrity: sha512-30FAj7/EoJ5mwVPOWhAyCX+FPfMDrVecJAM+Iw9NRoSl4BBAQeqj4cApHHUXOVvIPgLVDsCFoz/hGD+5QQD1GQ==}
+
+  '@emotion/react@11.10.5':
+    resolution: {integrity: sha512-TZs6235tCJ/7iF6/rvTaOH4oxQg2gMAcdHemjwLKIjKz4rRuYe1HJ2TQJKnAcRAfOUDdU8XoDadCe1rl72iv8A==}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+      '@types/react': '*'
+      react: '>=16.8.0'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      '@types/react':
+        optional: true
 
   '@emotion/react@11.14.0':
     resolution: {integrity: sha512-O000MLDBDdk/EohJPFUqvnp4qnHeYkVP5B0xEG0D/L7cOKP9kefu2DXn8dj74cQfsEzUqh+sr1RzFqiL1o+PpA==}
@@ -350,6 +386,19 @@ packages:
   '@emotion/sheet@1.4.0':
     resolution: {integrity: sha512-fTBW9/8r2w3dXWYM4HCB1Rdp8NLibOw2+XELH5m5+AkWiL/KqYX6dc0kKYlaYyKjrQ6ds33MCdMPEwgs2z1rqg==}
 
+  '@emotion/styled@11.10.5':
+    resolution: {integrity: sha512-8EP6dD7dMkdku2foLoruPCNkRevzdcBaY6q0l0OsbyJK+x8D9HWjX27ARiSIKNF634hY9Zdoedh8bJCiva8yZw==}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+      '@emotion/react': ^11.0.0-rc.0
+      '@types/react': '*'
+      react: '>=16.8.0'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      '@types/react':
+        optional: true
+
   '@emotion/unitless@0.10.0':
     resolution: {integrity: sha512-dFoMUuQA20zvtVTuxZww6OHoJYgrzfKM1t52mVySDJnMSEa08ruEvdYQbhvyu6soU+NeLVd3yKfTfT0NeV6qGg==}
 
@@ -360,6 +409,9 @@ packages:
 
   '@emotion/utils@1.4.2':
     resolution: {integrity: sha512-3vLclRofFziIa3J2wDh9jjbkUz9qk5Vi3IZ/FSTKViB0k+ef0fPV7dYrUIugbgupYDx7v9ud/SjrtEP8Y4xLoA==}
+
+  '@emotion/weak-memoize@0.3.1':
+    resolution: {integrity: sha512-EsBwpc7hBUJWAsNPBmJy4hxWx12v6bshQsldrVmjxJoc3isbxhOrF2IcCpaXxfvq03NwkI7sbsOLXbYuqF/8Ww==}
 
   '@emotion/weak-memoize@0.4.0':
     resolution: {integrity: sha512-snKqtPW01tN0ui7yu9rGv69aJXr/a/Ywvl11sUjNtEcRc+ng/mQriFL0wLXMef74iHa/EkftbDzU9F8iFbH+zg==}
@@ -842,6 +894,115 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
+  '@lexical/clipboard@0.12.0':
+    resolution: {integrity: sha512-nCoZku0G8OwzY92yeDBsEZW0BpbJoM/QtvzGAgLZ32+3dOR7JmcnWSXPGusm8ogCEOhMAL8aqqvGrFNZ++YFtg==}
+    peerDependencies:
+      lexical: 0.12.0
+
+  '@lexical/code@0.12.0':
+    resolution: {integrity: sha512-Mdq1lTQV6KIrmF7O+LE9A57gI2T0PTfC1/uWZ7ikxVpSFVt10mn+8WSyAk7kO+ltEbL/aW7PJHEqMsuEfJH7kw==}
+    peerDependencies:
+      lexical: 0.12.0
+
+  '@lexical/dragon@0.12.0':
+    resolution: {integrity: sha512-3orn5Hq68i5MjcqA9cY3Ed1AMJDQGWkWlPv37gxgnTbpj0hhipwT2W7G2mVeWNfKvSd9OZLXnz6jYCHFmkBdww==}
+    peerDependencies:
+      lexical: 0.12.0
+
+  '@lexical/hashtag@0.12.0':
+    resolution: {integrity: sha512-qkryF9nCNCrJy2SjDAPxOfJl+SsvWLb8axrxMC9To3uC7RwJ1HsbaJ5oFK/6NCtkB+MjtYy7o6jGCfvdXDqi9g==}
+    peerDependencies:
+      lexical: 0.12.0
+
+  '@lexical/history@0.12.0':
+    resolution: {integrity: sha512-dK8jDnqF66BdEg1hrfLI1z4CGOIXmx7MBr1x8aC1u2pUaz+GsWV56UOvahAPmTwP6K1ZyMSYy8NM9BLxjRiEVg==}
+    peerDependencies:
+      lexical: 0.12.0
+
+  '@lexical/html@0.12.0':
+    resolution: {integrity: sha512-90KKtMDMElS7AD3nYzknYe6eiu7/lw1neXFWc74XI4YLiYBD14Pb/FrEvGnQ+P1voGtr4sPk3KEf8huHdM9sJw==}
+    peerDependencies:
+      lexical: 0.12.0
+
+  '@lexical/link@0.12.0':
+    resolution: {integrity: sha512-5oGvOgUi+IghnHtQ7bo0yPkgYW7FdT0YMPj2Ucsje8srt8BaZKgbrm7D/ZsXPV4XljVJZce7HLT46KJzs2SDYA==}
+    peerDependencies:
+      lexical: 0.12.0
+
+  '@lexical/list@0.12.0':
+    resolution: {integrity: sha512-l+5H753UQpmsqD8aEZ/LZd3YNysZ1SH693aEIgM1VIKmTftzd9+MTcqovnLNBzZQ98a5e4i1xgapOGIWkJ/MrQ==}
+    peerDependencies:
+      lexical: 0.12.0
+
+  '@lexical/mark@0.12.0':
+    resolution: {integrity: sha512-69OzKajOpR96tIBwaXQCaFaWh4thBTZmRa1tVcZ3CpA95OjP2715BGP2+k0yK5yaZVCA79WcyjMp3Xr88DXNkw==}
+    peerDependencies:
+      lexical: 0.12.0
+
+  '@lexical/markdown@0.12.0':
+    resolution: {integrity: sha512-Qx3ZjXVxH4Nsp87RYdOsmxZc007qN24DGursw9ljaJibZVatjIRP9VtgAPF0ybg0Y0fwUpVqE7qL4XkaiL8oxQ==}
+    peerDependencies:
+      lexical: 0.12.0
+
+  '@lexical/offset@0.12.0':
+    resolution: {integrity: sha512-ao9nJTaDIcpk7PFAFzJ+yJ1ILmlq1jHG7JocoEblzAu9BrGUcHn3aVoEL12vcuxjLTlyILAsoeIzTHJKw/NWQA==}
+    peerDependencies:
+      lexical: 0.12.0
+
+  '@lexical/overflow@0.12.0':
+    resolution: {integrity: sha512-SDoWMn3QJI8eVi/V581EpmBcc4N/vTZ5eDtlaDGV8kzRhVNwdogcWfe/cSbp1A0prYPjB/AkFPTvXdyOARcVog==}
+    peerDependencies:
+      lexical: 0.12.0
+
+  '@lexical/plain-text@0.12.0':
+    resolution: {integrity: sha512-1cKzVO+76EgPKDJcq/tzy+6sigjkFKfinfmi46RjRfsglE7mxaCfSjHyBhMvxu+v1gXyMH8XxeJsfoSFOfltrw==}
+    peerDependencies:
+      '@lexical/clipboard': 0.12.0
+      '@lexical/selection': 0.12.0
+      '@lexical/utils': 0.12.0
+      lexical: 0.12.0
+
+  '@lexical/react@0.12.0':
+    resolution: {integrity: sha512-iH1SdO6XpvuNpQrVRKDIvtcskbIUuImi4abyjlwZqC2oE/jK261G9McQqzv/6b+IN9iKWGcoSnmVtnWGPHCfOw==}
+    peerDependencies:
+      lexical: 0.12.0
+      react: '>=17.x'
+      react-dom: '>=17.x'
+
+  '@lexical/rich-text@0.12.0':
+    resolution: {integrity: sha512-Rhz3tzzTQFZX5k5XJSlJgyy8BJPz+/Jmw7RuEXzVTGxniAcovEll9TLXbZQ7SJLeHkPmJ65PdXR0om29KhjFVg==}
+    peerDependencies:
+      '@lexical/clipboard': 0.12.0
+      '@lexical/selection': 0.12.0
+      '@lexical/utils': 0.12.0
+      lexical: 0.12.0
+
+  '@lexical/selection@0.12.0':
+    resolution: {integrity: sha512-0JpwYHwQ3wTsP98hR9xbx7GhWayERQ7rOvzmPOim7FRXQHEdqzxek5imxwyCPL4cTgHY5y+zrnCXluLeSLd57Q==}
+    peerDependencies:
+      lexical: 0.12.0
+
+  '@lexical/table@0.12.0':
+    resolution: {integrity: sha512-YVPuHJdE7yTi0vqzYiL6tjLy9aOixiSuGu+Tv4ohqpz4RMlG8ewoOrHy8losUdA26YHGPLGxwMN6QmtpW/8iPg==}
+    peerDependencies:
+      lexical: 0.12.0
+
+  '@lexical/text@0.12.0':
+    resolution: {integrity: sha512-kem90E1R+anQBePR/3KzUtmBgkmtmjTfSuozCfRbKR7otivciGPek4pc+J3MvqW0UVLCnDfptWSoj4+YRz1BRA==}
+    peerDependencies:
+      lexical: 0.12.0
+
+  '@lexical/utils@0.12.0':
+    resolution: {integrity: sha512-ESAKn4GsSUyBXbebSWT0ZoSrLQ5RRdGXh3MERENystbr33cwSVZ1NEzHnQAy6KxCUZVuuFjUusQo7T/qQzLFYw==}
+    peerDependencies:
+      lexical: 0.12.0
+
+  '@lexical/yjs@0.12.0':
+    resolution: {integrity: sha512-3dV2GuBERiZPjSA5VyYIAAGQ0bVeihYsEBEF52SMwRanM9uqhUIHWMK808e8xDbk406dIIx8CSP2AUMaPW2lRg==}
+    peerDependencies:
+      lexical: 0.12.0
+      yjs: '>=13.5.22'
+
   '@next/env@15.1.4':
     resolution: {integrity: sha512-2fZ5YZjedi5AGaeoaC0B20zGntEHRhi2SdWcu61i48BllODcAmmtj8n7YarSPt4DaTsJaBFdxQAVEVzgmx2Zpw==}
 
@@ -983,6 +1144,9 @@ packages:
     resolution: {integrity: sha512-Ky+BVzPz8pL6PQxHqNRW1k3mIyv933LML7HktS8uik0bUXNCdPhoS/kLihiO1tMf/egaJb4IutXd7UywvXEW+g==}
     engines: {node: '>=18'}
     hasBin: true
+
+  '@popperjs/core@2.11.8':
+    resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
 
   '@radix-ui/colors@3.0.0':
     resolution: {integrity: sha512-FUOsGBkHrYJwCSEtWRCIfQbZG7q1e6DgxCIOe1SUQzDe/7rXXeA47s8yCn6fuTNQAj1Zq4oTFi9Yjp3wzElcxg==}
@@ -1573,26 +1737,53 @@ packages:
       '@types/react-dom':
         optional: true
 
+  '@react-spring/animated@9.4.5':
+    resolution: {integrity: sha512-KWqrtvJSMx6Fj9nMJkhTwM9r6LIriExDRV6YHZV9HKQsaolUFppgkOXpC+rsL1JEtEvKv6EkLLmSqHTnuYjiIA==}
+    peerDependencies:
+      react: ^16.8.0  || >=17.0.0 || >=18.0.0
+
   '@react-spring/animated@9.7.5':
     resolution: {integrity: sha512-Tqrwz7pIlsSDITzxoLS3n/v/YCUHQdOIKtOJf4yL6kYVSDTSmVK1LI1Q3M/uu2Sx4X3pIWF3xLUhlsA6SPNTNg==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
+
+  '@react-spring/core@9.4.5':
+    resolution: {integrity: sha512-83u3FzfQmGMJFwZLAJSwF24/ZJctwUkWtyPD7KYtNagrFeQKUH1I05ZuhmCmqW+2w1KDW1SFWQ43RawqfXKiiQ==}
+    peerDependencies:
+      react: ^16.8.0  || >=17.0.0 || >=18.0.0
 
   '@react-spring/core@9.7.5':
     resolution: {integrity: sha512-rmEqcxRcu7dWh7MnCcMXLvrf6/SDlSokLaLTxiPlAYi11nN3B5oiCUAblO72o+9z/87j2uzxa2Inm8UbLjXA+w==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
+  '@react-spring/rafz@9.4.5':
+    resolution: {integrity: sha512-swGsutMwvnoyTRxvqhfJBtGM8Ipx6ks0RkIpNX9F/U7XmyPvBMGd3GgX/mqxZUpdlsuI1zr/jiYw+GXZxAlLcQ==}
+
   '@react-spring/rafz@9.7.5':
     resolution: {integrity: sha512-5ZenDQMC48wjUzPAm1EtwQ5Ot3bLIAwwqP2w2owG5KoNdNHpEJV263nGhCeKKmuA3vG2zLLOdu3or6kuDjA6Aw==}
+
+  '@react-spring/shared@9.4.5':
+    resolution: {integrity: sha512-JhMh3nFKsqyag0KM5IIM8BQANGscTdd0mMv3BXsUiMZrcjQTskyfnv5qxEeGWbJGGar52qr5kHuBHtCjQOzniA==}
+    peerDependencies:
+      react: ^16.8.0  || >=17.0.0 || >=18.0.0
 
   '@react-spring/shared@9.7.5':
     resolution: {integrity: sha512-wdtoJrhUeeyD/PP/zo+np2s1Z820Ohr/BbuVYv+3dVLW7WctoiN7std8rISoYoHpUXtbkpesSKuPIw/6U1w1Pw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
+  '@react-spring/types@9.4.5':
+    resolution: {integrity: sha512-mpRIamoHwql0ogxEUh9yr4TP0xU5CWyZxVQeccGkHHF8kPMErtDXJlxyo0lj+telRF35XNihtPTWoflqtyARmg==}
+
   '@react-spring/types@9.7.5':
     resolution: {integrity: sha512-HVj7LrZ4ReHWBimBvu2SKND3cDVUPWKLqRTmWe/fNY6o1owGOX0cAHbdPDTMelgBlVbrTKrre6lFkhqGZErK/g==}
+
+  '@react-spring/web@9.4.5':
+    resolution: {integrity: sha512-NGAkOtKmOzDEctL7MzRlQGv24sRce++0xAY7KlcxmeVkR7LRSGkoXHaIfm9ObzxPMcPHQYQhf3+X9jepIFNHQA==}
+    peerDependencies:
+      react: ^16.8.0  || >=17.0.0 || >=18.0.0
+      react-dom: ^16.8.0  || >=17.0.0 || >=18.0.0
 
   '@react-spring/web@9.7.5':
     resolution: {integrity: sha512-lmvqGwpe+CSttsWNZVr+Dg62adtKhauGwLyGE/RRyZ8AAMLgb9x3NDMA5RMElXo+IMyTkPp7nxTB8ZQlmhb6JQ==}
@@ -1701,6 +1892,51 @@ packages:
   '@rushstack/eslint-patch@1.10.4':
     resolution: {integrity: sha512-WJgX9nzTqknM393q1QJDJmoW28kUfEnybeTfVNcNAPnIx210RXm2DiXiHzfNPJNIUUb1tJnz/l4QGtJ30PgWmA==}
 
+  '@styled-system/background@5.1.2':
+    resolution: {integrity: sha512-jtwH2C/U6ssuGSvwTN3ri/IyjdHb8W9X/g8Y0JLcrH02G+BW3OS8kZdHphF1/YyRklnrKrBT2ngwGUK6aqqV3A==}
+
+  '@styled-system/border@5.1.5':
+    resolution: {integrity: sha512-JvddhNrnhGigtzWRCVuAHepniyVi6hBlimxWDVAdcTuk7aRn9BYJUwfHslURtwYFsF5FoEs8Zmr1oZq2M1AP0A==}
+
+  '@styled-system/color@5.1.2':
+    resolution: {integrity: sha512-1kCkeKDZkt4GYkuFNKc7vJQMcOmTl3bJY3YBUs7fCNM6mMYJeT1pViQ2LwBSBJytj3AB0o4IdLBoepgSgGl5MA==}
+
+  '@styled-system/core@5.1.2':
+    resolution: {integrity: sha512-XclBDdNIy7OPOsN4HBsawG2eiWfCcuFt6gxKn1x4QfMIgeO6TOlA2pZZ5GWZtIhCUqEPTgIBta6JXsGyCkLBYw==}
+
+  '@styled-system/css@5.1.5':
+    resolution: {integrity: sha512-XkORZdS5kypzcBotAMPBoeckDs9aSZVkvrAlq5K3xP8IMAUek+x2O4NtwoSgkYkWWzVBu6DGdFZLR790QWGG+A==}
+
+  '@styled-system/flexbox@5.1.2':
+    resolution: {integrity: sha512-6hHV52+eUk654Y1J2v77B8iLeBNtc+SA3R4necsu2VVinSD7+XY5PCCEzBFaWs42dtOEDIa2lMrgL0YBC01mDQ==}
+
+  '@styled-system/grid@5.1.2':
+    resolution: {integrity: sha512-K3YiV1KyHHzgdNuNlaw8oW2ktMuGga99o1e/NAfTEi5Zsa7JXxzwEnVSDSBdJC+z6R8WYTCYRQC6bkVFcvdTeg==}
+
+  '@styled-system/layout@5.1.2':
+    resolution: {integrity: sha512-wUhkMBqSeacPFhoE9S6UF3fsMEKFv91gF4AdDWp0Aym1yeMPpqz9l9qS/6vjSsDPF7zOb5cOKC3tcKKOMuDCPw==}
+
+  '@styled-system/position@5.1.2':
+    resolution: {integrity: sha512-60IZfMXEOOZe3l1mCu6sj/2NAyUmES2kR9Kzp7s2D3P4qKsZWxD1Se1+wJvevb+1TP+ZMkGPEYYXRyU8M1aF5A==}
+
+  '@styled-system/shadow@5.1.2':
+    resolution: {integrity: sha512-wqniqYb7XuZM7K7C0d1Euxc4eGtqEe/lvM0WjuAFsQVImiq6KGT7s7is+0bNI8O4Dwg27jyu4Lfqo/oIQXNzAg==}
+
+  '@styled-system/should-forward-prop@5.1.5':
+    resolution: {integrity: sha512-+rPRomgCGYnUIaFabDoOgpSDc4UUJ1KsmlnzcEp0tu5lFrBQKgZclSo18Z1URhaZm7a6agGtS5Xif7tuC2s52Q==}
+
+  '@styled-system/space@5.1.2':
+    resolution: {integrity: sha512-+zzYpR8uvfhcAbaPXhH8QgDAV//flxqxSjHiS9cDFQQUSznXMQmxJegbhcdEF7/eNnJgHeIXv1jmny78kipgBA==}
+
+  '@styled-system/theme-get@5.1.2':
+    resolution: {integrity: sha512-afAYdRqrKfNIbVgmn/2Qet1HabxmpRnzhFwttbGr6F/mJ4RDS/Cmn+KHwHvNXangQsWw/5TfjpWV+rgcqqIcJQ==}
+
+  '@styled-system/typography@5.1.2':
+    resolution: {integrity: sha512-BxbVUnN8N7hJ4aaPOd7wEsudeT7CxarR+2hns8XCX1zp0DFfbWw4xYa/olA0oQaqx7F1hzDg+eRaGzAJbF+jOg==}
+
+  '@styled-system/variant@5.1.5':
+    resolution: {integrity: sha512-Yn8hXAFoWIro8+Q5J8YJd/mP85Teiut3fsGVR9CAxwgNfIAiqlYxsk5iHU7VHJks/0KjL4ATSjmbtCDC/4l1qw==}
+
   '@swc/counter@0.1.3':
     resolution: {integrity: sha512-e2BR4lsJkkRlKZ/qCHPw9ZaSxc0MVUd7gtbtaB7aMvHeJVYe8sOB8DBZkP2DtISHGSku9sCK6T6cnY0CtXrOCQ==}
 
@@ -1726,12 +1962,648 @@ packages:
       '@types/react-dom':
         optional: true
 
+  '@twilio-alpha/assistants-react@0.0.1':
+    resolution: {integrity: sha512-nykQe8V4WtLN27Wi3Y6V/AhXxEIrV4NIkIjeD3owxokaVinETnnfawey5YdFs19+hKeYqfmJAzr/hrSdnK7Z2Q==}
+    peerDependencies:
+      react: '>=18'
+
+  '@twilio-alpha/assistants@0.0.1':
+    resolution: {integrity: sha512-BRH5niyAmTwSHHYriEd7f79K1olgTGG3r8AyhcvPNnng0eTLMhRp7a88v2zhgXH1b0a+e7m+i1CPwTVz9LRjiA==}
+    peerDependencies:
+      '@twilio/conversations': ^2.5.0
+
+  '@twilio-paste/anchor@12.1.1':
+    resolution: {integrity: sha512-xHyQITIEvgvfldi1mRszdlfCHYhjINvxcwiSAAj7o/9U9dvBpOW+6fpgvyMvFdZFFOR96WqaK8dGhjt2ZtCKCQ==}
+    peerDependencies:
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/box': ^10.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/icons': ^12.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@twilio-paste/uid-library': ^2.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/animation-library@2.0.0':
+    resolution: {integrity: sha512-onTqvy2TSDxLwHrAVvovUTB2z5PF/UnJkEc5FBh/XWt9mHsk7l7GDe6c6MEFQUckTGEvPGTdknE31NaqNV19eA==}
+    peerDependencies:
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/avatar@9.1.0':
+    resolution: {integrity: sha512-EsDewbIaKTjvU8QqxgvF1JxeXh5GQl48mrTyBX9rT5zmDv2M3vX/HKwkNBQ4bVFTz08kkqIeVav5m2Kj8Sshbw==}
+    peerDependencies:
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/box': ^10.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/icons': ^12.0.0
+      '@twilio-paste/stack': ^8.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/text': ^10.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@twilio-paste/uid-library': ^2.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/badge@8.4.0':
+    resolution: {integrity: sha512-svHMMZxJMnlc526e1+rTcwc4T4NpSUE1e7H4EQIm+t0ud7bgZTRBqD9XgfBFBlZMHnlg8m8/HjUztxFOZ+I9XA==}
+    peerDependencies:
+      '@twilio-paste/anchor': ^12.0.0
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/box': ^10.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/icons': ^12.0.0
+      '@twilio-paste/spinner': ^14.0.0
+      '@twilio-paste/stack': ^8.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@twilio-paste/uid-library': ^2.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/box@10.4.0':
+    resolution: {integrity: sha512-oi6gKQLoDiTfzPT0mCso17X7bEFgtt0sexaTCJ8Q1nS6o+Be1vIdumb7HYtSPPQzljfLd2P1bFhSrRDvKFkXWQ==}
+    peerDependencies:
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/button@14.1.2':
+    resolution: {integrity: sha512-dqYNLJxOUqPwd1XuuEEg6d8GtjXob7s5gMZtCTsPhHJ9UNpsRpNtFQFGanzD7ZVqw1Me1UCehtMIpn2rkIOqyQ==}
+    peerDependencies:
+      '@twilio-paste/anchor': ^12.0.0
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/box': ^10.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/icons': ^12.0.0
+      '@twilio-paste/spinner': ^14.0.0
+      '@twilio-paste/stack': ^8.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@twilio-paste/uid-library': ^2.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/chat-composer@5.2.1':
+    resolution: {integrity: sha512-GEklmNB/00/ZZ/050Qu0h2ZO+ozRD3kyUy3VbsIRjnviXS9pSuL9qmJaECBhQYmyaGbEUV7YTIft7eyKwsdjBw==}
+    peerDependencies:
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/box': ^10.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/lexical-library': ^4.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^17.0.2 || ^18.0.0
+      react-dom: ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/chat-log@5.2.1':
+    resolution: {integrity: sha512-0178ZzNgkS/a4FpOqVetmf5cS4Zs94b/l2w0koh82Y7kkc80bQL/DgkmUhCTrn/V+AplvL9eUDaQ0vcaaLFwGg==}
+    peerDependencies:
+      '@twilio-paste/anchor': ^12.0.0
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/box': ^10.0.0
+      '@twilio-paste/button': ^14.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/icons': ^12.0.0
+      '@twilio-paste/media-object': ^10.0.0
+      '@twilio-paste/screen-reader-only': ^13.0.0
+      '@twilio-paste/spinner': ^14.0.0
+      '@twilio-paste/stack': ^8.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/text': ^10.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/truncate': ^14.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@twilio-paste/uid-library': ^2.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/color-contrast-utils@5.0.0':
+    resolution: {integrity: sha512-XRhGtZJeAzPkxbNAZYOTVYjmeboH+QvsuY3+Ihgf49N1im4DPaNLMpo+tsBWj+NYHMLLw+b6A9pR75jUU2prQg==}
+    peerDependencies:
+      '@twilio-paste/design-tokens': ^10.0.0
+
+  '@twilio-paste/customization@8.2.0':
+    resolution: {integrity: sha512-lwV+MkPzW6a57IJHEj3E4Wf2r34EmHFaGl+YkvVOJnigMxJ9t7DcxggcFDtgT0seucaSJmp0sdULfo05urxeAQ==}
+    peerDependencies:
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/design-tokens@10.11.1':
+    resolution: {integrity: sha512-EnV0mAj8rUC+UBVBNA1RShSqksM087A0CD/kcJkfYJcK7Dki2QpgwqwAW/dXGW6o9YsJ430U064A2mH0lP2V6w==}
+
+  '@twilio-paste/flex@8.1.0':
+    resolution: {integrity: sha512-44KKKre+NtlNVGtAuwM6Bc+kPGcqWcDGI02RWP0n/1jM70ERlIlqS5uEV92m/Y+4oPdJ4WjX5F2EIdtJSJV0uw==}
+    peerDependencies:
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/box': ^10.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/form@11.1.1':
+    resolution: {integrity: sha512-QkIGCchA9EPua2adnOx/he87vuR6PrieZMjTHG49Jl8IVczJSv0RUTB8s6NGOmyEBoGZYpO1y52iim3fXwe91w==}
+    peerDependencies:
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/box': ^10.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/heading': ^11.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/text': ^10.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@twilio-paste/uid-library': ^2.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/heading@11.1.2':
+    resolution: {integrity: sha512-Lmv5AK/Eg11IMzuofbwxwlVPxtvCM/CBhsnyf/6YIzxGYkTpBm31TMZASLKf3TBHv0+uNZO7JFIZi9jSLZwqQQ==}
+    peerDependencies:
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/text': ^10.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/icons@12.8.0':
+    resolution: {integrity: sha512-ItEh3IbsI4CRUtH/FjFknqKpIrQlWVJ5RVYz3ZfC84/sqwjHLoPfF0PMkmzj+39aDVmPMTYnkdlcXrZl53X+WQ==}
+    peerDependencies:
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/box': ^10.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@twilio-paste/uid-library': ^2.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/input-box@10.1.1':
+    resolution: {integrity: sha512-opYWQxVgopT70HLWdEwtGVM4GfSpqkPZXPLoEPorxt5BRWkXwrsAWGrJIi+IGOZ7hjvSLo2artgH8z2elq1qpg==}
+    peerDependencies:
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/box': ^10.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@twilio-paste/uid-library': ^2.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/input@9.1.3':
+    resolution: {integrity: sha512-V4zrrhRRq3a+jdo6fnmZroGRqwCXTRGcL2aCSHwaNHeZkk/NZgKeeam6qlNIAMRKA+X03l58Q2m7/5GDFtYWgg==}
+    peerDependencies:
+      '@twilio-paste/anchor': ^12.0.0
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/box': ^10.0.0
+      '@twilio-paste/button': ^14.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/icons': ^12.0.0
+      '@twilio-paste/input-box': ^10.0.0
+      '@twilio-paste/spinner': ^14.0.0
+      '@twilio-paste/stack': ^8.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@twilio-paste/uid-library': ^2.0.0
+      '@twilio-paste/utils': ^5.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/lexical-library@4.3.0':
+    resolution: {integrity: sha512-vJDG5ovuOg6zg2bbNJaAcsiDEac4MssaMzozlms1kS+tC/oDWIVuUlatMf7/HOkZj7snY4QswwhPGyQnsGdnHQ==}
+    peerDependencies:
+      react: ^17.0.2 || ^18.0.0
+      react-dom: ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/media-object@10.1.0':
+    resolution: {integrity: sha512-3LdgMkDJtvfzUQxGi+dHjLoMksSisCvcC9AFCLhFARfvbJ6uqWNavdV06u0IffQoYlKnQlxBbcfYQpi8KLHEAA==}
+    peerDependencies:
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/box': ^10.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/menu-primitive@2.1.1':
+    resolution: {integrity: sha512-iPC4ij7EKIlAAU+T/hDaW74154YfKyARe335TbAeUO2a5n3u40fW4p41zKSTyQ4wUmEQx8sCbGwAqM7yjztQPw==}
+    peerDependencies:
+      '@twilio-paste/reakit-library': ^2.0.0
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/menu@14.1.3':
+    resolution: {integrity: sha512-1oKXMH8vnu90mKYxytt6e9RW89dp6ZoiLsSzQvE85mZuxbD42yCd19DLDgCJCJ0lLWssXtfTU4JiP6JSw+Z23A==}
+    peerDependencies:
+      '@twilio-paste/anchor': ^12.0.0
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/badge': ^8.0.0
+      '@twilio-paste/box': ^10.0.0
+      '@twilio-paste/button': ^14.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/icons': ^12.0.0
+      '@twilio-paste/media-object': ^10.0.0
+      '@twilio-paste/menu-primitive': ^2.0.0
+      '@twilio-paste/reakit-library': ^2.0.0
+      '@twilio-paste/screen-reader-only': ^13.0.0
+      '@twilio-paste/separator': ^8.0.0
+      '@twilio-paste/spinner': ^14.0.0
+      '@twilio-paste/stack': ^8.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/text': ^10.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@twilio-paste/uid-library': ^2.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/minimizable-dialog@4.1.1':
+    resolution: {integrity: sha512-yQPsg+cD9tA8MUcaOCaoV3JIr0pGm4PSmKSicZZ/WjN0eyeAgZd3decys/xF2MzQ79wjPu/9ayxTG32PXFBCRQ==}
+    peerDependencies:
+      '@twilio-paste/anchor': ^12.0.0
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/box': ^10.0.0
+      '@twilio-paste/button': ^14.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/icons': ^12.0.0
+      '@twilio-paste/non-modal-dialog-primitive': ^2.0.0
+      '@twilio-paste/reakit-library': ^2.0.0
+      '@twilio-paste/screen-reader-only': ^13.0.0
+      '@twilio-paste/spinner': ^14.0.0
+      '@twilio-paste/stack': ^8.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@twilio-paste/uid-library': ^2.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/non-modal-dialog-primitive@2.0.2':
+    resolution: {integrity: sha512-3acthXoyLrj9Q7WwK5OPkDvdP7N3pe1ifwjVb0dLh+R5XMvDO+AxLsmnC9mLdrq8Jcck/nnIO801NzcpnDqUOg==}
+    peerDependencies:
+      '@twilio-paste/reakit-library': ^2.0.0
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/paste-reakit-fork@1.4.1':
+    resolution: {integrity: sha512-H8Gue/TgAzn2ZL6nZTiBm//ACne1ttYIZ6GmtDTG55gOB3now8zVxUktpKxE2A+bcLLEVaPG4cYBWZ8EE5tjbw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+
+  '@twilio-paste/reakit-library@2.1.1':
+    resolution: {integrity: sha512-ROzuNuHt767LoO2oos2jhmba1YFrlf60L8BNNeY44TmiqsUpjljFKve6mcaF9bS5mNXKi4Z18xORA/edKJIR7w==}
+    peerDependencies:
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/screen-reader-only@13.1.1':
+    resolution: {integrity: sha512-h8PBF8x2nJ10QKhaj05hGqLC1397ZYXhPKESgKfDDlSCV+KoGn3pu+5bAo1pNtPQGhDK+/TdUmGYe2814hDMPg==}
+    peerDependencies:
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/box': ^10.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/icons': ^12.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@twilio-paste/uid-library': ^2.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/separator@8.1.1':
+    resolution: {integrity: sha512-oRgJFxP7u4Py1du1xqEMj0kzgfLucEMyiToIBx33Buedxn0QGCeZqCQ3J75ax+3fPQKoMwDYFCFs3AIXh8dFSw==}
+    peerDependencies:
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/box': ^10.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/skeleton-loader@6.1.1':
+    resolution: {integrity: sha512-TTkPfC6UtUrkCD0MjPt1fnoCvxy7tni4L0QLgl8wPu6yQTtQTCgPA4M8XQYXjh63jW8ybLI2hZFTllIv2AXu9Q==}
+    peerDependencies:
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/box': ^10.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/spinner@14.1.2':
+    resolution: {integrity: sha512-dM2UtDrt4UeXB8Mp3gewpOxtDBS3FHSg7nzG5CFzO97xe5iuFBxlMcstHiGVwN96JPnHuXoZYjrhWQt3Mie1ew==}
+    peerDependencies:
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/box': ^10.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/icons': ^12.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@twilio-paste/uid-library': ^2.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/stack@8.1.0':
+    resolution: {integrity: sha512-/Vb6sCGY0vEc2j1C7GJ1NDY/3NFvVJMkaLGk7y2t9k7bg1HOnufvBwPfEffRnp3KTngAb2UNOL9iL5/PNaCOig==}
+    peerDependencies:
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/box': ^10.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@twilio-paste/uid-library': ^2.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/status@2.2.0':
+    resolution: {integrity: sha512-QLZbh1GTr9elXyetuJyzWZxqEHclsfca48ZTSfjF5mZSBls9j7ENU3dsB4L717i6RmOcozgyfZJIoe3nzbyw+w==}
+    peerDependencies:
+      '@twilio-paste/anchor': ^12.0.0
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/badge': ^8.0.0
+      '@twilio-paste/box': ^10.0.0
+      '@twilio-paste/button': ^14.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/icons': ^12.0.0
+      '@twilio-paste/media-object': ^10.0.0
+      '@twilio-paste/menu': ^14.0.0
+      '@twilio-paste/menu-primitive': ^2.0.0
+      '@twilio-paste/reakit-library': ^2.0.0
+      '@twilio-paste/screen-reader-only': ^13.0.0
+      '@twilio-paste/separator': ^8.0.0
+      '@twilio-paste/spinner': ^14.0.0
+      '@twilio-paste/stack': ^8.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/text': ^10.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@twilio-paste/uid-library': ^2.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/style-props@9.1.1':
+    resolution: {integrity: sha512-kIMOI3Hip173WBFA+au0s/FPztUlbrdkZCKmu0ILQzfmRxKD4I/3gDuncSwj2gpeFaDBCGabavLpAlR5+CLZCw==}
+    peerDependencies:
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/styling-library@3.0.0':
+    resolution: {integrity: sha512-qFvsSuLKhcBJv1vp8zuNvBJSDKZjxQ4BHOFCPanmwxYNMdND957Mkyze7ZlZxofukAIuxTB0+3k26YP8q36kZg==}
+    peerDependencies:
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/text@10.1.1':
+    resolution: {integrity: sha512-NxsDSQrBs1KI6lmd0tLhUKz06ikVsvmvf1L9TLNydv/+yO+zo+bJ8gWMO1FokhdKYe/OOlGW+6o4YGAYBBzbMQ==}
+    peerDependencies:
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/theme@11.1.1':
+    resolution: {integrity: sha512-wS/Gbjv5Nz9MQ3fMQB8bU1YCFUkCZW+PWYyfolKy+Tti305TcG9eqX149rvhzri5AWVuy+euQNN3IotuJanQBQ==}
+    peerDependencies:
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/truncate@14.1.1':
+    resolution: {integrity: sha512-Crb/R4Gv05z6s/eW1aaDADyj/7iJ+Fqb7pMmfpK7Q+CXnuq/7Olzeaj8S/8cFNqEAiDawh83/cbsDvdSplvN7A==}
+    peerDependencies:
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/box': ^10.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/customization': ^8.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/icons': ^12.0.0
+      '@twilio-paste/style-props': ^9.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@twilio-paste/uid-library': ^2.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/types@6.0.0':
+    resolution: {integrity: sha512-9CcG6H6YSVz4EEvkIjpjixvDCSM5gHChIQFhZAssDajV5dFGAza8Spp3yVtjticggYtJwcm0aucfMDwBnzc1xg==}
+    peerDependencies:
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/uid-library@2.0.0':
+    resolution: {integrity: sha512-dD1uS3CoWg5nQB/MQCk9u8UCIT1Xg5ej8f1geeEdLoM/8lTBCXCG+xhUMTr8tOx9GxdlupY9C2GFLxCeXAc1+w==}
+    peerDependencies:
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio-paste/utils@5.0.0':
+    resolution: {integrity: sha512-dEWYM4wDi6kHlWIYgEz6CHkVNNl/fVBrc1CLyXF6GAeeIae/y8Y0b+3jSn/utNaaJzKMlRE/iObvrxB0alNwgA==}
+    peerDependencies:
+      '@twilio-paste/animation-library': ^2.0.0
+      '@twilio-paste/color-contrast-utils': ^5.0.0
+      '@twilio-paste/design-tokens': ^10.0.0
+      '@twilio-paste/styling-library': ^3.0.0
+      '@twilio-paste/theme': ^11.0.0
+      '@twilio-paste/types': ^6.0.0
+      '@types/react': ^16.8.6 || ^17.0.2 || ^18.0.27
+      '@types/react-dom': ^16.8.6 || ^17.0.2 || ^18.0.10
+      react: ^16.8.6 || ^17.0.2 || ^18.0.0
+      react-dom: ^16.8.6 || ^17.0.2 || ^18.0.0
+
+  '@twilio/conversations@2.6.0':
+    resolution: {integrity: sha512-LRI1CS+4dThzOwUqemw412D0Imw3qTpM7W0nC+GW11LhTeLjibrviySEoLl3l0P0625sjAM0VCrlBScQbmkR0w==}
+    engines: {node: '>=14'}
+
   '@twilio/declarative-type-validator@0.1.11':
     resolution: {integrity: sha512-yRAMLPD8j3k67UFvPeZvfTlKYuceiNq+iZ8a/ADzAbZMeaV0FMvsJmG97MH8yN/VdXY9hcscchsnc99bJ1sClw==}
     engines: {node: '>=14'}
 
   '@twilio/declarative-type-validator@0.2.8':
     resolution: {integrity: sha512-leKswApxym29V1H2p8qIrvLR7g8yAUOVOVUBgIKk49bpRdHnQSIjA5zLfZXBFjwsd6Sd3UdEswL4neDjMe/nbg==}
+    engines: {node: '>=14'}
+
+  '@twilio/deprecation-decorator@0.2.6':
+    resolution: {integrity: sha512-U/S+/dVwE+xuyiD8qhfO8cs0js1u/nU2SmAfM/Z4Fl7mSMU8u3Sp8bn7MOFU9GdAw55V3mvJY4RZeFwum1I5nQ==}
+    engines: {node: '>=14'}
+
+  '@twilio/mcs-client@0.6.8':
+    resolution: {integrity: sha512-qNivLopm9U619ReH+nqN2gE5p9a8ZFmldkOV4a716h+QR0nlusiDPUmeSAPmVin3jfURwQHLpFJ8DwV29dv4fQ==}
+    engines: {node: '>=14'}
+
+  '@twilio/notifications@2.0.7':
+    resolution: {integrity: sha512-uuwikPCb4EesJwS9OedjR85DM6ddtUvpR0McQM21X06AtXTkA8CYdqH3OqM7wQxHgGPvBw859LpHJIJAPxegfw==}
     engines: {node: '>=14'}
 
   '@twilio/operation-retrier@4.0.16':
@@ -1790,17 +2662,32 @@ packages:
   '@types/d3-time@3.0.4':
     resolution: {integrity: sha512-yuzZug1nkAAaBlBBikKZTgzCeA+k1uy4ZFwWANOfKw5z5LRhV0gNA7gNkKm7HoK+HRN0wX3EkxGk0fpbWhmB7g==}
 
+  '@types/debug@4.1.12':
+    resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
+
+  '@types/estree-jsx@1.0.5':
+    resolution: {integrity: sha512-52CcUVNFyfb1A2ALocQw/Dd1BQFNmSdkuC3BkZ6iqhdMfQz7JWOFRuJFloOzjk+6WijU56m9oKXFAXc7o3Towg==}
+
   '@types/estree@1.0.6':
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
 
   '@types/google-libphonenumber@7.4.30':
     resolution: {integrity: sha512-Td1X1ayRxePEm6/jPHUBs2tT6TzW1lrVB6ZX7ViPGellyzO/0xMNi+wx5nH6jEitjznq276VGIqjK5qAju0XVw==}
 
+  '@types/hast@3.0.4':
+    resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
+
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
+
+  '@types/mdast@4.0.4':
+    resolution: {integrity: sha512-kGaNbPh1k7AFzgpud/gMdvIm5xuECykRR+JnWKQno9TAXVa6WIVCGTPvYGekIDL4uwCZQSYbUxNBSb1aUo79oA==}
+
+  '@types/ms@2.1.0':
+    resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
 
   '@types/node@22.10.6':
     resolution: {integrity: sha512-qNiuwC4ZDAUNcY47xgaSuS92cjf8JbSUoaKS77bmLG1rU7MlATVSiw/IlrjtIyyskXBZ8KkNfjK/P5na7rgXbQ==}
@@ -1816,6 +2703,9 @@ packages:
     peerDependencies:
       '@types/react': ^19.0.0
 
+  '@types/react-is@17.0.3':
+    resolution: {integrity: sha512-aBTIWg1emtu95bLTLx0cpkxwGW3ueZv71nE2YFBpL8k/z5czEW8yYpOo8Dp+UUAFAtKwNaOsh/ioSeQnWlZcfw==}
+
   '@types/react-transition-group@4.4.12':
     resolution: {integrity: sha512-8TV6R3h2j7a91c+1DXdJi3Syo69zzIZbz7Lg5tORM5LEJG7X/E6a1V3drRyBRZq7/utz7A+c4OgYLiLcYGHG6w==}
     peerDependencies:
@@ -1823,6 +2713,24 @@ packages:
 
   '@types/react@19.0.7':
     resolution: {integrity: sha512-MoFsEJKkAtZCrC1r6CM8U22GzhG7u2Wir8ons/aCKH6MBdD1ibV24zOSSkdZVUKqN5i396zG5VKLYZ3yaUZdLA==}
+
+  '@types/styled-system@5.1.9':
+    resolution: {integrity: sha512-QlWv6tmQV8dqk8s+LSLb9QAtmuQEnfv4f8lKKZkMgDqRFVmxJDBwEw0u4zhpxp56u0hdR+TCIk9dGfOw3TkCoQ==}
+
+  '@types/styled-system__css@5.0.17':
+    resolution: {integrity: sha512-QF67UqeDdigjurmckNPCwkYjZriX270ghPiA6f3GqJG6jg7E4hcq7eGtdYh/DNivMz8sklBfT8y7r5brkCr7QA==}
+
+  '@types/styled-system__should-forward-prop@5.1.2':
+    resolution: {integrity: sha512-xHTA+qeTkKw8bJ7O7UxkzgTkVtlcEV0NbVlGkTZqHK/0YIGAPBcvHKs2y3811UeeHbkW9H/qfy7HtqwvAvwCSQ==}
+
+  '@types/styled-system__theme-get@5.0.2':
+    resolution: {integrity: sha512-tvGRyzADAn2qQ8Z/fw9YOBTL1EttDQ0zrmHq/N+/K/9tF1l2lsZ9334hls1zie32FCxjPJEhzzXVHxKwqXslog==}
+
+  '@types/unist@2.0.11':
+    resolution: {integrity: sha512-CmBKiL6NNo/OqgmMn95Fk9Whlp2mtvIv+KNpQKN2F4SjvrEesubTRWGYSg+BnWZOnlCaSTU1sMpsBOzgbYhnsA==}
+
+  '@types/unist@3.0.3':
+    resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
 
   '@typescript-eslint/eslint-plugin@8.18.1':
     resolution: {integrity: sha512-Ncvsq5CT3Gvh+uJG0Lwlho6suwDfUXH0HztslDf5I+F2wAFAZMRwYLEorumpKLzmO2suAXZ/td1tBg4NZIi9CQ==}
@@ -1870,6 +2778,9 @@ packages:
   '@typescript-eslint/visitor-keys@8.18.1':
     resolution: {integrity: sha512-Vj0WLm5/ZsD013YeUKn+K0y8p1M0jPpxOkKdbD1wB0ns53a5piVY02zjf072TblEweAbcYiFiPoSMF3kp+VhhQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@ungap/structured-clone@1.3.0':
+    resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
 
   '@vitejs/plugin-react@4.3.4':
     resolution: {integrity: sha512-SCCPBJtYLdE8PX/7ZQAs1QAZ8Jqwih+0VBLum1EGqmCCQal+MIUqLCzj3ZUy8ufbC0cAM4LRlSTm7IQJwWT4ug==}
@@ -2042,12 +2953,18 @@ packages:
     resolution: {integrity: sha512-Cg7TFGpIr01vOQNODXOOaGz2NpCU5gl8x1qJFbb6hbZxR7XrcE2vtbAsTAbJ7/xwJtUuJEw8K8Zr/AE0LHlesg==}
     engines: {node: '>=10', npm: '>=6'}
 
+  bail@2.0.2:
+    resolution: {integrity: sha512-0xO6mYd7JB2YesxDKplafRpsiOzPt9V02ddPCLbY1xYGPOX24NTyN50qnUxgCPcSoYMhKpAuBTjQoRZCAkUDRw==}
+
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
 
   binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
     engines: {node: '>=8'}
+
+  body-scroll-lock@3.1.5:
+    resolution: {integrity: sha512-Yi1Xaml0EvNA0OYWxXiYNqY24AfWkbA6w5vxE7GWxtKfzIbZM+Qw+aSmkgsbWzbHiy/RCSkUZBplVxTA+E4jJg==}
 
   brace-expansion@1.1.11:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}
@@ -2102,6 +3019,9 @@ packages:
   caniuse-lite@1.0.30001690:
     resolution: {integrity: sha512-5ExiE3qQN6oF8Clf8ifIDcMRCRE/dMGcETG/XGMD8/XiXm6HXQgQTh1yZYLXXpSOsEUlJm1Xr7kGULZTuGtP/w==}
 
+  ccount@2.0.1:
+    resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
+
   chai@5.1.2:
     resolution: {integrity: sha512-aGtmf24DW6MLHHG5gCx4zaI3uBq3KRtxeVs0DjFH6Z0rDNbsvTxFASFvdj79pxjxZ8/5u3PIiN3IwEIQkiiuPw==}
     engines: {node: '>=12'}
@@ -2109,6 +3029,18 @@ packages:
   chalk@4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
+
+  character-entities-html4@2.1.0:
+    resolution: {integrity: sha512-1v7fgQRj6hnSwFpq1Eu0ynr/CDEw0rXo2B61qXrLNdHZmPKgb7fqS1a2JwF0rISo9q77jDI8VMEHoApn8qDoZA==}
+
+  character-entities-legacy@3.0.0:
+    resolution: {integrity: sha512-RpPp0asT/6ufRm//AJVwpViZbGM/MkjQFxJccQRHmISF/22NBtsHqAWmL+/pmkPWoIUJdWyeVleTl1wydHATVQ==}
+
+  character-entities@2.0.2:
+    resolution: {integrity: sha512-shx7oQ0Awen/BRIdkjkvz54PnEEI/EjwXDSIZp86/KKdbafHh1Df/RYGBhn4hbe2+uKC9FnT5UCEdyPz3ai9hQ==}
+
+  character-reference-invalid@2.0.1:
+    resolution: {integrity: sha512-iBZ4F4wRbyORVsu0jPV7gXkOsGYjGHPmAyv+HiHG8gi5PtC9KI2j1+v8/tlibRvjoWX027ypmG/n0HtO5t7unw==}
 
   check-error@2.1.1:
     resolution: {integrity: sha512-OAlb+T7V4Op9OwdkjmguYRqncdlx5JiofwOAUkmTF+jNdHwzTaTs4sRAGpzLF3oOz5xAyDGrPgeIDFQmDOTiJw==}
@@ -2131,15 +3063,27 @@ packages:
     resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
     engines: {node: '>=6'}
 
+  color-combos@1.0.12:
+    resolution: {integrity: sha512-XdjOp4KYIBhOY3TqW+eMmOoNxiRufwre41YkUdEkk/9WGlY76RvPWK04FL7ig208ACvj4MCHIB8GrURyljdp4g==}
+
+  color-convert@1.9.3:
+    resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
+
   color-convert@2.0.1:
     resolution: {integrity: sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==}
     engines: {node: '>=7.0.0'}
+
+  color-name@1.1.3:
+    resolution: {integrity: sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw==}
 
   color-name@1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
 
   color-string@1.9.1:
     resolution: {integrity: sha512-shrVawQFojnZv6xM40anx4CkoDP+fZsw/ZerEMsW/pyzsRbElpsL/DBVW7q3ExxwusdNXI3lXpuhEZkzs8p5Eg==}
+
+  color@3.1.3:
+    resolution: {integrity: sha512-xgXAcTHa2HeFCGLE9Xs/R82hujGtu9Jd9x4NW3T34+OMs7VoPsjwzRczKHvTAHeJwWFwX5j15+MgAppE8ztObQ==}
 
   color@4.2.3:
     resolution: {integrity: sha512-1rXeuUUiGGrykh+CeBdu5Ie7OJwinCgQY0bc7GCRxy5xVHy+moaqkpL/jqQq0MtQOeYcrqEz4abc5f0KtU7W4A==}
@@ -2148,6 +3092,9 @@ packages:
   combined-stream@1.0.8:
     resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==}
     engines: {node: '>= 0.8'}
+
+  comma-separated-tokens@2.0.3:
+    resolution: {integrity: sha512-Fu4hJdvzeylCfQPp9SGWidpzrMs7tTrlu6Vb8XGaRGck8QSNZJJp538Wrb60Lax4fPwR64ViY468OIUTbRlGZg==}
 
   commander@4.1.1:
     resolution: {integrity: sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==}
@@ -2194,6 +3141,12 @@ packages:
   cssstyle@4.2.1:
     resolution: {integrity: sha512-9+vem03dMXG7gDmZ62uqmRiMRNtinIZ9ZyuF6BdxzfOD+FdN5hretzynkn0ReS2DO2GSw76RWHs0UmJPI2zUjw==}
     engines: {node: '>=18'}
+
+  csstype@2.6.21:
+    resolution: {integrity: sha512-Z1PhmomIfypOpoMjRQB70jfvy/wxT50qW08YXO5lMIJkrdq4yOTR+AW7FqutScmB9NkLwxo+jU+kZLbofZZq/w==}
+
+  csstype@3.0.11:
+    resolution: {integrity: sha512-sa6P2wJ+CAbgyy4KFssIb/JNMLxFvKF1pCYCSXS8ZMuqZnMsrxqI2E5sPyoTpxoPU/gVZMzr2zjOfg8GIZOMsw==}
 
   csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
@@ -2305,12 +3258,19 @@ packages:
   decimal.js@10.4.3:
     resolution: {integrity: sha512-VBBaLc1MgL5XpzgIP7ny5Z6Nx3UrRkIViUkPUdtl9aya5amy3De1gsUUSB1g3+3sExYNjCAsAznmukyxCb1GRA==}
 
+  decode-named-character-reference@1.0.2:
+    resolution: {integrity: sha512-O8x12RzrUF8xyVcY0KJowWsmaJxQbmy0/EtnNtHRpsOcT7dFk5W598coHqBVpmWo1oQQfsCqfCmkZN5DJrZVdg==}
+
   deep-eql@5.0.2:
     resolution: {integrity: sha512-h5k/5U50IJJFpzfL6nO9jaaumfjO/f2NjK/oYB2Djzm4p9L+3T9qWpZqZ2hAbLPuuYq9wrU08WQyBTL5GbPk5Q==}
     engines: {node: '>=6'}
 
   deep-is@0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
+
+  deepmerge@4.2.2:
+    resolution: {integrity: sha512-FJ3UgI4gIl+PHZm53knsuSFpE+nESMr7M4v9QcgB7S63Kj/6WqMiFQJpBBYz1Pt+66bZpP3Q7Lye0Oo9MPKEdg==}
+    engines: {node: '>=0.10.0'}
 
   define-data-property@1.1.4:
     resolution: {integrity: sha512-rBMvIzlpA8v6E+SJZoo++HAYqsLrkg7MSfIinMPFhmkorw7X+dOXVJQs+QT69zGkzMyfDnIMN2Wid1+NbL3T+A==}
@@ -2337,6 +3297,9 @@ packages:
 
   detect-node-es@1.1.0:
     resolution: {integrity: sha512-ypdmJU/TbBby2Dxibuv7ZLW3Bs1QEmM7nHjEANfohJLvE0XVujisn1qPJcZxg+qDucsr+bP6fLD1rPS3AhJ7EQ==}
+
+  devlop@1.1.0:
+    resolution: {integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==}
 
   didyoumean@1.2.2:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==}
@@ -2552,6 +3515,9 @@ packages:
     resolution: {integrity: sha512-MMdARuVEQziNTeJD8DgMqmhwR11BRQ/cBP+pLtYdSTnf3MIO8fFeiINEbX36ZdNlfU/7A9f3gUw49B3oQsvwBA==}
     engines: {node: '>=4.0'}
 
+  estree-util-is-identifier-name@3.0.0:
+    resolution: {integrity: sha512-hFtqIDZTIUZ9BXLb8y4pYGyk6+wekIivNVTcmvk8NoOh+VeRn5y6cEHzbURrWbfp1fIqdVipilzj+lfaadNZmg==}
+
   estree-walker@3.0.3:
     resolution: {integrity: sha512-7RUKfXgSMMkzt6ZuXmqapOurLGPPfgj6l9uRZ7lRGolvk0y2yocc35LdcxKC5PQZdn2DMqioAQ2NoWcrTKmm6g==}
 
@@ -2559,9 +3525,16 @@ packages:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
     engines: {node: '>=0.10.0'}
 
+  events@3.3.0:
+    resolution: {integrity: sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==}
+    engines: {node: '>=0.8.x'}
+
   expect-type@1.1.0:
     resolution: {integrity: sha512-bFi65yM+xZgk+u/KRIpekdSYkTB5W1pEf0Lt8Q8Msh7b+eQ7LXVtIB1Bkm4fvclDEL1b2CZkMhv2mOeF8tMdkA==}
     engines: {node: '>=12.0.0'}
+
+  extend@3.0.2:
+    resolution: {integrity: sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==}
 
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
@@ -2620,6 +3593,10 @@ packages:
   foreground-child@3.3.0:
     resolution: {integrity: sha512-Ld2g8rrAyMYFXBhEqMz8ZAHBi4J4uS1i/CxGMDnjyFWddMXLVcDp051DZfu+t7+ab7Wv6SMqpWmyFIj5UbfFvg==}
     engines: {node: '>=14'}
+
+  form-data@2.5.2:
+    resolution: {integrity: sha512-GgwY0PS7DbXqajuGf4OYlsrIu3zgxD6Vvql43IBhm6MahqA5SK/7mwhtNj2AdH2z35YR34ujJ7BN+3fFC3jP5Q==}
+    engines: {node: '>= 0.12'}
 
   form-data@4.0.1:
     resolution: {integrity: sha512-tzN8e4TX8+kkxGPK8D5u0FNmjPUjw3lwC9lSLxxoB/+GtsJG91CO8bSWy73APlgAZzZbXEYZJuxjkHH2w+Ezhw==}
@@ -2735,12 +3712,21 @@ packages:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
 
+  hast-util-to-jsx-runtime@2.3.2:
+    resolution: {integrity: sha512-1ngXYb+V9UT5h+PxNRa1O1FYguZK/XL+gkeqvp7EdHlB9oHUG0eYRo/vY5inBdcqo3RkPMC58/H94HvkbfGdyg==}
+
+  hast-util-whitespace@3.0.0:
+    resolution: {integrity: sha512-88JUN06ipLwsnv+dVn+OIYOvAuvBMy/Qoi6O7mQHxdPXpjy+Cd6xRkWwux7DKO+4sYILtLBRIKgsdpS2gQc7qw==}
+
   hoist-non-react-statics@3.3.2:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
 
   html-encoding-sniffer@4.0.0:
     resolution: {integrity: sha512-Y22oTqIU4uuPgEemfz7NDJz6OeKf12Lsu+QC+s3BVpda64lTiMYCyGwg5ki4vFxkMwQdeZDl2adZoqUgdFuTgQ==}
     engines: {node: '>=18'}
+
+  html-url-attributes@3.0.1:
+    resolution: {integrity: sha512-ol6UPyBWqsrO6EJySPz2O7ZSr856WDrEzM5zMqp+FJJLGMW35cLYmmZnl0vztAZxRUoNZJFTCohfjuIJ8I4QBQ==}
 
   http-proxy-agent@7.0.2:
     resolution: {integrity: sha512-T1gkAiYYDWYx3V5Bmyu7HcfcvL7mUrTWiM6yOfa3PIphViJ/gFPbvidQ+veqSOHci/PxBcDabeUNCzpOODJZig==}
@@ -2770,6 +3756,9 @@ packages:
     resolution: {integrity: sha512-JmXMZ6wuvDmLiHEml9ykzqO6lwFbof0GG4IkcGaENdCRDDmMVnny7s5HsIgHCbaq0w2MyPhDqkhTUgS2LU2PHA==}
     engines: {node: '>=0.8.19'}
 
+  inline-style-parser@0.2.4:
+    resolution: {integrity: sha512-0aO8FkhNZlj/ZIbNi7Lxxr12obT7cL1moPfE4tg1LkX7LlLfC6DeX4l2ZEud1ukP9jNQyNnfzQVqwbwmAATY4Q==}
+
   internal-slot@1.1.0:
     resolution: {integrity: sha512-4gd7VpWNQNB4UKKCFFVcp1AVv+FMOgs9NKzjHKusc8jTMhd5eL1NqQqOpE0KzMds804/yHlglp3uxgluOqAPLw==}
     engines: {node: '>= 0.4'}
@@ -2780,6 +3769,12 @@ packages:
   internmap@2.0.3:
     resolution: {integrity: sha512-5Hh7Y1wQbvY5ooGgPbDaL5iYLAPzMTUrjMulskHLH6wnv/A+1q5rgEaiuqEjB+oxGXIVZs1FF+R/KPN3ZSQYYg==}
     engines: {node: '>=12'}
+
+  is-alphabetical@2.0.1:
+    resolution: {integrity: sha512-FWyyY60MeTNyeSRpkM2Iry0G9hpr7/9kD40mD/cGQEuilcZYS4okz8SN2Q6rLCJ8gbCt6fN+rC+6tMGS99LaxQ==}
+
+  is-alphanumerical@2.0.1:
+    resolution: {integrity: sha512-hmbYhX/9MUMF5uh7tOXyK/n0ZvWpad5caBA17GsC6vyuCqaWliRG5K1qS9inmUhEMaOBIW7/whAnSwveW/LtZw==}
 
   is-array-buffer@3.0.5:
     resolution: {integrity: sha512-DDfANUiiG2wC1qawP66qlTugJeL5HyzMpfr8lLK+jMQirGzNod0B12cFB/9q838Ru27sBwfw78/rdoU7RERz6A==}
@@ -2826,6 +3821,9 @@ packages:
     resolution: {integrity: sha512-PwwhEakHVKTdRNVOw+/Gyh0+MzlCl4R6qKvkhuvLtPMggI1WAHt9sOwZxQLSGpUaDnrdyDsomoRgNnCfKNSXXg==}
     engines: {node: '>= 0.4'}
 
+  is-decimal@2.0.1:
+    resolution: {integrity: sha512-AAB9hiomQs5DXWcRB1rqsxGUstbRroFOPPVAomNk/3XHR5JyEZChOyTWe2oayKnsSsr/kcGqF+z6yuH6HHpN0A==}
+
   is-extglob@2.1.1:
     resolution: {integrity: sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ==}
     engines: {node: '>=0.10.0'}
@@ -2846,6 +3844,9 @@ packages:
     resolution: {integrity: sha512-xelSayHH36ZgE7ZWhli7pW34hNbNl8Ojv5KVmkJD4hBdD3th8Tfk9vYasLM+mXWOZhFkgZfxhLSnrwRr4elSSg==}
     engines: {node: '>=0.10.0'}
 
+  is-hexadecimal@2.0.1:
+    resolution: {integrity: sha512-DgZQp241c8oO6cA1SbTEWiXeoxV42vlcJxgH+B3hi1AiqqKruZR3ZGF8In3fj4+/y/7rHvlOZLZtgJ/4ttYGZg==}
+
   is-map@2.0.3:
     resolution: {integrity: sha512-1Qed0/Hr2m+YqxnM09CjA2d/i6YZNfF6R2oRAOj36eUdS6qIV/huPJNSEpKbupewFs+ZsJlxsjjPbc0/afW6Lw==}
     engines: {node: '>= 0.4'}
@@ -2861,6 +3862,10 @@ packages:
   is-number@7.0.0:
     resolution: {integrity: sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==}
     engines: {node: '>=0.12.0'}
+
+  is-plain-obj@4.1.0:
+    resolution: {integrity: sha512-+Pgi+vMuUNkJyExiMBt5IlFoMyKnr5zhJ4Uspz58WOhBF5QoIZkFyNHIbBAtHwzVAgk5RtndVNsDRN61/mmDqg==}
+    engines: {node: '>=12'}
 
   is-potential-custom-element-name@1.0.1:
     resolution: {integrity: sha512-bCYeRA2rVibKZd+s2625gGnGF/t7DSqDs4dP7CrLA1m7jKWz6pps0LpYLJN8Q64HtmPKJ1hrN3nzPNKFEKOUiQ==}
@@ -2909,6 +3914,12 @@ packages:
 
   iso8601-duration@1.2.0:
     resolution: {integrity: sha512-ErTBd++b17E8nmWII1K1uZtBgD1E8RjyvwmxlCjPHNqHMD7gmcMHOw0E8Ro/6+QT4PhHRSnnMo7bxa1vFPkwhg==}
+
+  isomorphic-form-data@2.0.0:
+    resolution: {integrity: sha512-TYgVnXWeESVmQSg4GLVbalmQ+B4NPi/H4eWxqALKj63KsUrcu301YDjBqaOw3h+cbak7Na4Xyps3BiptHtxTfg==}
+
+  isomorphic.js@0.2.5:
+    resolution: {integrity: sha512-PIeMbHqMt4DnUP3MA/Flc0HElYjMXArsw1qwJZcm9sqR8mq3l8NYizFMty0pWwE/tzIGH3EKK5+jes5mAr85yw==}
 
   iterator.prototype@1.1.4:
     resolution: {integrity: sha512-x4WH0BWmrMmg4oHHl+duwubhrvczGlyuGAZu3nvrf0UXOfPu8IhZObFEr7DE/iv01YgVZrsOiRcqw2srkKEDIA==}
@@ -2994,6 +4005,14 @@ packages:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
 
+  lexical@0.12.0:
+    resolution: {integrity: sha512-ixp8+5D9UJueZSjh9a7Z0eiiKm8MZmf//+mr0rZSCXermhdIcn1lglDGbff1KGwO1ONnFlycWJV12m8Zvtgggg==}
+
+  lib0@0.2.99:
+    resolution: {integrity: sha512-vwztYuUf1uf/1zQxfzRfO5yzfNKhTtgOByCruuiQQxWQXnPb8Itaube5ylofcV0oM0aKal9Mv+S1s1Ky0UYP1w==}
+    engines: {node: '>=16'}
+    hasBin: true
+
   lilconfig@3.1.3:
     resolution: {integrity: sha512-/vlFKAoH5Cgt3Ie+JLhRbwOsCQePABiU3tJ1egGvyQ+33R/vcwM2Zl2QR/LzjsBeItPt3oSVXapn+m4nQDvpzw==}
     engines: {node: '>=14'}
@@ -3014,6 +4033,10 @@ packages:
   lodash.isboolean@3.0.3:
     resolution: {integrity: sha512-Bz5mupy2SVbPHURB98VAcw+aHh4vRV5IPNhILUCsOzRmsTmSQ17jIuqopAentWoehktxGd9e/hbIXq980/1QJg==}
 
+  lodash.isequal@4.5.0:
+    resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
+    deprecated: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
+
   lodash.isinteger@4.0.4:
     resolution: {integrity: sha512-DBwtEWN2caHQ9/imiNeEA5ys1JoRtRfY3d7V9wkqtbycnAmTvRRmbHKDV4a0EYc678/dia0jrte4tjYwVBaZUA==}
 
@@ -3032,12 +4055,22 @@ packages:
   lodash.once@4.1.1:
     resolution: {integrity: sha512-Sb487aTOCr9drQVL8pIxOzVhafOjZN9UU54hiN8PU3uAiSV7lx1yYNpbNmex2PK6dSJoNTSJUUswT651yww3Mg==}
 
+  lodash.uniq@4.5.0:
+    resolution: {integrity: sha512-xfBaXQd9ryd9dlSDvnvI0lvxfLJlYAZzXomUYzLKtUeOQvOP5piqAWuGtrhWeqaXK9hhoM/iyJc5AV+XfsX3HQ==}
+
   lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+
+  loglevel@1.8.0:
+    resolution: {integrity: sha512-G6A/nJLRgWOuuwdNuA6koovfEV1YpqqAG4pRUlFaz3jj2QNZ8M4vBqnVA+HBTmU/AMNUtlOsMmSpF6NyOjztbA==}
+    engines: {node: '>= 0.6.0'}
 
   loglevel@1.9.2:
     resolution: {integrity: sha512-HgMmCqIJSAKqo68l0rS2AanEWfkxaZ5wNiEFb5ggm08lDs9Xl2KxBlX3PTcaD2chBM1gXAYf491/M2Rv8Jwayg==}
     engines: {node: '>= 0.6.0'}
+
+  longest-streak@3.1.0:
+    resolution: {integrity: sha512-9Ri+o0JYgehTaVBBDoMqIl8GXtbWg711O3srftcHhZ0dqnETqLaoIK0x17fUw9rFSlK/0NlsKe0Ahhyl5pXE2g==}
 
   loose-envify@1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
@@ -3068,12 +4101,99 @@ packages:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
     engines: {node: '>= 0.4'}
 
+  mdast-util-from-markdown@2.0.2:
+    resolution: {integrity: sha512-uZhTV/8NBuw0WHkPTrCqDOl0zVe1BIng5ZtHoDk49ME1qqcjYmmLmOf0gELgcRMxN4w2iuIeVso5/6QymSrgmA==}
+
+  mdast-util-mdx-expression@2.0.1:
+    resolution: {integrity: sha512-J6f+9hUp+ldTZqKRSg7Vw5V6MqjATc+3E4gf3CFNcuZNWD8XdyI6zQ8GqH7f8169MM6P7hMBRDVGnn7oHB9kXQ==}
+
+  mdast-util-mdx-jsx@3.2.0:
+    resolution: {integrity: sha512-lj/z8v0r6ZtsN/cGNNtemmmfoLAFZnjMbNyLzBafjzikOM+glrjNHPlf6lQDOTccj9n5b0PPihEBbhneMyGs1Q==}
+
+  mdast-util-mdxjs-esm@2.0.1:
+    resolution: {integrity: sha512-EcmOpxsZ96CvlP03NghtH1EsLtr0n9Tm4lPUJUBccV9RwUOneqSycg19n5HGzCf+10LozMRSObtVr3ee1WoHtg==}
+
+  mdast-util-phrasing@4.1.0:
+    resolution: {integrity: sha512-TqICwyvJJpBwvGAMZjj4J2n0X8QWp21b9l0o7eXyVJ25YNWYbJDVIyD1bZXE6WtV6RmKJVYmQAKWa0zWOABz2w==}
+
+  mdast-util-to-hast@13.2.0:
+    resolution: {integrity: sha512-QGYKEuUsYT9ykKBCMOEDLsU5JRObWQusAolFMeko/tYPufNkRffBAQjIE+99jbA87xv6FgmjLtwjh9wBWajwAA==}
+
+  mdast-util-to-markdown@2.1.2:
+    resolution: {integrity: sha512-xj68wMTvGXVOKonmog6LwyJKrYXZPvlwabaryTjLh9LuvovB/KAH+kvi8Gjj+7rJjsFi23nkUxRQv1KqSroMqA==}
+
+  mdast-util-to-string@4.0.0:
+    resolution: {integrity: sha512-0H44vDimn51F0YwvxSJSm0eCDOJTRlmN0R1yBh4HLj9wiV1Dn0QoXGbvFAWj2hSItVTlCmBF1hqKlIyUBVFLPg==}
+
   memoize-one@6.0.0:
     resolution: {integrity: sha512-rkpe71W0N0c0Xz6QD0eJETuWAJGnJ9afsl1srmwPrI+yBCkge5EycXXbYRyvL29zZVUWQCY7InPRCv3GDXuZNw==}
 
   merge2@1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
+
+  micromark-core-commonmark@2.0.2:
+    resolution: {integrity: sha512-FKjQKbxd1cibWMM1P9N+H8TwlgGgSkWZMmfuVucLCHaYqeSvJ0hFeHsIa65pA2nYbes0f8LDHPMrd9X7Ujxg9w==}
+
+  micromark-factory-destination@2.0.1:
+    resolution: {integrity: sha512-Xe6rDdJlkmbFRExpTOmRj9N3MaWmbAgdpSrBQvCFqhezUn4AHqJHbaEnfbVYYiexVSs//tqOdY/DxhjdCiJnIA==}
+
+  micromark-factory-label@2.0.1:
+    resolution: {integrity: sha512-VFMekyQExqIW7xIChcXn4ok29YE3rnuyveW3wZQWWqF4Nv9Wk5rgJ99KzPvHjkmPXF93FXIbBp6YdW3t71/7Vg==}
+
+  micromark-factory-space@2.0.1:
+    resolution: {integrity: sha512-zRkxjtBxxLd2Sc0d+fbnEunsTj46SWXgXciZmHq0kDYGnck/ZSGj9/wULTV95uoeYiK5hRXP2mJ98Uo4cq/LQg==}
+
+  micromark-factory-title@2.0.1:
+    resolution: {integrity: sha512-5bZ+3CjhAd9eChYTHsjy6TGxpOFSKgKKJPJxr293jTbfry2KDoWkhBb6TcPVB4NmzaPhMs1Frm9AZH7OD4Cjzw==}
+
+  micromark-factory-whitespace@2.0.1:
+    resolution: {integrity: sha512-Ob0nuZ3PKt/n0hORHyvoD9uZhr+Za8sFoP+OnMcnWK5lngSzALgQYKMr9RJVOWLqQYuyn6ulqGWSXdwf6F80lQ==}
+
+  micromark-util-character@2.1.1:
+    resolution: {integrity: sha512-wv8tdUTJ3thSFFFJKtpYKOYiGP2+v96Hvk4Tu8KpCAsTMs6yi+nVmGh1syvSCsaxz45J6Jbw+9DD6g97+NV67Q==}
+
+  micromark-util-chunked@2.0.1:
+    resolution: {integrity: sha512-QUNFEOPELfmvv+4xiNg2sRYeS/P84pTW0TCgP5zc9FpXetHY0ab7SxKyAQCNCc1eK0459uoLI1y5oO5Vc1dbhA==}
+
+  micromark-util-classify-character@2.0.1:
+    resolution: {integrity: sha512-K0kHzM6afW/MbeWYWLjoHQv1sgg2Q9EccHEDzSkxiP/EaagNzCm7T/WMKZ3rjMbvIpvBiZgwR3dKMygtA4mG1Q==}
+
+  micromark-util-combine-extensions@2.0.1:
+    resolution: {integrity: sha512-OnAnH8Ujmy59JcyZw8JSbK9cGpdVY44NKgSM7E9Eh7DiLS2E9RNQf0dONaGDzEG9yjEl5hcqeIsj4hfRkLH/Bg==}
+
+  micromark-util-decode-numeric-character-reference@2.0.2:
+    resolution: {integrity: sha512-ccUbYk6CwVdkmCQMyr64dXz42EfHGkPQlBj5p7YVGzq8I7CtjXZJrubAYezf7Rp+bjPseiROqe7G6foFd+lEuw==}
+
+  micromark-util-decode-string@2.0.1:
+    resolution: {integrity: sha512-nDV/77Fj6eH1ynwscYTOsbK7rR//Uj0bZXBwJZRfaLEJ1iGBR6kIfNmlNqaqJf649EP0F3NWNdeJi03elllNUQ==}
+
+  micromark-util-encode@2.0.1:
+    resolution: {integrity: sha512-c3cVx2y4KqUnwopcO9b/SCdo2O67LwJJ/UyqGfbigahfegL9myoEFoDYZgkT7f36T0bLrM9hZTAaAyH+PCAXjw==}
+
+  micromark-util-html-tag-name@2.0.1:
+    resolution: {integrity: sha512-2cNEiYDhCWKI+Gs9T0Tiysk136SnR13hhO8yW6BGNyhOC4qYFnwF1nKfD3HFAIXA5c45RrIG1ub11GiXeYd1xA==}
+
+  micromark-util-normalize-identifier@2.0.1:
+    resolution: {integrity: sha512-sxPqmo70LyARJs0w2UclACPUUEqltCkJ6PhKdMIDuJ3gSf/Q+/GIe3WKl0Ijb/GyH9lOpUkRAO2wp0GVkLvS9Q==}
+
+  micromark-util-resolve-all@2.0.1:
+    resolution: {integrity: sha512-VdQyxFWFT2/FGJgwQnJYbe1jjQoNTS4RjglmSjTUlpUMa95Htx9NHeYW4rGDJzbjvCsl9eLjMQwGeElsqmzcHg==}
+
+  micromark-util-sanitize-uri@2.0.1:
+    resolution: {integrity: sha512-9N9IomZ/YuGGZZmQec1MbgxtlgougxTodVwDzzEouPKo3qFWvymFHWcnDi2vzV1ff6kas9ucW+o3yzJK9YB1AQ==}
+
+  micromark-util-subtokenize@2.0.4:
+    resolution: {integrity: sha512-N6hXjrin2GTJDe3MVjf5FuXpm12PGm80BrUAeub9XFXca8JZbP+oIwY4LJSVwFUCL1IPm/WwSVUN7goFHmSGGQ==}
+
+  micromark-util-symbol@2.0.1:
+    resolution: {integrity: sha512-vs5t8Apaud9N28kgCrRUdEed4UJ+wWNvicHLPxCa9ENlYuAY31M0ETy5y1vA33YoNPDFTghEbnh6efaE8h4x0Q==}
+
+  micromark-util-types@2.0.1:
+    resolution: {integrity: sha512-534m2WhVTddrcKVepwmVEVnUAmtrx9bfIjNoQHRqfnvdaHQiFytEhJoTgpWJvDEXCO5gLTQh3wYC1PgOJA4NSQ==}
+
+  micromark@4.0.1:
+    resolution: {integrity: sha512-eBPdkcoCNvYcxQOAKAlceo5SNdzZWfF+FcSupREAzdAh9rRmE239CEQAiTwIgblwnoM8zzj35sZ5ZwvSEOF6Kw==}
 
   micromatch@4.0.8:
     resolution: {integrity: sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==}
@@ -3209,6 +4329,9 @@ packages:
     resolution: {integrity: sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==}
     engines: {node: '>=6'}
 
+  parse-entities@4.0.2:
+    resolution: {integrity: sha512-GG2AQYWoLgL877gQIKeRPGO1xF9+eG1ujIb5soS5gPvLQ1y2o8FL90w2QWNdf9I361Mpp7726c+lj3U0qK1uGw==}
+
   parse-json@5.2.0:
     resolution: {integrity: sha512-ayCKvm/phCGxOkYRSCM82iDwct8/EonSEgCSxWxD7ve6jHggsFl4fZVQBPRNgQoKiuV/odhFrGzQXZwbifC8Rg==}
     engines: {node: '>=8'}
@@ -3332,8 +4455,15 @@ packages:
     resolution: {integrity: sha512-Qb1gy5OrP5+zDf2Bvnzdl3jsTf1qXVMazbvCoKhtKqVs4/YK4ozX4gKQJJVyNe+cajNPn0KoC0MC3FUmaHWEmQ==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
 
+  prismjs@1.29.0:
+    resolution: {integrity: sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==}
+    engines: {node: '>=6'}
+
   prop-types@15.8.1:
     resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
+
+  property-information@6.5.0:
+    resolution: {integrity: sha512-PgTgs/BlvHxOu8QuEN7wi5A0OmXaBcHpmCSTehcs6Uuu9IkDIEo13Hy7n898RHfrQ49vKCoGeWZSaAK01nwVig==}
 
   proxy-from-env@1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
@@ -3352,6 +4482,10 @@ packages:
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
+  quick-lru@5.1.1:
+    resolution: {integrity: sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==}
+    engines: {node: '>=10'}
+
   react-day-picker@9.5.0:
     resolution: {integrity: sha512-WmJnPFVLnKh5Qscm7wavMNg86rqPverSWjx+zgK8/ZmGRSQ8c8OoqW10RI+AzAfT2atIxImpCUU2R9Z7Xb2SUA==}
     engines: {node: '>=18'}
@@ -3363,11 +4497,26 @@ packages:
     peerDependencies:
       react: ^19.0.0
 
+  react-error-boundary@3.1.4:
+    resolution: {integrity: sha512-uM9uPzZJTF6wRQORmSrvOIgt4lJ9MC1sNgEOj2XGsDTRE4kmpWxg7ENK9EWNKJRMAOY9z0MuF4yIfl6gp4sotA==}
+    engines: {node: '>=10', npm: '>=6'}
+    peerDependencies:
+      react: '>=16.13.1'
+
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
   react-is@17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
+
+  react-is@18.0.0:
+    resolution: {integrity: sha512-yUcBYdBBbo3QiPsgYDcfQcIkGZHfxOaoE6HLSnr1sPzMhdyxusbfKOSUbSd/ocGi32dxcj366PsTj+5oggeKKw==}
+
+  react-markdown@9.0.3:
+    resolution: {integrity: sha512-Yk7Z94dbgYTOrdk41Z74GoKA7rThnsbbqBTRYuxoe08qvfQ9tJVhmAKw6BJS/ZORG7kTy/s1QvYzSuaoBA1qfw==}
+    peerDependencies:
+      '@types/react': '>=18'
+      react: '>=18'
 
   react-qr-code@2.0.15:
     resolution: {integrity: sha512-MkZcjEXqVKqXEIMVE0mbcGgDpkfSdd8zhuzXEl9QzYeNcw8Hq2oVIzDLWuZN2PQBwM5PWjc2S31K8Q1UbcFMfw==}
@@ -3420,6 +4569,16 @@ packages:
       react: '>=16.6.0'
       react-dom: '>=16.6.0'
 
+  react-uid@2.3.3:
+    resolution: {integrity: sha512-iNpDovcb9qBpBTo8iUgqRSQOS8GV3bWoNaTaUptHkXtAooXSo0OWe7vN6TqqB8x3x0bNBbQx96kkmSltQ5h9kQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      '@types/react': ^16.8.0 || ^17.0.0 || ^18.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
   react@19.0.0:
     resolution: {integrity: sha512-V8AVnmPIICiWpGfm6GLzCR/W5FXLchHop40W4nXBmdlEceh16rCN8O8LNWm5bh5XUX91fh7KpA+W0TgMKmgTpQ==}
     engines: {node: '>=0.10.0'}
@@ -3431,6 +4590,23 @@ packages:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
     engines: {node: '>=8.10.0'}
 
+  reakit-system@0.15.2:
+    resolution: {integrity: sha512-TvRthEz0DmD0rcJkGamMYx+bATwnGNWJpe/lc8UV2Js8nnPvkaxrHk5fX9cVASFrWbaIyegZHCWUBfxr30bmmA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0
+      react-dom: ^16.8.0 || ^17.0.0
+
+  reakit-utils@0.15.2:
+    resolution: {integrity: sha512-i/RYkq+W6hvfFmXw5QW7zvfJJT/K8a4qZ0hjA79T61JAFPGt23DsfxwyBbyK91GZrJ9HMrXFVXWMovsKBc1qEQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0
+      react-dom: ^16.8.0 || ^17.0.0
+
+  reakit-warning@0.6.2:
+    resolution: {integrity: sha512-z/3fvuc46DJyD3nJAUOto6inz2EbSQTjvI/KBQDqxwB0y02HDyeP8IWOJxvkuAUGkWpeSx+H3QWQFSNiPcHtmw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0
+
   reflect.getprototypeof@1.0.9:
     resolution: {integrity: sha512-r0Ay04Snci87djAsI4U+WNRcSw5S4pOH7qFjd/veA5gC7TbqESR3tcj28ia95L/fYUDw11JKP7uqUKUAfVvV5Q==}
     engines: {node: '>= 0.4'}
@@ -3441,6 +4617,12 @@ packages:
   regexp.prototype.flags@1.5.3:
     resolution: {integrity: sha512-vqlC04+RQoFalODCbCumG2xIOvapzVMHwsyIGM/SIE8fRhFFsXeH8/QQ+s0T0kDAhKc4k30s73/0ydkHQz6HlQ==}
     engines: {node: '>= 0.4'}
+
+  remark-parse@11.0.0:
+    resolution: {integrity: sha512-FCxlKLNGknS5ba/1lmpYijMUzX2esxW5xQqjWxw2eHFfS2MSdaHVINFmhjo+qN1WhZhNimq0dZATN9pH0IDrpA==}
+
+  remark-rehype@11.1.1:
+    resolution: {integrity: sha512-g/osARvjkBXb6Wo0XvAeXQohVta8i84ACbenPpoSsxTOQH/Ae0/RGP4WZgnMH5pMLpsj4FG7OHmcIcXxpza8eQ==}
 
   resolve-from@4.0.0:
     resolution: {integrity: sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g==}
@@ -3562,6 +4744,9 @@ packages:
     resolution: {integrity: sha512-LbrmJOMUSdEVxIKvdcJzQC+nQhe8FUZQTXQy6+I75skNgn3OoQ0DZA8YnFa7gp8tqtL3KPf1kmo0R5DoApeSGQ==}
     engines: {node: '>=0.10.0'}
 
+  space-separated-tokens@2.0.2:
+    resolution: {integrity: sha512-PEGlAwrG8yXGXRjW32fGbg66JAlOAwbObuqVoJpv/mRgoWDQfgH1wDPvtzWyUSNAXBGSk8h755YDbbcEy3SH2Q==}
+
   stable-hash@0.0.4:
     resolution: {integrity: sha512-LjdcbuBeLcdETCrPn9i8AYAZ1eCtu4ECAWtP7UleOiZ9LzVxRzzUZEoZ8zB24nhkQnDWyET0I+3sWokSDS3E7g==}
 
@@ -3606,6 +4791,9 @@ packages:
     resolution: {integrity: sha512-UXSH262CSZY1tfu3G3Secr6uGLCFVPMhIqHjlgCUtCCcgihYc/xKs9djMTMUOb2j1mVSeU8EU6NWc/iQKU6Gfg==}
     engines: {node: '>= 0.4'}
 
+  stringify-entities@4.0.4:
+    resolution: {integrity: sha512-IwfBptatlO+QCJUo19AqvrPNqlVMpW9YEL2LIVY+Rpv2qsjCGxaDLNRgeGsQWJhfItebuJhsGSLjaBbNSQ+ieg==}
+
   strip-ansi@6.0.1:
     resolution: {integrity: sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==}
     engines: {node: '>=8'}
@@ -3622,6 +4810,9 @@ packages:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
 
+  style-to-object@1.0.8:
+    resolution: {integrity: sha512-xT47I/Eo0rwJmaXC4oilDGDWLohVhR6o/xAQcPQN8q6QBuZVL8qMYL85kLmST5cPjAorwvqIA4qXTRQoYHaL6g==}
+
   styled-jsx@5.1.6:
     resolution: {integrity: sha512-qSVyDTeMotdvQYoHWLNGwRFJHC+i+ZvdBRYosOFgC+Wg1vx4frN2/RG/NA7SYqqvKNLf39P2LSRA2pu6n0XYZA==}
     engines: {node: '>= 12.0.0'}
@@ -3634,6 +4825,12 @@ packages:
         optional: true
       babel-plugin-macros:
         optional: true
+
+  styled-system@5.1.5:
+    resolution: {integrity: sha512-7VoD0o2R3RKzOzPK0jYrVnS8iJdfkKsQJNiLRDjikOpQVqQHns/DXWaPZOH4tIKkhAT7I6wIsy9FWTWh2X3q+A==}
+
+  stylis@4.1.3:
+    resolution: {integrity: sha512-GP6WDNWf+o403jrEp9c5jibKavrtLW+/qYGhFxFrG8maXhwTBI7gLLhiBb0o7uFccWN+EOS9aMO6cGHWAO07OA==}
 
   stylis@4.2.0:
     resolution: {integrity: sha512-Orov6g6BB1sDfYgzWfTHDOxamtX1bE/zo104Dh9e6fqJ3PooipYyfJ0pUmrZO2wAvO8YbEyeFrkV91XTsGMSrw==}
@@ -3718,6 +4915,12 @@ packages:
     resolution: {integrity: sha512-tk2G5R2KRwBd+ZN0zaEXpmzdKyOYksXwywulIX95MBODjSzMIuQnQ3m8JxgbhnL1LeVo7lqQKsYa1O3Htl7K5g==}
     engines: {node: '>=18'}
 
+  trim-lines@3.0.1:
+    resolution: {integrity: sha512-kRj8B+YHZCc9kQYdWfJB2/oUl9rA99qbowYYBtr4ui4mZyAQ2JpvVBd/6U2YloATfqBhBTSMhTpgBHtU0Mf3Rg==}
+
+  trough@2.2.0:
+    resolution: {integrity: sha512-tmMpK00BjZiUyVyvrBK7knerNgmgvcV/KLVyuma/SC+TQN167GrMRciANTz09+k3zW8L8t60jWO1GpfkZdjTaw==}
+
   ts-api-utils@1.4.3:
     resolution: {integrity: sha512-i3eMG77UTMD0hZhgRS562pv83RC6ukSAC2GMNWc+9dieh/+jDM5u5YG+NHX6VNDRHQcHwmsTHctP9LhbC3WxVw==}
     engines: {node: '>=16'}
@@ -3726,6 +4929,9 @@ packages:
 
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
+
+  ts-pattern@5.6.2:
+    resolution: {integrity: sha512-d4IxJUXROL5NCa3amvMg6VQW2HVtZYmUTPfvVtO7zJWGYLJ+mry9v2OmYm+z67aniQoQ8/yFNadiEwtNS9qQiw==}
 
   tsconfck@3.1.4:
     resolution: {integrity: sha512-kdqWFGVJqe+KGYvlSO9NIaWn9jT1Ny4oKVzAJsKii5eoE9snzTJzL4+MMVOMn+fikWGFmKEylcXL710V/kIPJQ==}
@@ -3747,6 +4953,10 @@ packages:
     resolution: {integrity: sha512-pOUl6Vo2LUq/bSa8S5q7b91cgNSjctn9ugq/+Mvow99qW6x/UZYwzxy/3NmqoT66eHYfCVvFvACC58UBPFf28g==}
     engines: {node: '>=18.0.0'}
     hasBin: true
+
+  twilio-sync@3.1.0:
+    resolution: {integrity: sha512-KNkbbnoBITpsmxV2UnmNDEot/Q5t7p5I1zP05oqj0OYT1kMcZq4nhiSNkcxkunfxINFSUzz8d/mUA82yWS7iLQ==}
+    engines: {node: '>=14'}
 
   twilio-sync@3.3.5:
     resolution: {integrity: sha512-ORUlBoLpcGen0G8fje9hBXbiAR64L9+4DyAytcP8pxuVUjTd2A9BhvKG1mYO7ESoEMGs0X3MXG3YO5TjPaFbhA==}
@@ -3791,6 +5001,24 @@ packages:
 
   undici-types@6.20.0:
     resolution: {integrity: sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg==}
+
+  unified@11.0.5:
+    resolution: {integrity: sha512-xKvGhPWw3k84Qjh8bI3ZeJjqnyadK+GEFtazSfZv/rKeTkTjOJho6mFqh2SM96iIcZokxiOpg78GazTSg8+KHA==}
+
+  unist-util-is@6.0.0:
+    resolution: {integrity: sha512-2qCTHimwdxLfz+YzdGfkqNlH0tLi9xjTnHddPmJwtIG9MGsdbutfTc4P+haPD7l7Cjxf/WZj+we5qfVPvvxfYw==}
+
+  unist-util-position@5.0.0:
+    resolution: {integrity: sha512-fucsC7HjXvkB5R3kTCO7kUjRdrS0BJt3M/FPxmHMBOm8JQi2BsHAHFsy27E0EolP8rp0NzXsJ+jNPyDWvOJZPA==}
+
+  unist-util-stringify-position@4.0.0:
+    resolution: {integrity: sha512-0ASV06AAoKCDkS2+xw5RXJywruurpbC4JZSm7nr7MOt1ojAzvyyaO+UxZf18j8FCF6kmzCZKcAgN/yu2gm2XgQ==}
+
+  unist-util-visit-parents@6.0.1:
+    resolution: {integrity: sha512-L/PqWzfTP9lzzEa6CKs0k2nARxTdZduw3zyh8d2NVBnsyvHjSX4TWse388YrrQKbvI8w20fGjGlhgT96WwKykw==}
+
+  unist-util-visit@5.0.0:
+    resolution: {integrity: sha512-MR04uvD+07cwl/yhVuVWAtw+3GOR/knlL55Nd/wAdblk27GCVt3lqpTivy/tkJcZoNPzTwS1Y+KMojlLDhoTzg==}
 
   update-browserslist-db@1.1.1:
     resolution: {integrity: sha512-R8UzCaa9Az+38REPiJ1tXlImTJXlVfgHZsglwBD/k6nj76ctsH1E3q4doGrukiLQd3sGQYu56r5+lo5r94l29A==}
@@ -3841,6 +5069,12 @@ packages:
     resolution: {integrity: sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==}
     deprecated: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
     hasBin: true
+
+  vfile-message@4.0.2:
+    resolution: {integrity: sha512-jRDZ1IMLttGj41KcZvlrYAaI3CfqpLpfpf+Mfig13viT6NKvRzWZ+lXz0Y5D60w6uJIBAOGq9mSHf0gktF0duw==}
+
+  vfile@6.0.3:
+    resolution: {integrity: sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q==}
 
   vite-node@2.1.8:
     resolution: {integrity: sha512-uPAwSr57kYjAUux+8E2j0q0Fxpn8M9VoyfGiRI8Kfktz9NcYMCenwY5RnZxnF1WTu3TGiYipirIzacLL3VVGFg==}
@@ -4003,6 +5237,10 @@ packages:
   xmlchars@2.2.0:
     resolution: {integrity: sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==}
 
+  xmlhttprequest@1.8.0:
+    resolution: {integrity: sha512-58Im/U0mlVBLM38NdZjHyhuMtCqa61469k2YP/AaPbvCoV9aQGUpbJBj1QRm2ytRiVQBD/fsw7L2bJGDVQswBA==}
+    engines: {node: '>=0.4.0'}
+
   yallist@3.1.1:
     resolution: {integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==}
 
@@ -4015,9 +5253,19 @@ packages:
     engines: {node: '>= 14'}
     hasBin: true
 
+  yjs@13.6.23:
+    resolution: {integrity: sha512-ExtnT5WIOVpkL56bhLeisG/N5c4fmzKn4k0ROVfJa5TY2QHbH7F0Wu2T5ZhR7ErsFWQEFafyrnSI8TPKVF9Few==}
+    engines: {node: '>=16.0.0', npm: '>=8.0.0'}
+
   yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
+
+  zod@3.24.1:
+    resolution: {integrity: sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A==}
+
+  zwitch@2.0.4:
+    resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
 snapshots:
 
@@ -4193,6 +5441,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@emotion/cache@11.10.5':
+    dependencies:
+      '@emotion/memoize': 0.8.1
+      '@emotion/sheet': 1.4.0
+      '@emotion/utils': 1.4.2
+      '@emotion/weak-memoize': 0.3.1
+      stylis: 4.1.3
+
   '@emotion/cache@11.14.0':
     dependencies:
       '@emotion/memoize': 0.9.0
@@ -4203,7 +5459,38 @@ snapshots:
 
   '@emotion/hash@0.9.2': {}
 
+  '@emotion/is-prop-valid@0.8.8':
+    dependencies:
+      '@emotion/memoize': 0.7.4
+
+  '@emotion/is-prop-valid@1.3.1':
+    dependencies:
+      '@emotion/memoize': 0.9.0
+
+  '@emotion/memoize@0.7.4': {}
+
+  '@emotion/memoize@0.7.5': {}
+
+  '@emotion/memoize@0.8.1': {}
+
   '@emotion/memoize@0.9.0': {}
+
+  '@emotion/react@11.10.5(@babel/core@7.26.0)(@types/react@19.0.7)(react@19.0.0)':
+    dependencies:
+      '@babel/runtime': 7.26.0
+      '@emotion/babel-plugin': 11.13.5
+      '@emotion/cache': 11.14.0
+      '@emotion/serialize': 1.3.3
+      '@emotion/use-insertion-effect-with-fallbacks': 1.2.0(react@19.0.0)
+      '@emotion/utils': 1.4.2
+      '@emotion/weak-memoize': 0.3.1
+      hoist-non-react-statics: 3.3.2
+      react: 19.0.0
+    optionalDependencies:
+      '@babel/core': 7.26.0
+      '@types/react': 19.0.7
+    transitivePeerDependencies:
+      - supports-color
 
   '@emotion/react@11.14.0(@types/react@19.0.7)(react@19.0.0)':
     dependencies:
@@ -4231,6 +5518,22 @@ snapshots:
 
   '@emotion/sheet@1.4.0': {}
 
+  '@emotion/styled@11.10.5(@babel/core@7.26.0)(@emotion/react@11.10.5(@babel/core@7.26.0)(@types/react@19.0.7)(react@19.0.0))(@types/react@19.0.7)(react@19.0.0)':
+    dependencies:
+      '@babel/runtime': 7.26.0
+      '@emotion/babel-plugin': 11.13.5
+      '@emotion/is-prop-valid': 1.3.1
+      '@emotion/react': 11.10.5(@babel/core@7.26.0)(@types/react@19.0.7)(react@19.0.0)
+      '@emotion/serialize': 1.3.3
+      '@emotion/use-insertion-effect-with-fallbacks': 1.2.0(react@19.0.0)
+      '@emotion/utils': 1.4.2
+      react: 19.0.0
+    optionalDependencies:
+      '@babel/core': 7.26.0
+      '@types/react': 19.0.7
+    transitivePeerDependencies:
+      - supports-color
+
   '@emotion/unitless@0.10.0': {}
 
   '@emotion/use-insertion-effect-with-fallbacks@1.2.0(react@19.0.0)':
@@ -4238,6 +5541,8 @@ snapshots:
       react: 19.0.0
 
   '@emotion/utils@1.4.2': {}
+
+  '@emotion/weak-memoize@0.3.1': {}
 
   '@emotion/weak-memoize@0.4.0': {}
 
@@ -4555,6 +5860,141 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
+  '@lexical/clipboard@0.12.0(lexical@0.12.0)':
+    dependencies:
+      '@lexical/html': 0.12.0(lexical@0.12.0)
+      '@lexical/list': 0.12.0(lexical@0.12.0)
+      '@lexical/selection': 0.12.0(lexical@0.12.0)
+      '@lexical/utils': 0.12.0(lexical@0.12.0)
+      lexical: 0.12.0
+
+  '@lexical/code@0.12.0(lexical@0.12.0)':
+    dependencies:
+      '@lexical/utils': 0.12.0(lexical@0.12.0)
+      lexical: 0.12.0
+      prismjs: 1.29.0
+
+  '@lexical/dragon@0.12.0(lexical@0.12.0)':
+    dependencies:
+      lexical: 0.12.0
+
+  '@lexical/hashtag@0.12.0(lexical@0.12.0)':
+    dependencies:
+      '@lexical/utils': 0.12.0(lexical@0.12.0)
+      lexical: 0.12.0
+
+  '@lexical/history@0.12.0(lexical@0.12.0)':
+    dependencies:
+      '@lexical/utils': 0.12.0(lexical@0.12.0)
+      lexical: 0.12.0
+
+  '@lexical/html@0.12.0(lexical@0.12.0)':
+    dependencies:
+      '@lexical/selection': 0.12.0(lexical@0.12.0)
+      lexical: 0.12.0
+
+  '@lexical/link@0.12.0(lexical@0.12.0)':
+    dependencies:
+      '@lexical/utils': 0.12.0(lexical@0.12.0)
+      lexical: 0.12.0
+
+  '@lexical/list@0.12.0(lexical@0.12.0)':
+    dependencies:
+      '@lexical/utils': 0.12.0(lexical@0.12.0)
+      lexical: 0.12.0
+
+  '@lexical/mark@0.12.0(lexical@0.12.0)':
+    dependencies:
+      '@lexical/utils': 0.12.0(lexical@0.12.0)
+      lexical: 0.12.0
+
+  '@lexical/markdown@0.12.0(@lexical/clipboard@0.12.0(lexical@0.12.0))(@lexical/selection@0.12.0(lexical@0.12.0))(lexical@0.12.0)':
+    dependencies:
+      '@lexical/code': 0.12.0(lexical@0.12.0)
+      '@lexical/link': 0.12.0(lexical@0.12.0)
+      '@lexical/list': 0.12.0(lexical@0.12.0)
+      '@lexical/rich-text': 0.12.0(@lexical/clipboard@0.12.0(lexical@0.12.0))(@lexical/selection@0.12.0(lexical@0.12.0))(@lexical/utils@0.12.0(lexical@0.12.0))(lexical@0.12.0)
+      '@lexical/text': 0.12.0(lexical@0.12.0)
+      '@lexical/utils': 0.12.0(lexical@0.12.0)
+      lexical: 0.12.0
+    transitivePeerDependencies:
+      - '@lexical/clipboard'
+      - '@lexical/selection'
+
+  '@lexical/offset@0.12.0(lexical@0.12.0)':
+    dependencies:
+      lexical: 0.12.0
+
+  '@lexical/overflow@0.12.0(lexical@0.12.0)':
+    dependencies:
+      lexical: 0.12.0
+
+  '@lexical/plain-text@0.12.0(@lexical/clipboard@0.12.0(lexical@0.12.0))(@lexical/selection@0.12.0(lexical@0.12.0))(@lexical/utils@0.12.0(lexical@0.12.0))(lexical@0.12.0)':
+    dependencies:
+      '@lexical/clipboard': 0.12.0(lexical@0.12.0)
+      '@lexical/selection': 0.12.0(lexical@0.12.0)
+      '@lexical/utils': 0.12.0(lexical@0.12.0)
+      lexical: 0.12.0
+
+  '@lexical/react@0.12.0(lexical@0.12.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(yjs@13.6.23)':
+    dependencies:
+      '@lexical/clipboard': 0.12.0(lexical@0.12.0)
+      '@lexical/code': 0.12.0(lexical@0.12.0)
+      '@lexical/dragon': 0.12.0(lexical@0.12.0)
+      '@lexical/hashtag': 0.12.0(lexical@0.12.0)
+      '@lexical/history': 0.12.0(lexical@0.12.0)
+      '@lexical/link': 0.12.0(lexical@0.12.0)
+      '@lexical/list': 0.12.0(lexical@0.12.0)
+      '@lexical/mark': 0.12.0(lexical@0.12.0)
+      '@lexical/markdown': 0.12.0(@lexical/clipboard@0.12.0(lexical@0.12.0))(@lexical/selection@0.12.0(lexical@0.12.0))(lexical@0.12.0)
+      '@lexical/overflow': 0.12.0(lexical@0.12.0)
+      '@lexical/plain-text': 0.12.0(@lexical/clipboard@0.12.0(lexical@0.12.0))(@lexical/selection@0.12.0(lexical@0.12.0))(@lexical/utils@0.12.0(lexical@0.12.0))(lexical@0.12.0)
+      '@lexical/rich-text': 0.12.0(@lexical/clipboard@0.12.0(lexical@0.12.0))(@lexical/selection@0.12.0(lexical@0.12.0))(@lexical/utils@0.12.0(lexical@0.12.0))(lexical@0.12.0)
+      '@lexical/selection': 0.12.0(lexical@0.12.0)
+      '@lexical/table': 0.12.0(lexical@0.12.0)
+      '@lexical/text': 0.12.0(lexical@0.12.0)
+      '@lexical/utils': 0.12.0(lexical@0.12.0)
+      '@lexical/yjs': 0.12.0(lexical@0.12.0)(yjs@13.6.23)
+      lexical: 0.12.0
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+      react-error-boundary: 3.1.4(react@19.0.0)
+    transitivePeerDependencies:
+      - yjs
+
+  '@lexical/rich-text@0.12.0(@lexical/clipboard@0.12.0(lexical@0.12.0))(@lexical/selection@0.12.0(lexical@0.12.0))(@lexical/utils@0.12.0(lexical@0.12.0))(lexical@0.12.0)':
+    dependencies:
+      '@lexical/clipboard': 0.12.0(lexical@0.12.0)
+      '@lexical/selection': 0.12.0(lexical@0.12.0)
+      '@lexical/utils': 0.12.0(lexical@0.12.0)
+      lexical: 0.12.0
+
+  '@lexical/selection@0.12.0(lexical@0.12.0)':
+    dependencies:
+      lexical: 0.12.0
+
+  '@lexical/table@0.12.0(lexical@0.12.0)':
+    dependencies:
+      '@lexical/utils': 0.12.0(lexical@0.12.0)
+      lexical: 0.12.0
+
+  '@lexical/text@0.12.0(lexical@0.12.0)':
+    dependencies:
+      lexical: 0.12.0
+
+  '@lexical/utils@0.12.0(lexical@0.12.0)':
+    dependencies:
+      '@lexical/list': 0.12.0(lexical@0.12.0)
+      '@lexical/selection': 0.12.0(lexical@0.12.0)
+      '@lexical/table': 0.12.0(lexical@0.12.0)
+      lexical: 0.12.0
+
+  '@lexical/yjs@0.12.0(lexical@0.12.0)(yjs@13.6.23)':
+    dependencies:
+      '@lexical/offset': 0.12.0(lexical@0.12.0)
+      lexical: 0.12.0
+      yjs: 13.6.23
+
   '@next/env@15.1.4': {}
 
   '@next/eslint-plugin-next@15.1.4':
@@ -4776,6 +6216,8 @@ snapshots:
   '@playwright/test@1.49.1':
     dependencies:
       playwright: 1.49.1
+
+  '@popperjs/core@2.11.8': {}
 
   '@radix-ui/colors@3.0.0': {}
 
@@ -5431,10 +6873,24 @@ snapshots:
       '@types/react': 19.0.7
       '@types/react-dom': 19.0.3(@types/react@19.0.7)
 
+  '@react-spring/animated@9.4.5(react@19.0.0)':
+    dependencies:
+      '@react-spring/shared': 9.4.5(react@19.0.0)
+      '@react-spring/types': 9.4.5
+      react: 19.0.0
+
   '@react-spring/animated@9.7.5(react@19.0.0)':
     dependencies:
       '@react-spring/shared': 9.7.5(react@19.0.0)
       '@react-spring/types': 9.7.5
+      react: 19.0.0
+
+  '@react-spring/core@9.4.5(react@19.0.0)':
+    dependencies:
+      '@react-spring/animated': 9.4.5(react@19.0.0)
+      '@react-spring/rafz': 9.4.5
+      '@react-spring/shared': 9.4.5(react@19.0.0)
+      '@react-spring/types': 9.4.5
       react: 19.0.0
 
   '@react-spring/core@9.7.5(react@19.0.0)':
@@ -5444,7 +6900,15 @@ snapshots:
       '@react-spring/types': 9.7.5
       react: 19.0.0
 
+  '@react-spring/rafz@9.4.5': {}
+
   '@react-spring/rafz@9.7.5': {}
+
+  '@react-spring/shared@9.4.5(react@19.0.0)':
+    dependencies:
+      '@react-spring/rafz': 9.4.5
+      '@react-spring/types': 9.4.5
+      react: 19.0.0
 
   '@react-spring/shared@9.7.5(react@19.0.0)':
     dependencies:
@@ -5452,7 +6916,18 @@ snapshots:
       '@react-spring/types': 9.7.5
       react: 19.0.0
 
+  '@react-spring/types@9.4.5': {}
+
   '@react-spring/types@9.7.5': {}
+
+  '@react-spring/web@9.4.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      '@react-spring/animated': 9.4.5(react@19.0.0)
+      '@react-spring/core': 9.4.5(react@19.0.0)
+      '@react-spring/shared': 9.4.5(react@19.0.0)
+      '@react-spring/types': 9.4.5
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
 
   '@react-spring/web@9.7.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
@@ -5524,6 +6999,67 @@ snapshots:
 
   '@rushstack/eslint-patch@1.10.4': {}
 
+  '@styled-system/background@5.1.2':
+    dependencies:
+      '@styled-system/core': 5.1.2
+
+  '@styled-system/border@5.1.5':
+    dependencies:
+      '@styled-system/core': 5.1.2
+
+  '@styled-system/color@5.1.2':
+    dependencies:
+      '@styled-system/core': 5.1.2
+
+  '@styled-system/core@5.1.2':
+    dependencies:
+      object-assign: 4.1.1
+
+  '@styled-system/css@5.1.5': {}
+
+  '@styled-system/flexbox@5.1.2':
+    dependencies:
+      '@styled-system/core': 5.1.2
+
+  '@styled-system/grid@5.1.2':
+    dependencies:
+      '@styled-system/core': 5.1.2
+
+  '@styled-system/layout@5.1.2':
+    dependencies:
+      '@styled-system/core': 5.1.2
+
+  '@styled-system/position@5.1.2':
+    dependencies:
+      '@styled-system/core': 5.1.2
+
+  '@styled-system/shadow@5.1.2':
+    dependencies:
+      '@styled-system/core': 5.1.2
+
+  '@styled-system/should-forward-prop@5.1.5':
+    dependencies:
+      '@emotion/is-prop-valid': 0.8.8
+      '@emotion/memoize': 0.7.5
+      styled-system: 5.1.5
+
+  '@styled-system/space@5.1.2':
+    dependencies:
+      '@styled-system/core': 5.1.2
+
+  '@styled-system/theme-get@5.1.2':
+    dependencies:
+      '@styled-system/core': 5.1.2
+
+  '@styled-system/typography@5.1.2':
+    dependencies:
+      '@styled-system/core': 5.1.2
+
+  '@styled-system/variant@5.1.5':
+    dependencies:
+      '@styled-system/core': 5.1.2
+      '@styled-system/css': 5.1.5
+
   '@swc/counter@0.1.3': {}
 
   '@swc/helpers@0.5.15':
@@ -5551,6 +7087,705 @@ snapshots:
       '@types/react': 19.0.7
       '@types/react-dom': 19.0.3(@types/react@19.0.7)
 
+  '@twilio-alpha/assistants-react@0.0.1(bp4f3ntyfcs6yzovh43wbjlpl4)':
+    dependencies:
+      '@twilio-alpha/assistants': 0.0.1(@twilio/conversations@2.6.0(bufferutil@4.0.9)(utf-8-validate@6.0.5))
+      '@twilio-paste/anchor': 12.1.1(g7dxzckmluzoevauikiljmib5a)
+      '@twilio-paste/avatar': 9.1.0(wduwshe7fczhxpovit5tyycw7u)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/button': 14.1.2(frtyr26aphbijipmjbeeviw2ny)
+      '@twilio-paste/chat-composer': 5.2.1(jg4kupmg23izxrvma7hqhjwyai)
+      '@twilio-paste/chat-log': 5.2.1(vwi3vo2vf3qxvskao57xm5qfhy)
+      '@twilio-paste/flex': 8.1.0(mt52nck7k5qvqd6lpcvfvtakma)
+      '@twilio-paste/form': 11.1.1(yz57mfydlwxpdyvaa4ugwwuv4q)
+      '@twilio-paste/icons': 12.8.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/input': 9.1.3(wmulgk4brk4tzpcrapxt3zdbhm)
+      '@twilio-paste/lexical-library': 4.3.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(yjs@13.6.23)
+      '@twilio-paste/minimizable-dialog': 4.1.1(wbr3hkgnhywzuk2kwuf54ywgzm)
+      '@twilio-paste/skeleton-loader': 6.1.1(mt52nck7k5qvqd6lpcvfvtakma)
+      '@twilio-paste/stack': 8.1.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/status': 2.2.0(hp4txev7ad63dq375tpzqqk73q)
+      '@twilio-paste/text': 10.1.1(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      react: 19.0.0
+      react-markdown: 9.0.3(@types/react@19.0.7)(react@19.0.0)
+      zod: 3.24.1
+    transitivePeerDependencies:
+      - '@twilio-paste/animation-library'
+      - '@twilio-paste/badge'
+      - '@twilio-paste/color-contrast-utils'
+      - '@twilio-paste/customization'
+      - '@twilio-paste/design-tokens'
+      - '@twilio-paste/heading'
+      - '@twilio-paste/input-box'
+      - '@twilio-paste/media-object'
+      - '@twilio-paste/menu'
+      - '@twilio-paste/menu-primitive'
+      - '@twilio-paste/non-modal-dialog-primitive'
+      - '@twilio-paste/reakit-library'
+      - '@twilio-paste/screen-reader-only'
+      - '@twilio-paste/separator'
+      - '@twilio-paste/spinner'
+      - '@twilio-paste/style-props'
+      - '@twilio-paste/styling-library'
+      - '@twilio-paste/truncate'
+      - '@twilio-paste/types'
+      - '@twilio-paste/uid-library'
+      - '@twilio-paste/utils'
+      - '@twilio/conversations'
+      - '@types/react'
+      - '@types/react-dom'
+      - react-dom
+      - supports-color
+      - yjs
+
+  '@twilio-alpha/assistants@0.0.1(@twilio/conversations@2.6.0(bufferutil@4.0.9)(utf-8-validate@6.0.5))':
+    dependencies:
+      '@twilio/conversations': 2.6.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
+      events: 3.3.0
+      ts-pattern: 5.6.2
+      zod: 3.24.1
+
+  '@twilio-paste/anchor@12.1.1(g7dxzckmluzoevauikiljmib5a)':
+    dependencies:
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/icons': 12.8.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@twilio-paste/uid-library': 2.0.0(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      '@react-spring/shared': 9.4.5(react@19.0.0)
+      '@react-spring/web': 9.4.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/avatar@9.1.0(wduwshe7fczhxpovit5tyycw7u)':
+    dependencies:
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/icons': 12.8.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/stack': 8.1.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/text': 10.1.1(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@twilio-paste/uid-library': 2.0.0(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      '@types/react-is': 17.0.3
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+      react-is: 18.0.0
+
+  '@twilio-paste/badge@8.4.0(frtyr26aphbijipmjbeeviw2ny)':
+    dependencies:
+      '@twilio-paste/anchor': 12.1.1(g7dxzckmluzoevauikiljmib5a)
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/icons': 12.8.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/spinner': 14.1.2(g7dxzckmluzoevauikiljmib5a)
+      '@twilio-paste/stack': 8.1.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@twilio-paste/uid-library': 2.0.0(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/box@10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)':
+    dependencies:
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      deepmerge: 4.2.2
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/button@14.1.2(frtyr26aphbijipmjbeeviw2ny)':
+    dependencies:
+      '@twilio-paste/anchor': 12.1.1(g7dxzckmluzoevauikiljmib5a)
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/icons': 12.8.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/spinner': 14.1.2(g7dxzckmluzoevauikiljmib5a)
+      '@twilio-paste/stack': 8.1.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@twilio-paste/uid-library': 2.0.0(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      deepmerge: 4.2.2
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/chat-composer@5.2.1(jg4kupmg23izxrvma7hqhjwyai)':
+    dependencies:
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/lexical-library': 4.3.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(yjs@13.6.23)
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      deepmerge: 4.2.2
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/chat-log@5.2.1(vwi3vo2vf3qxvskao57xm5qfhy)':
+    dependencies:
+      '@twilio-paste/anchor': 12.1.1(g7dxzckmluzoevauikiljmib5a)
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/button': 14.1.2(frtyr26aphbijipmjbeeviw2ny)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/icons': 12.8.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/media-object': 10.1.0(mt52nck7k5qvqd6lpcvfvtakma)
+      '@twilio-paste/screen-reader-only': 13.1.1(g7dxzckmluzoevauikiljmib5a)
+      '@twilio-paste/spinner': 14.1.2(g7dxzckmluzoevauikiljmib5a)
+      '@twilio-paste/stack': 8.1.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/text': 10.1.1(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/truncate': 14.1.1(g7dxzckmluzoevauikiljmib5a)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@twilio-paste/uid-library': 2.0.0(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1)':
+    dependencies:
+      '@twilio-paste/design-tokens': 10.11.1
+      color-combos: 1.0.12
+      lodash: 4.17.21
+
+  '@twilio-paste/customization@8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)':
+    dependencies:
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      deepmerge: 4.2.2
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/design-tokens@10.11.1': {}
+
+  '@twilio-paste/flex@8.1.0(mt52nck7k5qvqd6lpcvfvtakma)':
+    dependencies:
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/form@11.1.1(yz57mfydlwxpdyvaa4ugwwuv4q)':
+    dependencies:
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/heading': 11.1.2(qfhbcn5q2qkga7embqion6oujq)
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/text': 10.1.1(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@twilio-paste/uid-library': 2.0.0(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/heading@11.1.2(qfhbcn5q2qkga7embqion6oujq)':
+    dependencies:
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/text': 10.1.1(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/icons@12.8.0(a6dj2kyxzi4xy36k77ox6iffqe)':
+    dependencies:
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@twilio-paste/uid-library': 2.0.0(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/input-box@10.1.1(a6dj2kyxzi4xy36k77ox6iffqe)':
+    dependencies:
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@twilio-paste/uid-library': 2.0.0(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/input@9.1.3(wmulgk4brk4tzpcrapxt3zdbhm)':
+    dependencies:
+      '@twilio-paste/anchor': 12.1.1(g7dxzckmluzoevauikiljmib5a)
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/button': 14.1.2(frtyr26aphbijipmjbeeviw2ny)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/icons': 12.8.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/input-box': 10.1.1(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/spinner': 14.1.2(g7dxzckmluzoevauikiljmib5a)
+      '@twilio-paste/stack': 8.1.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@twilio-paste/uid-library': 2.0.0(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/utils': 5.0.0(lryzaojwk4usuhguryimtnj6ru)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/lexical-library@4.3.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(yjs@13.6.23)':
+    dependencies:
+      '@lexical/link': 0.12.0(lexical@0.12.0)
+      '@lexical/react': 0.12.0(lexical@0.12.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(yjs@13.6.23)
+      lexical: 0.12.0
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+    transitivePeerDependencies:
+      - yjs
+
+  '@twilio-paste/media-object@10.1.0(mt52nck7k5qvqd6lpcvfvtakma)':
+    dependencies:
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/menu-primitive@2.1.1(@twilio-paste/reakit-library@2.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      '@twilio-paste/reakit-library': 2.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/menu@14.1.3(hsxq42dducebdqjfylstaufpea)':
+    dependencies:
+      '@twilio-paste/anchor': 12.1.1(g7dxzckmluzoevauikiljmib5a)
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/badge': 8.4.0(frtyr26aphbijipmjbeeviw2ny)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/button': 14.1.2(frtyr26aphbijipmjbeeviw2ny)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/icons': 12.8.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/media-object': 10.1.0(mt52nck7k5qvqd6lpcvfvtakma)
+      '@twilio-paste/menu-primitive': 2.1.1(@twilio-paste/reakit-library@2.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/reakit-library': 2.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/screen-reader-only': 13.1.1(g7dxzckmluzoevauikiljmib5a)
+      '@twilio-paste/separator': 8.1.1(mt52nck7k5qvqd6lpcvfvtakma)
+      '@twilio-paste/spinner': 14.1.2(g7dxzckmluzoevauikiljmib5a)
+      '@twilio-paste/stack': 8.1.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/text': 10.1.1(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@twilio-paste/uid-library': 2.0.0(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/minimizable-dialog@4.1.1(wbr3hkgnhywzuk2kwuf54ywgzm)':
+    dependencies:
+      '@twilio-paste/anchor': 12.1.1(g7dxzckmluzoevauikiljmib5a)
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/button': 14.1.2(frtyr26aphbijipmjbeeviw2ny)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/icons': 12.8.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/non-modal-dialog-primitive': 2.0.2(@twilio-paste/reakit-library@2.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/reakit-library': 2.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/screen-reader-only': 13.1.1(g7dxzckmluzoevauikiljmib5a)
+      '@twilio-paste/spinner': 14.1.2(g7dxzckmluzoevauikiljmib5a)
+      '@twilio-paste/stack': 8.1.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@twilio-paste/uid-library': 2.0.0(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/non-modal-dialog-primitive@2.0.2(@twilio-paste/reakit-library@2.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      '@twilio-paste/reakit-library': 2.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/paste-reakit-fork@1.4.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      '@popperjs/core': 2.11.8
+      body-scroll-lock: 3.1.5
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+      reakit-system: 0.15.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      reakit-utils: 0.15.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      reakit-warning: 0.6.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+
+  '@twilio-paste/reakit-library@2.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      '@twilio-paste/paste-reakit-fork': 1.4.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+      reakit-system: 0.15.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      reakit-utils: 0.15.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+
+  '@twilio-paste/screen-reader-only@13.1.1(g7dxzckmluzoevauikiljmib5a)':
+    dependencies:
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/icons': 12.8.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@twilio-paste/uid-library': 2.0.0(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/separator@8.1.1(mt52nck7k5qvqd6lpcvfvtakma)':
+    dependencies:
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/skeleton-loader@6.1.1(mt52nck7k5qvqd6lpcvfvtakma)':
+    dependencies:
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/spinner@14.1.2(g7dxzckmluzoevauikiljmib5a)':
+    dependencies:
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/icons': 12.8.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@twilio-paste/uid-library': 2.0.0(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/stack@8.1.0(a6dj2kyxzi4xy36k77ox6iffqe)':
+    dependencies:
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@twilio-paste/uid-library': 2.0.0(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/status@2.2.0(hp4txev7ad63dq375tpzqqk73q)':
+    dependencies:
+      '@twilio-paste/anchor': 12.1.1(g7dxzckmluzoevauikiljmib5a)
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/badge': 8.4.0(frtyr26aphbijipmjbeeviw2ny)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/button': 14.1.2(frtyr26aphbijipmjbeeviw2ny)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/icons': 12.8.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/media-object': 10.1.0(mt52nck7k5qvqd6lpcvfvtakma)
+      '@twilio-paste/menu': 14.1.3(hsxq42dducebdqjfylstaufpea)
+      '@twilio-paste/menu-primitive': 2.1.1(@twilio-paste/reakit-library@2.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/reakit-library': 2.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/screen-reader-only': 13.1.1(g7dxzckmluzoevauikiljmib5a)
+      '@twilio-paste/separator': 8.1.1(mt52nck7k5qvqd6lpcvfvtakma)
+      '@twilio-paste/spinner': 14.1.2(g7dxzckmluzoevauikiljmib5a)
+      '@twilio-paste/stack': 8.1.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/text': 10.1.1(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@twilio-paste/uid-library': 2.0.0(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/style-props@9.1.1(lryzaojwk4usuhguryimtnj6ru)':
+    dependencies:
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      csstype: 3.0.11
+      lodash: 4.17.21
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      '@emotion/cache': 11.10.5
+      '@emotion/react': 11.10.5(@babel/core@7.26.0)(@types/react@19.0.7)(react@19.0.0)
+      '@emotion/styled': 11.10.5(@babel/core@7.26.0)(@emotion/react@11.10.5(@babel/core@7.26.0)(@types/react@19.0.7)(react@19.0.0))(@types/react@19.0.7)(react@19.0.0)
+      '@styled-system/css': 5.1.5
+      '@styled-system/should-forward-prop': 5.1.5
+      '@styled-system/theme-get': 5.1.2
+      '@types/styled-system': 5.1.9
+      '@types/styled-system__css': 5.0.17
+      '@types/styled-system__should-forward-prop': 5.1.2
+      '@types/styled-system__theme-get': 5.0.2
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+      styled-system: 5.1.5
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@types/react'
+      - supports-color
+
+  '@twilio-paste/text@10.1.1(6gwawvnck6ccw4qaywjlzy3pgy)':
+    dependencies:
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      deepmerge: 4.2.2
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/theme@11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/truncate@14.1.1(g7dxzckmluzoevauikiljmib5a)':
+    dependencies:
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/box': 10.4.0(6gwawvnck6ccw4qaywjlzy3pgy)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/customization': 8.2.0(4f6oz4yy553l7gbq2o4hlnsv3e)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/icons': 12.8.0(a6dj2kyxzi4xy36k77ox6iffqe)
+      '@twilio-paste/style-props': 9.1.1(lryzaojwk4usuhguryimtnj6ru)
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@twilio-paste/uid-library': 2.0.0(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)':
+    dependencies:
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      react: 19.0.0
+
+  '@twilio-paste/uid-library@2.0.0(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+      react-uid: 2.3.3(@types/react@19.0.7)(react@19.0.0)
+    transitivePeerDependencies:
+      - '@types/react'
+
+  '@twilio-paste/utils@5.0.0(lryzaojwk4usuhguryimtnj6ru)':
+    dependencies:
+      '@twilio-paste/animation-library': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/color-contrast-utils': 5.0.0(@twilio-paste/design-tokens@10.11.1)
+      '@twilio-paste/design-tokens': 10.11.1
+      '@twilio-paste/styling-library': 3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/theme': 11.1.1(@twilio-paste/animation-library@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/color-contrast-utils@5.0.0(@twilio-paste/design-tokens@10.11.1))(@twilio-paste/design-tokens@10.11.1)(@twilio-paste/styling-library@3.0.0(@babel/core@7.26.0)(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@twilio-paste/types@6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0))(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@twilio-paste/types': 6.0.0(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react@19.0.0)
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
+      lodash: 4.17.21
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  '@twilio/conversations@2.6.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)':
+    dependencies:
+      '@babel/runtime': 7.26.0
+      '@twilio/declarative-type-validator': 0.2.8
+      '@twilio/deprecation-decorator': 0.2.6
+      '@twilio/mcs-client': 0.6.8
+      '@twilio/notifications': 2.0.7(bufferutil@4.0.9)(utf-8-validate@6.0.5)
+      '@twilio/operation-retrier': 4.0.16
+      '@twilio/replay-event-emitter': 0.3.8
+      core-js: 3.39.0
+      iso8601-duration: 1.2.0
+      isomorphic-form-data: 2.0.0
+      lodash.isequal: 4.5.0
+      loglevel: 1.9.2
+      platform: 1.3.6
+      quick-lru: 5.1.1
+      twilio-sync: 3.1.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
+      twilsock: 0.12.2(bufferutil@4.0.9)(utf-8-validate@6.0.5)
+      uuid: 3.4.0
+      xmlhttprequest: 1.8.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
   '@twilio/declarative-type-validator@0.1.11':
     dependencies:
       '@babel/runtime': 7.26.0
@@ -5560,6 +7795,34 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.26.0
       core-js: 3.39.0
+
+  '@twilio/deprecation-decorator@0.2.6':
+    dependencies:
+      '@babel/runtime': 7.26.0
+      core-js: 3.39.0
+      loglevel: 1.8.0
+
+  '@twilio/mcs-client@0.6.8':
+    dependencies:
+      '@babel/runtime': 7.26.0
+      '@twilio/declarative-type-validator': 0.2.8
+      '@twilio/operation-retrier': 4.0.16
+      core-js: 3.39.0
+      loglevel: 1.9.2
+      xmlhttprequest: 1.8.0
+
+  '@twilio/notifications@2.0.7(bufferutil@4.0.9)(utf-8-validate@6.0.5)':
+    dependencies:
+      '@babel/runtime': 7.26.0
+      '@twilio/declarative-type-validator': 0.2.8
+      '@twilio/operation-retrier': 4.0.16
+      core-js: 3.39.0
+      loglevel: 1.9.2
+      twilsock: 0.12.2(bufferutil@4.0.9)(utf-8-validate@6.0.5)
+      uuid: 3.4.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
 
   '@twilio/operation-retrier@4.0.16':
     dependencies:
@@ -5620,13 +7883,31 @@ snapshots:
 
   '@types/d3-time@3.0.4': {}
 
+  '@types/debug@4.1.12':
+    dependencies:
+      '@types/ms': 2.1.0
+
+  '@types/estree-jsx@1.0.5':
+    dependencies:
+      '@types/estree': 1.0.6
+
   '@types/estree@1.0.6': {}
 
   '@types/google-libphonenumber@7.4.30': {}
 
+  '@types/hast@3.0.4':
+    dependencies:
+      '@types/unist': 3.0.3
+
   '@types/json-schema@7.0.15': {}
 
   '@types/json5@0.0.29': {}
+
+  '@types/mdast@4.0.4':
+    dependencies:
+      '@types/unist': 3.0.3
+
+  '@types/ms@2.1.0': {}
 
   '@types/node@22.10.6':
     dependencies:
@@ -5640,6 +7921,10 @@ snapshots:
     dependencies:
       '@types/react': 19.0.7
 
+  '@types/react-is@17.0.3':
+    dependencies:
+      '@types/react': 19.0.7
+
   '@types/react-transition-group@4.4.12(@types/react@19.0.7)':
     dependencies:
       '@types/react': 19.0.7
@@ -5647,6 +7932,22 @@ snapshots:
   '@types/react@19.0.7':
     dependencies:
       csstype: 3.1.3
+
+  '@types/styled-system@5.1.9':
+    dependencies:
+      csstype: 2.6.21
+
+  '@types/styled-system__css@5.0.17':
+    dependencies:
+      csstype: 3.1.3
+
+  '@types/styled-system__should-forward-prop@5.1.2': {}
+
+  '@types/styled-system__theme-get@5.0.2': {}
+
+  '@types/unist@2.0.11': {}
+
+  '@types/unist@3.0.3': {}
 
   '@typescript-eslint/eslint-plugin@8.18.1(@typescript-eslint/parser@8.18.1(eslint@9.18.0(jiti@1.21.7))(typescript@5.7.3))(eslint@9.18.0(jiti@1.21.7))(typescript@5.7.3)':
     dependencies:
@@ -5724,6 +8025,8 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 8.18.1
       eslint-visitor-keys: 4.2.0
+
+  '@ungap/structured-clone@1.3.0': {}
 
   '@vitejs/plugin-react@4.3.4(vite@5.4.11(@types/node@22.10.6))':
     dependencies:
@@ -5934,9 +8237,13 @@ snapshots:
       cosmiconfig: 7.1.0
       resolve: 1.22.9
 
+  bail@2.0.2: {}
+
   balanced-match@1.0.2: {}
 
   binary-extensions@2.3.0: {}
+
+  body-scroll-lock@3.1.5: {}
 
   brace-expansion@1.1.11:
     dependencies:
@@ -5993,6 +8300,8 @@ snapshots:
 
   caniuse-lite@1.0.30001690: {}
 
+  ccount@2.0.1: {}
+
   chai@5.1.2:
     dependencies:
       assertion-error: 2.0.1
@@ -6005,6 +8314,14 @@ snapshots:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
+
+  character-entities-html4@2.1.0: {}
+
+  character-entities-legacy@3.0.0: {}
+
+  character-entities@2.0.2: {}
+
+  character-reference-invalid@2.0.1: {}
 
   check-error@2.1.1: {}
 
@@ -6030,9 +8347,20 @@ snapshots:
 
   clsx@2.1.1: {}
 
+  color-combos@1.0.12:
+    dependencies:
+      color: 3.1.3
+      lodash.uniq: 4.5.0
+
+  color-convert@1.9.3:
+    dependencies:
+      color-name: 1.1.3
+
   color-convert@2.0.1:
     dependencies:
       color-name: 1.1.4
+
+  color-name@1.1.3: {}
 
   color-name@1.1.4: {}
 
@@ -6040,7 +8368,11 @@ snapshots:
     dependencies:
       color-name: 1.1.4
       simple-swizzle: 0.2.2
-    optional: true
+
+  color@3.1.3:
+    dependencies:
+      color-convert: 1.9.3
+      color-string: 1.9.1
 
   color@4.2.3:
     dependencies:
@@ -6051,6 +8383,8 @@ snapshots:
   combined-stream@1.0.8:
     dependencies:
       delayed-stream: 1.0.0
+
+  comma-separated-tokens@2.0.3: {}
 
   commander@4.1.1: {}
 
@@ -6092,6 +8426,10 @@ snapshots:
     dependencies:
       '@asamuzakjp/css-color': 2.8.3
       rrweb-cssom: 0.8.0
+
+  csstype@2.6.21: {}
+
+  csstype@3.0.11: {}
 
   csstype@3.1.3: {}
 
@@ -6195,9 +8533,15 @@ snapshots:
 
   decimal.js@10.4.3: {}
 
+  decode-named-character-reference@1.0.2:
+    dependencies:
+      character-entities: 2.0.2
+
   deep-eql@5.0.2: {}
 
   deep-is@0.1.4: {}
+
+  deepmerge@4.2.2: {}
 
   define-data-property@1.1.4:
     dependencies:
@@ -6223,6 +8567,10 @@ snapshots:
     optional: true
 
   detect-node-es@1.1.0: {}
+
+  devlop@1.1.0:
+    dependencies:
+      dequal: 2.0.3
 
   didyoumean@1.2.2: {}
 
@@ -6617,13 +8965,19 @@ snapshots:
 
   estraverse@5.3.0: {}
 
+  estree-util-is-identifier-name@3.0.0: {}
+
   estree-walker@3.0.3:
     dependencies:
       '@types/estree': 1.0.6
 
   esutils@2.0.3: {}
 
+  events@3.3.0: {}
+
   expect-type@1.1.0: {}
+
+  extend@3.0.2: {}
 
   fast-deep-equal@3.1.3: {}
 
@@ -6683,6 +9037,13 @@ snapshots:
     dependencies:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
+
+  form-data@2.5.2:
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.35
+      safe-buffer: 5.2.1
 
   form-data@4.0.1:
     dependencies:
@@ -6795,6 +9156,30 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
+  hast-util-to-jsx-runtime@2.3.2:
+    dependencies:
+      '@types/estree': 1.0.6
+      '@types/hast': 3.0.4
+      '@types/unist': 3.0.3
+      comma-separated-tokens: 2.0.3
+      devlop: 1.1.0
+      estree-util-is-identifier-name: 3.0.0
+      hast-util-whitespace: 3.0.0
+      mdast-util-mdx-expression: 2.0.1
+      mdast-util-mdx-jsx: 3.2.0
+      mdast-util-mdxjs-esm: 2.0.1
+      property-information: 6.5.0
+      space-separated-tokens: 2.0.2
+      style-to-object: 1.0.8
+      unist-util-position: 5.0.0
+      vfile-message: 4.0.2
+    transitivePeerDependencies:
+      - supports-color
+
+  hast-util-whitespace@3.0.0:
+    dependencies:
+      '@types/hast': 3.0.4
+
   hoist-non-react-statics@3.3.2:
     dependencies:
       react-is: 16.13.1
@@ -6802,6 +9187,8 @@ snapshots:
   html-encoding-sniffer@4.0.0:
     dependencies:
       whatwg-encoding: 3.1.1
+
+  html-url-attributes@3.0.1: {}
 
   http-proxy-agent@7.0.2:
     dependencies:
@@ -6837,6 +9224,8 @@ snapshots:
 
   imurmurhash@0.1.4: {}
 
+  inline-style-parser@0.2.4: {}
+
   internal-slot@1.1.0:
     dependencies:
       es-errors: 1.3.0
@@ -6847,6 +9236,13 @@ snapshots:
 
   internmap@2.0.3: {}
 
+  is-alphabetical@2.0.1: {}
+
+  is-alphanumerical@2.0.1:
+    dependencies:
+      is-alphabetical: 2.0.1
+      is-decimal: 2.0.1
+
   is-array-buffer@3.0.5:
     dependencies:
       call-bind: 1.0.8
@@ -6855,8 +9251,7 @@ snapshots:
 
   is-arrayish@0.2.1: {}
 
-  is-arrayish@0.3.2:
-    optional: true
+  is-arrayish@0.3.2: {}
 
   is-async-function@2.0.0:
     dependencies:
@@ -6896,6 +9291,8 @@ snapshots:
       call-bound: 1.0.3
       has-tostringtag: 1.0.2
 
+  is-decimal@2.0.1: {}
+
   is-extglob@2.1.1: {}
 
   is-finalizationregistry@1.1.1:
@@ -6912,6 +9309,8 @@ snapshots:
     dependencies:
       is-extglob: 2.1.1
 
+  is-hexadecimal@2.0.1: {}
+
   is-map@2.0.3: {}
 
   is-negative-zero@2.0.3: {}
@@ -6922,6 +9321,8 @@ snapshots:
       has-tostringtag: 1.0.2
 
   is-number@7.0.0: {}
+
+  is-plain-obj@4.1.0: {}
 
   is-potential-custom-element-name@1.0.1: {}
 
@@ -6969,6 +9370,12 @@ snapshots:
   isexe@2.0.0: {}
 
   iso8601-duration@1.2.0: {}
+
+  isomorphic-form-data@2.0.0:
+    dependencies:
+      form-data: 2.5.2
+
+  isomorphic.js@0.2.5: {}
 
   iterator.prototype@1.1.4:
     dependencies:
@@ -7085,6 +9492,12 @@ snapshots:
       prelude-ls: 1.2.1
       type-check: 0.4.0
 
+  lexical@0.12.0: {}
+
+  lib0@0.2.99:
+    dependencies:
+      isomorphic.js: 0.2.5
+
   lilconfig@3.1.3: {}
 
   lines-and-columns@1.2.4: {}
@@ -7099,6 +9512,8 @@ snapshots:
 
   lodash.isboolean@3.0.3: {}
 
+  lodash.isequal@4.5.0: {}
+
   lodash.isinteger@4.0.4: {}
 
   lodash.isnumber@3.0.3: {}
@@ -7111,9 +9526,15 @@ snapshots:
 
   lodash.once@4.1.1: {}
 
+  lodash.uniq@4.5.0: {}
+
   lodash@4.17.21: {}
 
+  loglevel@1.8.0: {}
+
   loglevel@1.9.2: {}
+
+  longest-streak@3.1.0: {}
 
   loose-envify@1.4.0:
     dependencies:
@@ -7139,9 +9560,231 @@ snapshots:
 
   math-intrinsics@1.1.0: {}
 
+  mdast-util-from-markdown@2.0.2:
+    dependencies:
+      '@types/mdast': 4.0.4
+      '@types/unist': 3.0.3
+      decode-named-character-reference: 1.0.2
+      devlop: 1.1.0
+      mdast-util-to-string: 4.0.0
+      micromark: 4.0.1
+      micromark-util-decode-numeric-character-reference: 2.0.2
+      micromark-util-decode-string: 2.0.1
+      micromark-util-normalize-identifier: 2.0.1
+      micromark-util-symbol: 2.0.1
+      micromark-util-types: 2.0.1
+      unist-util-stringify-position: 4.0.0
+    transitivePeerDependencies:
+      - supports-color
+
+  mdast-util-mdx-expression@2.0.1:
+    dependencies:
+      '@types/estree-jsx': 1.0.5
+      '@types/hast': 3.0.4
+      '@types/mdast': 4.0.4
+      devlop: 1.1.0
+      mdast-util-from-markdown: 2.0.2
+      mdast-util-to-markdown: 2.1.2
+    transitivePeerDependencies:
+      - supports-color
+
+  mdast-util-mdx-jsx@3.2.0:
+    dependencies:
+      '@types/estree-jsx': 1.0.5
+      '@types/hast': 3.0.4
+      '@types/mdast': 4.0.4
+      '@types/unist': 3.0.3
+      ccount: 2.0.1
+      devlop: 1.1.0
+      mdast-util-from-markdown: 2.0.2
+      mdast-util-to-markdown: 2.1.2
+      parse-entities: 4.0.2
+      stringify-entities: 4.0.4
+      unist-util-stringify-position: 4.0.0
+      vfile-message: 4.0.2
+    transitivePeerDependencies:
+      - supports-color
+
+  mdast-util-mdxjs-esm@2.0.1:
+    dependencies:
+      '@types/estree-jsx': 1.0.5
+      '@types/hast': 3.0.4
+      '@types/mdast': 4.0.4
+      devlop: 1.1.0
+      mdast-util-from-markdown: 2.0.2
+      mdast-util-to-markdown: 2.1.2
+    transitivePeerDependencies:
+      - supports-color
+
+  mdast-util-phrasing@4.1.0:
+    dependencies:
+      '@types/mdast': 4.0.4
+      unist-util-is: 6.0.0
+
+  mdast-util-to-hast@13.2.0:
+    dependencies:
+      '@types/hast': 3.0.4
+      '@types/mdast': 4.0.4
+      '@ungap/structured-clone': 1.3.0
+      devlop: 1.1.0
+      micromark-util-sanitize-uri: 2.0.1
+      trim-lines: 3.0.1
+      unist-util-position: 5.0.0
+      unist-util-visit: 5.0.0
+      vfile: 6.0.3
+
+  mdast-util-to-markdown@2.1.2:
+    dependencies:
+      '@types/mdast': 4.0.4
+      '@types/unist': 3.0.3
+      longest-streak: 3.1.0
+      mdast-util-phrasing: 4.1.0
+      mdast-util-to-string: 4.0.0
+      micromark-util-classify-character: 2.0.1
+      micromark-util-decode-string: 2.0.1
+      unist-util-visit: 5.0.0
+      zwitch: 2.0.4
+
+  mdast-util-to-string@4.0.0:
+    dependencies:
+      '@types/mdast': 4.0.4
+
   memoize-one@6.0.0: {}
 
   merge2@1.4.1: {}
+
+  micromark-core-commonmark@2.0.2:
+    dependencies:
+      decode-named-character-reference: 1.0.2
+      devlop: 1.1.0
+      micromark-factory-destination: 2.0.1
+      micromark-factory-label: 2.0.1
+      micromark-factory-space: 2.0.1
+      micromark-factory-title: 2.0.1
+      micromark-factory-whitespace: 2.0.1
+      micromark-util-character: 2.1.1
+      micromark-util-chunked: 2.0.1
+      micromark-util-classify-character: 2.0.1
+      micromark-util-html-tag-name: 2.0.1
+      micromark-util-normalize-identifier: 2.0.1
+      micromark-util-resolve-all: 2.0.1
+      micromark-util-subtokenize: 2.0.4
+      micromark-util-symbol: 2.0.1
+      micromark-util-types: 2.0.1
+
+  micromark-factory-destination@2.0.1:
+    dependencies:
+      micromark-util-character: 2.1.1
+      micromark-util-symbol: 2.0.1
+      micromark-util-types: 2.0.1
+
+  micromark-factory-label@2.0.1:
+    dependencies:
+      devlop: 1.1.0
+      micromark-util-character: 2.1.1
+      micromark-util-symbol: 2.0.1
+      micromark-util-types: 2.0.1
+
+  micromark-factory-space@2.0.1:
+    dependencies:
+      micromark-util-character: 2.1.1
+      micromark-util-types: 2.0.1
+
+  micromark-factory-title@2.0.1:
+    dependencies:
+      micromark-factory-space: 2.0.1
+      micromark-util-character: 2.1.1
+      micromark-util-symbol: 2.0.1
+      micromark-util-types: 2.0.1
+
+  micromark-factory-whitespace@2.0.1:
+    dependencies:
+      micromark-factory-space: 2.0.1
+      micromark-util-character: 2.1.1
+      micromark-util-symbol: 2.0.1
+      micromark-util-types: 2.0.1
+
+  micromark-util-character@2.1.1:
+    dependencies:
+      micromark-util-symbol: 2.0.1
+      micromark-util-types: 2.0.1
+
+  micromark-util-chunked@2.0.1:
+    dependencies:
+      micromark-util-symbol: 2.0.1
+
+  micromark-util-classify-character@2.0.1:
+    dependencies:
+      micromark-util-character: 2.1.1
+      micromark-util-symbol: 2.0.1
+      micromark-util-types: 2.0.1
+
+  micromark-util-combine-extensions@2.0.1:
+    dependencies:
+      micromark-util-chunked: 2.0.1
+      micromark-util-types: 2.0.1
+
+  micromark-util-decode-numeric-character-reference@2.0.2:
+    dependencies:
+      micromark-util-symbol: 2.0.1
+
+  micromark-util-decode-string@2.0.1:
+    dependencies:
+      decode-named-character-reference: 1.0.2
+      micromark-util-character: 2.1.1
+      micromark-util-decode-numeric-character-reference: 2.0.2
+      micromark-util-symbol: 2.0.1
+
+  micromark-util-encode@2.0.1: {}
+
+  micromark-util-html-tag-name@2.0.1: {}
+
+  micromark-util-normalize-identifier@2.0.1:
+    dependencies:
+      micromark-util-symbol: 2.0.1
+
+  micromark-util-resolve-all@2.0.1:
+    dependencies:
+      micromark-util-types: 2.0.1
+
+  micromark-util-sanitize-uri@2.0.1:
+    dependencies:
+      micromark-util-character: 2.1.1
+      micromark-util-encode: 2.0.1
+      micromark-util-symbol: 2.0.1
+
+  micromark-util-subtokenize@2.0.4:
+    dependencies:
+      devlop: 1.1.0
+      micromark-util-chunked: 2.0.1
+      micromark-util-symbol: 2.0.1
+      micromark-util-types: 2.0.1
+
+  micromark-util-symbol@2.0.1: {}
+
+  micromark-util-types@2.0.1: {}
+
+  micromark@4.0.1:
+    dependencies:
+      '@types/debug': 4.1.12
+      debug: 4.4.0
+      decode-named-character-reference: 1.0.2
+      devlop: 1.1.0
+      micromark-core-commonmark: 2.0.2
+      micromark-factory-space: 2.0.1
+      micromark-util-character: 2.1.1
+      micromark-util-chunked: 2.0.1
+      micromark-util-combine-extensions: 2.0.1
+      micromark-util-decode-numeric-character-reference: 2.0.2
+      micromark-util-encode: 2.0.1
+      micromark-util-normalize-identifier: 2.0.1
+      micromark-util-resolve-all: 2.0.1
+      micromark-util-sanitize-uri: 2.0.1
+      micromark-util-subtokenize: 2.0.4
+      micromark-util-symbol: 2.0.1
+      micromark-util-types: 2.0.1
+    transitivePeerDependencies:
+      - supports-color
 
   micromatch@4.0.8:
     dependencies:
@@ -7280,6 +9923,16 @@ snapshots:
     dependencies:
       callsites: 3.1.0
 
+  parse-entities@4.0.2:
+    dependencies:
+      '@types/unist': 2.0.11
+      character-entities-legacy: 3.0.0
+      character-reference-invalid: 2.0.1
+      decode-named-character-reference: 1.0.2
+      is-alphanumerical: 2.0.1
+      is-decimal: 2.0.1
+      is-hexadecimal: 2.0.1
+
   parse-json@5.2.0:
     dependencies:
       '@babel/code-frame': 7.26.2
@@ -7381,11 +10034,15 @@ snapshots:
       ansi-styles: 5.2.0
       react-is: 17.0.2
 
+  prismjs@1.29.0: {}
+
   prop-types@15.8.1:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       react-is: 16.13.1
+
+  property-information@6.5.0: {}
 
   proxy-from-env@1.1.0: {}
 
@@ -7399,6 +10056,8 @@ snapshots:
 
   queue-microtask@1.2.3: {}
 
+  quick-lru@5.1.1: {}
+
   react-day-picker@9.5.0(react@19.0.0):
     dependencies:
       '@date-fns/tz': 1.2.0
@@ -7411,9 +10070,33 @@ snapshots:
       react: 19.0.0
       scheduler: 0.25.0
 
+  react-error-boundary@3.1.4(react@19.0.0):
+    dependencies:
+      '@babel/runtime': 7.26.0
+      react: 19.0.0
+
   react-is@16.13.1: {}
 
   react-is@17.0.2: {}
+
+  react-is@18.0.0: {}
+
+  react-markdown@9.0.3(@types/react@19.0.7)(react@19.0.0):
+    dependencies:
+      '@types/hast': 3.0.4
+      '@types/react': 19.0.7
+      devlop: 1.1.0
+      hast-util-to-jsx-runtime: 2.3.2
+      html-url-attributes: 3.0.1
+      mdast-util-to-hast: 13.2.0
+      react: 19.0.0
+      remark-parse: 11.0.0
+      remark-rehype: 11.1.1
+      unified: 11.0.5
+      unist-util-visit: 5.0.0
+      vfile: 6.0.3
+    transitivePeerDependencies:
+      - supports-color
 
   react-qr-code@2.0.15(react@19.0.0):
     dependencies:
@@ -7476,6 +10159,13 @@ snapshots:
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
 
+  react-uid@2.3.3(@types/react@19.0.7)(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+      tslib: 2.8.1
+    optionalDependencies:
+      '@types/react': 19.0.7
+
   react@19.0.0: {}
 
   read-cache@1.0.0:
@@ -7485,6 +10175,24 @@ snapshots:
   readdirp@3.6.0:
     dependencies:
       picomatch: 2.3.1
+
+  reakit-system@0.15.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+      reakit-utils: 0.15.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+
+  reakit-utils@0.15.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  reakit-warning@0.6.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+      reakit-utils: 0.15.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+    transitivePeerDependencies:
+      - react-dom
 
   reflect.getprototypeof@1.0.9:
     dependencies:
@@ -7505,6 +10213,23 @@ snapshots:
       define-properties: 1.2.1
       es-errors: 1.3.0
       set-function-name: 2.0.2
+
+  remark-parse@11.0.0:
+    dependencies:
+      '@types/mdast': 4.0.4
+      mdast-util-from-markdown: 2.0.2
+      micromark-util-types: 2.0.1
+      unified: 11.0.5
+    transitivePeerDependencies:
+      - supports-color
+
+  remark-rehype@11.1.1:
+    dependencies:
+      '@types/hast': 3.0.4
+      '@types/mdast': 4.0.4
+      mdast-util-to-hast: 13.2.0
+      unified: 11.0.5
+      vfile: 6.0.3
 
   resolve-from@4.0.0: {}
 
@@ -7671,11 +10396,12 @@ snapshots:
   simple-swizzle@0.2.2:
     dependencies:
       is-arrayish: 0.3.2
-    optional: true
 
   source-map-js@1.2.1: {}
 
   source-map@0.5.7: {}
+
+  space-separated-tokens@2.0.2: {}
 
   stable-hash@0.0.4: {}
 
@@ -7746,6 +10472,11 @@ snapshots:
       define-properties: 1.2.1
       es-object-atoms: 1.0.0
 
+  stringify-entities@4.0.4:
+    dependencies:
+      character-entities-html4: 2.1.0
+      character-entities-legacy: 3.0.0
+
   strip-ansi@6.0.1:
     dependencies:
       ansi-regex: 5.0.1
@@ -7758,12 +10489,34 @@ snapshots:
 
   strip-json-comments@3.1.1: {}
 
+  style-to-object@1.0.8:
+    dependencies:
+      inline-style-parser: 0.2.4
+
   styled-jsx@5.1.6(@babel/core@7.26.0)(react@19.0.0):
     dependencies:
       client-only: 0.0.1
       react: 19.0.0
     optionalDependencies:
       '@babel/core': 7.26.0
+
+  styled-system@5.1.5:
+    dependencies:
+      '@styled-system/background': 5.1.2
+      '@styled-system/border': 5.1.5
+      '@styled-system/color': 5.1.2
+      '@styled-system/core': 5.1.2
+      '@styled-system/flexbox': 5.1.2
+      '@styled-system/grid': 5.1.2
+      '@styled-system/layout': 5.1.2
+      '@styled-system/position': 5.1.2
+      '@styled-system/shadow': 5.1.2
+      '@styled-system/space': 5.1.2
+      '@styled-system/typography': 5.1.2
+      '@styled-system/variant': 5.1.5
+      object-assign: 4.1.1
+
+  stylis@4.1.3: {}
 
   stylis@4.2.0: {}
 
@@ -7858,11 +10611,17 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
+  trim-lines@3.0.1: {}
+
+  trough@2.2.0: {}
+
   ts-api-utils@1.4.3(typescript@5.7.3):
     dependencies:
       typescript: 5.7.3
 
   ts-interface-checker@0.1.13: {}
+
+  ts-pattern@5.6.2: {}
 
   tsconfck@3.1.4(typescript@5.7.3):
     optionalDependencies:
@@ -7883,6 +10642,21 @@ snapshots:
       get-tsconfig: 4.8.1
     optionalDependencies:
       fsevents: 2.3.3
+
+  twilio-sync@3.1.0(bufferutil@4.0.9)(utf-8-validate@6.0.5):
+    dependencies:
+      '@babel/runtime': 7.26.0
+      '@twilio/declarative-type-validator': 0.1.11
+      '@twilio/operation-retrier': 4.0.16
+      core-js: 3.39.0
+      iso8601-duration: 1.2.0
+      loglevel: 1.9.2
+      platform: 1.3.6
+      twilsock: 0.12.2(bufferutil@4.0.9)(utf-8-validate@6.0.5)
+      uuid: 3.4.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
 
   twilio-sync@3.3.5(bufferutil@4.0.9)(utf-8-validate@6.0.5):
     dependencies:
@@ -7978,6 +10752,39 @@ snapshots:
 
   undici-types@6.20.0: {}
 
+  unified@11.0.5:
+    dependencies:
+      '@types/unist': 3.0.3
+      bail: 2.0.2
+      devlop: 1.1.0
+      extend: 3.0.2
+      is-plain-obj: 4.1.0
+      trough: 2.2.0
+      vfile: 6.0.3
+
+  unist-util-is@6.0.0:
+    dependencies:
+      '@types/unist': 3.0.3
+
+  unist-util-position@5.0.0:
+    dependencies:
+      '@types/unist': 3.0.3
+
+  unist-util-stringify-position@4.0.0:
+    dependencies:
+      '@types/unist': 3.0.3
+
+  unist-util-visit-parents@6.0.1:
+    dependencies:
+      '@types/unist': 3.0.3
+      unist-util-is: 6.0.0
+
+  unist-util-visit@5.0.0:
+    dependencies:
+      '@types/unist': 3.0.3
+      unist-util-is: 6.0.0
+      unist-util-visit-parents: 6.0.1
+
   update-browserslist-db@1.1.1(browserslist@4.24.3):
     dependencies:
       browserslist: 4.24.3
@@ -8016,6 +10823,16 @@ snapshots:
   util-deprecate@1.0.2: {}
 
   uuid@3.4.0: {}
+
+  vfile-message@4.0.2:
+    dependencies:
+      '@types/unist': 3.0.3
+      unist-util-stringify-position: 4.0.0
+
+  vfile@6.0.3:
+    dependencies:
+      '@types/unist': 3.0.3
+      vfile-message: 4.0.2
 
   vite-node@2.1.8(@types/node@22.10.6):
     dependencies:
@@ -8189,10 +11006,20 @@ snapshots:
 
   xmlchars@2.2.0: {}
 
+  xmlhttprequest@1.8.0: {}
+
   yallist@3.1.1: {}
 
   yaml@1.10.2: {}
 
   yaml@2.6.1: {}
 
+  yjs@13.6.23:
+    dependencies:
+      lib0: 0.2.99
+
   yocto-queue@0.1.0: {}
+
+  zod@3.24.1: {}
+
+  zwitch@2.0.4: {}

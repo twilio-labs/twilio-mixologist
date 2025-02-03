@@ -1,10 +1,11 @@
 "use server";
 
-import { updateSyncMapItem } from "@/lib/twilio";
+import { deleteAiAssistant, updateSyncMapItem } from "@/lib/twilio";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { getSyncService } from "@/lib/twilio";
 import { Privilege, getAuthenticatedRole } from "@/middleware";
+import { getEvent } from "@/app/webhooks/mixologist-helper";
 
 const NEXT_PUBLIC_EVENTS_MAP = process.env.NEXT_PUBLIC_EVENTS_MAP || "";
 
@@ -35,8 +36,14 @@ export async function DELETE(request: Request) {
   if (!slug) {
     throw new Error("No slug specified");
   }
-
   const syncService = await getSyncService();
+  const event = await syncService
+    .syncMaps()(NEXT_PUBLIC_EVENTS_MAP)
+    .syncMapItems(slug)
+    .fetch();
+
+  if (event.data.assistantId) await deleteAiAssistant(event.data.assistantId); // this if statement is only needed during the transition period
+
   try {
     await syncService
       .syncMaps()(NEXT_PUBLIC_EVENTS_MAP)
