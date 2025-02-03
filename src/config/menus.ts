@@ -20,7 +20,7 @@ export type Menus = {
 export interface Order {
   key: string;
   manual?: boolean;
-  item: MenuItem;
+  item: string;
   modifiers?: string;
   address?: string;
   orderNumber?: number;

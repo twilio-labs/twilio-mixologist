@@ -17,7 +17,6 @@ export function verifyOrder(item: string, modifiers: string[], event: Event) {
     return false;
   }
 
-  // if (!event.selection.items.includes(item)) { // TODO fix here
   if (!event.selection.items.find((i) => i.title === item)) {
     return false;
   }
@@ -49,8 +48,11 @@ export function filterRealMenuItems(
       // remove everything after a line break, remove special characters but keep è
       const cleanedItem = line.split("\n")[0].replace(/[^\w\sè]/gi, "");
 
+      //sort menu by longest title first
+      const match = menu
+        .sort((a, b) => b.title.length - a.title.length)
+        .find((i) => cleanedItem.includes(i.title));
       // For now we assume the AI won't make up new modifiers, if this happens, we also need to filter here
-      const match = menu.find((i) => cleanedItem.includes(i.title));
       if (!match) {
         return null;
       }

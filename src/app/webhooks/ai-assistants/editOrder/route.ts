@@ -58,12 +58,7 @@ export async function POST(request: NextRequest) {
         try {
           updateOrder(event.slug, lastOrder.index, {
             ...lastOrder.data,
-            item: {
-              //TODO refactor to have only the shortTitle here
-              shortTitle: item,
-              title: item,
-              description: item,
-            },
+            item,
             ...(modifiers.length >= 1 && {
               modifiers: modifiers.join(", "),
             }),

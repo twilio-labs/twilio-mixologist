@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
   }
   if (lastOrder?.data.status === "queued") {
     return new Response(
-      `Couldn't create order since the customer already has an active order for a ${lastOrder.data.item.shortTitle}, order # ${lastOrder.index}`,
+      `Couldn't create order since the customer already has an active order for a ${lastOrder.data.item}, order # ${lastOrder.index}`,
       { status: 500 },
     );
   } else if (
@@ -94,12 +94,7 @@ export async function POST(request: NextRequest) {
   const order: Order = {
     key: conversationSid,
     address: await redact(identityHeader),
-    item: {
-      //TODO refactor to have only the shortTitle here
-      shortTitle: item,
-      title: item,
-      description: item,
-    },
+    item,
     ...(modifiers.length >= 1 && {
       modifiers: modifiers.join(", "),
     }),
@@ -124,7 +119,7 @@ export async function POST(request: NextRequest) {
       TwoWeeksInSeconds,
     );
     return new Response(
-      `The order #${order.orderNumber} for a ${order.item.title} has been created successfully and fill be prepared now.`,
+      `The order #${order.orderNumber} for a ${order.item} has been created successfully and fill be prepared now.`,
       { status: 200 },
     );
   } else {
@@ -165,7 +160,7 @@ export async function GET(request: NextRequest) {
         : "The current queue position is " +
           queuePosition +
           " and the last order was for a " +
-          lastOrder?.data?.item.title; //TODO change this
+          lastOrder?.data?.item;
     return new Response(message, { status: 200 });
   } catch (e) {
     return new Response("No active orders found.", { status: 200 });

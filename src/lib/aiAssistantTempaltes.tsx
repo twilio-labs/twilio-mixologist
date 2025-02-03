@@ -38,7 +38,7 @@ export function getSubmitOrdersTool(
 
 export function getEditOrderTool(
   callbackUrl: string,
-  items: MenuItem[], //TODO fix this here
+  items: MenuItem[],
   modifiers?: string[],
 ) {
   const listOfItems = items.map((item) => `'${item.title}'`).join(" | ");
@@ -72,7 +72,7 @@ export function getFetchOrderInfoTool(callbackUrl: string) {
     type: "WEBHOOK",
     enabled: true,
     meta: {
-      // input_schema: `export type Data = { conversationSid: string; };`,
+      input_schema: `export type Data = { };`,
       method: "GET",
       url: callbackUrl,
     },
@@ -87,7 +87,7 @@ export function getForgetUserTool(callbackUrl: string) {
     type: "WEBHOOK",
     enabled: true,
     meta: {
-      // input_schema: `export type Data = { conversationSid: string; };`,
+      input_schema: `export type Data = { };`,
       method: "POST",
       url: callbackUrl,
     },
