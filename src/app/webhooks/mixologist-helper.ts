@@ -1,5 +1,5 @@
 import { Event } from "@/app/(master-layout)/event/[slug]/page";
-import { Order } from "@/config/menus";
+import { MenuItem, Order } from "@/config/menus";
 
 import {
   fetchSyncListItem,
@@ -12,11 +12,7 @@ import { EventState } from "@/lib/utils";
 
 const NEXT_PUBLIC_EVENTS_MAP = process.env.NEXT_PUBLIC_EVENTS_MAP || "";
 
-export function verifyOrder(
-  item: string,
-  modifiers: string[],
-  event: Event,
-) {
+export function verifyOrder(item: string, modifiers: string[], event: Event) {
   if (item === "") {
     return false;
   }
@@ -35,6 +31,35 @@ export function verifyOrder(
   }
 
   return true;
+}
+
+export function filterRealMenuItems(
+  message: string,
+  menu: MenuItem[],
+): [string, MenuItem[], string] {
+  const lines = message.split("\n");
+  const intro = lines[0];
+  const outro = lines[lines.length - 1];
+
+  if (lines.length < 4) {
+    return [intro, [], outro];
+  }
+  const cleanedItems = lines
+    .map((line) => {
+      // remove everything after a line break, remove special characters but keep è
+      const cleanedItem = line.split("\n")[0].replace(/[^\w\sè]/gi, "");
+
+      // For now we assume the AI won't make up new modifiers, if this happens, we also need to filter here
+      const match = menu.find((i) => cleanedItem.includes(i.title));
+      if (!match) {
+        return null;
+      }
+      match.title = cleanedItem;
+      return match;
+    })
+    .filter((i) => !!i);
+
+  return [intro, cleanedItems, outro];
 }
 
 export async function updateOrder(event: string, index: number, data: Order) {

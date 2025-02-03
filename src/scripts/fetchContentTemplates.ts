@@ -23,15 +23,19 @@ function buildContentVariables(variables: any[]) {
 async function getTemplate(templateName: string) {
   let match;
   try {
-    const { data } = await axios.get("https://content.twilio.com/v1/Content?PageSize=250", { // TODO: Page through all templates
-      headers: {
-        "Content-Type": "application/json",
+    const { data } = await axios.get(
+      "https://content.twilio.com/v1/Content?PageSize=250",
+      {
+        // TODO: Page through all templates
+        headers: {
+          "Content-Type": "application/json",
+        },
+        auth: {
+          username: process.env.TWILIO_API_KEY,
+          password: process.env.TWILIO_API_SECRET,
+        },
       },
-      auth: {
-        username: process.env.TWILIO_API_KEY,
-        password: process.env.TWILIO_API_SECRET,
-      },
-    });
+    );
 
     match = data.contents.find((t: any) => t.friendly_name === templateName);
   } catch (err) {
@@ -60,22 +64,6 @@ export async function getWrongOrderMessage(
         .map((o) => [o.title, o.shortTitle, o.description])
         .flat(),
     ]),
-  };
-}
-
-export async function getOrderCreatedMessage(
-  product: string,
-  orderNumber: number,
-  mode: string,
-) {
-  const templateName =
-    mode === modes.barista
-      ? `${formattedServicePrefix}_order_confirmation_barista`
-      : `${formattedServicePrefix}_order_confirmation_smoothie`;
-  const template = await getTemplate(templateName);
-  return {
-    contentSid: template.sid,
-    contentVariables: buildContentVariables([product, orderNumber]),
   };
 }
 
@@ -129,19 +117,22 @@ export async function getOrderReadyReminderMessage(
   };
 }
 
-export async function getHelpMessage(event: Event) {
-  const { mode, items: availableOptions } = event.selection;
-
+export async function getShowMenuMessage(
+  intro: string,
+  availableOptions: any[],
+  outro: string,
+) {
   const template = await getTemplate(
-    `${formattedServicePrefix}_help_privacy_${availableOptions.length}`,
+    `${formattedServicePrefix}_show_menu_${availableOptions.length}`,
   );
   return {
     contentSid: template.sid,
     contentVariables: buildContentVariables([
-      modeToBeverage(mode, true),
+      intro,
       ...availableOptions
         .map((o) => [o.title, o.shortTitle, o.description])
         .flat(),
+      outro,
     ]),
   };
 }

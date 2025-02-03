@@ -10,12 +10,6 @@ import {
   findSyncMapItems,
   createVerification,
   checkVerification,
-  pushToSyncList,
-  updateSyncListItem,
-  fetchSyncListItem,
-  fetchSyncListItems,
-  removeSyncMapItem,
-  deleteConversation,
   fetchSegmentTraits,
   askAiAssistant,
 } from "@/lib/twilio";
@@ -23,7 +17,6 @@ import {
 import {
   Stages,
   getCountryFromPhone,
-  getOrderItemFromMessage,
   EventState,
   sleep,
   TwoWeeksInSeconds,
@@ -35,10 +28,7 @@ import {
 import { fetchOrder, getEvent } from "../mixologist-helper";
 import {
   getEventRegistrationMessage,
-  getHelpMessage,
-  getOrderCreatedMessage, //TODO continue cleanup here
   getReadyToOrderMessage,
-  getWrongOrderMessage,
 } from "@/scripts/fetchContentTemplates";
 import {
   getDataPolicy,
@@ -62,8 +52,7 @@ const {
 } = process.env;
 const NEXT_PUBLIC_EVENTS_MAP = process.env.NEXT_PUBLIC_EVENTS_MAP || "",
   NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP =
-    process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP || "",
-  UNLIMTED_ORDERS = (process.env.UNLIMITED_ORDERS || "").split(",");
+    process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP || "";
 
 export async function POST(request: Request) {
   const data = await request.formData();
@@ -499,19 +488,6 @@ export async function POST(request: Request) {
   );
 
   return new Response("Received", { status: 200 });
-
-  if (incomingMessage.includes("help")) {
-    const { contentSid, contentVariables } = await getHelpMessage(event);
-    addMessageToConversation(conversationSid, "", contentSid, contentVariables);
-
-    if (event.selection.modifiers.length > 1) {
-      await sleep(1500);
-      const modifiersNote = getModifiersMessage(event.selection.modifiers);
-      addMessageToConversation(conversationSid, modifiersNote);
-    }
-
-    return new Response("", { status: 200 });
-  }
 }
 
 export async function GET() {

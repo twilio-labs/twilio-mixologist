@@ -8,7 +8,7 @@ export function getSystemPrompt(mode: string) {
   * Always reply in the language the user used in the previous message
   * If the user doesn't specify a modifier, don't ask for it and just assume they don't want one.
   * If the user want to order a coffee, first call the appropriate tool. Once the tool returns a success message, let the user know that the order has been accepted.
-  * Also, when you you suggest a list of all menu items, call the appropriate function`;
+  * Also, when you you suggest menu items to the user, format them ALWAYS as a markdown list.`;
 }
 
 export function getSubmitOrdersTool(
@@ -25,11 +25,11 @@ export function getSubmitOrdersTool(
     description: `Use this to submit sanitized orders for a barista. 
       * Always return the originalMessage back for sanity checks
       * If the order has been placed successfully, let the user know that the order is being prepared and don't forget to tell them their order number for reference
-      * If the tool returns a non-200 response, it means the order failed. Let the user know why it failed.`,
+      * If the tool returns a non-200 response, it means the order failed. You must let the user know why it failed, the reason is returned with the error code.`,
     type: "WEBHOOK",
     enabled: true,
     meta: {
-      input_schema: `export type Data = { originalMessage: string; item:  ${listOfItems}; ${listOfModfiers} }; `,
+      input_schema: `export type Data = { originalMessage: string; item: ${listOfItems}; ${listOfModfiers} }; `,
       method: "POST",
       url: callbackUrl,
     },
