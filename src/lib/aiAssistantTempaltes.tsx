@@ -22,9 +22,9 @@ export function getSubmitOrdersTool(
     : "";
   return {
     name: "Submit Order",
-    description: `Use this to submit sanitized orders for a barista. 
+    description: `Use this to submit sanitized orders for a barista. A user can only order one item at a time. So it doesn't make sense to send multiple items in one message. The user can only submit another order after the previous one has been prepared or canceled.
       * Always return the originalMessage back for sanity checks
-      * If the order has been placed successfully, let the user know that the order is being prepared and don't forget to tell them their order number for reference
+      * If the order has been placed successfully, let the user know that the order is being prepared and don't forget to tell them their order number for reference. Also, it's important to let them know they will be notified when the order is ready.
       * If the tool returns a non-200 response, it means the order failed. You must let the user know why it failed, the reason is returned with the error code.`,
     type: "WEBHOOK",
     enabled: true,
