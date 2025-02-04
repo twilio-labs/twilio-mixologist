@@ -1,6 +1,6 @@
 "use server";
 
-import twilio from "twilio";
+import twilio, { validateRequest } from "twilio";
 import { appendFileSync } from "fs";
 import { Privilege, getAuthenticatedRole } from "@/middleware";
 import { headers } from "next/headers";
@@ -19,11 +19,11 @@ import {
   getSubmitOrdersTool,
   getSystemPrompt,
 } from "./aiAssistantTempaltes";
-import { modes } from "@/config/menus";
 import { Event } from "@/app/(master-layout)/event/[slug]/page";
 const throttle = throttledQueue(25, 1000);
 const {
   TWILIO_API_KEY = "",
+  TWILIO_AUTH_TOKEN = "",
   TWILIO_API_SECRET = "",
   TWILIO_ACCOUNT_SID = "",
   TWILIO_SYNC_SERVICE_SID = "",
@@ -52,6 +52,27 @@ export async function getAllWhatsAppTemplates(): Promise<WhatsAppTemplate[]> {
     },
   );
   return data.contents;
+}
+
+export async function checkSignature(
+  signature: string,
+  url: string,
+  formData?: FormData,
+) {
+  const regexLocalhost = /^[http|https]+:\/\/localhost(:\d+)?/;
+
+  if (regexLocalhost.test(url)) {
+    url = url.replace(regexLocalhost, PUBLIC_BASE_URL);
+  }
+
+  let data: any = {};
+  if (formData) {
+    formData.forEach((value, key) => {
+      data[key] = value;
+    });
+  }
+
+  return validateRequest(TWILIO_AUTH_TOKEN, signature, url, data);
 }
 
 export async function deleteWhatsAppTemplate(

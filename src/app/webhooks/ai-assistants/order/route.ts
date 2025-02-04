@@ -3,6 +3,7 @@
 "use server";
 
 import {
+  checkSignature,
   createSyncMapItemIfNotExists,
   fetchSyncListItems,
   updateSyncMapItem,
@@ -17,6 +18,7 @@ import {
 import { Order } from "@/config/menus";
 import { redact, Stages, TwoWeeksInSeconds } from "@/lib/utils";
 import { headers } from "next/headers";
+import { getAuthenticatedRole, Privilege } from "@/middleware";
 
 const NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP =
     process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP || "",
@@ -34,23 +36,25 @@ async function getQueuePosition(event: string, orderNumber: number) {
 }
 
 export async function POST(request: NextRequest) {
-  const {
-    item,
-    modifiers,
-    originalMessage,
-  }: {
-    item: string;
-    modifiers: string[];
-    originalMessage: string;
-  } = await request.json();
+  const [{ item, modifiers, originalMessage }, headerList] = await Promise.all([
+    request.json(),
+    headers(),
+  ]);
   const searchParams = request.nextUrl.searchParams;
   const eventSlug = searchParams.get("event");
-  const headerList = await headers();
   const conversationHeader = headerList.get("X-Session-Id") || "",
     identityHeader = headerList.get("X-Identity") || "";
 
   const conversationSid = conversationHeader.split(":").pop(),
     phoneNumber = identityHeader.split(":").pop();
+
+  const signature = headerList.get("X-Twilio-Signature") || "";
+
+  const isSignedCorrectly = await checkSignature(signature, request.url);
+
+  if (!isSignedCorrectly) {
+    return new Response("Unauthorized", { status: 401 });
+  }
 
   if (!conversationSid || !eventSlug || !phoneNumber) {
     return new Response("Missing session ID, event slug, or phone number", {
@@ -134,6 +138,16 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const eventSlug = searchParams.get("event");
   const conversationSid = searchParams.get("conversationSid");
+
+  const headersList = await headers();
+  const role = getAuthenticatedRole(headersList.get("Authorization") || "");
+
+  const signature = headersList.get("X-Twilio-Signature") || "";
+  const isSignedCorrectly = await checkSignature(signature, request.url);
+
+  if (!isSignedCorrectly) {
+    return new Response("Unauthorized", { status: 401 });
+  }
 
   if (!conversationSid || !eventSlug) {
     return new Response("Missing session ID or event slug", { status: 500 });

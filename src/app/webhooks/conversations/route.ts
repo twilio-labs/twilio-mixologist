@@ -12,6 +12,7 @@ import {
   checkVerification,
   fetchSegmentTraits,
   askAiAssistant,
+  checkSignature,
 } from "@/lib/twilio";
 
 import {
@@ -44,6 +45,7 @@ import {
   getWelcomeBackMessage,
   getWelcomeMessage,
 } from "@/lib/stringTemplates";
+import { headers } from "next/headers";
 
 const {
   SEGMENT_SPACE_ID = "",
@@ -55,7 +57,14 @@ const NEXT_PUBLIC_EVENTS_MAP = process.env.NEXT_PUBLIC_EVENTS_MAP || "",
     process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP || "";
 
 export async function POST(request: Request) {
-  const data = await request.formData();
+  const [data, headerList] = await Promise.all([request.formData(), headers()]);
+  const signature = headerList.get("X-Twilio-Signature") || "";
+  const isSignedCorrectly = await checkSignature(signature, request.url, data);
+
+  if (!isSignedCorrectly) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
   const conversationSid = data.get("ConversationSid") as string;
   const incomingMessageBody = data.get("Body") as string;
   const webHookType = data.get("EventType");

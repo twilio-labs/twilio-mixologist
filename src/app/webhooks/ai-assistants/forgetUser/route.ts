@@ -2,10 +2,11 @@
 
 "use server";
 
-import { createSyncMapItemIfNotExists, removeSyncMapItem } from "@/lib/twilio";
+import { checkSignature, createSyncMapItemIfNotExists, removeSyncMapItem } from "@/lib/twilio";
 import { NextRequest } from "next/server";
 import { cancelOrder, fetchOrder, getEvent } from "../../mixologist-helper";
 import { headers } from "next/headers";
+import { getAuthenticatedRole, Privilege } from "@/middleware";
 
 const NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP =
   process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP || "";
@@ -18,6 +19,13 @@ export async function POST(request: NextRequest) {
   const conversationHeader = headerList.get("X-Session-Id") || "";
 
   const conversationSid = conversationHeader.split(":").pop();
+
+  const signature = headerList.get("X-Twilio-Signature") || "";
+  const isSignedCorrectly = await checkSignature(signature, request.url);
+
+  if (!isSignedCorrectly) {
+    return new Response("Unauthorized", { status: 401 });
+  }
 
   if (!conversationSid || !eventSlug) {
     return new Response("Missing session ID or event slug", { status: 500 });
