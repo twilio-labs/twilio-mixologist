@@ -82,7 +82,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
     selection: {
       items: [],
       modifiers: [],
-      mode: modes.smoothie,
+      mode: modes.barista,
     },
     pickupLocation: "",
     maxOrders: 40,
