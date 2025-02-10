@@ -335,14 +335,16 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
             menus={config.menus}
             selection={internalEvent.selection}
             onSelectionChange={async (newSelection) => {
-              // make async for now to avoid delay, may need to change in the future
-              fetch(`/api/event/${internalEvent.slug}/selection`, {
-                method: "PUT",
-                body: JSON.stringify({
-                  selection: newSelection,
-                  assistantId: internalEvent.assistantId,
-                }),
-              });
+              if (!isNewEvent) {
+                // make async for now to avoid delay, may need to change in the future
+                fetch(`/api/event/${internalEvent.slug}/selection`, {
+                  method: "PUT",
+                  body: JSON.stringify({
+                    selection: newSelection,
+                    assistantId: internalEvent.assistantId,
+                  }),
+                });
+              }
               updateEvent({
                 ...internalEvent,
                 selection: newSelection,
