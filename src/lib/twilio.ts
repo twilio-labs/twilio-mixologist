@@ -251,7 +251,7 @@ export async function askAiAssistant(
     body: message,
     identity: sender,
     session_id: `${event}:${conversationSid}`,
-    webhook: `https://mobert.ngrok.io/webhooks/ai-assistants/proxy?event=${event}`,
+    webhook: `${PUBLIC_BASE_URL}/webhooks/ai-assistants/proxy?event=${event}`,
   });
 }
 
