@@ -45,8 +45,12 @@ export function filterRealMenuItems(
   }
   const cleanedItems = lines
     .map((line) => {
-      // remove everything after a line break, remove special characters but keep è
-      const cleanedItem = line.split("\n")[0].replace(/[^\w\sè]/gi, "");
+      // remove everything after a line break, remove first - with regex -- only if it's the first non-whitespace character
+      const cleanedItem = line
+        .split("\n")[0]
+        .replace(/^\s*-\s*/, "")
+        // // , remove special characters but keep è
+        // .replace(/[^\w\sè]/gi, "");
 
       //sort menu by longest title first
       const match = menu
@@ -57,6 +61,8 @@ export function filterRealMenuItems(
         return null;
       }
       match.title = cleanedItem;
+      // The WhatsApp spec doesn't allow for more than 72 characters in a description
+      match.description = cleanedItem.length > 72 ? cleanedItem.slice(0, 72) : cleanedItem;
       return match;
     })
     .filter((i) => !!i);

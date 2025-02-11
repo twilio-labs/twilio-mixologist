@@ -11,7 +11,6 @@ import { NextRequest } from "next/server";
 import { filterRealMenuItems, getEvent } from "../../mixologist-helper";
 import { getShowMenuMessage } from "@/scripts/fetchContentTemplates";
 import { headers } from "next/headers";
-import { getAuthenticatedRole, Privilege } from "@/middleware";
 
 const NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP =
   process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP || "";
