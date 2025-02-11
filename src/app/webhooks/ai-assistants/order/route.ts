@@ -18,7 +18,6 @@ import {
 import { Order } from "@/config/menus";
 import { redact, Stages, TwoWeeksInSeconds } from "@/lib/utils";
 import { headers } from "next/headers";
-import { getAuthenticatedRole, Privilege } from "@/middleware";
 
 const NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP =
     process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP || "",
@@ -137,10 +136,11 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const eventSlug = searchParams.get("event");
-  const conversationSid = searchParams.get("conversationSid");
-
   const headersList = await headers();
-  const role = getAuthenticatedRole(headersList.get("Authorization") || "");
+
+  const conversationHeader = headersList.get("X-Session-Id") || "";
+
+  const conversationSid = conversationHeader.split(":").pop();
 
   const signature = headersList.get("X-Twilio-Signature") || "";
   const isSignedCorrectly = await checkSignature(signature, request.url);
@@ -168,13 +168,11 @@ export async function GET(request: NextRequest) {
       eventSlug,
       conversationRecord.lastOrderNumber,
     );
-    const message =
-      conversationRecord.lastOrderNumber && !isNaN(queuePosition)
-        ? "No active orders found."
-        : "The current queue position is " +
-          queuePosition +
-          " and the last order was for a " +
-          lastOrder?.data?.item;
+    if (isNaN(queuePosition)) {
+      return new Response("No active orders found.", { status: 200 });
+    }
+
+    const message = `The current queue position is ${queuePosition} and the last order was for a ${lastOrder?.data?.item}`;
     return new Response(message, { status: 200 });
   } catch (e) {
     return new Response("No active orders found.", { status: 200 });
