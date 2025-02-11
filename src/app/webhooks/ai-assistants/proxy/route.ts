@@ -39,6 +39,11 @@ export async function POST(request: NextRequest) {
 
   let event = await getEvent(conversationRecord.event);
 
+  if(!event) {
+    console.error(`Event not found for conversation ${conversationSid}. Message was supposed to be: ${response}`);
+    return new Response("Event not found", { status: 500 });
+  }
+
   const [intro, menuItems, outro] = filterRealMenuItems(
     response,
     event.selection.items,

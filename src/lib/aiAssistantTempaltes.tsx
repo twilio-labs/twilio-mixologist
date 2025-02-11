@@ -82,8 +82,7 @@ export function getFetchOrderInfoTool(callbackUrl: string) {
 export function getForgetUserTool(callbackUrl: string) {
   return {
     name: "Remove User Profile",
-    description: `Use this to delete the data of a user. Only call this if the user indicated they want their data to be removed.
-       If the tool returns a non-200 response, it means the forget user failed. Let the user know why it failed.`,
+    description: `Use this to delete the data of a user. Only call this if the user indicated they want their data to be removed. There's no need to send a confirmation message. Only send one if the tool fails with an error / non-200 response.`,
     type: "WEBHOOK",
     enabled: true,
     meta: {

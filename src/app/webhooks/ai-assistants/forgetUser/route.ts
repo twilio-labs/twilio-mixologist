@@ -3,8 +3,10 @@
 "use server";
 
 import {
+  addMessageToConversation,
   checkSignature,
   createSyncMapItemIfNotExists,
+  deleteConversation,
   removeSyncMapItem,
 } from "@/lib/twilio";
 import { NextRequest } from "next/server";
@@ -50,7 +52,15 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    await removeSyncMapItem(NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP, conversationSid);
+    await addMessageToConversation(
+      conversationSid,
+      "Your data has been removed. You can send any message to start over again.",
+    );
+
+    await Promise.all([
+      deleteConversation(conversationSid),
+      removeSyncMapItem(NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP, conversationSid),
+    ]);
 
     return new Response("The user and their order have been removed.", {
       status: 200,
