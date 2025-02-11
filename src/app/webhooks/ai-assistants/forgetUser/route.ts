@@ -2,7 +2,11 @@
 
 "use server";
 
-import { checkSignature, createSyncMapItemIfNotExists, removeSyncMapItem } from "@/lib/twilio";
+import {
+  checkSignature,
+  createSyncMapItemIfNotExists,
+  removeSyncMapItem,
+} from "@/lib/twilio";
 import { NextRequest } from "next/server";
 import { cancelOrder, fetchOrder, getEvent } from "../../mixologist-helper";
 import { headers } from "next/headers";
@@ -41,12 +45,11 @@ export async function POST(request: NextRequest) {
     getEvent(conversationRecord.event),
   ]);
 
-  if (!lastOrder?.index) {
-    return new Response("No order found", { status: 404 });
+  if (lastOrder?.index) {
+    await cancelOrder(event, lastOrder?.index, lastOrder?.data);
   }
 
   try {
-    await cancelOrder(event, lastOrder?.index, lastOrder?.data);
     await removeSyncMapItem(NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP, conversationSid);
 
     return new Response("The user and their order have been removed.", {

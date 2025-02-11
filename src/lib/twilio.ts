@@ -154,7 +154,6 @@ export async function createAiAssistant(event: Event) {
     getForgetUserTool(
       `${PUBLIC_BASE_URL}/webhooks/ai-assistants/forgetUser?event=${event.slug}`,
     ),
-    //TODO add tool to send template messages
   ];
 
   tools.forEach(async (toolConfig) => {
