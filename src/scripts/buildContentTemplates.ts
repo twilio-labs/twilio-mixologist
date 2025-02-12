@@ -18,7 +18,7 @@ export function getShowHelpTemplate(
     indiciesOfFullTitles.push(`- {{${i * 3 + 1}}}`);
     items.push({
       item: `{{${i * 3 + 2}}}`,
-      id: `{{${i * 3 + 2}}}`,
+      id: `{{${i * 3 + 1}}}`, // should be same as indiciesOfFullTitles because this will be send to the webhook
       description: `{{${i * 3 + 3}}}`,
     });
   }
@@ -72,7 +72,7 @@ export function getReadyToOrderTemplate(
     indiciesOfFullTitles.push(`- {{${i * 3 + 2}}}`);
     items.push({
       item: `{{${i * 3 + 3}}}`,
-      id: `{{${i * 3 + 3}}}`,
+      id: `{{${i * 3 + 2}}}`, // should be same as indiciesOfFullTitles because this will be send to the webhook
       description: `{{${i * 3 + 4}}}`,
     });
   }
@@ -117,7 +117,7 @@ export function getReadyToOrderLimitlessTemplate(
     indiciesOfFullTitles.push(`- {{${i * 3 + 2}}}`);
     items.push({
       item: `{{${i * 3 + 3}}}`,
-      id: `{{${i * 3 + 3}}}`,
+      id: `{{${i * 3 + 2}}}`, // should be same as indiciesOfFullTitles because this will be send to the webhook
       description: `{{${i * 3 + 4}}}`,
     });
   }
@@ -161,7 +161,7 @@ export function getReadyToOrderWithoutEmailValidationTemplate(
     indiciesOfFullTitles.push(`- {{${i * 3 + 2}}}`);
     items.push({
       item: `{{${i * 3 + 3}}}`,
-      id: `{{${i * 3 + 3}}}`,
+      id: `{{${i * 3 + 2}}}`, // should be same as indiciesOfFullTitles because this will be send to the webhook
       description: `{{${i * 3 + 4}}}`,
     });
   }
@@ -205,7 +205,7 @@ export function getReadyToOrderLimitlessWithoutEmailValidationTemplate(
     indiciesOfFullTitles.push(`- {{${i * 3 + 2}}}`);
     items.push({
       item: `{{${i * 3 + 3}}}`,
-      id: `{{${i * 3 + 3}}}`,
+      id: `{{${i * 3 + 2}}}`, // should be same as indiciesOfFullTitles because this will be send to the webhook
       description: `{{${i * 3 + 4}}}`,
     });
   }

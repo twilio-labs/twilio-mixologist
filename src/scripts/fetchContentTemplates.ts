@@ -137,6 +137,24 @@ export async function getShowMenuMessage(
   };
 }
 
+export async function getShowModifiersMessage(
+  intro: string,
+  availableModifiers: string[],
+  outro: string,
+) {
+  const template = await getTemplate(
+    `${formattedServicePrefix}_show_menu_${availableModifiers.length}`,
+  );
+  return {
+    contentSid: template.sid,
+    contentVariables: buildContentVariables([
+      intro,
+      ...availableModifiers.map((o) => [o, o, o]).flat(),
+      outro,
+    ]),
+  };
+}
+
 export async function getReadyToOrderMessage(
   event: Event,
   availableOptions: any[],

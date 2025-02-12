@@ -10,6 +10,12 @@ import {
 } from "@/lib/twilio";
 import { EventState } from "@/lib/utils";
 
+function shortenStringToMax(string: string, maxLength: number) {
+  return string.length > maxLength
+    ? string.slice(0, maxLength - 1) + "…"
+    : string;
+}
+
 const NEXT_PUBLIC_EVENTS_MAP = process.env.NEXT_PUBLIC_EVENTS_MAP || "";
 
 export function verifyOrder(item: string, modifiers: string[], event: Event) {
@@ -46,11 +52,9 @@ export function filterRealMenuItems(
   const cleanedItems = lines
     .map((line) => {
       // remove everything after a line break, remove first - with regex -- only if it's the first non-whitespace character
-      const cleanedItem = line
-        .split("\n")[0]
-        .replace(/^\s*-\s*/, "")
-        // // , remove special characters but keep è
-        // .replace(/[^\w\sè]/gi, "");
+      const cleanedItem = line.split("\n")[0].replace(/^\s*-\s*/, "");
+      // // , remove special characters but keep è
+      // .replace(/[^\w\sè]/gi, "");
 
       //sort menu by longest title first
       const match = menu
@@ -60,14 +64,50 @@ export function filterRealMenuItems(
       if (!match) {
         return null;
       }
-      match.title = cleanedItem;
-      // The WhatsApp spec doesn't allow for more than 72 characters in a description
-      match.description = cleanedItem.length > 72 ? cleanedItem.slice(0, 72) : cleanedItem;
-      return match;
+
+      if (match.title != cleanedItem) {
+        return {
+          title: cleanedItem, // visible in message
+          shortTitle: shortenStringToMax(match.title, 24), // visible in title of the list popover
+          description: shortenStringToMax(cleanedItem, 72), // is desc in list popover
+        };
+      }
+      return { ...match };
     })
-    .filter((i) => !!i);
+    .filter((i) => i !== null);
 
   return [intro, cleanedItems, outro];
+}
+
+export function filterRealModifiers(
+  message: string,
+  modifiers: string[],
+): [string, string[], string] {
+  const lines = message.split("\n");
+  const intro = lines[0];
+  const outro = lines[lines.length - 1];
+
+  if (lines.length < 4) {
+    return [intro, [], outro];
+  }
+  const cleanedModifiers = lines
+    .map((line) => {
+      const cleanedModifier = line
+        .split("\n")[0]
+        .replace(/^\s*-\s*/, "")
+        .replace(/[^\w\sè]/gi, "");
+
+      const match = modifiers
+        .sort((a, b) => b.length - a.length)
+        .find((i) => cleanedModifier.includes(i));
+      if (!match) {
+        return null;
+      }
+      return match;
+    })
+    .filter((i) => i !== null);
+
+  return [intro, cleanedModifiers, outro];
 }
 
 export async function updateOrder(event: string, index: number, data: Order) {
