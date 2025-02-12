@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
           updateOrder(event.slug, lastOrder.index, {
             ...lastOrder.data,
             item,
-            ...(modifiers.length >= 1 && {
+            ...(modifiers.length >= 0 && {
               modifiers: modifiers.join(", "),
             }),
             originalText: originalMessage,
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
 
           return new Response(
             `${item}${modifiers.length > 1 ? ` with ${modifiers.join(", ")}` : ""}`,
-            { status: 201 },
+            { status: 200 },
           );
         } catch (error) {
           return new Response("An error occurred while updating the order", {
