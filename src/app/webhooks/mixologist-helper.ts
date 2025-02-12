@@ -52,9 +52,11 @@ export function filterRealMenuItems(
   const cleanedItems = lines
     .map((line) => {
       // remove everything after a line break, remove first - with regex -- only if it's the first non-whitespace character
-      const cleanedItem = line.split("\n")[0].replace(/^\s*-\s*/, "");
-      // // , remove special characters but keep è
-      // .replace(/[^\w\sè]/gi, "");
+      const cleanedItem = line
+        .split("\n")[0]
+        .replace(/^\s*-\s*/, "")
+        // remove all * asteriks
+        .replace(/\*/g, "");
 
       //sort menu by longest title first
       const match = menu
