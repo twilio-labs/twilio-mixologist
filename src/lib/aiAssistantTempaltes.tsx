@@ -24,8 +24,8 @@ export function getSubmitOrdersTool(
     name: "Submit Order",
     description: `Use this to submit sanitized orders for a barista. A user can only order one item at a time. So it doesn't make sense to send multiple items in one message. The user can only submit another order after the previous one has been prepared or canceled.
       * Always return the originalMessage back for sanity checks
-      * If the order has been placed successfully, let the user know that the order is being prepared and don't forget to tell them their order number for reference. Also, it's important to let them know they will be notified when the order is ready.
-      * If the tool returns a non-200 response, it means the order failed. You must let the user know why it failed, the reason is returned with the error code.`,
+      * If the order has been placed successfully, let the user know that the order is being prepared and don't forget to tell them their order number for reference. Also, it's important to let them know they will be notified when the order is ready. If you don't get a order number back, let the user know that the order failed. THIS IS CRITICAL.
+      * If the tool returns a non-200 response, it means the order failed. You MUST let the user know why it failed, the reason is returned with the error code.`,
     type: "WEBHOOK",
     enabled: true,
     meta: {
@@ -50,6 +50,7 @@ export function getEditOrderTool(
     description: `Use this to edit sanitized orders for a barista. 
       * The tool can be used to replace an existing order or the cancel an existing order. The property "action" decides which action to take.
       * Always return the most recent message as "originalMessage" back for sanity checks
+      * We call them "modifiers" but when talking to the user, you can translate them to "options" or "extras" or something similar -- also in the user's language. BUT NEVER CHANGE THE TERM WHEN COMMUNICATING WITH THE API.
       * If the order has been changed successfully, let the user know that the order is being prepared and tell them their order number
       * In case of "cancel", the "originalMessage", "item", and "modifiers" properties are not required.
       * If the tool returns a non-200 response, it means the edit order failed. Let the user know why it failed.`,
