@@ -21,23 +21,24 @@ function buildContentVariables(variables: any[]) {
 }
 
 async function getTemplate(templateName: string) {
-  let match;
+  let match, nextPageUrl;
   try {
-    const { data } = await axios.get(
-      "https://content.twilio.com/v1/Content?PageSize=250",
-      {
-        // TODO: Page through all templates
-        headers: {
-          "Content-Type": "application/json",
+    do {
+      const { data }: { data: any } = await axios.get(
+        nextPageUrl || "https://content.twilio.com/v1/Content?PageSize=50",
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          auth: {
+            username: process.env.TWILIO_API_KEY,
+            password: process.env.TWILIO_API_SECRET,
+          },
         },
-        auth: {
-          username: process.env.TWILIO_API_KEY,
-          password: process.env.TWILIO_API_SECRET,
-        },
-      },
-    );
-
-    match = data.contents.find((t: any) => t.friendly_name === templateName);
+      );
+      match = data.contents.find((t: any) => t.friendly_name === templateName);
+      nextPageUrl = data.meta.next_page_url;
+    } while (!match && nextPageUrl);
   } catch (err) {
     console.error(err);
     throw new Error("Failed to fetch Templates");
