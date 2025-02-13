@@ -135,7 +135,6 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
     },
   ];
 
-  debugger;
   const unknownSenders = internalEvent.senders.filter(
     (s) =>
       !config.possibleSenders.find((ps) => {

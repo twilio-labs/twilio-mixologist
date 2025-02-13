@@ -19,8 +19,6 @@ function ConfigPage() {
     process.env.NEXT_PUBLIC_CONFIG_DOC,
   ) as [Configuration, Function, boolean];
 
-  debugger
-
   const allModes = configInitialized ? [modes.barista, modes.smoothie] : [];
 
   return (
