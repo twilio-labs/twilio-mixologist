@@ -73,10 +73,13 @@ async function createWhatsAppTemplates() {
   }
 
   try {
-    for (let numOptions = 1; numOptions <= MAX_ITEMS_ON_MENU; numOptions++) {
+    // @ts-expect-error - MAX_ITEMS_ON_MENU is a number
+    for await (let numOptions of [...Array(MAX_ITEMS_ON_MENU).keys()]) {
+
+      numOptions = numOptions + 1; // 1-indexed
       // 1. Check the help-privacy-templates
       templateName = `${CONTENT_PREFIX}help_privacy_${numOptions}`;
-      checkIfExistsOrCreateTemplate(
+      await checkIfExistsOrCreateTemplate(
         templateName,
         getHelpPrivacyTemplate(numOptions, templateName),
         templates,
@@ -84,7 +87,7 @@ async function createWhatsAppTemplates() {
 
       // 2. Check the wrong_order-templates
       templateName = `${CONTENT_PREFIX}wrong_order_${numOptions}`;
-      checkIfExistsOrCreateTemplate(
+      await checkIfExistsOrCreateTemplate(
         templateName,
         getWrongOrderTemplate(numOptions, templateName),
         templates,
@@ -92,7 +95,7 @@ async function createWhatsAppTemplates() {
 
       // 3. Check the post_registration-templates
       templateName = `${CONTENT_PREFIX}ready_to_order_${numOptions}`;
-      checkIfExistsOrCreateTemplate(
+      await checkIfExistsOrCreateTemplate(
         templateName,
         getReadyToOrderTemplate(numOptions, templateName),
         templates,
@@ -100,7 +103,7 @@ async function createWhatsAppTemplates() {
 
       // 4. Check the post_registration_without_email-templates
       templateName = `${CONTENT_PREFIX}ready_to_order_without_email_${numOptions}`;
-      checkIfExistsOrCreateTemplate(
+      await checkIfExistsOrCreateTemplate(
         templateName,
         getReadyToOrderWithoutEmailValidationTemplate(numOptions, templateName),
         templates,
@@ -108,7 +111,7 @@ async function createWhatsAppTemplates() {
 
       // 5. Check the post_registration_limitless-templates
       templateName = `${CONTENT_PREFIX}ready_to_order_limitless_${numOptions}`;
-      checkIfExistsOrCreateTemplate(
+      await  checkIfExistsOrCreateTemplate(
         templateName,
         getReadyToOrderLimitlessTemplate(numOptions, templateName),
         templates,
@@ -116,7 +119,7 @@ async function createWhatsAppTemplates() {
 
       // 6. Check the post_registration_limitless_without_email-templates
       templateName = `${CONTENT_PREFIX}ready_to_order_limitless_without_email_${numOptions}`;
-      checkIfExistsOrCreateTemplate(
+      await checkIfExistsOrCreateTemplate(
         templateName,
         getReadyToOrderLimitlessWithoutEmailValidationTemplate(
           numOptions,
@@ -132,7 +135,7 @@ async function createWhatsAppTemplates() {
     ) {
       // 6. Check the event_registration-templates
       templateName = `${CONTENT_PREFIX}event_registration_${numOptions}`;
-      checkIfExistsOrCreateTemplate(
+      await checkIfExistsOrCreateTemplate(
         templateName,
         getEventRegistrationTemplate(numOptions, templateName),
         templates,
@@ -141,13 +144,13 @@ async function createWhatsAppTemplates() {
 
     // 7. Order confirmation templates
     templateName = `${CONTENT_PREFIX}order_confirmation_barista`;
-    checkIfExistsOrCreateTemplate(
+    await checkIfExistsOrCreateTemplate(
       templateName,
       getOrderConfirmationTemplate(templateName, false),
       templates,
     );
     templateName = `${CONTENT_PREFIX}order_confirmation_smoothie`;
-    checkIfExistsOrCreateTemplate(
+    await checkIfExistsOrCreateTemplate(
       templateName,
       getOrderConfirmationTemplate(templateName, true),
       templates,
@@ -155,7 +158,7 @@ async function createWhatsAppTemplates() {
 
     // 8. Order cancelled templates
     templateName = `${CONTENT_PREFIX}order_cancelled`;
-    checkIfExistsOrCreateTemplate(
+    await  checkIfExistsOrCreateTemplate(
       templateName,
       getOrderCancelledTemplate(templateName),
       templates,
@@ -163,7 +166,7 @@ async function createWhatsAppTemplates() {
 
     // 9. Order ready templates
     templateName = `${CONTENT_PREFIX}order_ready`;
-    checkIfExistsOrCreateTemplate(
+    await  checkIfExistsOrCreateTemplate(
       templateName,
       getOrderReadyTemplate(templateName),
       templates,
@@ -171,13 +174,13 @@ async function createWhatsAppTemplates() {
 
     // 10. Order reminder templates
     templateName = `${CONTENT_PREFIX}order_reminder`;
-    checkIfExistsOrCreateTemplate(
+    await checkIfExistsOrCreateTemplate(
       templateName,
       getOrderReminderTemplate(templateName),
       templates,
     );
   } catch (e: any) {
-    console.error("Error creating WhatsApp Templates ", e.message);
+    console.error("Error creating WhatsApp Templates ", e.message, e.response.data.message, e.response.data.more_info);
   }
 }
 export async function createTwilioRes() {

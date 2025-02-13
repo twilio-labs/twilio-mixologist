@@ -380,9 +380,9 @@ export function getOrderConfirmationTemplate(
   templateName: string,
   isBarista: boolean,
 ): WhatsAppTemplateConfig {
-  const header_text = "Your {{0}} order is confirmed!";
+  const title = "Thanks for your order! Your {{0}} is confirmed under #{{1}}.";
   const body =
-    '*Your order number is #{{1}}*\n\nWe\'ll text you back when the order is ready -- or send "queue" to determine your current position\n\nSend  "change order to <new order>" to change your existing order or "cancel order" to cancel it.';
+    'Your order\'s on track — ask for status or update.';
 
   const footer = isBarista
     ? "Thanks for ordering from the Twilio-powered Barista Bar!"
@@ -396,14 +396,15 @@ export function getOrderConfirmationTemplate(
       "1": "order number",
     },
     types: {
-      // "twilio/card": {
-      //   // header_text, TODO consider adding back once whatsapp/card is supported by conversation API
-      //   // body,
-      //    footer,
-      //   title: `*${header_text}*\n${body}`,
-      // },
+      "twilio/card": {
+        title,
+        subtitle: body,
+        media: [
+          "https://twilio-mixologist-645d3ffa8578.herokuapp.com/resources/twilio.mp4",
+        ],
+      },
       "twilio/text": {
-        body: `${header_text}\n\n${body}`,
+        body: `${title}\n\n${body}`,
       },
     },
   };
