@@ -358,13 +358,17 @@ export async function createConversationWithParticipant(
   const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
     accountSid: TWILIO_ACCOUNT_SID,
   });
-  const usingWhatsApp = sender.startsWith("whatsapp:");
+  const prefix = sender.startsWith("whatsapp:")
+    ? "whatsapp:"
+    : sender.startsWith("rcs:")
+      ? "rcs:"
+      : "";
   const identity = `Mixologist Kiosk Customer ${new Date().toISOString()}`;
   const conversation =
     await client.conversations.v1.conversationWithParticipants.create({
       friendlyName: identity,
       participant: [
-        `{"messaging_binding": {"address": "${sender}", "proxy_address": "${usingWhatsApp ? "whatsapp:" : ""}${twilioNumber}"}}`,
+        `{"messaging_binding": {"address": "${sender}", "proxy_address": "${prefix}${twilioNumber}"}}`,
         `{"identity": "${identity}"}`,
       ],
     });
@@ -384,7 +388,7 @@ export async function deleteConversation(conversationSid: string) {
 export async function getPossibleSenders() {
   "use server";
   const messagingService = await getMessagingService();
-  const senders = await messagingService.phoneNumbers().list(); // Add whatsapp senders here once the API is available
+  const senders = await messagingService.phoneNumbers().list(); // Add whatsapp and RCS senders here once the API is available
   return senders.map((s) => s.phoneNumber);
 }
 

@@ -4,8 +4,6 @@ import { isClientAuth } from "@/lib/customHooks";
 import { Configuration } from "@/scripts/updateConfig";
 import {
   ArrowRightIcon,
-  MessageCircleMoreIcon,
-  MessageSquareIcon,
   PhoneIcon,
 } from "lucide-react";
 
@@ -20,6 +18,8 @@ function ConfigPage() {
   const [config, updateConfig, configInitialized] = useSyncDocument(
     process.env.NEXT_PUBLIC_CONFIG_DOC,
   ) as [Configuration, Function, boolean];
+
+  debugger
 
   const allModes = configInitialized ? [modes.barista, modes.smoothie] : [];
 

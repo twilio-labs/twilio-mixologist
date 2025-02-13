@@ -599,7 +599,7 @@ export async function POST(request: Request) {
       return new Response("", { status: 200 });
     } else if (
       conversationRecord?.orderCount > event.maxOrders &&
-      !UNLIMTED_ORDERS.includes(author.replace("whatsapp:", ""))
+      !UNLIMTED_ORDERS.includes(author.replace(/whatsapp:|rcs:/, ""))
     ) {
       const message = getMaxOrdersMessage();
       addMessageToConversation(conversationSid, message);

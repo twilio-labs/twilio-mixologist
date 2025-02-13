@@ -5,7 +5,9 @@ import { useRef, useState } from "react";
 import QRCode from "react-qr-code";
 
 function getActionableLink(sender: string, ctaMessage: string) {
-  if (sender.startsWith("whatsapp:")) {
+  if (sender.startsWith("rcs:")) {
+    return ""; // TODO implement RCS once RCS QR codes are supporteds
+  } else if (sender.startsWith("whatsapp:")) {
     return `https://wa.me/${sender.replace("whatsapp:", "")}?text=${encodeURIComponent(ctaMessage)}`;
   }
   return `smsto:${sender}:${ctaMessage}`;
