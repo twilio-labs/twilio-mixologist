@@ -40,6 +40,8 @@ const iconMap: { [key: string]: any } = {
   "Earl Grey": CupIcon,
   "Herbal Tea": CupIcon,
   Chai: CupIcon,
+  "Chai Latte": CupIcon,
+  "Matcha Latte": CupIcon,
   Colombia: SmoothieStrawberryIcon,
   Aquamarine: SmoothiePineappleIcon,
   Lambada: SmoothieOrangeIcon,
