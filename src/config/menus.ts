@@ -143,6 +143,16 @@ export default {
         title: "Hot Chocolate",
         description: "Hot cocoa",
       },
+      {
+        shortTitle: "Chai Latte",
+        title: "Chai Latte",
+        description: "Spiced Tea with teamed Milk"
+      },
+      {
+        shortTitle: "Matcha Latte",
+        title: "Matcha Latte",
+        desription: "Finely ground Japanese green tea (matcha) whisked into steamed milk"
+      }
     ],
     modifiers: [
       "Milk",
@@ -156,6 +166,10 @@ export default {
       "Chocolate Caramel Syrup",
       "Caramel Syrup",
       "Hazelnut Syrup",
+      "Cinnamon Syrup",
+      "Coconut Syrup",
+      "Mint Syrup",
+      "Dulce de leche Syrup",
       "Brown Sugar Stick",
       "White Sugar Stick",
     ],
