@@ -217,31 +217,30 @@ export function useSyncList(name: string, limit: number) {
           setResource(newList);
 
           let items: SyncListItem[] = [];
-          let count = 0;
 
           const pageHandler: any = async function (
             paginator: Paginator<SyncListItem>,
           ) {
-            paginator.items.forEach((item) => {
-              if (count <= limit) {
-                items.push(item);
-                count++;
-              } else {
-                return null;
-              }
-            });
-            if (paginator.hasNextPage && count < limit) {
-              pageHandler(await paginator.nextPage());
-              return null;
-            } else {
-              return null;
-            }
+            items.push.apply(items, paginator.items);
+            // console.log(
+            //   "batch add items ",
+            //   paginator.items.map((i) => i.index),
+            // );
+            setInternalList([...items]);
+            return paginator.hasNextPage
+              ? paginator.nextPage().then(pageHandler)
+              : null;
           };
 
-          const pageOfItems = await newList.getItems({ pageSize: 100 });
-          await pageHandler(pageOfItems);
+          newList
+            .getItems({ pageSize: limit })
+            .then(pageHandler)
+            .catch((error) => {
+              console.error("List getItems() failed", error);
+            });
 
           newList.on("itemAdded", (args) => {
+            // console.log("add item with id ", args.item.index);
             items.push(args.item);
             setInternalList([...items]);
           });
@@ -258,7 +257,6 @@ export function useSyncList(name: string, limit: number) {
             setInternalList([...items]);
           });
 
-          setInternalList(items); // maybe need to page through items here later
           setDocReady(true);
         } catch (e: any) {
           toast({
