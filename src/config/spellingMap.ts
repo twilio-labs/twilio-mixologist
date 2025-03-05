@@ -27,11 +27,11 @@ export default {
   "flatt white": "Flat White",
   "filter coffee": "Coffee",
   "fliter coffee": "Coffee",
-  late: "Latt",
+  // late: "Latt", since this breaks "chocoLATE" orders
   lattey: "Latte",
   larte: "Latte",
   lattee: "Latte",
-  // latte: "Caffè Latte",
+  // latte: "Caffè Latte", since this breaks "Matcha Latte" orders
   "white americano": "Americano",
   "hot chocolate": "Hot Chocolate",
   chocolate: "Hot Chocolate",
