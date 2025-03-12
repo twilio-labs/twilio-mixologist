@@ -138,11 +138,43 @@ export default {
         title: "Chai",
         description: "Spiced tea with milk",
       },
+     
       {
-        shortTitle: "Chocolate",
-        title: "Hot Chocolate",
-        description: "Hot cocoa",
+        shortTitle: "Café Colada",
+        title: "Café Colada",
+        description: "Hand brewed Coffee + Turbinado Sugar",
       },
+      {
+        shortTitle: "Cortadito",
+        title: "Cortadito",
+        description: "Espresso + Steamed Milk + Blended Sugar",
+      },
+      {
+        shortTitle: "Cortado",
+        title: "Cortado",
+        description: "One Shot of Espresso + Dash Steamed Milk",
+      },
+      {
+        shortTitle: "Caramelo Cortado",
+        title: "Caramelo Cortado",
+        description: "Espresso + Sweet Milk + Caramel",
+      },
+      {
+        shortTitle: "Café Con Leche",
+        title: "Café Con Leche",
+        description: "Espresso + Steamed Milk + Sugar Blended.",
+      },
+      {
+        shortTitle: "Café Dulce",
+        title: "Café Dulce",
+        description: "Espresso + Sweet Condensed Milk",
+      },
+      {
+        shortTitle: "Café Coco",
+        title: "Café Coco",
+        description: "Espresso + Coconut milk",
+      },
+
     ],
     modifiers: [
       "Milk",

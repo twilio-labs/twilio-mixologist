@@ -46,6 +46,13 @@ const iconMap: { [key: string]: any } = {
   "Espresso Martini": CarafeIcon,
   "White Russian": CarafeIcon,
   "Irish Coffee": CarafeIcon,
+  "Café Colada": FlatWhiteIcon,
+  Cortadito: FlatWhiteIcon,
+  Cortado: FlatWhiteIcon,
+  "Caramelo Cortado": FlatWhiteIcon,
+  "Café Con Leche": FlatWhiteIcon,
+  "Café Dulce": FlatWhiteIcon,
+  "Café Coco": FlatWhiteIcon,
   Mudslide: CarafeIcon,
 };
 
