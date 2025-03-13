@@ -198,7 +198,7 @@ export function useSyncMap(name: string, keys: string[]) {
   return [map, setData, initialized && docReady];
 }
 
-export function useSyncList(name: string, limit: number) {
+export function useSyncList(name: string, pageSize: number) {
   const { syncClient, initialized } = useContext(SyncContext);
   const [docReady, setDocReady] = useState(false);
   const [syncResource, setResource] = useState<SyncList>();
@@ -222,10 +222,6 @@ export function useSyncList(name: string, limit: number) {
             paginator: Paginator<SyncListItem>,
           ) {
             items.push.apply(items, paginator.items);
-            // console.log(
-            //   "batch add items ",
-            //   paginator.items.map((i) => i.index),
-            // );
             setInternalList([...items]);
             return paginator.hasNextPage
               ? paginator.nextPage().then(pageHandler)
@@ -233,7 +229,7 @@ export function useSyncList(name: string, limit: number) {
           };
 
           newList
-            .getItems({ pageSize: limit })
+            .getItems({ pageSize })
             .then(pageHandler)
             .catch((error) => {
               console.error("List getItems() failed", error);
