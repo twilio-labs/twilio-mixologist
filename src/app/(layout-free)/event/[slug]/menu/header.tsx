@@ -17,7 +17,7 @@ export default function Header({ number }: { number: string }) {
             height="45"
             className="mr-2"
           />
-          <h1 className="text-[2.5rem] font-bold">Mixologist</h1>
+          <h1 className="text-[2.5rem] ">cafe</h1>
         </div>
         {/* <p className="text-sm">SEND YOUR ORDER TO {number}</p> */}
         <CoffeeShopIcon
