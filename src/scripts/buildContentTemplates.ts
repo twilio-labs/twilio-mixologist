@@ -23,7 +23,7 @@ export function getHelpPrivacyTemplate(
     });
   }
 
-  const body = `Welcome to the Twilio booth! Message the {{0}} you would like and we'll start preparing it. ${getAvailableOptions(indiciesOfFullTitles)}`;
+  const body = `Welcome at the Twilio booth! Message the {{0}} you would like and we'll start preparing it. ${getAvailableOptions(indiciesOfFullTitles)}`;
 
   return {
     friendly_name: templateName,
