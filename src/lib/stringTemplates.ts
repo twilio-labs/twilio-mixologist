@@ -55,7 +55,7 @@ export function getWelcomeMessage(
 ) {
   const welcomeMessage =
     customWelcomeMessage ||
-    `Welcome at the Twilio Booth! Are you ready for a ${modeToBeverage(mode)} on us? 🎉`;
+    `Welcome to the Twilio Booth! Are you ready for a ${modeToBeverage(mode)} on us? 🎉`;
   const leadCollectionSuffix = willCollectedLeads
     ? "\nReply with your full name to get started."
     : "";
