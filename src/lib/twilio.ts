@@ -18,7 +18,7 @@ import {
   getForgetUserTool,
   getSubmitOrdersTool,
   getSystemPrompt,
-} from "./aiAssistantTempaltes";
+} from "./aiAssistantTemplates";
 import { Event } from "@/app/(master-layout)/event/[slug]/page";
 const throttle = throttledQueue(25, 1000);
 const {
@@ -184,7 +184,7 @@ export async function updateAiAssistant(aiAssistantID: string, event: Event) {
     .fetch();
 
   const oldToolsToRemove = assistant.tools.filter(
-    (tool) => tool.name === "Submit Order" || tool.name === "Edit Order",
+    (tool) => tool.name === "Submit Order" || tool.name === "Edit / Cancel Order",
   );
   if (oldToolsToRemove?.length > 0) {
     await Promise.all(
