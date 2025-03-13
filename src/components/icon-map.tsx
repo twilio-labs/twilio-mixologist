@@ -15,6 +15,7 @@ import {
   CoffeeIcon,
   FrappuccinoIcon,
   CarafeIcon,
+  WhiteWineIcon,
 } from "@/components/icons";
 
 const iconMap: { [key: string]: any } = {
@@ -45,7 +46,7 @@ const iconMap: { [key: string]: any } = {
   Colombia: SmoothieStrawberryIcon,
   Aquamarine: SmoothiePineappleIcon,
   Lambada: SmoothieOrangeIcon,
-  "Espresso Martini": CarafeIcon,
+  "Espresso Martini": WhiteWineIcon,
   "White Russian": CarafeIcon,
   "Irish Coffee": CarafeIcon,
   "Café Colada": FlatWhiteIcon,
@@ -55,6 +56,7 @@ const iconMap: { [key: string]: any } = {
   "Café Con Leche": FlatWhiteIcon,
   "Café Dulce": FlatWhiteIcon,
   "Café Coco": FlatWhiteIcon,
+  "Con Sabor": FlatWhiteIcon,
   Mudslide: CarafeIcon,
 };
 

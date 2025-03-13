@@ -174,17 +174,28 @@ export default {
         title: "Café Coco",
         description: "Espresso + Coconut milk",
       },
+      {
+        shortTitle: "Con Sabor",
+        title: "Con Sabor",
+        description: "Choice of Flavored Syrup Infused Into Any of The Above",
+      },
+      {
+        shortTitle: "Espresso Martini",
+        description: "Vodka, Espresso, Coffee Liqueur, Sugar Syrup",
+        title: "Espresso Martini",
+      },
 
       {
         shortTitle: "Chai Latte",
         title: "Chai Latte",
-        description: "Spiced Tea with steamed Milk"
+        description: "Spiced Tea with steamed Milk",
       },
       {
         shortTitle: "Matcha Latte",
         title: "Matcha Latte",
-        description: "Finely ground Japanese green tea whisked into steamed milk"
-      }
+        description:
+          "Finely ground Japanese green tea whisked into steamed milk",
+      },
     ],
     modifiers: [
       "Milk",
