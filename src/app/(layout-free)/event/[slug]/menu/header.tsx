@@ -22,7 +22,7 @@ export default function Header({ number }: { number: string }) {
         </div>
         {/* <p className="text-sm">SEND YOUR ORDER TO {number}</p> */}
         <QRCode
-          value={`https://twilio.com`}
+          value={`https://qr.link/AnTVsw`}
           // @ts-expect-error - `size` prop is missing in the type definition
           size={"10rem"}
           renderAs="svg"
