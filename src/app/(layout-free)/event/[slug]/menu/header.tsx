@@ -1,4 +1,5 @@
 import { CoffeeShopIcon } from "@/components/icons";
+import QRCode from "react-qr-code";
 
 export default function Header({ number }: { number: string }) {
   return (
@@ -20,11 +21,18 @@ export default function Header({ number }: { number: string }) {
           <h1 className="text-[2.5rem] ">cafe</h1>
         </div>
         {/* <p className="text-sm">SEND YOUR ORDER TO {number}</p> */}
-        <CoffeeShopIcon
+        <QRCode
+          value={`https://twilio.com`}
+          // @ts-expect-error - `size` prop is missing in the type definition
+          size={"10rem"}
+          renderAs="svg"
+        />
+        {/* only temporary test with the QR code */}
+        {/* <CoffeeShopIcon
           width="10rem"
           height="10rem"
           style={{ fill: "white" }}
-        />
+        /> */}
       </div>
     </header>
   );
