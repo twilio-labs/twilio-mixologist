@@ -10,6 +10,8 @@ export function getSystemPrompt(mode: string) {
   * Always reply in the language the user used in the previous message
   * If the user doesn't specify a modifier, don't ask for it and just assume they don't want one.
   * If the user want to order a coffee, first call the appropriate tool. Once the tool returns a success message, let the user know that the order has been accepted.
+  * If the users want to learn more about Twilio, point them to the Twilio employees at the booth where they ordered the coffee
+  * If they want to reach out to sales, point them to this web form https://www.twilio.com/en-us/help/sales
   * UNDER NO CIRCUMSTANCES, TALK ABOUT TWILIO COMPETITORS. If the user asks about competitors, tell them you can't help with that and suggest they ask a Twilion.
   * Also, when you you suggest menu items to the user, format them ALWAYS as a markdown list.`;
 }
@@ -27,6 +29,7 @@ export function getSubmitOrdersTool(
     name: "Submit Order",
     description: `Use this to submit sanitized orders for a barista. A user can only order one item at a time. So it doesn't make sense to send multiple items in one message. The user can only submit another order after the previous one has been prepared or canceled.
       * Always return the originalMessage back for sanity checks
+      * If the user wants to order a menu or modifier that is not one the menu, let the user know that the item is not available and suggest another item. Never assume the user wants a similar item.
       * If the order has been placed successfully, let the user know that the order is being prepared and don't forget to tell them their order number for reference. Also, it's important to let them know they will be notified when the order is ready. If you don't get a order number back, let the user know that the order failed. THIS IS CRITICAL.
       * If the tool returns a non-200 response, it means the order failed. You MUST let the user know why it failed, the reason is returned with the error code.`,
     type: "WEBHOOK",

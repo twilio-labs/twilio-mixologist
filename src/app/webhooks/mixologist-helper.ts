@@ -43,10 +43,10 @@ export function filterRealMenuItems(
   menu: MenuItem[],
 ): [string, MenuItem[], string] {
   const lines = message.split("\n");
-  const intro = lines[0];
-  const outro = lines[lines.length - 1];
+  const intro = lines.shift() || "";
+  const outro = lines.pop() || "";
 
-  if (lines.length < 4) {
+  if (lines.length < 2) {
     return [intro, [], outro];
   }
   const cleanedItems = lines
