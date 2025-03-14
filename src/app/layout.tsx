@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Twilio Mixologist",
-  description: "Get a free beverage from the Twilio Mixologist",
+  title: "Twilio Cafe",
+  description: "Get a free beverage on Twilio",
 };
 
 export default function RootLayout({
