@@ -26,7 +26,7 @@ export function getSubmitOrdersTool(
     ? `modifiers: (${modifiers.map((modifier) => `'${modifier}'`).join(" | ")})[];`
     : "";
   return {
-    name: "Submit Order",
+    name: "Submit Order", //TODO consider using unique tool names per event
     description: `Use this to submit sanitized orders for a barista. A user can only order one item at a time. So it doesn't make sense to send multiple items in one message. The user can only submit another order after the previous one has been prepared or canceled.
       * Always return the originalMessage back for sanity checks
       * If the user wants to order a menu or modifier that is not one the menu, let the user know that the item is not available and suggest another item. Never assume the user wants a similar item.
@@ -52,7 +52,7 @@ export function getEditOrderTool(
     ? `modifiers: (${modifiers.map((modifier) => `'${modifier}'`).join(" | ")})[];`
     : "";
   return {
-    name: "Edit / Cancel Order",
+    name: "Edit / Cancel Order", //TODO consider using unique tool names per event
     description: `Use this to edit sanitized orders for a barista. 
       * The tool can be used to replace an existing order or the cancel an existing order. The property "action" decides which action to take.
       * Always return the most recent message as "originalMessage" back for sanity checks
@@ -72,7 +72,7 @@ export function getEditOrderTool(
 
 export function getFetchOrderInfoTool(callbackUrl: string) {
   return {
-    name: "Fetch Order Info",
+    name: "Fetch Order Info", //TODO consider using unique tool names per event
     description: `Use this to fetch order information for a barista. 
       The tool returns the the item and modifiers of the order. Additionally, it returns how many other orders are in the queue before this order.
       The tool  If the tool returns a non-200 response, it means the fetch order info failed. Let the user know why it failed.`,
@@ -88,7 +88,7 @@ export function getFetchOrderInfoTool(callbackUrl: string) {
 
 export function getForgetUserTool(callbackUrl: string) {
   return {
-    name: "Remove User Profile",
+    name: "Remove User Profile", //TODO consider using unique tool names per event
     description: `Use this to delete the data of a user. Only call this if the user indicated they want their data to be removed. There's no need to send a confirmation message. Only send one if the tool fails with an error / non-200 response.`,
     type: "WEBHOOK",
     enabled: true,
