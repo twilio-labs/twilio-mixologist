@@ -55,10 +55,10 @@ export async function calcStatsForEvent(
     }
     orderStatusCounter[data.status]++;
 
-    if (!orderItemCounter[data.item.shortTitle]) {
-      orderItemCounter[data.item.shortTitle] = 0;
+    if (!orderItemCounter[data.item]) {
+      orderItemCounter[data.item] = 0;
     }
-    orderItemCounter[data.item.shortTitle]++;
+    orderItemCounter[data.item]++;
   });
 
   customers.forEach((customer: any) => {
