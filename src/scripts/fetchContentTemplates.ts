@@ -9,7 +9,17 @@ const { SERVICE_INSTANCE_PREFIX = "" } = process.env;
 const formattedServicePrefix = SERVICE_INSTANCE_PREFIX.toLowerCase();
 
 function modeToBeverage(mode: modes, plural: boolean = false) {
-  return mode === "smoothie" ? (plural ? "smoothies" : "smoothie") : "coffee";
+  return mode === "smoothie"
+    ? plural
+      ? "smoothies"
+      : "smoothie"
+    : mode === "cocktail"
+      ? plural
+        ? "drinks"
+        : "drink"
+      : mode === "tea"
+        ? "tea"
+        : "coffee";
 }
 
 function buildContentVariables(variables: any[]) {

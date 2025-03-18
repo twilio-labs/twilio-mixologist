@@ -10,7 +10,9 @@ function modeToBeverage(mode: modes, plural: boolean = false) {
       ? plural
         ? "drinks"
         : "drink"
-      : "coffee";
+      : mode === "tea"
+        ? "tea"
+        : "coffee";
 }
 
 export function getModifiersMessage(modifiers: string[]) {
@@ -77,7 +79,6 @@ export function getWelcomeBackMessage(
 export function getDataPolicy(mode: string) {
   return `We only use your phone number to notify you about our ${mode} service and redact all the messages & phone numbers afterward.`;
   // return `We only use your phone number to notify you about our ${mode} service and redact all the messages & phone numbers afterward. You can request to delete your data at any time and cancel open orders by replying with "Forget me".`; TODO switch once implemented and tested
-
 }
 
 export function getPromptForEmail() {
@@ -91,4 +92,3 @@ export function getNoActiveEventsMessage() {
 export function getPausedEventMessage() {
   return "Hey there! We've paused orders for now. Please check back later.";
 }
-

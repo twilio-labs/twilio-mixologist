@@ -8,6 +8,7 @@ export enum modes {
   barista = "barista",
   smoothie = "smoothie",
   cocktail = "cocktail",
+  tea = "tea",
 }
 
 export type Menus = {
@@ -237,6 +238,25 @@ export default {
         shortTitle: "Lambada",
         description:
           "Orange, Mango, Banana, Passion Fruit, Flaxseed, Coconut Oil 🍊🥭🍌🥥",
+      },
+    ],
+  },
+  tea: {
+    items: [
+      {
+        title: "Mango Black Tea with Boba",
+        shortTitle: "Mango Black Tea",
+        description: "Mango, Cane Sugar, Assam Black Tea, Boba 🥭🧋",
+      },
+      {
+        title: "Lychee Peachy Green Tea with Lychee Jelly",
+        shortTitle: "Lychee Peachy Tea",
+        description: "Lychee, Peach, Jasmine Green Tea, Lychee Jelly 🍑🍵",
+      },
+      {
+        title: "Caramel Milk Tea",
+        shortTitle: "Caramel Milk Tea",
+        description: "Caramel, Oatmilk, Assam Black Tea 🍯🥛",
       },
     ],
   },

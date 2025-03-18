@@ -185,10 +185,10 @@ function StatsPage({ params }: { params: Promise<{ slug: string }> }) {
                     Breakdown of drinks orders
                   </CardDescription>
                 </div>
-                {stats?.mode === modes.smoothie ? (
-                  <CupSoda className="w-4 h-4 text-gray-500 " />
-                ) : (
+                {stats?.mode === modes.barista ? (
                   <Coffee className="w-4 h-4 text-gray-500 " />
+                ) : (
+                  <CupSoda className="w-4 h-4 text-gray-500 " />
                 )}
               </CardHeader>
               {stats ? (

@@ -58,6 +58,9 @@ const iconMap: { [key: string]: any } = {
   "Café Coco": FlatWhiteIcon,
   "Con Sabor": FlatWhiteIcon,
   Mudslide: CarafeIcon,
+  "Mango Black Tea": CupIcon,
+  "Lychee Peachy Tea": CupIcon,
+  "Caramel Milk Tea": CupIcon,
 };
 
 export default iconMap;
