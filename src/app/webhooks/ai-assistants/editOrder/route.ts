@@ -39,7 +39,6 @@ export async function POST(request: NextRequest) {
 
   const role = getAuthenticatedRole(headerList.get("Authorization") || "");
   const signature = headerList.get("X-Twilio-Signature") || "";
-
   const isSignedCorrectly = await checkSignature(signature, request.url);
 
   if (!isSignedCorrectly) {
@@ -64,20 +63,21 @@ export async function POST(request: NextRequest) {
 
   if (action === "edit") {
     if (lastOrder?.data?.status === "queued") {
-      if (verifyOrder(item, modifiers, event)) {
+      if (verifyOrder(item, event, modifiers)) {
         try {
           updateOrder(event.slug, lastOrder.index, {
             ...lastOrder.data,
             item,
-            ...(modifiers.length >= 0 && {
-              modifiers: modifiers.join(", "),
-            }),
+            ...(modifiers &&
+              modifiers.length >= 0 && {
+                modifiers: modifiers.join(", "),
+              }),
             originalText: originalMessage,
             status: "queued",
           });
 
           return new Response(
-            `${item}${modifiers.length > 1 ? ` with ${modifiers.join(", ")}` : ""}`,
+            `${item}${modifiers && modifiers.length > 1 ? ` with ${modifiers.join(", ")}` : ""}`,
             { status: 200 },
           );
         } catch (error) {

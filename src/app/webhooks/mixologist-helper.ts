@@ -18,7 +18,7 @@ function shortenStringToMax(string: string, maxLength: number) {
 
 const NEXT_PUBLIC_EVENTS_MAP = process.env.NEXT_PUBLIC_EVENTS_MAP || "";
 
-export function verifyOrder(item: string, modifiers: string[], event: Event) {
+export function verifyOrder(item: string, event: Event, modifiers?: string[]) {
   if (item === "") {
     return false;
   }
@@ -27,7 +27,7 @@ export function verifyOrder(item: string, modifiers: string[], event: Event) {
     return false;
   }
 
-  if (modifiers.length > 0) {
+  if (modifiers && modifiers.length > 0) {
     for (const modifier of modifiers) {
       if (!event.selection.modifiers.includes(modifier)) {
         return false;

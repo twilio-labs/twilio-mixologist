@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
 
   let event = await getEvent(conversationRecord.event);
 
-  if (!verifyOrder(item, modifiers, event)) {
+  if (!verifyOrder(item, event, modifiers)) {
     return new Response(
       `The order for a ${item} with modifiers ${modifiers.join(", ")} is not valid.`,
       { status: 500 },
@@ -98,9 +98,10 @@ export async function POST(request: NextRequest) {
     key: conversationSid,
     address: await redact(identityHeader),
     item,
-    ...(modifiers.length >= 1 && {
-      modifiers: modifiers.join(", "),
-    }),
+    ...(modifiers &&
+      modifiers.length >= 1 && {
+        modifiers: modifiers.join(", "),
+      }),
     originalText: originalMessage,
     status: "queued",
   };
