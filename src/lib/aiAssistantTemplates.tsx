@@ -22,7 +22,7 @@ export function getSubmitOrdersTool(
   modifiers?: string[],
 ) {
   const listOfItems = items.map((item) => `'${item.title}'`).join(" | ");
-  const listOfModfiers = modifiers
+  const listOfModfiers = modifiers && modifiers.length > 0
     ? `modifiers: (${modifiers.map((modifier) => `'${modifier}'`).join(" | ")})[];`
     : "";
   return {
@@ -48,7 +48,7 @@ export function getEditOrderTool(
   modifiers?: string[],
 ) {
   const listOfItems = items.map((item) => `'${item.title}'`).join(" | ");
-  const listOfModfiers = modifiers
+  const listOfModfiers = modifiers && modifiers.length > 0
     ? `modifiers: (${modifiers.map((modifier) => `'${modifier}'`).join(" | ")})[];`
     : "";
   return {
