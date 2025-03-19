@@ -204,7 +204,7 @@ export default function OrdersList({
                       ) => {
                         ev.target.disabled = true;
                         updateOrder(index, { status: "delivered" });
-                        updateOrderTTL(index, 5 * 60);
+                        // updateOrderTTL(index, 5 * 60);
 
                         await updateEvent({
                           deliveredCount:
