@@ -34,8 +34,11 @@ export default async function Home() {
           {items.map((item) => {
             return (
               <EventCard
+                // @ts-ignore  thinks is a object but actually it's a string
                 key={item.data.slug}
+                // @ts-ignore  thinks is a object but actually it's a string
                 title={item.data.name}
+                // @ts-ignore  thinks is a object but actually it's a string
                 slug={item.data.slug}
                 isAdmin={isAdmin}
               />

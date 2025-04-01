@@ -33,7 +33,8 @@ if (!eventName || eventName.startsWith("/") || eventName.includes("=")) {
 
   while (customerPage && customerPage.instances.length > 0) {
     const attendees = customerPage.instances
-      .map((item) => item.data)
+      // @ts-ignore  thinks is a object but actually it's a user
+      .map((item) => item.data as { stage: Stages; event: string })
       .filter(
         (a) =>
           (a.stage === Stages.VERIFIED_USER ||

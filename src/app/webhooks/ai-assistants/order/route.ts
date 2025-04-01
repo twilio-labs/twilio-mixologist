@@ -18,6 +18,7 @@ import {
 import { Order } from "@/config/menus";
 import { redact, Stages, TwoWeeksInSeconds } from "@/lib/utils";
 import { headers } from "next/headers";
+import { Event } from "@/app/(master-layout)/event/[slug]/page";
 
 const NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP =
     process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP || "",
@@ -26,6 +27,7 @@ const NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP =
 async function getQueuePosition(event: string, orderNumber: number) {
   const firstPageOrders = await fetchSyncListItems(event);
   const openOrders = firstPageOrders.filter(
+    // @ts-ignore  thinks is a object but actually it's a string
     (item) => item.data.status === "queued",
   );
   const queuePosition = openOrders.findIndex(
@@ -68,10 +70,12 @@ export async function POST(request: NextRequest) {
 
   const lastOrder = await fetchOrder(
     eventSlug,
+    // @ts-ignore  thinks is a object but actually it's a string
     conversationRecord?.lastOrderNumber,
   );
 
-  let event = await getEvent(conversationRecord.event);
+  // @ts-ignore  thinks is a object but actually it's a string
+  let event = (await getEvent(conversationRecord.event)) as Event;
 
   if (!verifyOrder(item, event, modifiers)) {
     return new Response(
@@ -79,12 +83,14 @@ export async function POST(request: NextRequest) {
       { status: 500 },
     );
   }
+  // @ts-ignore  thinks is a object but actually it's a string
   if (lastOrder?.data.status === "queued") {
     return new Response(
       `Couldn't create order since the customer already has an active order for a ${lastOrder.data.item}, order # ${lastOrder.index}`,
       { status: 500 },
     );
   } else if (
+    // @ts-ignore  thinks is a object but actually it's a string
     conversationRecord?.orderCount > event.maxOrders &&
     !UNLIMTED_ORDERS.includes(phoneNumber)
   ) {
@@ -158,16 +164,18 @@ export async function GET(request: NextRequest) {
     NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP,
     conversationSid,
   );
+  // @ts-ignore  thinks is a object but actually it's a number
+  const lastOrderNumber = conversationRecord?.lastOrderNumber as number;
 
   try {
     const lastOrder = await fetchOrder(
       eventSlug,
-      conversationRecord?.lastOrderNumber,
+      lastOrderNumber,
     );
 
     const queuePosition = await getQueuePosition(
       eventSlug,
-      conversationRecord.lastOrderNumber,
+      lastOrderNumber,
     );
     if (isNaN(queuePosition)) {
       return new Response("No active orders found.", { status: 200 });

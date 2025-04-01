@@ -25,6 +25,7 @@ export default async function KioskPage(props: {
       .fetch();
     const items = await events.syncMapItems().list();
 
+    // @ts-ignore  thinks is a object but actually it's a string
     const event = items.find((item) => item.data.slug === params.slug);
 
     return (
@@ -37,6 +38,7 @@ export default async function KioskPage(props: {
             askForSender={true}
             showToast={true}
             eventSlug={params.slug}
+            // @ts-ignore  thinks is a object but actually it's a array
             selection={event?.data.selection}
           />
         )}
