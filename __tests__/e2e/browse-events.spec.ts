@@ -245,9 +245,7 @@ test.describe("[admin]", () => {
 
     await expect(page.getByText("Smoothie")).toBeVisible();
     await expect(page.getByText("Barista")).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "Coffee" }),
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Coffee" })).toBeVisible();
 
     await expect(
       page.getByRole("heading", { name: "Flat White" }),

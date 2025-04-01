@@ -168,15 +168,9 @@ export async function GET(request: NextRequest) {
   const lastOrderNumber = conversationRecord?.lastOrderNumber as number;
 
   try {
-    const lastOrder = await fetchOrder(
-      eventSlug,
-      lastOrderNumber,
-    );
+    const lastOrder = await fetchOrder(eventSlug, lastOrderNumber);
 
-    const queuePosition = await getQueuePosition(
-      eventSlug,
-      lastOrderNumber,
-    );
+    const queuePosition = await getQueuePosition(eventSlug, lastOrderNumber);
     if (isNaN(queuePosition)) {
       return new Response("No active orders found.", { status: 200 });
     }
