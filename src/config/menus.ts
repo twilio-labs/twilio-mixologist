@@ -197,6 +197,16 @@ export default {
         description:
           "Finely ground Japanese green tea whisked into steamed milk",
       },
+      {
+        shortTitle: "Chai Latte",
+        title: "Chai Latte",
+        description: "Spiced Tea with steamed Milk"
+      },
+      {
+        shortTitle: "Matcha Latte",
+        title: "Matcha Latte",
+        description: "Finely ground Japanese green tea whisked into steamed milk"
+      }
     ],
     modifiers: [
       "Milk",
