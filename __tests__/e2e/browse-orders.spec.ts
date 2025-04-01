@@ -58,7 +58,7 @@ test.describe("[no login]", () => {
     await expect(
       page.getByRole("button", { name: "Show More" }),
     ).not.toBeVisible();
-    !(await page.getByText("#61").isVisible());
+    expect(await page.getByText("#61").count()).toBeGreaterThan(0);
   });
 
   test("broadcast message usable", async ({ page, context }) => {
@@ -122,7 +122,7 @@ test.describe("[mixologist]", () => {
     await expect(
       page.getByRole("button", { name: "Show More" }),
     ).not.toBeVisible();
-    !(await page.getByText("#61").isVisible());
+    expect(await page.getByText("#61").count()).toBeGreaterThan(0);
   });
 
   test("broadcast message usable", async ({ page, context }) => {
