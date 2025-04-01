@@ -79,7 +79,7 @@ function ConfigPage() {
               </div>
             ))
           ) : (
-            <div className="w-2/3 h-10 bg-gray-300 rounded animate-pulse"></div>
+            <div className="w-2/3 h-10 bg-gray-300 rounded-sm animate-pulse"></div>
           )}
         </div>
       </section>
@@ -120,7 +120,7 @@ function ConfigPage() {
               );
             })
           ) : (
-            <div className="w-2/3 h-10 bg-gray-300 rounded animate-pulse"></div>
+            <div className="w-2/3 h-10 bg-gray-300 rounded-sm animate-pulse"></div>
           )}
         </div>
       </section>
@@ -140,7 +140,7 @@ function ConfigPage() {
               );
             })
           ) : (
-            <div className="w-2/3 h-10  bg-gray-300 rounded animate-pulse"></div>
+            <div className="w-2/3 h-10  bg-gray-300 rounded-sm animate-pulse"></div>
           )}
         </div>
       </section>

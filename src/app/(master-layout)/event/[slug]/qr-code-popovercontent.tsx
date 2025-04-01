@@ -67,7 +67,7 @@ export default function QrPopoverConent({ senders }: { senders: string[] }) {
           />
         ))}
       </div>
-      <div className="flex justify-center bg-slate-100 hover:bg-slate-200 rounded-sm py-2">
+      <div className="flex justify-center bg-slate-100 hover:bg-slate-200 rounded-xs py-2">
         <button onClick={downloadQR}>Download QR Codes</button>
       </div>
     </PopoverContent>

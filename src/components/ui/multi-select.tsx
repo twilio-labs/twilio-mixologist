@@ -50,10 +50,10 @@ export default function MultiSelect({
         };
       }}
       classNames={{
-        placeholder: () => "text-sm !text-gray-400",
+        placeholder: () => "text-sm text-gray-400!",
         container: (state) =>
           state.isFocused ? "ring-2 ring-ring ring-offset-2 rounded-md" : "",
-        control: (state) => (state.isFocused ? "!border-0" : ""),
+        control: (state) => (state.isFocused ? "border-0!" : ""),
       }}
     />
   );
