@@ -185,12 +185,6 @@ export default {
         description: "Vodka, Espresso, Coffee Liqueur, Sugar Syrup",
         title: "Espresso Martini",
       },
-
-      {
-        shortTitle: "Chai Latte",
-        title: "Chai Latte",
-        description: "Spiced Tea with steamed Milk",
-      },
       {
         shortTitle: "Matcha Latte",
         title: "Matcha Latte",
@@ -201,11 +195,6 @@ export default {
         shortTitle: "Chai Latte",
         title: "Chai Latte",
         description: "Spiced Tea with steamed Milk"
-      },
-      {
-        shortTitle: "Matcha Latte",
-        title: "Matcha Latte",
-        description: "Finely ground Japanese green tea whisked into steamed milk"
       }
     ],
     modifiers: [

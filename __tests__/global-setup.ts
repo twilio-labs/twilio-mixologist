@@ -55,11 +55,7 @@ async function createOrder(
       event: "test-event",
       order: {
         status,
-        item: {
-          description: "Strong black coffee",
-          shortTitle: "Espresso",
-          title: "Espresso",
-        },
+        item: "Espresso",
         key: "test-order",
         address: "+123***123",
         originalText,
