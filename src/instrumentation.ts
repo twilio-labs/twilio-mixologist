@@ -9,7 +9,7 @@ export async function register() {
       getConversationService,
     } = await import("@/lib/twilio");
     const { updateConfig } = await import("@/scripts/updateConfig");
-    await import("@/scripts/createTwilioRes"); // this automatically run const createTwilioRes()
+    await import("@/scripts/createTwilioRes"); // this automatically runs const createTwilioRes()
 
     await checkIfAllEnvVarsAreSet();
 

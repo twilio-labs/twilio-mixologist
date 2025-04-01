@@ -42,7 +42,7 @@ export async function DELETE(request: Request) {
     .syncMapItems(slug)
     .fetch();
 
-  if (event.data.assistantId) await deleteAiAssistant(event.data.assistantId); // this if statement is only needed during the transition period
+  if (event.data.assistantId) await deleteAiAssistant(event.data.assistantId); 
 
   try {
     await syncService
