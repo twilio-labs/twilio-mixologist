@@ -12,7 +12,7 @@ import {
 import { NextRequest } from "next/server";
 import { cancelOrder, fetchOrder, getEvent } from "../../mixologist-helper";
 import { headers } from "next/headers";
-import { getAuthenticatedRole, Privilege } from "@/middleware";
+import { sleep } from "@/lib/utils";
 
 const NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP =
   process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP || "";
@@ -54,8 +54,10 @@ export async function POST(request: NextRequest) {
   try {
     await addMessageToConversation(
       conversationSid,
-      "Your data has been removed. You can send any message to start over again.",
+      "Your data has been removed. Send any message to start over again.",
     );
+
+    await sleep(2000);
 
     await Promise.all([
       deleteConversation(conversationSid),
