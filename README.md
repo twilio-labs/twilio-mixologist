@@ -74,6 +74,7 @@ The current [Twilio Channels] are:
 
    # Twilio related values
    TWILIO_ACCOUNT_SID=
+   TWILIO_AUTH_TOKEN=
    TWILIO_API_KEY=
    TWILIO_API_SECRET=
 
