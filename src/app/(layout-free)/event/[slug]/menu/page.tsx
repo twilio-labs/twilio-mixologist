@@ -32,7 +32,7 @@ async function MenuPage(props: { params: Promise<{ slug: string }> }) {
       <>
         <Header number={internalEvent.senders[0]} />
         <main className="flex grow pb-8 items-center justify-center bg-gray-900 text-white select-none">
-          <div className={`grid grid-cols-${columns} gap-8  `}>
+          <div className={`grid grid-cols-${columns} gap-8 mx-24 `}>
             {internalEvent.selection?.items.map((item: any, index: Number) => (
               <div key={`item-${index}`} className="flex flex-col items-center">
                 <div className="p-4 rounded-full mb-2">

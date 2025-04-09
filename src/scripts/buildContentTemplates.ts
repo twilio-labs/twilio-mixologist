@@ -1,4 +1,4 @@
-export function getHelpPrivacyTemplate(
+export function getShowHelpTemplate(
   numOptions: number,
   templateName: string,
 ): WhatsAppTemplateConfig {
@@ -18,56 +18,14 @@ export function getHelpPrivacyTemplate(
     indiciesOfFullTitles.push(`- {{${i * 3 + 1}}}`);
     items.push({
       item: `{{${i * 3 + 2}}}`,
-      id: `{{${i * 3 + 2}}}`,
+      id: `Order a {{${i * 3 + 1}}}`, // should be same as indiciesOfFullTitles because this will be send to the webhook
       description: `{{${i * 3 + 3}}}`,
     });
   }
 
-  const body = `Welcome to the Twilio booth! Message the {{0}} you would like and we'll start preparing it. ${getAvailableOptions(indiciesOfFullTitles)}`;
+  const lastIndex = numOptions * 3 + 1;
 
-  return {
-    friendly_name: templateName,
-    language: "en",
-    variables,
-    types: {
-      "twilio/list-picker": {
-        body,
-        items,
-        button: "More Details",
-      },
-      "twilio/text": {
-        body: body,
-      },
-    },
-  };
-}
-
-export function getWrongOrderTemplate(
-  numOptions: number,
-  templateName: string,
-): WhatsAppTemplateConfig {
-  // There's always var 0 and then 3 additional vars (short title, full title, desc) per options  => numOptions * 3 + 1
-
-  const variables = Array.from(Array(numOptions * 3 + 1).keys()).reduce(
-    (accu: any, idx) => {
-      accu[idx] = "";
-      return accu;
-    },
-    {},
-  );
-
-  const indiciesOfFullTitles = [],
-    items = [];
-  for (let i = 0; i < numOptions; i++) {
-    indiciesOfFullTitles.push(`- {{${i * 3 + 1}}}`);
-    items.push({
-      item: `{{${i * 3 + 2}}}`,
-      id: `{{${i * 3 + 2}}}`,
-      description: `{{${i * 3 + 3}}}`,
-    });
-  }
-
-  const body = `Seems like your order of "{{0}}" is not something we can serve. ${getAvailableOptions(indiciesOfFullTitles)}\nWrite "I need help" to get an overview of other commands.`;
+  const body = `{{0}}\n${indiciesOfFullTitles.join("\n")}\n\n{{${lastIndex}}}`;
 
   return {
     friendly_name: templateName,
@@ -114,7 +72,7 @@ export function getReadyToOrderTemplate(
     indiciesOfFullTitles.push(`- {{${i * 3 + 2}}}`);
     items.push({
       item: `{{${i * 3 + 3}}}`,
-      id: `{{${i * 3 + 3}}}`,
+      id: `Order a {{${i * 3 + 2}}}`, // should be same as indiciesOfFullTitles because this will be send to the webhook
       description: `{{${i * 3 + 4}}}`,
     });
   }
@@ -159,7 +117,7 @@ export function getReadyToOrderLimitlessTemplate(
     indiciesOfFullTitles.push(`- {{${i * 3 + 2}}}`);
     items.push({
       item: `{{${i * 3 + 3}}}`,
-      id: `{{${i * 3 + 3}}}`,
+      id: `Order a {{${i * 3 + 2}}}`, // should be same as indiciesOfFullTitles because this will be send to the webhook
       description: `{{${i * 3 + 4}}}`,
     });
   }
@@ -203,7 +161,7 @@ export function getReadyToOrderWithoutEmailValidationTemplate(
     indiciesOfFullTitles.push(`- {{${i * 3 + 2}}}`);
     items.push({
       item: `{{${i * 3 + 3}}}`,
-      id: `{{${i * 3 + 3}}}`,
+      id: `Order a {{${i * 3 + 2}}}`, // should be same as indiciesOfFullTitles because this will be send to the webhook
       description: `{{${i * 3 + 4}}}`,
     });
   }
@@ -247,7 +205,7 @@ export function getReadyToOrderLimitlessWithoutEmailValidationTemplate(
     indiciesOfFullTitles.push(`- {{${i * 3 + 2}}}`);
     items.push({
       item: `{{${i * 3 + 3}}}`,
-      id: `{{${i * 3 + 3}}}`,
+      id: `Order a {{${i * 3 + 2}}}`, // should be same as indiciesOfFullTitles because this will be send to the webhook
       description: `{{${i * 3 + 4}}}`,
     });
   }

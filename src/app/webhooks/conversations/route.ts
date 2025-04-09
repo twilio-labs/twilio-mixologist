@@ -10,19 +10,14 @@ import {
   findSyncMapItems,
   createVerification,
   checkVerification,
-  pushToSyncList,
-  updateSyncListItem,
-  fetchSyncListItem,
-  fetchSyncListItems,
-  removeSyncMapItem,
-  deleteConversation,
   fetchSegmentTraits,
+  askAiAssistant,
+  checkSignature,
 } from "@/lib/twilio";
 
 import {
   Stages,
   getCountryFromPhone,
-  getOrderItemFromMessage,
   EventState,
   sleep,
   TwoWeeksInSeconds,
@@ -31,36 +26,26 @@ import {
   redact,
 } from "@/lib/utils";
 
-import { Order } from "@/config/menus";
-import { cancelOrder, updateOrder } from "./coffee-helper";
+import { fetchOrder, getEvent } from "../mixologist-helper";
 import {
   getEventRegistrationMessage,
-  getHelpMessage,
-  getOrderCreatedMessage,
   getReadyToOrderMessage,
-  getWrongOrderMessage,
 } from "@/scripts/fetchContentTemplates";
 import {
-  getChangedOrderMessage,
   getDataPolicy,
   getErrorDuringEmailVerificationMessage,
-  getExistingOrderMessage,
-  getForgotAttendeeMessage,
   getInvalidEmailMessage,
   getInvalidVerificationCodeMessage,
-  getMaxOrdersMessage,
   getModifiersMessage,
   getNoActiveEventsMessage,
   getNoMediaHandlerMessage,
-  getNoOpenOrderMessage,
-  getOopsMessage,
   getPausedEventMessage,
   getPromptForEmail,
-  getQueuePositionMessage,
   getSentEmailMessage,
   getWelcomeBackMessage,
   getWelcomeMessage,
 } from "@/lib/stringTemplates";
+import { headers } from "next/headers";
 
 const {
   SEGMENT_SPACE_ID = "",
@@ -69,11 +54,17 @@ const {
 } = process.env;
 const NEXT_PUBLIC_EVENTS_MAP = process.env.NEXT_PUBLIC_EVENTS_MAP || "",
   NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP =
-    process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP || "",
-  UNLIMTED_ORDERS = (process.env.UNLIMITED_ORDERS || "").split(",");
+    process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP || "";
 
 export async function POST(request: Request) {
-  const data = await request.formData();
+  const [data, headerList] = await Promise.all([request.formData(), headers()]);
+  const signature = headerList.get("X-Twilio-Signature") || "";
+  const isSignedCorrectly = await checkSignature(signature, request.url, data);
+
+  if (!isSignedCorrectly) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
   const conversationSid = data.get("ConversationSid") as string;
   const incomingMessageBody = data.get("Body") as string;
   const webHookType = data.get("EventType");
@@ -491,179 +482,21 @@ export async function POST(request: Request) {
     );
   }
 
-  if (incomingMessage.includes("forget me")) {
-    await Promise.all([
-      // cancel order
-      cancelOrder(event, lastOrder?.index, lastOrder?.data, conversationSid),
-      // remove the user from the active customers map
-      removeSyncMapItem(NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP, conversationSid),
-      addMessageToConversation(conversationSid, getForgotAttendeeMessage()),
-    ]);
-
-    sleep(500);
-    //remove conversation from the conversations service
-    await deleteConversation(conversationSid);
-
-    return new Response("Forgot attendee", { status: 200 });
-  } else if (incomingMessage.includes("queue")) {
-    const queuePosition = await getQueuePosition(
-      event.slug,
-      conversationRecord.lastOrderNumber,
-    );
-    const message =
-      conversationRecord.lastOrderNumber && !isNaN(queuePosition)
-        ? getQueuePositionMessage(queuePosition)
-        : getNoOpenOrderMessage();
-    addMessageToConversation(conversationSid, message);
-    return new Response(null, { status: 201 });
-  }
-
   if (event.state === EventState.CLOSED) {
     const message = getPausedEventMessage();
     addMessageToConversation(conversationSid, message);
     return new Response("Event Orders Paused", { status: 200 });
   }
 
-  if (incomingMessage.includes("help")) {
-    const { contentSid, contentVariables } = await getHelpMessage(event);
-    addMessageToConversation(conversationSid, "", contentSid, contentVariables);
+  await askAiAssistant(
+    event.assistantId,
+    incomingMessage,
+    author,
+    event.slug,
+    conversationSid,
+  );
 
-    if (event.selection.modifiers.length > 1) {
-      await sleep(1500);
-      const modifiersNote = getModifiersMessage(event.selection.modifiers);
-      addMessageToConversation(conversationSid, modifiersNote);
-    }
-
-    return new Response("", { status: 200 });
-  } else if (incomingMessage.includes("change")) {
-    if (lastOrder?.data?.status === "queued") {
-      const { orderItem, orderModifier } = await getOrderItemFromMessage(
-        event,
-        incomingMessageBody,
-      );
-      if (orderItem.shortTitle !== "") {
-        try {
-          updateOrder(event.slug, lastOrder.index, {
-            ...lastOrder.data,
-            item: orderItem,
-            ...(orderModifier.length >= 1 && { modifiers: orderModifier }),
-            originalText: incomingMessageBody,
-            status: "queued",
-          });
-
-          const message = getChangedOrderMessage(
-            lastOrder.index,
-            `${orderItem.shortTitle}${orderModifier.length > 1 ? ` with ${orderModifier}` : ""}`,
-          );
-          addMessageToConversation(conversationSid, message);
-          return new Response(null, { status: 201 });
-        } catch (error) {
-          const message = getOopsMessage(error);
-          addMessageToConversation(conversationSid, message);
-          return new Response(null, { status: 201 });
-        }
-      } else if (orderItem.shortTitle === "") {
-        const wrongOrderMessage = await getWrongOrderMessage(
-          incomingMessageBody,
-          event.selection.items,
-        );
-        addMessageToConversation(
-          conversationSid,
-          `I dont think I have that drink on the menu. Please try again with a drink I can order.`,
-          wrongOrderMessage.contentSid,
-          wrongOrderMessage.contentVariables,
-        );
-        return new Response(null, { status: 201 });
-      }
-    } else {
-      const message = getNoOpenOrderMessage();
-      addMessageToConversation(conversationSid, message);
-      return new Response(null, { status: 201 });
-    }
-  } else if (incomingMessage.includes("cancel")) {
-    await cancelOrder(
-      event,
-      lastOrder?.index,
-      lastOrder?.data,
-      conversationSid,
-    );
-
-    return new Response("", { status: 200 });
-  } else {
-    if (lastOrder?.data.status === "queued") {
-      const message = getExistingOrderMessage(
-        lastOrder.data.item.shortTitle,
-        lastOrder.index,
-      );
-      addMessageToConversation(conversationSid, message);
-      return new Response("", { status: 200 });
-    } else if (
-      conversationRecord?.orderCount > event.maxOrders &&
-      !UNLIMTED_ORDERS.includes(author.replace("whatsapp:", ""))
-    ) {
-      const message = getMaxOrdersMessage();
-      addMessageToConversation(conversationSid, message);
-      return new Response("", { status: 200 });
-    }
-
-    const { orderItem, orderModifier } = await getOrderItemFromMessage(
-      event,
-      incomingMessageBody,
-    );
-    const order: Order = {
-      key: conversationSid,
-      address,
-      item: orderItem,
-      ...(orderModifier.length >= 1 && { modifiers: orderModifier }),
-      originalText: incomingMessageBody,
-      status: "queued",
-    };
-    const orderCount = Number(conversationRecord?.orderCount) + 1;
-
-    //Step 3 Create Order
-    if (orderItem.title !== "") {
-      const orderNumber = await addOrder(event.slug, order);
-
-      const orderName = `${orderItem.shortTitle}${orderModifier.length > 1 ? ` with ${orderModifier}` : ""}`;
-      const orderCreatedMessage = await getOrderCreatedMessage(
-        orderName,
-        orderNumber,
-        event.selection.mode,
-      );
-      addMessageToConversation(
-        conversationSid,
-        undefined,
-        orderCreatedMessage.contentSid,
-        orderCreatedMessage.contentVariables,
-      );
-
-      order.orderNumber = orderNumber;
-      await updateSyncMapItem(
-        NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP,
-        conversationSid,
-        {
-          event: event.slug,
-          lastOrderNumber: orderNumber,
-          orderCount,
-          stage: orderCount === 1 ? Stages.FIRST_ORDER : Stages.REPEAT_CUSTOMER,
-        },
-        TwoWeeksInSeconds,
-      );
-    } else {
-      const wrongOrderMessage = await getWrongOrderMessage(
-        incomingMessageBody,
-        event.selection.items,
-      );
-      addMessageToConversation(
-        conversationSid,
-        `I don't think I have that drink on the menu. Please try again with a drink I can order.`,
-        wrongOrderMessage.contentSid,
-        wrongOrderMessage.contentVariables,
-      );
-    }
-
-    return new Response("", { status: 200 });
-  }
+  return new Response("Received", { status: 200 });
 }
 
 export async function GET() {
@@ -673,52 +506,9 @@ export async function GET() {
   );
 }
 
-async function getEvent(event: string) {
-  const assignedEvent = await findSyncMapItems(NEXT_PUBLIC_EVENTS_MAP, {
-    slug: event,
-  });
-  if (
-    assignedEvent[0]?.data?.state === EventState.OPEN ||
-    assignedEvent[0]?.data?.state === EventState.CLOSED
-  ) {
-    //If assigned event is active
-    return assignedEvent[0].data;
-  } else {
-    return null;
-  }
-}
-
 async function getActiveEvents() {
   const activeEvents = await findSyncMapItems(NEXT_PUBLIC_EVENTS_MAP, {
     state: EventState.OPEN,
   });
   return activeEvents;
-}
-
-async function addOrder(event: string, order: Order) {
-  const { index } = await pushToSyncList(event, order);
-  return index;
-}
-
-async function fetchOrder(event: string, index: number) {
-  try {
-    const item = await fetchSyncListItem(event, index);
-    return item;
-  } catch (err: any) {
-    if (err.status === 404) {
-      return null;
-    }
-    return null;
-  }
-}
-
-async function getQueuePosition(event: string, orderNumber: number) {
-  const firstPageOrders = await fetchSyncListItems(event);
-  const openOrders = firstPageOrders.filter(
-    (item) => item.data.status === "queued",
-  );
-  const queuePosition = openOrders.findIndex(
-    (item) => item.index === orderNumber,
-  );
-  return queuePosition >= 0 ? queuePosition : NaN;
 }

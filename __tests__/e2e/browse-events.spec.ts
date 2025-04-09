@@ -246,9 +246,16 @@ test.describe("[admin]", () => {
     await expect(page.getByText("Smoothie")).toBeVisible();
     await expect(page.getByText("Barista")).toBeVisible();
     await expect(
-      page.getByRole("heading", { name: "Colombia (Red like Twilio!)" }),
+      page.getByRole("heading", { name: "Coffee" }),
     ).toBeVisible();
-    await expect(page.getByText("Strawberry, Pineapple, Apple")).toBeVisible();
+
+    await expect(
+      page.getByRole("heading", { name: "Flat White" }),
+    ).toBeVisible();
+
+    await expect(page.getByText("Oat Milk")).toBeVisible();
+    await expect(page.getByText("Almond Milk")).toBeVisible();
+    await expect(page.getByText("Brewed coffee, black")).toBeVisible();
 
     const createButton = page
       .getByRole("button", { name: "Create Event" })

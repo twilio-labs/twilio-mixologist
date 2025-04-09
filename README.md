@@ -74,6 +74,7 @@ The current [Twilio Channels] are:
 
    # Twilio related values
    TWILIO_ACCOUNT_SID=
+   TWILIO_AUTH_TOKEN=
    TWILIO_API_KEY=
    TWILIO_API_SECRET=
 
@@ -99,7 +100,7 @@ The current [Twilio Channels] are:
    2. Set your default Mesaging Service and Conversation Services to the Services created by the setup script
    3. Head back to your Messaging Service, navigate to 'Integration' and select 'Autocreate a Conversation'
       P.S. In the future this setup step will no longer be necessary
-7. Run the script to write the base config for the application. You can re-run this command whether you edit the configuration such as the menu ([`menus.ts`](./src/config/menus.ts)) or the spelling map ([`spellingMap.ts`](./src/config/spellingMap.ts)). It will also pick up changes you're done to the sender pool of the messaging service.
+7. Run the script to write the base config for the application. You can re-run this command when you edit the menu ([`menus.ts`](./src/config/menus.ts)). It will also pick up changes you're done to the sender pool of the messaging service.
 
    ```bash
    pnpm run update-config

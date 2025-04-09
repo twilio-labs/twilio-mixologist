@@ -9,7 +9,7 @@ export async function register() {
       getConversationService,
     } = await import("@/lib/twilio");
     const { updateConfig } = await import("@/scripts/updateConfig");
-    const { createTwilioRes } = await import("@/scripts/createTwilioRes");
+    await import("@/scripts/createTwilioRes"); // this automatically runs const createTwilioRes()
 
     await checkIfAllEnvVarsAreSet();
 
@@ -20,7 +20,6 @@ export async function register() {
       await getSyncService();
       await getConversationService();
       await updateConfig();
-      await createTwilioRes();
     } catch (e: any) {
       throw new Error(e.message);
     }

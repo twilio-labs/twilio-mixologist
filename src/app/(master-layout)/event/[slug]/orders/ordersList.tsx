@@ -110,7 +110,7 @@ export default function OrdersList({
         >
           <p className="text-2xl my-auto">#{index}</p>
           <div className="my-auto">
-            <h3 className="font-semibold">{`${data.item.shortTitle} ${data?.modifiers ? ` with ${data.modifiers}` : ""}`}</h3>
+            <h3 className="font-semibold">{`${data.item} ${data?.modifiers ? ` with ${data.modifiers}` : ""}`}</h3>
             <p className="text-sm text-gray-500 dark:text-gray-400">
               Original Message - "{data?.originalText}"
             </p>
@@ -136,7 +136,7 @@ export default function OrdersList({
                       ) => {
                         ev.target.disabled = true;
                         const message = await getOrderReadyReminderMessage(
-                          data.item.shortTitle,
+                          data.item,
                           index,
                           event.pickupLocation,
                         );
@@ -170,7 +170,7 @@ export default function OrdersList({
 
                         if (!data?.manual) {
                           const message = await getOrderReadyMessage(
-                            data.item.shortTitle,
+                            data.item,
                             index,
                             event.pickupLocation,
                           );
@@ -204,7 +204,7 @@ export default function OrdersList({
                       ) => {
                         ev.target.disabled = true;
                         updateOrder(index, { status: "delivered" });
-                        updateOrderTTL(index, 5 * 60);
+                        // updateOrderTTL(index, 5 * 60);
 
                         await updateEvent({
                           deliveredCount:
@@ -243,7 +243,7 @@ export default function OrdersList({
 
                           if (!data?.manual) {
                             const message = await getOrderCancelledMessage(
-                              data.item.shortTitle,
+                              data.item,
                               index,
                             );
                             addMessageToConversation(

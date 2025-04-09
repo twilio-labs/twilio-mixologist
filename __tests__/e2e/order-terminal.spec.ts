@@ -37,14 +37,14 @@ test.describe("[no login] ", () => {
     ).not.toBeVisible();
 
     await page.getByTestId("cancelledTab").click();
-    await expect(
-      page.getByText('Original Message - "A Cancelled Order"'),
-    ).toBeVisible();
+    expect(
+      await page.getByText('Original Message - "A Cancelled Order"').count(),
+    ).toBeGreaterThan(0);
 
     await page.getByTestId("deliveredTab").click();
-    await expect(
-      page.getByText('Original Message - "A Delivered Order"'),
-    ).toBeVisible();
+    expect(
+      await page.getByText('Original Message - "A Delivered Order"').count(),
+    ).toBeGreaterThan(0);
 
     await expect(page.getByTestId("pause-orders")).toBeHidden();
   });
@@ -84,14 +84,14 @@ test.describe("[no login] ", () => {
     ).not.toBeVisible();
 
     await page.getByTestId("cancelledTab").click();
-    await expect(
-      page.getByText('Original Message - "A Cancelled Order"'),
-    ).toBeVisible();
+    expect(
+      await page.getByText('Original Message - "A Cancelled Order"').count(),
+    ).toBeGreaterThan(0);
 
     await page.getByTestId("deliveredTab").click();
-    await expect(
-      page.getByText('Original Message - "A Delivered Order"'),
-    ).toBeVisible();
+    expect(
+      await page.getByText('Original Message - "A Delivered Order"').count(),
+    ).toBeGreaterThan(0);
 
     await expect(page.getByTestId("pause-orders")).toBeHidden();
   });

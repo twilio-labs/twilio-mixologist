@@ -7,7 +7,6 @@ import {
 import nextConfig from "../../next.config";
 import {
   getEventRegistrationTemplate,
-  getHelpPrivacyTemplate,
   getOrderCancelledTemplate,
   getOrderConfirmationTemplate,
   getOrderReadyTemplate,
@@ -16,7 +15,7 @@ import {
   getReadyToOrderLimitlessWithoutEmailValidationTemplate,
   getReadyToOrderTemplate,
   getReadyToOrderWithoutEmailValidationTemplate,
-  getWrongOrderTemplate,
+  getShowHelpTemplate,
   WhatsAppTemplate,
 } from "./buildContentTemplates";
 
@@ -75,22 +74,14 @@ async function createWhatsAppTemplates() {
   try {
     for (let numOptions = 1; numOptions <= MAX_ITEMS_ON_MENU; numOptions++) {
       // 1. Check the help-privacy-templates
-      templateName = `${CONTENT_PREFIX}help_privacy_${numOptions}`;
+      templateName = `${CONTENT_PREFIX}show_menu_${numOptions}`;
       checkIfExistsOrCreateTemplate(
         templateName,
-        getHelpPrivacyTemplate(numOptions, templateName),
+        getShowHelpTemplate(numOptions, templateName),
         templates,
       );
 
-      // 2. Check the wrong_order-templates
-      templateName = `${CONTENT_PREFIX}wrong_order_${numOptions}`;
-      checkIfExistsOrCreateTemplate(
-        templateName,
-        getWrongOrderTemplate(numOptions, templateName),
-        templates,
-      );
-
-      // 3. Check the post_registration-templates
+      // 2. Check the post_registration-templates
       templateName = `${CONTENT_PREFIX}ready_to_order_${numOptions}`;
       checkIfExistsOrCreateTemplate(
         templateName,
@@ -98,7 +89,7 @@ async function createWhatsAppTemplates() {
         templates,
       );
 
-      // 4. Check the post_registration_without_email-templates
+      // 3. Check the post_registration_without_email-templates
       templateName = `${CONTENT_PREFIX}ready_to_order_without_email_${numOptions}`;
       checkIfExistsOrCreateTemplate(
         templateName,
@@ -106,7 +97,7 @@ async function createWhatsAppTemplates() {
         templates,
       );
 
-      // 5. Check the post_registration_limitless-templates
+      // 4. Check the post_registration_limitless-templates
       templateName = `${CONTENT_PREFIX}ready_to_order_limitless_${numOptions}`;
       checkIfExistsOrCreateTemplate(
         templateName,
@@ -114,7 +105,7 @@ async function createWhatsAppTemplates() {
         templates,
       );
 
-      // 6. Check the post_registration_limitless_without_email-templates
+      // 5. Check the post_registration_limitless_without_email-templates
       templateName = `${CONTENT_PREFIX}ready_to_order_limitless_without_email_${numOptions}`;
       checkIfExistsOrCreateTemplate(
         templateName,
@@ -139,21 +130,7 @@ async function createWhatsAppTemplates() {
       );
     }
 
-    // 7. Order confirmation templates
-    templateName = `${CONTENT_PREFIX}order_confirmation_barista`;
-    checkIfExistsOrCreateTemplate(
-      templateName,
-      getOrderConfirmationTemplate(templateName, false),
-      templates,
-    );
-    templateName = `${CONTENT_PREFIX}order_confirmation_smoothie`;
-    checkIfExistsOrCreateTemplate(
-      templateName,
-      getOrderConfirmationTemplate(templateName, true),
-      templates,
-    );
-
-    // 8. Order cancelled templates
+    // 7. Order cancelled templates
     templateName = `${CONTENT_PREFIX}order_cancelled`;
     checkIfExistsOrCreateTemplate(
       templateName,
@@ -161,7 +138,7 @@ async function createWhatsAppTemplates() {
       templates,
     );
 
-    // 9. Order ready templates
+    // 8. Order ready templates
     templateName = `${CONTENT_PREFIX}order_ready`;
     checkIfExistsOrCreateTemplate(
       templateName,
@@ -169,7 +146,7 @@ async function createWhatsAppTemplates() {
       templates,
     );
 
-    // 10. Order reminder templates
+    // 9. Order reminder templates
     templateName = `${CONTENT_PREFIX}order_reminder`;
     checkIfExistsOrCreateTemplate(
       templateName,

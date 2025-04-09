@@ -8,6 +8,7 @@ export enum modes {
   barista = "barista",
   smoothie = "smoothie",
   cocktail = "cocktail",
+  tea = "tea",
 }
 
 export type Menus = {
@@ -20,7 +21,7 @@ export type Menus = {
 export interface Order {
   key: string;
   manual?: boolean;
-  item: MenuItem;
+  item: string;
   modifiers?: string;
   address?: string;
   orderNumber?: number;
@@ -138,20 +139,62 @@ export default {
         title: "Chai",
         description: "Spiced tea with milk",
       },
+
       {
-        shortTitle: "Chocolate",
-        title: "Hot Chocolate",
-        description: "Hot cocoa",
+        shortTitle: "Café Colada",
+        title: "Café Colada",
+        description: "Hand brewed Coffee + Turbinado Sugar",
+      },
+      {
+        shortTitle: "Cortadito",
+        title: "Cortadito",
+        description: "Espresso + Steamed Milk + Blended Sugar",
+      },
+      {
+        shortTitle: "Cortado",
+        title: "Cortado",
+        description: "One Shot of Espresso + Dash Steamed Milk",
+      },
+      {
+        shortTitle: "Caramelo Cortado",
+        title: "Caramelo Cortado",
+        description: "Espresso + Sweet Milk + Caramel",
+      },
+      {
+        shortTitle: "Café Con Leche",
+        title: "Café Con Leche",
+        description: "Espresso + Steamed Milk + Sugar Blended.",
+      },
+      {
+        shortTitle: "Café Dulce",
+        title: "Café Dulce",
+        description: "Espresso + Sweet Condensed Milk",
+      },
+      {
+        shortTitle: "Café Coco",
+        title: "Café Coco",
+        description: "Espresso + Coconut milk",
+      },
+      {
+        shortTitle: "Con Sabor",
+        title: "Con Sabor",
+        description: "Choice of Flavored Syrup Infused Into Any of The Above",
+      },
+      {
+        shortTitle: "Espresso Martini",
+        description: "Vodka, Espresso, Coffee Liqueur, Sugar Syrup",
+        title: "Espresso Martini",
+      },
+      {
+        shortTitle: "Matcha Latte",
+        title: "Matcha Latte",
+        description:
+          "Finely ground Japanese green tea whisked into steamed milk",
       },
       {
         shortTitle: "Chai Latte",
         title: "Chai Latte",
         description: "Spiced Tea with steamed Milk"
-      },
-      {
-        shortTitle: "Matcha Latte",
-        title: "Matcha Latte",
-        description: "Finely ground Japanese green tea whisked into steamed milk"
       }
     ],
     modifiers: [
@@ -194,6 +237,25 @@ export default {
         shortTitle: "Lambada",
         description:
           "Orange, Mango, Banana, Passion Fruit, Flaxseed, Coconut Oil 🍊🥭🍌🥥",
+      },
+    ],
+  },
+  tea: {
+    items: [
+      {
+        title: "Mango Black Tea with Boba",
+        shortTitle: "Mango Black Tea",
+        description: "Mango, Cane Sugar, Assam Black Tea, Boba 🥭🧋",
+      },
+      {
+        title: "Lychee Peachy Green Tea with Lychee Jelly",
+        shortTitle: "Lychee Peachy Tea",
+        description: "Lychee, Peach, Jasmine Green Tea, Lychee Jelly 🍑🍵",
+      },
+      {
+        title: "Caramel Milk Tea",
+        shortTitle: "Caramel Milk Tea",
+        description: "Caramel, Oatmilk, Assam Black Tea 🍯🥛",
       },
     ],
   },
