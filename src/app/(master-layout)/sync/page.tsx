@@ -163,13 +163,13 @@ function SyncDemoPage() {
           {docInitialized ? (
             <p>{doc?.name}</p>
           ) : (
-            <div className="w-2/3 h-6 bg-gray-300 rounded animate-pulse"></div>
+            <div className="w-2/3 h-6 bg-gray-300 rounded-sm animate-pulse"></div>
           )}
           <Label htmlFor="name">Rating</Label>
           {docInitialized ? (
             <p>{doc?.rating}</p>
           ) : (
-            <div className="w-2/3 h-6 bg-gray-300 rounded animate-pulse"></div>
+            <div className="w-2/3 h-6 bg-gray-300 rounded-sm animate-pulse"></div>
           )}
 
           <h1 className="text-xl m-2">Map</h1>
@@ -191,7 +191,7 @@ function SyncDemoPage() {
               </li>
             </ul>
           ) : (
-            <div className="w-2/3 h-10 bg-gray-300 rounded animate-pulse"></div>
+            <div className="w-2/3 h-10 bg-gray-300 rounded-sm animate-pulse"></div>
           )}
           <h1 className="text-xl m-2">List</h1>
           {listInitialized ? (
@@ -205,7 +205,7 @@ function SyncDemoPage() {
                 ))}
             </ul>
           ) : (
-            <div className="w-2/3 h-10 bg-gray-300 rounded animate-pulse"></div>
+            <div className="w-2/3 h-10 bg-gray-300 rounded-sm animate-pulse"></div>
           )}
         </CardContent>
       </Card>

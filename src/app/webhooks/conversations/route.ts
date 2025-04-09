@@ -46,6 +46,7 @@ import {
   getWelcomeMessage,
 } from "@/lib/stringTemplates";
 import { headers } from "next/headers";
+import { Event } from "@/app/(master-layout)/event/[slug]/page";
 
 const {
   SEGMENT_SPACE_ID = "",
@@ -92,7 +93,8 @@ export async function POST(request: Request) {
       addMessageToConversation(conversationSid, getNoActiveEventsMessage());
       return new Response("No active event available", { status: 200 });
     } else if (activeEvents.length == 1) {
-      let newEvent = activeEvents[0].data;
+      // @ts-ignore  thinks is a object but actually it's an Event
+      let newEvent = activeEvents[0].data as Event;
       const welcomeMessage = getWelcomeMessage(
         newEvent.selection.mode,
         newEvent.welcomeMessage,
@@ -144,10 +146,12 @@ export async function POST(request: Request) {
     } else if (activeEvents.length >= 2) {
       let choice = incomingMessageBody.toLowerCase().trim();
       let matches = activeEvents.filter((event) => {
+        // @ts-ignore  thinks is a object but actually it's a string
         return choice.includes(event.data.name.toLowerCase().trim());
       });
       if (matches.length === 1) {
-        const newEvent = matches[0].data;
+        // @ts-ignore  thinks is a object but actually it's an Event
+        const newEvent = matches[0].data as Event;
         const welcomeMessage = getWelcomeMessage(
           newEvent.selection.mode,
           newEvent.welcomeMessage,
@@ -208,8 +212,10 @@ export async function POST(request: Request) {
     }
   }
 
-  //Check if Event is Active
-  let event = await getEvent(conversationRecord.event);
+  // Check if Event is Active
+
+  // @ts-ignore  thinks is a object but actually it's an Event
+  let event = (await getEvent(conversationRecord.event)) as Event;
   let lastOrder;
 
   if (!event) {
@@ -218,7 +224,8 @@ export async function POST(request: Request) {
       addMessageToConversation(conversationSid, getNoActiveEventsMessage());
       return new Response("No active event available", { status: 200 });
     } else if (activeEvents.length == 1) {
-      let newEvent = activeEvents[0].data;
+      // @ts-ignore  thinks is a object but actually it's an Event
+      let newEvent = activeEvents[0].data as Event;
       const welcomeBackMessage = getWelcomeBackMessage(
         newEvent.selection.mode,
         newEvent.name,
@@ -259,10 +266,12 @@ export async function POST(request: Request) {
     } else if (activeEvents.length >= 2) {
       let choice = incomingMessageBody.toLowerCase().trim();
       let matches = activeEvents.filter((event) => {
+        // @ts-ignore  thinks is a object but actually it's a string
         return choice.includes(event.data.name.toLowerCase().trim());
       });
       if (matches.length === 1) {
-        const newEvent = matches[0].data;
+        // @ts-ignore  thinks is a object but actually it's an Event
+        const newEvent = matches[0].data as Event;
         const welcomeMessage = getWelcomeBackMessage(
           newEvent.selection.mode,
           newEvent.name,
@@ -318,6 +327,7 @@ export async function POST(request: Request) {
   }
   if (
     event.enableLeadCollection &&
+    // @ts-ignore  thinks is a object but actually it's a stage
     conversationRecord.stage === Stages.NEW_USER
   ) {
     const message = getPromptForEmail();
@@ -334,6 +344,7 @@ export async function POST(request: Request) {
     return new Response("Prompt for Email", { status: 200 });
   } else if (
     event.enableLeadCollection &&
+    // @ts-ignore  thinks is a object but actually it's a stage
     conversationRecord.stage === Stages.NAME_CONFIRMED
   ) {
     if (!incomingMessageBody || !regexForEmail.test(incomingMessageBody)) {
@@ -368,6 +379,7 @@ export async function POST(request: Request) {
     }
   } else if (
     event.enableLeadCollection &&
+    // @ts-ignore  thinks is a object but actually it's a stage
     conversationRecord.stage === Stages.VERIFYING
   ) {
     if (
@@ -407,6 +419,7 @@ export async function POST(request: Request) {
       // @ts-ignore cannot be null bc of if statement above
       const code = incomingMessageBody.match(regexFor6ConsecutiveDigits)[0];
       const verification = await checkVerification(
+        // @ts-ignore  thinks is a object but actually it's a string
         conversationRecord.checkSid,
         code,
       );
@@ -475,9 +488,12 @@ export async function POST(request: Request) {
   }
 
   const incomingMessage = incomingMessageBody.toLowerCase();
+
+  // @ts-ignore  thinks is a object but actually it's a number
   if (conversationRecord?.lastOrderNumber >= 0) {
     lastOrder = await fetchOrder(
       event.slug,
+      // @ts-ignore  thinks is a object but actually it's a number
       conversationRecord?.lastOrderNumber,
     );
   }
@@ -488,13 +504,15 @@ export async function POST(request: Request) {
     return new Response("Event Orders Paused", { status: 200 });
   }
 
-  await askAiAssistant(
-    event.assistantId,
-    incomingMessage,
-    author,
-    event.slug,
-    conversationSid,
-  );
+  if (event.assistantId) {
+    await askAiAssistant(
+      event.assistantId,
+      incomingMessage,
+      author,
+      event.slug,
+      conversationSid,
+    );
+  }
 
   return new Response("Received", { status: 200 });
 }

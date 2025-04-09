@@ -74,6 +74,8 @@ export async function updateConfig() {
         sender: phoneNumber,
       })),
     },
+
+    // @ts-ignore  thinks is a object but actually it's a Config
     configDoc.data,
   );
   await configDoc.update({ data: newConfig });

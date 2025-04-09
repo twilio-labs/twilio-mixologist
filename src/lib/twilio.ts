@@ -184,7 +184,8 @@ export async function updateAiAssistant(aiAssistantID: string, event: Event) {
     .fetch();
 
   const oldToolsToRemove = assistant.tools.filter(
-    (tool) => tool.name === "Submit Order" || tool.name === "Edit / Cancel Order", //TODO consider using unique tool names per event
+    (tool) =>
+      tool.name === "Submit Order" || tool.name === "Edit / Cancel Order", //TODO consider using unique tool names per event
   );
   if (oldToolsToRemove?.length > 0) {
     await Promise.all(

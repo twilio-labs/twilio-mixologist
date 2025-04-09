@@ -22,9 +22,10 @@ export function getSubmitOrdersTool(
   modifiers?: string[],
 ) {
   const listOfItems = items.map((item) => `'${item.title}'`).join(" | ");
-  const listOfModfiers = modifiers && modifiers.length > 0
-    ? `modifiers: (${modifiers.map((modifier) => `'${modifier}'`).join(" | ")})[];`
-    : "";
+  const listOfModfiers =
+    modifiers && modifiers.length > 0
+      ? `modifiers: (${modifiers.map((modifier) => `'${modifier}'`).join(" | ")})[];`
+      : "";
   return {
     name: "Submit Order", //TODO consider using unique tool names per event
     description: `Use this to submit sanitized orders for a barista. A user can only order one item at a time. So it doesn't make sense to send multiple items in one message. The user can only submit another order after the previous one has been prepared or canceled.
@@ -48,9 +49,10 @@ export function getEditOrderTool(
   modifiers?: string[],
 ) {
   const listOfItems = items.map((item) => `'${item.title}'`).join(" | ");
-  const listOfModfiers = modifiers && modifiers.length > 0
-    ? `modifiers: (${modifiers.map((modifier) => `'${modifier}'`).join(" | ")})[];`
-    : "";
+  const listOfModfiers =
+    modifiers && modifiers.length > 0
+      ? `modifiers: (${modifiers.map((modifier) => `'${modifier}'`).join(" | ")})[];`
+      : "";
   return {
     name: "Edit / Cancel Order", //TODO consider using unique tool names per event
     description: `Use this to edit sanitized orders for a barista. 

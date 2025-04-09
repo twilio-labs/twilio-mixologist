@@ -64,7 +64,7 @@ export default function OrdersInterface({
 
   if (!mapInitialized || !internalEvent || !orderListInitialized) {
     return (
-      <div className="w-2/3 mx-auto h-10 bg-gray-300 rounded animate-pulse"></div>
+      <div className="w-2/3 mx-auto h-10 bg-gray-300 rounded-sm animate-pulse"></div>
     );
   }
 

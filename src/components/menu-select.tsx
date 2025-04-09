@@ -51,30 +51,28 @@ export function MenuSelect({
   return (
     <>
       <ul className="flex mb-2 flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200  dark:text-gray-400">
-        {modes
-          .sort(sortAlphabetically)
-          .map(function (mode, idx) {
-            return (
-              <li
-                key={mode}
-                onClick={() => {
-                  onSelectionChange({
-                    items: [],
-                    modifiers: [],
-                    mode,
-                  });
-                }}
-                className={`${
-                  (!selection.mode && idx === 0) || // noSelectionAndFirstItem
-                  (selection.mode && mode === selection.mode) // selectionAndSelectedItem
-                    ? "active text-slate-800 bg-slate-200"
-                    : ""
-                } me-2 inline-block p-4 rounded-t-lg cursor-pointer hover:bg-slate-300 hover:text-white-300`}
-              >
-                {mode.substring(0, 1).toUpperCase() + mode.substring(1)}
-              </li>
-            );
-          })}
+        {modes.sort(sortAlphabetically).map(function (mode, idx) {
+          return (
+            <li
+              key={mode}
+              onClick={() => {
+                onSelectionChange({
+                  items: [],
+                  modifiers: [],
+                  mode,
+                });
+              }}
+              className={`${
+                (!selection.mode && idx === 0) || // noSelectionAndFirstItem
+                (selection.mode && mode === selection.mode) // selectionAndSelectedItem
+                  ? "active text-slate-800 bg-slate-200"
+                  : ""
+              } me-2 inline-block p-4 rounded-t-lg cursor-pointer hover:bg-slate-300 hover:text-white-300`}
+            >
+              {mode.substring(0, 1).toUpperCase() + mode.substring(1)}
+            </li>
+          );
+        })}
       </ul>
       <div className="space-y-2 mb-2 border-b border-gray-200 ">
         {selectedMenu.items.map((menuItem) => (

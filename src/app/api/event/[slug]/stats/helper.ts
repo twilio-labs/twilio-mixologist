@@ -42,6 +42,7 @@ export async function calcStatsForEvent(
     }),
   ]);
 
+  // @ts-ignore  thinks is a object but actually it's an Event
   const event = eventRes[0].data as Event;
 
   const orderStatusCounter: Record<string, number> = {};

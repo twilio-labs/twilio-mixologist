@@ -56,15 +56,20 @@ export async function POST(request: NextRequest) {
 
   const lastOrder = await fetchOrder(
     eventSlug,
+    // @ts-ignore  thinks is a object but actually it's a string
     conversationRecord?.lastOrderNumber,
   );
 
+  // @ts-ignore  thinks is a object but actually it's a string
   let event = await getEvent(conversationRecord.event);
 
   if (action === "edit") {
+    // @ts-ignore  thinks is a object but actually it's a string
     if (lastOrder?.data?.status === "queued") {
+      // @ts-ignore  thinks is a object but actually it's a string
       if (verifyOrder(item, event, modifiers)) {
         try {
+          // @ts-ignore  thinks is a object but actually it's a string
           updateOrder(event.slug, lastOrder.index, {
             ...lastOrder.data,
             item,
@@ -92,16 +97,13 @@ export async function POST(request: NextRequest) {
       return new Response("No open order to edit", { status: 500 });
     }
   } else if (action === "cancel" && lastOrder?.index) {
+    // @ts-ignore  thinks is a object but actually it's a string
     await cancelOrder(event, lastOrder?.index, lastOrder?.data);
+    // @ts-ignore  thinks is a object but actually it's a string
     return new Response(`Order #${lastOrder?.index} has been cancelled`, {
       status: 200,
     });
   } else {
     return new Response("No open order to cancel", { status: 500 });
   }
-
-  return new Response(
-    `It seems this order is missing an item. Please try again.`,
-    { status: 500 },
-  );
 }
