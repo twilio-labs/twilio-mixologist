@@ -42,7 +42,7 @@
     "@radix-ui/react-tooltip": "^1.1.6",
     "@radix-ui/themes": "^3.1.6",
     "@twilio-alpha/assistants-react": "^0.0.1",
-    "axios": "^1.7.9",
+    "axios": "^1.8.2",
     "bufferutil": "^4.0.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
