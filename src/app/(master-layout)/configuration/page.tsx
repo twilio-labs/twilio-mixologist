@@ -124,26 +124,6 @@ function ConfigPage() {
           )}
         </div>
       </section>
-      <section>
-        <h2 className="text-xl font-bold">Spelling Map</h2>
-        <div className="grid gap-4 mt-4 ml-10">
-          {configInitialized && config?.spellingMistakes ? (
-            Object.keys(config.spellingMistakes).map((typo, key) => {
-              return (
-                <div key={key} className="flex items-center gap-4">
-                  <span className="line-through text-gray-500 dark:text-gray-400">
-                    {typo}
-                  </span>
-                  <ArrowRightIcon className="h-6 w-6" />
-                  <span>{config.spellingMistakes[typo]}</span>
-                </div>
-              );
-            })
-          ) : (
-            <div className="w-2/3 h-10  bg-gray-300 rounded animate-pulse"></div>
-          )}
-        </div>
-      </section>
     </main>
   );
 }

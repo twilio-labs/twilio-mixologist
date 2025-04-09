@@ -6,12 +6,10 @@ import {
   createSyncMapIfNotExists,
 } from "@/lib/twilio";
 
-import spellingMistakes from "@/config/spellingMap";
 import menus, { Menus } from "@/config/menus";
 
 export interface Configuration {
   menus: Menus;
-  spellingMistakes: Record<string, string>;
   possibleSenders: PossibleSender[];
 }
 
@@ -70,7 +68,6 @@ export async function updateConfig() {
   const newConfig = mergeConfig(
     {
       menus,
-      spellingMistakes,
       possibleSenders: possibleSenders.map((phoneNumber) => ({
         whatsappChannel: null,
         smsChannel: true,

@@ -34,12 +34,5 @@ test("should be navigable from home [admin]", async ({ page, context }) => {
     page.locator("section").filter({ hasText: "Menus" }).locator("div").nth(1),
   ).toBeVisible();
 
-  // shows placeholder for spelling map
-  await expect(
-    page
-      .locator("section")
-      .filter({ hasText: "Spelling Map" })
-      .locator("div")
-      .nth(1),
-  ).toBeVisible();
+
 });

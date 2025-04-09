@@ -5,7 +5,6 @@ describe("Test if mergeConfig", () => {
   test("correctly merges distinct senders from new and old configurations", () => {
     const oldConfig: Configuration = {
       menus: {},
-      spellingMistakes: {},
       possibleSenders: [
         { sender: "oldSender1", whatsappChannel: true, smsChannel: false },
         { sender: "oldSender2", whatsappChannel: false, smsChannel: true },
@@ -14,7 +13,6 @@ describe("Test if mergeConfig", () => {
 
     const newConfig: Configuration = {
       menus: {},
-      spellingMistakes: {},
       possibleSenders: [
         { sender: "newSender1", whatsappChannel: null, smsChannel: false },
       ],
@@ -24,7 +22,6 @@ describe("Test if mergeConfig", () => {
 
     expect(result).toEqual({
       menus: {},
-      spellingMistakes: {},
       possibleSenders: [
         { sender: "oldSender1", whatsappChannel: true, smsChannel: false },
         { sender: "oldSender2", whatsappChannel: false, smsChannel: true },
@@ -36,7 +33,6 @@ describe("Test if mergeConfig", () => {
   test("correctly merges overlapping senders from new and old configurations and no conflict", () => {
     const oldConfig: Configuration = {
       menus: {},
-      spellingMistakes: {},
       possibleSenders: [
         { sender: "oldSender1", whatsappChannel: true, smsChannel: false },
         { sender: "oldSender2", whatsappChannel: false, smsChannel: true },
@@ -45,7 +41,6 @@ describe("Test if mergeConfig", () => {
 
     const newConfig: Configuration = {
       menus: {},
-      spellingMistakes: {},
       possibleSenders: [
         { sender: "newSender1", whatsappChannel: null, smsChannel: false },
         { sender: "oldSender2", whatsappChannel: null, smsChannel: true },
@@ -56,7 +51,6 @@ describe("Test if mergeConfig", () => {
 
     expect(result).toEqual({
       menus: {},
-      spellingMistakes: {},
       possibleSenders: [
         { sender: "oldSender1", whatsappChannel: true, smsChannel: false },
         { sender: "oldSender2", whatsappChannel: false, smsChannel: true },
@@ -68,7 +62,6 @@ describe("Test if mergeConfig", () => {
   test("correctly merges overlapping senders and keeps turned on flag for WhatsApp", () => {
     const oldConfig: Configuration = {
       menus: {},
-      spellingMistakes: {},
       possibleSenders: [
         { sender: "oldSender1", whatsappChannel: true, smsChannel: false },
         { sender: "oldSender2", whatsappChannel: true, smsChannel: true },
@@ -77,7 +70,6 @@ describe("Test if mergeConfig", () => {
 
     const newConfig: Configuration = {
       menus: {},
-      spellingMistakes: {},
       possibleSenders: [
         { sender: "oldSender2", whatsappChannel: null, smsChannel: true },
       ],
@@ -87,7 +79,6 @@ describe("Test if mergeConfig", () => {
 
     expect(result).toEqual({
       menus: {},
-      spellingMistakes: {},
       possibleSenders: [
         { sender: "oldSender1", whatsappChannel: true, smsChannel: false },
         { sender: "oldSender2", whatsappChannel: true, smsChannel: true },
@@ -95,67 +86,8 @@ describe("Test if mergeConfig", () => {
     });
   });
 
-  test("correctly merges overlapping spelling mistakes from new and old configurations", () => {
-    const oldConfig: Configuration = {
-      menus: {},
-      spellingMistakes: {
-        oldMistake1: "oldCorrection1",
-        oldMistake2: "oldCorrection2",
-      },
-      possibleSenders: [],
-    };
 
-    const newConfig: Configuration = {
-      menus: {},
-      spellingMistakes: {
-        oldMistake1: "oldCorrection3",
-        oldMistake2: "oldCorrection4",
-      },
-      possibleSenders: [],
-    };
 
-    const result = mergeConfig(newConfig, oldConfig);
-
-    expect(result).toEqual({
-      menus: {},
-      spellingMistakes: {
-        oldMistake1: "oldCorrection3",
-        oldMistake2: "oldCorrection4",
-      },
-      possibleSenders: [],
-    });
-  });
-
-  test("correctly merges additive spelling mistakes from new and old configurations", () => {
-    const oldConfig: Configuration = {
-      menus: {},
-      spellingMistakes: {
-        oldMistake1: "oldCorrection1",
-        oldMistake2: "oldCorrection2",
-      },
-      possibleSenders: [],
-    };
-
-    const newConfig: Configuration = {
-      menus: {},
-      spellingMistakes: {
-        newMistake1: "newCorrection1",
-        oldMistake2: "newCorrection2",
-      },
-      possibleSenders: [],
-    };
-
-    const result = mergeConfig(newConfig, oldConfig);
-
-    expect(result).toEqual({
-      menus: {},
-      spellingMistakes: {
-        newMistake1: "newCorrection1",
-        oldMistake2: "newCorrection2",
-      },
-      possibleSenders: [],
-    });
-  });
 
   test("correctly merges additive menus from new and old configurations", () => {
     const oldConfig: Configuration = {
@@ -189,7 +121,6 @@ describe("Test if mergeConfig", () => {
           ],
         },
       },
-      spellingMistakes: {},
       possibleSenders: [],
     };
 
@@ -224,7 +155,6 @@ describe("Test if mergeConfig", () => {
           ],
         },
       },
-      spellingMistakes: {},
       possibleSenders: [],
     };
 
@@ -261,7 +191,6 @@ describe("Test if mergeConfig", () => {
           ],
         },
       },
-      spellingMistakes: {},
       possibleSenders: [],
     });
   });
@@ -298,7 +227,6 @@ describe("Test if mergeConfig", () => {
           ],
         },
       },
-      spellingMistakes: {},
       possibleSenders: [],
     };
 
@@ -353,7 +281,6 @@ describe("Test if mergeConfig", () => {
           ],
         },
       },
-      spellingMistakes: {},
       possibleSenders: [],
     };
 
@@ -410,7 +337,6 @@ describe("Test if mergeConfig", () => {
           ],
         },
       },
-      spellingMistakes: {},
       possibleSenders: [],
     });
   });
