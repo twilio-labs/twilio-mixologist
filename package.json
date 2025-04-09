@@ -53,7 +53,7 @@
     "google-libphonenumber": "^3.2.40",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.471.1",
-    "next": "15.1.4",
+    "next": "15.2.4",
     "prettier": "^3.4.2",
     "react": "^19.0.0",
     "react-day-picker": "^9.5.0",
