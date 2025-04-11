@@ -4,6 +4,7 @@ import {
   getPossibleSenders,
   createSyncDocIfNotExists,
   createSyncMapIfNotExists,
+  createSyncListIfNotExists,
 } from "@/lib/twilio";
 
 import menus, { Menus } from "@/config/menus";
@@ -23,6 +24,8 @@ const NEXT_PUBLIC_CONFIG_DOC = nextConfig?.env?.NEXT_PUBLIC_CONFIG_DOC;
 const NEXT_PUBLIC_EVENTS_MAP = nextConfig?.env?.NEXT_PUBLIC_EVENTS_MAP;
 const NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP =
   nextConfig?.env?.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP;
+const NEXT_PUBLIC_FEEDBACK_LIST =
+  nextConfig?.env?.NEXT_PUBLIC_FEEDBACK_LIST || "";
 
 export function mergeConfig(
   newConfig: Configuration,
@@ -64,6 +67,8 @@ export async function updateConfig() {
 
   await createSyncMapIfNotExists(NEXT_PUBLIC_EVENTS_MAP);
   await createSyncMapIfNotExists(NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP);
+
+  await createSyncListIfNotExists(NEXT_PUBLIC_FEEDBACK_LIST);
   const configDoc = await createSyncDocIfNotExists(NEXT_PUBLIC_CONFIG_DOC);
   const newConfig = mergeConfig(
     {

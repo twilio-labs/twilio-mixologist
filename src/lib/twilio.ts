@@ -13,6 +13,7 @@ import {
   WhatsAppTemplateConfig,
 } from "@/scripts/buildContentTemplates";
 import {
+  getAttemptedActionTool,
   getEditOrderTool,
   getFetchOrderInfoTool,
   getForgetUserTool,
@@ -153,6 +154,9 @@ export async function createAiAssistant(event: Event) {
 
     getForgetUserTool(
       `${PUBLIC_BASE_URL}/webhooks/ai-assistants/forgetUser?event=${event.slug}`,
+    ),
+    getAttemptedActionTool(
+      `${PUBLIC_BASE_URL}/webhooks/ai-assistants/enterFeedback?event=${event.slug}`,
     ),
   ];
 
