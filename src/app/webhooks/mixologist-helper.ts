@@ -143,15 +143,18 @@ export async function fetchOrder(event: string, index: number) {
 }
 
 export async function getEvent(event: string) {
-  const assignedEvent = await findSyncMapItems(NEXT_PUBLIC_EVENTS_MAP, {
+  const syncItems = await findSyncMapItems(NEXT_PUBLIC_EVENTS_MAP, {
     slug: event,
   });
+
+  // @ts-ignore thinks is a object but actually it's an event
+  const assignedEvent = syncItems[0]?.data as Event;
   if (
-    assignedEvent[0]?.data?.state === EventState.OPEN ||
-    assignedEvent[0]?.data?.state === EventState.CLOSED
+    assignedEvent?.state === EventState.OPEN ||
+    assignedEvent?.state === EventState.CLOSED
   ) {
-    //If assigned event is active
-    return assignedEvent[0].data;
+    // If assigned event is active
+    return assignedEvent;
   } else {
     return null;
   }

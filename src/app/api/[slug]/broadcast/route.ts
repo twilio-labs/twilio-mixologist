@@ -42,10 +42,12 @@ export async function POST(
     const listItems = await fetchSyncListItems(event);
     const queuedOrders = listItems.filter(
       (listItem) =>
+        // @ts-ignore  thinks is a object but actually it's a string
         listItem.data?.status === "queued" || listItem.data?.status === "ready",
     );
 
     queuedOrders.forEach((order) => {
+      // @ts-ignore  thinks is a object but actually it's a string
       addMessageToConversation(order.data.key, message);
     });
 

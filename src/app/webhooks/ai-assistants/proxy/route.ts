@@ -13,7 +13,10 @@ import {
   filterRealModifiers,
   getEvent,
 } from "../../mixologist-helper";
-import { getShowMenuMessage, getShowModifiersMessage } from "@/scripts/fetchContentTemplates";
+import {
+  getShowMenuMessage,
+  getShowModifiersMessage,
+} from "@/scripts/fetchContentTemplates";
 import { headers } from "next/headers";
 
 const NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP =
@@ -41,6 +44,7 @@ export async function POST(request: NextRequest) {
     conversationSid,
   );
 
+  // @ts-ignore  thinks is a object but actually it's a string
   let event = await getEvent(conversationRecord.event);
 
   if (!event) {
@@ -52,6 +56,8 @@ export async function POST(request: NextRequest) {
 
   const [intro, menuItems, outro] = filterRealMenuItems(
     response,
+
+    // @ts-ignore  thinks is a object but actually it's an array
     event.selection.items,
   );
 
@@ -69,6 +75,8 @@ export async function POST(request: NextRequest) {
 
   const [_, modifers, __] = filterRealModifiers(
     response,
+
+    // @ts-ignore  thinks is a object but actually it's a number
     event.selection.modifiers,
   );
 

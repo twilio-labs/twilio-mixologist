@@ -42,7 +42,8 @@ export async function DELETE(request: Request) {
     .syncMapItems(slug)
     .fetch();
 
-  if (event.data.assistantId) await deleteAiAssistant(event.data.assistantId); 
+  // @ts-ignore  thinks is a object but actually it's a string
+  if (event.data.assistantId) await deleteAiAssistant(event.data.assistantId);
 
   try {
     await syncService

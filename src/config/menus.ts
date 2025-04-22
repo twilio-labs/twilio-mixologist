@@ -194,8 +194,8 @@ export default {
       {
         shortTitle: "Chai Latte",
         title: "Chai Latte",
-        description: "Spiced Tea with steamed Milk"
-      }
+        description: "Spiced Tea with steamed Milk",
+      },
     ],
     modifiers: [
       "Milk",

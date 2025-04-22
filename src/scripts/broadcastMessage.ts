@@ -35,6 +35,7 @@ const throttle = throttledQueue(20, 1000); // 20 requests per second
 
   while (customerPage && customerPage.instances.length > 0) {
     customerPage.instances.map((item) => {
+      // @ts-ignore  thinks is a object but actually it's a string
       if (item.data.event === eventName) {
         counter++;
         throttle(() => {

@@ -4,7 +4,7 @@ import { ResponsiveFunnel } from "@nivo/funnel";
 
 export default function FunnelChart({ funnel }: { funnel: any }) {
   return (
-    <div className="w-full aspect-[2/1]">
+    <div className="w-full aspect-2/1">
       <ResponsiveFunnel
         data={funnel}
         margin={{ top: 40, right: 0, bottom: 40, left: 40 }}

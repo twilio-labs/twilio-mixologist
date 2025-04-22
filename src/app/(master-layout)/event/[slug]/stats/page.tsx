@@ -56,7 +56,7 @@ function StatsPage({ params }: { params: Promise<{ slug: string }> }) {
   return (
     <main className="p-4 md:p-6 lg:p-8 space-y-8">
       {!stats && (
-        <div className="w-2/3 mx-auto h-10 bg-gray-300 rounded animate-pulse"></div>
+        <div className="w-2/3 mx-auto h-10 bg-gray-300 rounded-sm animate-pulse"></div>
       )}
 
       <div className="w-full">
@@ -111,7 +111,7 @@ function StatsPage({ params }: { params: Promise<{ slug: string }> }) {
                   </CardContent>
                 ) : (
                   <CardContent>
-                    <div className="w-2/3 mx-auto h-10 bg-gray-300 rounded animate-pulse"></div>
+                    <div className="w-2/3 mx-auto h-10 bg-gray-300 rounded-sm animate-pulse"></div>
                   </CardContent>
                 )}
               </Card>
@@ -127,7 +127,7 @@ function StatsPage({ params }: { params: Promise<{ slug: string }> }) {
                   </CardContent>
                 ) : (
                   <CardContent>
-                    <div className="w-2/3 mx-auto h-10 bg-gray-300 rounded animate-pulse"></div>
+                    <div className="w-2/3 mx-auto h-10 bg-gray-300 rounded-sm animate-pulse"></div>
                   </CardContent>
                 )}
               </Card>
@@ -148,7 +148,7 @@ function StatsPage({ params }: { params: Promise<{ slug: string }> }) {
                   </CardContent>
                 ) : (
                   <CardContent>
-                    <div className="w-2/3 mx-auto h-10 bg-gray-300 rounded animate-pulse"></div>
+                    <div className="w-2/3 mx-auto h-10 bg-gray-300 rounded-sm animate-pulse"></div>
                   </CardContent>
                 )}
               </Card>
@@ -204,7 +204,7 @@ function StatsPage({ params }: { params: Promise<{ slug: string }> }) {
                 </CardContent>
               ) : (
                 <CardContent>
-                  <div className="w-2/3 mx-auto h-10 bg-gray-300 rounded animate-pulse"></div>
+                  <div className="w-2/3 mx-auto h-10 bg-gray-300 rounded-sm animate-pulse"></div>
                 </CardContent>
               )}
             </Card>
@@ -227,7 +227,7 @@ function StatsPage({ params }: { params: Promise<{ slug: string }> }) {
                 </CardContent>
               ) : (
                 <CardContent>
-                  <div className="w-2/3 mx-auto h-10 bg-gray-300 rounded animate-pulse"></div>
+                  <div className="w-2/3 mx-auto h-10 bg-gray-300 rounded-sm animate-pulse"></div>
                 </CardContent>
               )}
             </Card>

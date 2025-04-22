@@ -35,4 +35,3 @@ describe("getShowHelpTemplate", () => {
     values.forEach((value) => expect(value).toBe(""));
   });
 });
-

@@ -43,11 +43,14 @@ export async function POST(request: NextRequest) {
   );
 
   const [lastOrder, event] = await Promise.all([
+    // @ts-ignore  thinks is a object but actually it's a string
     fetchOrder(eventSlug, conversationRecord?.lastOrderNumber),
+    // @ts-ignore  thinks is a object but actually it's a string
     getEvent(conversationRecord.event),
   ]);
 
   if (lastOrder?.index) {
+    // @ts-ignore  thinks is a object but actually it's a string
     await cancelOrder(event, lastOrder?.index, lastOrder?.data);
   }
 
