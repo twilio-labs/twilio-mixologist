@@ -189,7 +189,7 @@ describe("Test if configuration is set up right", () => {
     expect(syncService.acl_enabled).toBe(true);
     const syncListsRes = await fetch(syncService.links.lists, authConfig);
     const syncLists = await syncListsRes.json();
-    const feedbackList = syncLists.sync_lists.find(
+    const feedbackList = syncLists.lists.find(
       (list: { unique_name: string }) =>
         list.unique_name === NEXT_PUBLIC_FEEDBACK_LIST,
     );
