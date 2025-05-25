@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Twilio Inc.
+// Copyright (c) 2025 Twilio Inc.
 
 import { Card } from "@/components/ui/card";
 import EventCard from "@/components/event-card";

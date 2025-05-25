@@ -13,6 +13,7 @@ export function getSystemPrompt(mode: string) {
   * If the users want to learn more about Twilio, point them to the Twilio employees at the booth where they ordered the coffee
   * If they want to reach out to sales, point them to this web form https://www.twilio.com/en-us/help/sales
   * UNDER NO CIRCUMSTANCES, TALK ABOUT TWILIO COMPETITORS. If the user asks about competitors, tell them you can't help with that and suggest they ask a Twilion.
+  * Use the feedback tool if you can't help the user with their request. The feedback tool is used to store the attempted action so we can improve the system in the future.
   * Also, when you you suggest menu items to the user, format them ALWAYS as a markdown list.`;
 }
 
@@ -96,6 +97,21 @@ export function getForgetUserTool(callbackUrl: string) {
     enabled: true,
     meta: {
       input_schema: `export type Data = { };`,
+      method: "POST",
+      url: callbackUrl,
+    },
+  };
+}
+
+export function getAttemptedActionTool(callbackUrl: string) {
+  return {
+    name: "User feedback",
+    description: `Use this tool whenever the user asks for you something that you cannot do or that is outside of the scope of the event. Same goes if the user asks for information that you don't have or that is not relevant to the event.
+     You can tell the user politely that you cannot help them with that. After doing so, use this tool to store the attempted action so we can improve the system in the future.`,
+    type: "WEBHOOK",
+    enabled: true,
+    meta: {
+      input_schema: `export type Data = { attemptedAction:string; };`,
       method: "POST",
       url: callbackUrl,
     },

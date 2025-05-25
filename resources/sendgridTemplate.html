@@ -1,0 +1,898 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:v="urn:schemas-microsoft-com:vml"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  lang="en"
+  xml:lang="en"
+>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta name="viewport" content="width=device-width" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="date=no" name="format-detection" />
+    <meta content="address=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <!-- FLEX Framework v3.6.3 by Digital Pi. -->
+    <!-- EMAIL SETTINGS -->
+    <!-- MODULE SETTINGS -->
+    <!-- BANNER SETTINGS -->
+    <!-- COL SETTINGS -->
+    <!-- DIVIDER & BORDER SETTINGS -->
+    <!-- IMAGE SETTINGS -->
+    <!-- TYPOGRAPHY SETTINGS H1-6 + P - Duplicate as needed -->
+    <!-- TOGGLES - Example in body of email -->
+    <title>Twilio</title>
+    <style type="text/css">
+      * {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        margin: 0 auto !important;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        -webkit-text-size-adjust: 100% !important;
+        -ms-text-size-adjust: 100% !important;
+        -webkit-font-smoothing: antialiased !important;
+      }
+      .mktoText a,
+      .mktoSnippet a,
+      a:link,
+      a:visited {
+        color: #0263e0;
+        text-decoration: underline;
+      }
+      a[x-apple-data-detectors] {
+        color: inherit !important;
+        text-decoration: none !important;
+        font-size: inherit !important;
+        font-family: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
+      }
+      img {
+        border: 0 !important;
+        outline: none !important;
+        max-width: 100%;
+      }
+      table {
+        border-spacing: 0;
+        mso-table-lspace: 0px;
+        mso-table-rspace: 0px;
+      }
+      th {
+        margin: 0;
+        padding: 0;
+        font-weight: normal;
+      }
+      div,
+      td,
+      a,
+      span {
+        mso-line-height-rule: exactly;
+      }
+      ul,
+      ol {
+        margin-top: 0;
+        margin-bottom: 0;
+        padding-left: 32px;
+      }
+      li {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      [owa] .col,
+      .col {
+        display: table-cell !important;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      p {
+        padding: 0;
+        margin: 0;
+        mso-line-height-rule: exactly;
+      }
+
+      .link-word-break a {
+        word-break: break-all;
+      }
+
+      .link-normal a,
+      .link-normal a:visited,
+      .link-normal a:link {
+        color: #0263e0;
+        text-decoration: underline;
+        font-weight: normal;
+      }
+      .link-alt a,
+      .link-alt a:visited,
+      .link-alt a:link {
+        color: #51a9e3;
+        text-decoration: underline;
+        font-weight: normal;
+      }
+
+      .flex-button-a {
+        margin: 12px 10px;
+        font-family: "TwilioSansText", Arial, sans-serif;
+        font-size: 14px;
+        background-color: #0263e0;
+        border: 0px solid #0263e0;
+        border-radius: 6px;
+        border-collapse: collapse;
+        text-align: center;
+      }
+      .flex-button-a a,
+      .flex-button-a a:visited,
+      .flex-button-a a:link {
+        padding: 12px 10px;
+        display: block;
+        text-align: center;
+        color: #ffffff !important;
+        text-decoration: none !important;
+        font-weight: bold;
+      }
+
+      .flex-button-b {
+        margin: 12px 10px;
+        font-family: "TwilioSansText", Arial, sans-serif;
+        font-size: 14px;
+        background-color: #ffffff;
+        border: 1px solid #cacdd8;
+        border-radius: 6px;
+        border-collapse: collapse;
+        text-align: center;
+      }
+      .flex-button-b a,
+      .flex-button-b a:visited,
+      .flex-button-b a:link {
+        padding: 12px 10px;
+        display: block;
+        text-align: center;
+        color: #121c2d !important;
+        text-decoration: none !important;
+        font-weight: bold;
+      }
+
+      .flex-button-c {
+        margin: 12px 0px;
+        font-family: "TwilioSansText", Arial, sans-serif;
+        font-size: 14px;
+        border-collapse: collapse;
+      }
+      .flex-button-c a,
+      .flex-button-c a:visited,
+      .flex-button-c a:link {
+        padding: 12px 0px;
+        display: block;
+        color: #0263e0 !important;
+        text-decoration: none !important;
+        font-weight: bold;
+      }
+
+      @media only screen and (max-width: 599px) {
+        .mob-center {
+          margin: 0px auto !important;
+          float: none !important;
+        }
+        .mob-full {
+          min-width: 100% !important;
+          width: 100% !important;
+          height: auto !important;
+        }
+        .img-full {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: auto !important;
+        }
+        .img-scale {
+          width: 100% !important;
+          height: auto !important;
+        }
+        .col {
+          display: block !important;
+        }
+        .mob-text-center {
+          text-align: center !important;
+        }
+        .mob-text-default {
+        }
+        .mob-align-center {
+          margin: 0 auto !important;
+          float: none !important;
+        }
+        .mob-align-default {
+        }
+        .mob-hide {
+          display: none !important;
+          visibility: hidden !important;
+        }
+      }
+
+      @media yahoo {
+        * {
+          overflow: visible !important;
+        }
+        .y-overflow-hidden {
+          overflow: hidden !important;
+        }
+      }
+
+      @font-face {
+        font-family: "TwilioSansText";
+        font-style: normal;
+        font-display: swap;
+        font-weight: 400;
+        src: local(""),
+          url("https://pages.twilio.com/rs/294-TKB-300/images/TwilioSansText-Regular.woff2")
+            format("woff2"),
+          url("https://pages.twilio.com/rs/294-TKB-300/images/TwilioSansText-Regular.woff")
+            format("woff");
+        mso-generic-font-family: swiss;
+        mso-font-alt: Arial;
+      }
+      @font-face {
+        font-family: "TwilioSansText";
+        font-style: italic;
+        font-display: swap;
+        font-weight: 400;
+        src: local(""),
+          url("https://pages.twilio.com/rs/294-TKB-300/images/TwilioSansText-RegularItl.woff2")
+            format("woff2"),
+          url("https://pages.twilio.com/rs/294-TKB-300/images/TwilioSansText-RegularItl.woff")
+            format("woff");
+        mso-generic-font-family: swiss;
+        mso-font-alt: Arial;
+      }
+      @font-face {
+        font-family: "TwilioSansText";
+        font-style: normal;
+        font-display: swap;
+        font-weight: 700;
+        src: local(""),
+          url("https://pages.twilio.com/rs/294-TKB-300/images/TwilioSansText-Bold.woff2")
+            format("woff2"),
+          url("https://pages.twilio.com/rs/294-TKB-300/images/TwilioSansText-Bold.woff")
+            format("woff");
+        mso-generic-font-family: swiss;
+        mso-font-alt: Arial;
+      }
+      @font-face {
+        font-family: "TwilioSansText";
+        font-style: italic;
+        font-display: swap;
+        font-weight: 700;
+        src: local(""),
+          url("https://pages.twilio.com/rs/294-TKB-300/images/TwilioSansText-BoldItl.woff2")
+            format("woff2"),
+          url("https://pages.twilio.com/rs/294-TKB-300/images/TwilioSansText-BoldItl.woff")
+            format("woff");
+        mso-generic-font-family: swiss;
+        mso-font-alt: Arial;
+      }
+    </style>
+    <!--[if gte mso 9
+      ]><xml
+        ><o:OfficeDocumentSettings
+          ><o:AllowPNG /><o:PixelsPerInch
+            >96</o:PixelsPerInch
+          ></o:OfficeDocumentSettings
+        ></xml
+      ><!
+    [endif]-->
+    <!--[if (gte mso 9)|(IE)]>
+      <style type="text/css">
+        ul li {
+          text-indent: -1em;
+          display: list-item;
+          margin-left: -1em;
+        }
+        a,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        span,
+        div,
+        td,
+        table,
+        div,
+        .mktoText,
+        .mktoSnippet {
+          font-family: Arial, Helvetica, sans-serif !important;
+        }
+      </style>
+    <![endif]-->
+  </head>
+  <body class="body" style="background-color: #fdf7f4">
+    <style type="text/css">
+      div#emailPreHeader {
+        display: none !important;
+      }
+    </style>
+    <div
+      id="emailPreHeader"
+      style="
+        mso-hide: all;
+        visibility: hidden;
+        opacity: 0;
+        color: transparent;
+        mso-line-height-rule: exactly;
+        line-height: 0;
+        font-size: 0px;
+        overflow: hidden;
+        border-width: 0;
+        display: none !important;
+      "
+    >
+      It was great to meet you at {{event-name}}!
+    </div>
+    <!--[if gte mso 9]><table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;" bgcolor="#FDF7F4"><tr><td><!--<![endif]-->
+    <div
+      style="
+        background-color: #fdf7f4;
+        table-layout: fixed;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        width: 100%;
+        vertical-align: top;
+      "
+    >
+      <table
+        role="presentation"
+        class="mob-full mktoContainer"
+        id="mainTable"
+        border="0"
+        cellspacing="0"
+        cellpadding="0"
+        style="
+          width: 600px;
+          overflow: visible;
+          margin: 0 auto;
+          vertical-align: middle;
+        "
+        valign="middle"
+        align="center"
+      >
+        <tbody>
+          <tr class="mktoModule" id="vib">
+            <td style="background-color: #fdf7f4"></td>
+          </tr>
+          <tr class="mktoModule" id="header-a">
+            <td style="background-color: #fdf7f4">
+              <table
+                role="presentation"
+                width="100%"
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                style="min-width: 100%"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        padding-left: 20px;
+                        padding-right: 20px;
+                        padding-top: 20px;
+                        padding-bottom: 20px;
+                      "
+                    >
+                      <table
+                        role="presentation"
+                        width="100%"
+                        border="0"
+                        cellpadding="0"
+                        cellspacing="0"
+                        style="min-width: 100%"
+                      >
+                        <tbody>
+                          <tr>
+                            <td align="left">
+                              <table
+                                role="presentation"
+                                class="mob-align-default"
+                                border="0"
+                                cellpadding="0"
+                                cellspacing="0"
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      <div
+                                        class="mktoSnippet"
+                                        id="header-a.snippet"
+                                      >
+                                        <p>
+                                          <a
+                                            href="https://www.twilio.com/"
+                                            target="_blank"
+                                            style="text-decoration: none"
+                                          >
+                                            <img
+                                              src="https://library.twilio.com/m/b042c0edce0d46e/original/Logo-png.png"
+                                              alt="Logo"
+                                              width="140"
+                                              style="
+                                                display: block;
+                                                max-width: 100%;
+                                                height: auto;
+                                              "
+                                              border="0"
+                                            />
+                                          </a>
+                                        </p>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tr
+            class="mktoModule"
+            id="headline3008d6c3c-1199-4fe7-af31-85ce9895bd22"
+          >
+            <td style="background-color: #ffffff">
+              <table
+                role="presentation"
+                width="100%"
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                style="min-width: 100%"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        padding-left: 20px;
+                        padding-right: 20px;
+                        padding-top: 20px;
+                        padding-bottom: 20px;
+                      "
+                    >
+                      <table
+                        role="presentation"
+                        class="link-normal"
+                        width="100%"
+                        border="0"
+                        cellpadding="0"
+                        cellspacing="0"
+                        style="min-width: 100%"
+                      >
+                        <tbody>
+                          <tr>
+                            <td>
+                              <h3
+                                class="mktoText mob-text-default"
+                                id="headline3.h3a9e34b8e-0d7f-49a5-8a2b-fa5bc03c56fd"
+                                style="font-family:&#39;TwilioSansText&#39;, Arial, sans-serif; font-size:30px; line-height:38px; font-weight:bold; text-align:left; color:#121C2D;"
+                              >
+                                <p>Your verification code is {{twilio_code}}</p>
+                              </h3>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tr
+            class="mktoModule"
+            id="paragraph70fb2088-595b-4834-a1aa-8ed7fbc7c909"
+          >
+            <td style="background-color: #ffffff">
+              <table
+                role="presentation"
+                width="100%"
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                style="min-width: 100%"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        padding-left: 20px;
+                        padding-right: 20px;
+                        padding-top: 0px;
+                        padding-bottom: 20px;
+                      "
+                    >
+                      <table
+                        role="presentation"
+                        class="link-normal"
+                        width="100%"
+                        border="0"
+                        cellpadding="0"
+                        cellspacing="0"
+                        style="min-width: 100%"
+                      >
+                        <tbody>
+                          <tr>
+                            <td>
+                              <div
+                                role="paragraph"
+                                class="mktoText mob-text-default"
+                                id="paragraph.p9de7f911-c380-4c92-9d8a-69dc470800e7"
+                                style="font-family:&#39;TwilioSansText&#39;, Arial, sans-serif; font-size:16px; line-height:22px; font-weight:bold; text-align:left; color:#000000;"
+                              >
+                                <p>
+                                  Welcome to {{event-name}}!
+                                </p>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+
+          <tr
+            class="mktoModule"
+            id="paragraph8733f662-5142-40b9-80ab-39fdd85024ae"
+          >
+            <td style="background-color: #ffffff">
+              <table
+                role="presentation"
+                width="100%"
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                style="min-width: 100%"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        padding-left: 20px;
+                        padding-right: 20px;
+                        padding-top: 20px;
+                        padding-bottom: 20px;
+                      "
+                    >
+                      <table
+                        role="presentation"
+                        class="link-normal"
+                        width="100%"
+                        border="0"
+                        cellpadding="0"
+                        cellspacing="0"
+                        style="min-width: 100%"
+                      >
+                        <tbody>
+                          <tr>
+                            <td>
+                              <div
+                                role="paragraph"
+                                class="mktoText mob-text-default"
+                                id="paragraph.pdeb04d7e-d952-474c-b6b2-ae3909dc1394"
+                                style="font-family:&#39;TwilioSansText&#39;, Arial, sans-serif; font-size:14px; line-height:22px; font-weight:normal; text-align:left; color:#000000;"
+                              >
+                                <p>
+                                  Please note that by confirming your email
+                                  address, you will be granted access to the Twilio Mixologist
+                                  and your name and email address will
+                                  be collected to send you marketing
+                                  communications. <br />
+                                  Your personal data collected as part of the
+                                  activation is processed in accordance with the <a
+                                  href="https://www.twilio.com/en-us/legal/privacy"
+                                  target="_blank"
+                                  >Twilio Privacy Notice</a
+                                > available on the Twilio website.
+                                </p>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tr
+            class="mktoModule"
+            id="two-col-5050d23fa7ebf-244d-4989-8444-280a621fa331"
+          >
+            <td style="background-color: #ffffff">
+              <table
+                role="presentation"
+                width="100%"
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                style="min-width: 100%"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        padding-left: 0px;
+                        padding-right: 0px;
+                        padding-top: 0px;
+                        padding-bottom: 0px;
+                      "
+                    >
+
+            </td>
+          </tr>
+          <tr
+          class="mktoModule"
+          id="paragraph8733f662-5142-40b9-80ab-39fdd85024ae"
+        >
+          <td style="background-color: #ffffff">
+            <table
+              role="presentation"
+              width="100%"
+              border="0"
+              cellpadding="0"
+              cellspacing="0"
+              style="min-width: 100%"
+            >
+              <tbody>
+                <tr>
+                  <td
+                    style="
+                      padding-left: 20px;
+                      padding-right: 20px;
+                      padding-top: 20px;
+                      padding-bottom: 20px;
+                    "
+                  >
+                    <table
+                      role="presentation"
+                      class="link-normal"
+                      width="100%"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      style="min-width: 100%"
+                    >
+                      <tbody>
+                        <tr>
+                          <td>
+                            <div
+                              role="paragraph"
+                              class="mktoText mob-text-default"
+                              id="paragraph.pdeb04d7e-d952-474c-b6b2-ae3909dc1394"
+                              style="font-family:&#39;TwilioSansText&#39;, Arial, sans-serif; font-size:14px; line-height:22px; font-weight:normal; text-align:left; color:#000000;"
+                            >
+                              <p>
+                                <strong>Did you know that this email was sent with a single LOC?</strong>
+                                <pre>client.verify.v2.services('VAXXXXXXXX')
+.verifications
+.create({to: 'recipient@foo.com', channel: 'email'})
+.then(verification => console.log(verification.sid));</pre>
+                                <br /> That's all it took! Check out <a
+                                href="https://www.twilio.com/docs/verify/email"
+                                target="_blank"
+                                id=""
+                                >Twilio Verify</a
+                              > for more details. 
+
+                                <br /> <br /><br />Have a fantastic
+                                day, <br />Team Twilio
+                              </p>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+         
+          <tr class="mktoModule" id="footer-top-a">
+            <td
+              style="
+                background-color: #f22f46;
+                border-bottom-left-radius: 8px;
+                border-bottom-right-radius: 8px;
+              "
+            >
+              <table
+                role="presentation"
+                width="100%"
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                style="min-width: 100%"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        padding-left: 20px;
+                        padding-right: 20px;
+                        padding-top: 20px;
+                        padding-bottom: 20px;
+                      "
+                    >
+                      <table
+                        role="presentation"
+                        width="100%"
+                        border="0"
+                        cellpadding="0"
+                        cellspacing="0"
+                        style="min-width: 100%"
+                      >
+                        <tbody>
+                          <tr>
+                            <th
+                              class="col mob-full"
+                              style="width: 32px; vertical-align: middle"
+                              valign="middle"
+                            >
+                              <table
+                                role="presentation"
+                                width="100%"
+                                border="0"
+                                cellpadding="0"
+                                cellspacing="0"
+                                style="min-width: 100%; direction: ltr"
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td align="center">
+                                      <div
+                                        class="mktoSnippet img-scale mob-align-center"
+                                        id="footer-top-a.snippet"
+                                      ></div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </th>
+                            <th
+                              class="col mob-full"
+                              width="20"
+                              style="
+                                width: 20px;
+                                min-width: 20px;
+                                vertical-align: middle;
+                              "
+                              valign="middle"
+                            >
+                              &nbsp;
+                            </th>
+                            <th
+                              class="col mob-full"
+                              align="right"
+                              style="vertical-align: middle"
+                              valign="middle"
+                            >
+                              <table
+                                role="presentation"
+                                class="link-alt"
+                                width="100%"
+                                border="0"
+                                cellpadding="0"
+                                cellspacing="0"
+                                style="min-width: 100%"
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      <div
+                                        role="paragraph"
+                                        class="mktoText mob-text-center"
+                                        id="footer-top-a.h6"
+                                        style="font-family:&#39;TwilioSansText&#39;, Arial, sans-serif; font-size:18px; line-height:28px; font-weight:normal; text-align:right; color:#FFFFFF;"
+                                      >
+                                        We can't wait to see what you build.
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </th>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    <!--[if gte mso 9]></td></tr></table><!--<![endif]-->
+    <div id="forwardtoFriendDropDown" style="display: none">
+      <div class="ftf_mainContent">
+        <div class="ftf_fields_container">
+          <ul>
+            <li class="ftf_fname ftf_required">
+              <div class="ftf_field">
+                <label for="ftf_friend_fname">Friend's First Name:</label
+                ><input
+                  id="ftf_friend_fname"
+                  name="ftf_friend_fname"
+                  type="text"
+                  onclick="fnameError()"
+                />
+              </div>
+              <div class="ftf_errorMessage">Required</div>
+            </li>
+            <li class="ftf_lname ftf_required">
+              <div class="ftf_field">
+                <label for="ftf_friend_lname">Friend's Last Name:</label
+                ><input
+                  id="ftf_friend_lname"
+                  name="ftf_friend_lname"
+                  type="text"
+                  onclick="lnameError()"
+                />
+              </div>
+              <div class="ftf_errorMessage">Required</div>
+            </li>
+            <li class="ftf_email ftf_required">
+              <div class="ftf_field">
+                <label for="ftf_friend_email">Friend's Email:</label
+                ><input
+                  id="ftf_friend_email"
+                  name="ftf_friend_email"
+                  type="text"
+                  onclick="emailError()"
+                />
+              </div>
+              <div class="ftf_errorMessage">Invalid email address</div>
+            </li>
+          </ul>
+          <div class="ftf_success_message">Successfully Sent</div>
+        </div>
+        <div class="ftf_buttonContainer">
+          <div class="ftf_state_initial">
+            <button class="cancelButton" onclick="resetForm(this)">
+              CANCEL</button
+            ><button class="sendButton" onclick="sendData()">SEND</button>
+          </div>
+          <div class="ftf_state_sent" style="display: none">
+            <button class="sendAnotherButton" onclick="resetForm(this)">
+              SEND ANOTHER</button
+            ><button class="doneButton" onclick="resetForm(this)">DONE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

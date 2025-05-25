@@ -9,6 +9,7 @@ const {
   TWILIO_VERIFY_SERVICE_SID = "",
   NEXT_PUBLIC_EVENTS_MAP = "",
   NEXT_PUBLIC_CONFIG_DOC = "",
+  NEXT_PUBLIC_FEEDBACK_LIST = "",
 } = process.env;
 
 const authConfig = {
@@ -174,6 +175,26 @@ describe("Test if configuration is set up right", () => {
       write: false,
       manage: false,
     });
+  });
+
+
+  test("feedback list exists", async () => {
+    expect(NEXT_PUBLIC_FEEDBACK_LIST).not.toBe("");
+    const syncServiceRes = await fetch(
+      `https://sync.twilio.com/v1/Services/${TWILIO_SYNC_SERVICE_SID}/`,
+      authConfig,
+    );  
+
+    const syncService = await syncServiceRes.json();
+    expect(syncService.acl_enabled).toBe(true);
+    const syncListsRes = await fetch(syncService.links.lists, authConfig);
+    const syncLists = await syncListsRes.json();
+    const feedbackList = syncLists.lists.find(
+      (list: { unique_name: string }) =>
+        list.unique_name === NEXT_PUBLIC_FEEDBACK_LIST,
+    );
+    expect(feedbackList).toBeDefined();
+
   });
 
   test("verify service has email channel enabled", async () => {
