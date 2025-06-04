@@ -199,17 +199,17 @@ export default {
       {
         shortTitle: "Cold Brew",
         title: "Cold Brew",
-        description: "Cold Brew, Vanilla-Scented Almond Milk, Star Anise Syrup & Praline Dust garnish",
+        description: "Cold Brew, Vanilla-Scented Almond Milk, Star Anise Syrup & Praline Dust",
       },
       {
         shortTitle: "Matcha Green Tea",
         title: "Matcha Green Tea",
-        description: "Matcha Green Tea (V) (GF) (N), Honey, Cashew Milk, Frozen Grape 'Ice Cubes' & 'Honeycomb'",
+        description: "Matcha Green Tea, Honey, Cashew Milk, Frozen Grape Ice Cubes & Honeycomb",
       },
       {
         shortTitle: "Cucumber Juice",
         title: "Cucumber Juice",
-        description: "Cucumber Juice (VG) (GF), Wildflower Honey, Parsley, Pellegrino & garnished with mint",
+        description: "Cucumber Juice, Wildflower Honey, Parsley, Pellegrino, mint-garnished",
       },
     ],
     modifiers: [
