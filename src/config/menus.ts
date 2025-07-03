@@ -199,17 +199,20 @@ export default {
       {
         shortTitle: "Cold Brew",
         title: "Cold Brew",
-        description: "Cold Brew, Vanilla-Scented Almond Milk, Star Anise Syrup & Praline Dust",
+        description:
+          "Cold Brew, Vanilla-Scented Almond Milk, Star Anise Syrup & Praline Dust",
       },
       {
         shortTitle: "Matcha Green Tea",
         title: "Matcha Green Tea",
-        description: "Matcha Green Tea, Honey, Cashew Milk, Frozen Grape Ice Cubes & Honeycomb",
+        description:
+          "Matcha Green Tea, Honey, Cashew Milk, Frozen Grape Ice Cubes & Honeycomb",
       },
       {
         shortTitle: "Cucumber Juice",
         title: "Cucumber Juice",
-        description: "Cucumber Juice, Wildflower Honey, Parsley, Pellegrino, mint-garnished",
+        description:
+          "Cucumber Juice, Wildflower Honey, Parsley, Pellegrino, mint-garnished",
       },
     ],
     modifiers: [
@@ -252,6 +255,21 @@ export default {
         shortTitle: "Lambada",
         description:
           "Orange, Mango, Banana, Passion Fruit, Flaxseed, Coconut Oil 🍊🥭🍌🥥",
+      },
+      {
+        title: "Macarena",
+        shortTitle: "Macarena",
+        description: "Fruity 🍓🍍🍏 mix with exotic notes",
+      },
+      {
+        title: "La Isla Bonita",
+        shortTitle: "La Isla Bonita",
+        description: "Creamy 🍍🍌🥥 with a blue twist 💙",
+      },
+      {
+        title: "Des.pa.cito",
+        shortTitle: "Des.pa.cito",
+        description: "Green 🍏🍌🌿 with citrus zing 🍋",
       },
     ],
   },
