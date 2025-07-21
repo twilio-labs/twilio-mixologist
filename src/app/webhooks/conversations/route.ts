@@ -535,7 +535,6 @@ async function getActiveEvents() {
 function sanitizeFullName(fullName: string) {
   return fullName
     .replace(/[^a-zA-Z\s-]/g, "") // remove non-alphabetic characters, except dashes
-    .replace(/\s/g, " ") // replace all whitespace characters with a single space
-    .replace(/\s+/g, " ") // replace multiple spaces with a single space
+    .replace(/\s+/g, " ") // replace multiple whitespace characters with a single space
     .trim(); // trim leading and trailing spaces
 }
