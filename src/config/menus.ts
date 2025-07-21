@@ -197,12 +197,6 @@ export default {
         description: "Spiced Tea with steamed Milk",
       },
       {
-        shortTitle: "Cold Brew",
-        title: "Cold Brew",
-        description:
-          "Cold Brew, Vanilla-Scented Almond Milk, Star Anise Syrup & Praline Dust",
-      },
-      {
         shortTitle: "Matcha Green Tea",
         title: "Matcha Green Tea",
         description:
