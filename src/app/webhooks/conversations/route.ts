@@ -336,7 +336,7 @@ export async function POST(request: Request) {
       NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP,
       conversationSid,
       {
-        fullName: incomingMessageBody.trim(),
+        fullName: sanitizeFullName(incomingMessageBody),
         stage: Stages.NAME_CONFIRMED,
       },
       TwoWeeksInSeconds,
@@ -529,4 +529,12 @@ async function getActiveEvents() {
     state: EventState.OPEN,
   });
   return activeEvents;
+}
+
+
+function sanitizeFullName(fullName: string) {
+  return fullName
+    .replace(/[^a-zA-Z\s\-\.\']/g, "") // remove non-alphabetic characters, except hyphens, periods, and apostrophes
+    .replace(/\s+/g, " ") // replace multiple whitespace characters with a single space
+    .trim(); // trim leading and trailing spaces
 }
