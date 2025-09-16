@@ -15,6 +15,7 @@
     "create-twilio-res": "tsx -r dotenv/config src/scripts/createTwilioRes dotenv_config_path=.env.local ",
     "check-for-errors": "tsx -r dotenv/config src/scripts/checkForErrors dotenv_config_path=.env.local ",
     "clear-attendees": "tsx -r dotenv/config src/scripts/clearAttendeeMap dotenv_config_path=.env.local",
+    "clear-conversations": "tsx -r dotenv/config src/scripts/clearConversations dotenv_config_path=.env.local",
     "clear-orders": "tsx -r dotenv/config src/scripts/clearOrdersForEvent dotenv_config_path=.env.local",
     "broadcast": "tsx -r dotenv/config src/scripts/broadcastMessage dotenv_config_path=.env.local",
     "prettier": "prettier --write ."
