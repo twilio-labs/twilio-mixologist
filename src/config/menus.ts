@@ -73,7 +73,7 @@ export default {
         title: "Latte",
         description: "Espresso with steamed milk",
       },
-      { 
+      {
         shortTitle: "Long Black",
         title: "Long Black",
         description: "Espresso with hot water",
@@ -120,7 +120,7 @@ export default {
         title: "Mocha",
         description: "Chocolate-flavoured variant of a latte",
       },
-      { 
+      {
         shortTitle: "Hot Chocolate",
         title: "Hot Chocolate",
         description: "Steamed milk with chocolate",
@@ -155,7 +155,11 @@ export default {
         title: "Chai",
         description: "Spiced tea with milk",
       },
-
+      {
+        shortTitle: "Chai Latte",
+        title: "Chai Latte",
+        description: "Spiced tea with steamed milk",
+      },
       {
         shortTitle: "Café Colada",
         title: "Café Colada",
