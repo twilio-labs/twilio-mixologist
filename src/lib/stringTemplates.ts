@@ -77,7 +77,7 @@ export function getWelcomeBackMessage(
 }
 
 export function getDataPolicy(mode: string) {
-  return `We only use your phone number to notify you about our ${mode} service and redact all the messages & phone numbers afterward.`;
+  return `We only use your phone number for our ${mode} service and overall SIGNAL activations. We will redact all the messages & phone numbers afterward.`;
   // return `We only use your phone number to notify you about our ${mode} service and redact all the messages & phone numbers afterward. You can request to delete your data at any time and cancel open orders by replying with "Forget me".`; TODO switch once implemented and tested
 }
 

@@ -15,6 +15,8 @@ import {
   checkSignature,
 } from "@/lib/twilio";
 
+import { Analytics } from "@segment/analytics-node";
+
 import {
   Stages,
   getCountryFromPhone,
@@ -52,10 +54,15 @@ const {
   SEGMENT_SPACE_ID = "",
   SEGMENT_PROFILE_KEY = "",
   SEGMENT_TRAIT_CHECK = "",
+  SEGMENT_WRITE_KEY = "",
 } = process.env;
 const NEXT_PUBLIC_EVENTS_MAP = process.env.NEXT_PUBLIC_EVENTS_MAP || "",
   NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP =
     process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP || "";
+
+const analytics = new Analytics({
+  writeKey: SEGMENT_WRITE_KEY,
+});
 
 export async function POST(request: Request) {
   const [data, headerList] = await Promise.all([request.formData(), headers()]);
@@ -103,6 +110,14 @@ export async function POST(request: Request) {
       addMessageToConversation(conversationSid, welcomeMessage);
 
       const country = getCountryFromPhone(author);
+
+      analytics.identify({
+        userId: conversationSid,
+        traits: {
+          phone: author.replace("whatsapp:", ""),
+          country: country?.name,
+        },
+      });
 
       await updateOrCreateSyncMapItem(
         NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP,
@@ -160,6 +175,14 @@ export async function POST(request: Request) {
         addMessageToConversation(conversationSid, welcomeMessage);
 
         const country = getCountryFromPhone(author);
+
+        analytics.identify({
+          userId: conversationSid,
+          traits: {
+            phone: author.replace("whatsapp:", ""),
+            country: country?.name,
+          },
+        });
 
         await updateOrCreateSyncMapItem(
           NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP,
@@ -530,7 +553,6 @@ async function getActiveEvents() {
   });
   return activeEvents;
 }
-
 
 function sanitizeFullName(fullName: string) {
   return fullName

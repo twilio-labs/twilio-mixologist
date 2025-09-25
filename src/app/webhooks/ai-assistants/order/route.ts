@@ -20,9 +20,16 @@ import { redact, Stages, TwoWeeksInSeconds } from "@/lib/utils";
 import { headers } from "next/headers";
 import { Event } from "@/app/(master-layout)/event/[slug]/page";
 
+import { Analytics } from "@segment/analytics-node";
+
 const NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP =
     process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP || "",
-  UNLIMTED_ORDERS = (process.env.UNLIMITED_ORDERS || "").split(",");
+  UNLIMTED_ORDERS = (process.env.UNLIMITED_ORDERS || "").split(","),
+  SEGMENT_WRITE_KEY = process.env.SEGMENT_WRITE_KEY || "";
+
+const analytics = new Analytics({
+  writeKey: SEGMENT_WRITE_KEY,
+});
 
 async function getQueuePosition(event: string, orderNumber: number) {
   const firstPageOrders = await fetchSyncListItems(event);
@@ -99,6 +106,16 @@ export async function POST(request: NextRequest) {
       { status: 500 },
     );
   }
+
+  analytics.track({
+    userId: conversationSid,
+    event: "Order Placed",
+    properties: {
+      item: item,
+      modifiers: modifiers,
+      event: eventSlug,
+    },
+  });
 
   const order: Order = {
     key: conversationSid,
