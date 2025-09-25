@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
 
   analytics.track({
     userId: conversationSid,
-    event: "Order Placed",
+    event: "Barista Order Placed",
     properties: {
       item: item,
       modifiers: modifiers,
