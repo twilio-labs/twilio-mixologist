@@ -69,15 +69,21 @@ export default {
       //   description: "Milk marked with espresso",
       // },
       {
-        shortTitle: "Iced Latte",
-        title: "Iced Latte",
-        description: "Espresso with cold milk and ice",
-      },
-      {
-        shortTitle: "Caffè Latte",
-        title: "Caffè Latte",
+        shortTitle: "Latte",
+        title: "Latte",
         description: "Espresso with steamed milk",
       },
+      { 
+        shortTitle: "Long Black",
+        title: "Long Black",
+        description: "Espresso with hot water",
+      },
+      {
+        shortTitle: "Piccolo Latte",
+        title: "Piccolo Latte",
+        description: "Espresso with steamed milk in a small glass",
+      },
+
       {
         shortTitle: "Cappuccino",
         title: "Cappuccino",
@@ -111,8 +117,18 @@ export default {
       },
       {
         shortTitle: "Mocha",
-        title: "Caffè Mocha",
-        description: "Chocolate-flavoured variant of a caffè latte",
+        title: "Mocha",
+        description: "Chocolate-flavoured variant of a latte",
+      },
+      { 
+        shortTitle: "Hot Chocolate",
+        title: "Hot Chocolate",
+        description: "Steamed milk with chocolate",
+      },
+      {
+        shortTitle: "Iced Coffee",
+        title: "Iced Coffee",
+        description: "Chilled coffee with ice",
       },
       {
         shortTitle: "Black Tea",
@@ -186,17 +202,6 @@ export default {
         title: "Espresso Martini",
       },
       {
-        shortTitle: "Matcha Latte",
-        title: "Matcha Latte",
-        description:
-          "Finely ground Japanese green tea whisked into steamed milk",
-      },
-      {
-        shortTitle: "Chai Latte",
-        title: "Chai Latte",
-        description: "Spiced Tea with steamed Milk",
-      },
-      {
         shortTitle: "Matcha Green Tea",
         title: "Matcha Green Tea",
         description:
@@ -214,6 +219,9 @@ export default {
       "Soy Milk",
       "Almond Milk",
       "Oat Milk",
+      "Full Cream Milk",
+      "Skim Milk",
+      "Lactose-Free Milk",
       "Semi-skimmed Milk",
       "Coconut Milk",
       "Rice Milk",
@@ -229,6 +237,9 @@ export default {
       "Chocolate Sauce",
       "Brown Sugar Stick",
       "White Sugar Stick",
+      "1 Sugar",
+      "2 Sugars",
+      "3 Sugars",
     ],
   },
   smoothie: {
