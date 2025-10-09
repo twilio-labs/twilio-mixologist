@@ -16,7 +16,7 @@ function modeToBeverage(mode: modes, plural: boolean = false) {
 }
 
 export function getModifiersMessage(modifiers: string[]) {
-  return `You can add the following add-ons to your order:\n${modifiers
+  return `If you want change the milk or add sugar, please write the name of the beverage with the modification in the text box below.\n${modifiers
     .map((m) => `- ${m}`)
     .join("\n")}`;
 }
