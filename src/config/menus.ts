@@ -139,7 +139,26 @@ export default {
         title: "Chai",
         description: "Spiced tea with milk",
       },
-
+      {
+        shortTitle: "SMS Espresso",
+        title: "SMS Espresso",
+        description: "Strong black coffee",
+      },
+      {
+        shortTitle: "Cloud Cappuccino",
+        title: "Cloud Cappuccino",
+        description: "Espresso with steamed milk and milk foam",
+      },
+      {
+        shortTitle: "Twilio Latte",
+        title: "Twilio Latte",
+        description: "Shot of espresso and steamed milk, topped with a thin layer of milk foam",
+      },
+      {
+        shortTitle:"Money Macchiato",
+        title: "Money Macchiato",
+        description: 'Espresso "stained" with a splash of milk',
+      },
       {
         shortTitle: "Café Colada",
         title: "Café Colada",
@@ -180,11 +199,7 @@ export default {
         title: "Con Sabor",
         description: "Choice of Flavored Syrup Infused Into Any of The Above",
       },
-      {
-        shortTitle: "Espresso Martini",
-        description: "Vodka, Espresso, Coffee Liqueur, Sugar Syrup",
-        title: "Espresso Martini",
-      },
+
       {
         shortTitle: "Matcha Latte",
         title: "Matcha Latte",
@@ -307,6 +322,11 @@ export default {
         title: "The API Pour - Mudslide",
         shortTitle: "Mudslide",
         description: "Vodka, Coffee Liqueur, Irish Cream, Cream",
+      },
+      {
+        shortTitle: "Espresso Martini",
+        description: "Vodka, Espresso, Coffee Liqueur, Sugar Syrup",
+        title: "Espresso Martini",
       },
     ],
   },
