@@ -64,7 +64,7 @@ function MenuPage(props: { params: Promise<{ slug: string }> }) {
   return (
     <>
       <Header number={internalEvent.senders[0]} />
-      <main className="flex grow pb-8 mb-32 items-center justify-center bg-gray-900 text-white select-none">
+      <main className="flex grow pb-8 mb-32 items-center justify-center text-white select-none">
         <div className={`grid grid-cols-${columns} gap-8mx-24 `}>
           {internalEvent.selection?.items.map((item: any, index: Number) => (
             <div key={`item-${index}`} className="flex flex-col items-center">
