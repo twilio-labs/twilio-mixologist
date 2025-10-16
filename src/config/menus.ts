@@ -142,22 +142,23 @@ export default {
       {
         shortTitle: "SMS Espresso",
         title: "SMS Espresso",
-        description: "Strong black coffee",
+        description: "Shot of Espresso",
       },
       {
         shortTitle: "Cloud Cappuccino",
         title: "Cloud Cappuccino",
-        description: "Espresso with steamed milk and milk foam",
+        description: "Made with espresso, steamed milk and milk foam",
       },
       {
         shortTitle: "Twilio Latte",
         title: "Twilio Latte",
-        description: "Shot of espresso and steamed milk, topped with a thin layer of milk foam",
+        description:
+          "Shot of espresso and steamed milk, topped with a thin layer of milk foam",
       },
       {
-        shortTitle:"Money Macchiato",
+        shortTitle: "Money Macchiato",
         title: "Money Macchiato",
-        description: 'Espresso "stained" with a splash of milk',
+        description: "An espresso and small amount of milk",
       },
       {
         shortTitle: "Café Colada",
