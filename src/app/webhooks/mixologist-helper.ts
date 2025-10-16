@@ -126,7 +126,6 @@ export async function cancelOrder(event: Event, index: number, data: Order) {
 }
 
 export async function addOrder(event: string, order: Order) {
-  debugger
   const { index } = await pushToSyncList(event, order);
   return index;
 }

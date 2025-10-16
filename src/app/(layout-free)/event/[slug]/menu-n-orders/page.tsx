@@ -6,8 +6,12 @@ import MenuItem from "./menu-item";
 import Header from "./header";
 import { useSyncList, useSyncMap } from "@/provider/syncProvider";
 
+import { useScreenOrientation } from "@/lib/use-screen-orientation";
+
 function MenuPage(props: { params: Promise<{ slug: string }> }) {
   const [params, setParams] = useState<{ slug: string } | null>(null);
+
+  const screenOrientation = useScreenOrientation();
 
   // Initialize params
   useEffect(() => {
@@ -45,14 +49,17 @@ function MenuPage(props: { params: Promise<{ slug: string }> }) {
     : [];
 
   const itemsCount = internalEvent.selection.items.length;
-  const columns =
-    itemsCount <= 4
+  const columns = screenOrientation.includes("landscape")
+    ? itemsCount <= 4
       ? 2
       : itemsCount % 3 === 0
         ? 3
         : itemsCount % 4 === 0
           ? 4
-          : 5;
+          : 5
+    : itemsCount % 3 === 0
+      ? 3
+      : 2;
 
   return (
     <>
