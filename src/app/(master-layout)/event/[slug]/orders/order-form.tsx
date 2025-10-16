@@ -54,7 +54,8 @@ export default function OrderForm({
             manual: true,
             address: "Manual Order",
             name: order?.name,
-            item: order.item,
+            //@ts-ignore
+            item: order.item.title,
             //@ts-ignore
             originalText: `Manual Order: ${order?.name} ordered ${order?.item?.shortTitle}  ${order.modifiers?.length > 0 ? `with ${order?.modifiers?.map((m) => m?.value).join(", ")}` : ""} ${order?.note && `with note: ${order?.note}`}`,
           },
