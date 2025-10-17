@@ -85,7 +85,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
       mode: modes.barista,
     },
     pickupLocation: "",
-    maxOrders: 40,
+    maxOrders: 70,
     welcomeMessage: "",
   });
 

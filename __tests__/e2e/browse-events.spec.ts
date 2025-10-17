@@ -226,7 +226,7 @@ test.describe("[admin]", () => {
     await expect(page.getByPlaceholder("Enter event name")).toHaveValue("");
     await expect(page.getByPlaceholder("Event slug will be")).toHaveValue("");
 
-    await expect(page.getByText("Max Orders Per Customer")).toHaveValue("40");
+    await expect(page.getByText("Max Orders Per Customer")).toHaveValue("70");
 
     await page.getByPlaceholder("Enter event name").fill("ranDOM23");
     await expect(page.getByPlaceholder("Event slug will be")).toHaveValue(
