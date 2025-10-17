@@ -1,5 +1,5 @@
 import { updateSyncMapItem } from "@/lib/twilio";
-import throttledQueue from "throttled-queue";
+import { throttledQueue } from "throttled-queue";
 import twilio from "twilio";
 
 const {
@@ -9,7 +9,7 @@ const {
   TWILIO_SYNC_SERVICE_SID = "",
 } = process.env;
 
-const throttle = throttledQueue(20, 1000); // 20 requests per second
+const throttle = throttledQueue({ maxPerInterval: 20, interval: 1000 }); // 20 requests per second
 const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
   accountSid: TWILIO_ACCOUNT_SID,
 });

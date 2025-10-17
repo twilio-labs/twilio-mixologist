@@ -7,7 +7,7 @@ import { headers } from "next/headers";
 import axios from "axios";
 import AccessToken, { SyncGrant } from "twilio/lib/jwt/AccessToken";
 import { ServiceInstance } from "twilio/lib/rest/sync/v1/service";
-import throttledQueue from "throttled-queue";
+import { throttledQueue } from "throttled-queue";
 import {
   WhatsAppTemplate,
   WhatsAppTemplateConfig,
@@ -21,7 +21,7 @@ import {
   getSystemPrompt,
 } from "./aiAssistantTemplates";
 import { Event } from "@/app/(master-layout)/event/[slug]/page";
-const throttle = throttledQueue(25, 1000);
+const throttle = throttledQueue({ maxPerInterval: 25, interval: 1000 });
 const {
   TWILIO_API_KEY = "",
   TWILIO_AUTH_TOKEN = "",
@@ -134,6 +134,7 @@ export async function createAiAssistant(event: Event) {
 
   const assistant = await client.assistants.v1.assistants.create({
     name: `AI Barista Assistant for ${event.name}`,
+    // @ts-ignore - personality_prompt is the correct API property name despite TypeScript types
     personality_prompt: getSystemPrompt(event.selection.mode),
   });
 
@@ -254,6 +255,7 @@ export async function askAiAssistant(
   await client.assistants.v1.assistants(aiAssistantID).messages.create({
     body: message,
     identity: sender,
+    // @ts-ignore - session_id is the correct API property name despite TypeScript types
     session_id: `${event}:${conversationSid}`,
     webhook: `${PUBLIC_BASE_URL}/webhooks/ai-assistants/proxy?event=${event}`,
   });

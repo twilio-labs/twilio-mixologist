@@ -1,5 +1,5 @@
 import twilio from "twilio";
-import throttledQueue from "throttled-queue";
+import { throttledQueue } from "throttled-queue";
 import { addMessageToConversation } from "@/lib/twilio";
 
 const {
@@ -23,7 +23,7 @@ if (!eventName || eventName.startsWith("/") || eventName.includes("=")) {
 const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
   accountSid: TWILIO_ACCOUNT_SID,
 });
-const throttle = throttledQueue(20, 1000); // 20 requests per second
+const throttle = throttledQueue({ maxPerInterval: 20, interval: 1000 }); // 20 requests per second
 
 (async () => {
   let customerPage = await client.sync.v1
