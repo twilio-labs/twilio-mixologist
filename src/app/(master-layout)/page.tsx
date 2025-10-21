@@ -62,7 +62,7 @@ export default async function Home() {
       console.error(e);
       throw new Error("Could not fetch events", e);
     }
-  } finally {
+  } catch {
     return <p>Couldn't connect to Twilio Sync store</p>;
   }
 }
