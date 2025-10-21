@@ -64,7 +64,7 @@ function MenuPage(props: { params: Promise<{ slug: string }> }) {
   return (
     <>
       <Header number={internalEvent.senders[0]} />
-      <main className="flex grow pb-8 mb-32 items-center justify-center text-white select-none">
+      <main className="flex grow pb-8 mb-60 items-center justify-center text-white select-none">
         <div className={`grid grid-cols-${columns} gap-8mx-24 `}>
           {internalEvent.selection?.items.map((item: any, index: Number) => (
             <div key={`item-${index}`} className="flex flex-col items-center">
@@ -81,12 +81,12 @@ function MenuPage(props: { params: Promise<{ slug: string }> }) {
         {/* Pending Orders List */}
         {pendingOrders.length > 0 && (
           <div className="fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-600 p-4">
-            <h3 className="text-lg font-semibold mb-2">Pending Orders</h3>
-            <div className="flex flex-wrap gap-2 max-h-24 overflow-y-auto">
+            <h3 className="text-2xl font-semibold mb-12">Pending Orders</h3>
+            <div className="flex flex-wrap gap-2 max-h-80 overflow-y-auto">
               {pendingOrders.map((order: any) => (
                 <div
                   key={order.index}
-                  className={`px-3 py-2 rounded-md text-sm ${
+                  className={`px-3 py-2 rounded-md text-xl ${
                     order.data.status === "ready"
                       ? "bg-green-600 text-white"
                       : "bg-red-600 text-white"
