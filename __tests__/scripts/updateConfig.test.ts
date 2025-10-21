@@ -5,89 +5,59 @@ describe("Test if mergeConfig", () => {
   test("correctly merges distinct senders from new and old configurations", () => {
     const oldConfig: Configuration = {
       menus: {},
-      possibleSenders: [
-        { sender: "oldSender1", whatsappChannel: true, smsChannel: false },
-        { sender: "oldSender2", whatsappChannel: false, smsChannel: true },
-      ],
+      possibleSenders: ["oldSender1", "oldSender2"],
     };
 
     const newConfig: Configuration = {
       menus: {},
-      possibleSenders: [
-        { sender: "newSender1", whatsappChannel: null, smsChannel: false },
-      ],
+      possibleSenders: ["newSender1"],
     };
 
     const result = mergeConfig(newConfig, oldConfig);
 
     expect(result).toEqual({
       menus: {},
-      possibleSenders: [
-        { sender: "oldSender1", whatsappChannel: true, smsChannel: false },
-        { sender: "oldSender2", whatsappChannel: false, smsChannel: true },
-        { sender: "newSender1", whatsappChannel: false, smsChannel: false },
-      ],
+      possibleSenders: ["oldSender1", "oldSender2", "newSender1"],
     });
   });
 
   test("correctly merges overlapping senders from new and old configurations and no conflict", () => {
     const oldConfig: Configuration = {
       menus: {},
-      possibleSenders: [
-        { sender: "oldSender1", whatsappChannel: true, smsChannel: false },
-        { sender: "oldSender2", whatsappChannel: false, smsChannel: true },
-      ],
+      possibleSenders: ["oldSender1", "oldSender2"],
     };
 
     const newConfig: Configuration = {
       menus: {},
-      possibleSenders: [
-        { sender: "newSender1", whatsappChannel: null, smsChannel: false },
-        { sender: "oldSender2", whatsappChannel: null, smsChannel: true },
-      ],
+      possibleSenders: ["newSender1", "oldSender2"],
     };
 
     const result = mergeConfig(newConfig, oldConfig);
 
     expect(result).toEqual({
       menus: {},
-      possibleSenders: [
-        { sender: "oldSender1", whatsappChannel: true, smsChannel: false },
-        { sender: "oldSender2", whatsappChannel: false, smsChannel: true },
-        { sender: "newSender1", whatsappChannel: false, smsChannel: false },
-      ],
+      possibleSenders: ["oldSender1", "oldSender2", "newSender1"],
     });
   });
 
   test("correctly merges overlapping senders and keeps turned on flag for WhatsApp", () => {
     const oldConfig: Configuration = {
       menus: {},
-      possibleSenders: [
-        { sender: "oldSender1", whatsappChannel: true, smsChannel: false },
-        { sender: "oldSender2", whatsappChannel: true, smsChannel: true },
-      ],
+      possibleSenders: ["oldSender1", "oldSender2"],
     };
 
     const newConfig: Configuration = {
       menus: {},
-      possibleSenders: [
-        { sender: "oldSender2", whatsappChannel: null, smsChannel: true },
-      ],
+      possibleSenders: ["oldSender2"],
     };
 
     const result = mergeConfig(newConfig, oldConfig);
 
     expect(result).toEqual({
       menus: {},
-      possibleSenders: [
-        { sender: "oldSender1", whatsappChannel: true, smsChannel: false },
-        { sender: "oldSender2", whatsappChannel: true, smsChannel: true },
-      ],
+      possibleSenders: ["oldSender1", "oldSender2"],
     });
   });
-
-
-
 
   test("correctly merges additive menus from new and old configurations", () => {
     const oldConfig: Configuration = {

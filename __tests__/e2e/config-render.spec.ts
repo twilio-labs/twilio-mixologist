@@ -24,7 +24,7 @@ test("should be navigable from home [admin]", async ({ page, context }) => {
   await expect(
     page
       .locator("section")
-      .filter({ hasText: "Connected Phone Numbers" })
+      .filter({ hasText: "Connected Senders" })
       .locator("div")
       .nth(1),
   ).toBeVisible();

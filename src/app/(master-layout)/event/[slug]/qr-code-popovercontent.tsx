@@ -5,6 +5,9 @@ import { useRef, useState } from "react";
 import QRCode from "react-qr-code";
 
 function getActionableLink(sender: string, ctaMessage: string) {
+  if(sender.startsWith("rcs:")) {
+    return `sms:${sender.replace("rcs:", "")}@rbm.goog?body=${encodeURIComponent(ctaMessage)}`;
+  }
   if (sender.startsWith("whatsapp:")) {
     return `https://wa.me/${sender.replace("whatsapp:", "")}?text=${encodeURIComponent(ctaMessage)}`;
   }
