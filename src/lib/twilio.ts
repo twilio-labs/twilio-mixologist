@@ -111,6 +111,28 @@ export async function createWhatsAppTemplate(
     },
   );
 
+  try {
+    await axios.post(
+      `https://content.twilio.com/v1/Content/${data.sid}/ApprovalRequests/whatsapp`,
+      {
+        name: data.friendly_name,
+        category: "UTILITY",
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        auth: {
+          username: TWILIO_API_KEY,
+          password: TWILIO_API_SECRET,
+        },
+      },
+    );
+  } catch (e) {
+    // @ts-ignore these parameters exist on the error object
+    console.error(`Error creating WhatsApp Template Approval Request for ${data.friendly_name}`, e?.response?.statusText || e.message, e?.response?.data?.message || '');
+  }
+
   return data;
 }
 
@@ -555,7 +577,10 @@ export async function getPossibleSenders() {
   const messagingService = await getMessagingService();
   const senders = await messagingService.phoneNumbers().list(); // Add whatsapp and rcs senders here once the API is available
   const channelSenders = await messagingService.channelSenders().list();
-  return [senders.map((s) => s.phoneNumber), channelSenders.map((cs) => cs.sender)].flat();
+  return [
+    senders.map((s) => s.phoneNumber),
+    channelSenders.map((cs) => cs.sender),
+  ].flat();
 }
 
 export async function createServiceInstances() {
