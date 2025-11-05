@@ -101,7 +101,7 @@ function getIconFromSender(sender: string) {
 }
 
 function clipPrefix(sender: string) {
-  return sender.replace(/whatsapp:|rcs:/, "");
+  return sender.replace(/^(whatsapp:|rcs:)/, "");
 }
 
 export default isClientAuth(
