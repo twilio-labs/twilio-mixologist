@@ -118,19 +118,30 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
     {
       label: "SMS",
       options: config.possibleSenders
-        .filter((s) => s.smsChannel)
+        .filter((s) => s.startsWith("+"))
         .map((s) => {
-          return { label: s.sender, value: s.sender };
+          return { label: s, value: s };
         }),
     },
     {
       label: "WhatsApp",
       options: config.possibleSenders
-        .filter((s) => s.whatsappChannel)
+        .filter((s) => s.startsWith("whatsapp:"))
         .map((s) => {
           return {
-            label: `whatsapp:${s.sender}`,
-            value: `whatsapp:${s.sender}`,
+            label: s,
+            value: s,
+          };
+        }),
+    },
+    {
+      label: "RCS",
+      options: config.possibleSenders
+        .filter((s) => s.startsWith("rcs:"))
+        .map((s) => {
+          return {
+            label: s,
+            value: s,
           };
         }),
     },
@@ -139,11 +150,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
   const unknownSenders = internalEvent.senders.filter(
     (s) =>
       !config.possibleSenders.find((ps) => {
-        const isWhatsapp = s.startsWith("whatsapp:");
-        if (
-          (isWhatsapp && ps.sender === s.replace("whatsapp:", "")) ||
-          ps.sender === s
-        ) {
+        if (ps === s) {
           return true;
         }
         return false;

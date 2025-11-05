@@ -3,10 +3,9 @@ import { useSyncDocument } from "@/provider/syncProvider";
 import { isClientAuth } from "@/lib/customHooks";
 import { Configuration } from "@/scripts/updateConfig";
 import {
-  ArrowRightIcon,
   MessageCircleMoreIcon,
   MessageSquareIcon,
-  PhoneIcon,
+  MessageSquarePlusIcon,
 } from "lucide-react";
 
 import { Privilege } from "@/middleware";
@@ -27,57 +26,20 @@ function ConfigPage() {
     <main className="p-4 md:p-6 lg:p-8 space-y-8">
       <h2 className="text-2xl font-semibold mb-6 text-center">Configuration</h2>
       <section>
-        <h2 className="text-xl font-bold">Connected Phone Numbers</h2>
-        <div className="grid gap-4 mt-4 ml-10">
+        <h2 className="text-xl font-bold">Connected Senders</h2>
+        <div className="grid md:grid-cols-4 grid-cols-2 gap-4 mt-4 ml-10">
           {configInitialized && config?.possibleSenders ? (
-            config.possibleSenders.map((sender: any, key) => (
-              <div key={key} className="flex items-center gap-4">
-                <PhoneIcon className="h-6 w-6" />
-                <span className="w-40">{sender.sender}</span>
-                <button
-                  title={sender.smsChannel ? "Disable SMS" : "Enable SMS"}
-                  className={` rounded-lg p-1 ${
-                    sender.smsChannel
-                      ? "bg-green-500 hover:bg-green-300"
-                      : "bg-gray-300 hover:bg-gray-400"
-                  }`}
-                  onClick={() => {
-                    sender.smsChannel = !sender.smsChannel;
-                    updateConfig({
-                      ...config,
-                    });
-                  }}
+            config.possibleSenders
+              .sort((a, b) => a.localeCompare(b))
+              .map((sender: any, key) => (
+                <div
+                  key={key}
+                  className={`flex items-center gap-4 overflow-ellipsis ${sender.length > 25 ? "col-span-2" : ""}`}
                 >
-                  <img
-                    src="/channel-icons/sms.svg"
-                    className={`h-6 w-6 text-white`}
-                  />
-                </button>
-                <button
-                  title={
-                    sender.whatsappChannel
-                      ? "Disable WhatsApp"
-                      : "Enable WhatsApp"
-                  }
-                  className={` rounded-lg p-1 ${
-                    sender.whatsappChannel
-                      ? "bg-green-500 hover:bg-green-300"
-                      : "bg-gray-300 hover:bg-gray-400"
-                  }`}
-                  onClick={() => {
-                    sender.whatsappChannel = !sender.whatsappChannel;
-                    updateConfig({
-                      ...config,
-                    });
-                  }}
-                >
-                  <img
-                    src="/channel-icons/whatsapp.svg"
-                    className={`h-6 w-6 text-white`}
-                  />
-                </button>
-              </div>
-            ))
+                  {getIconFromSender(sender)}
+                  <span className="w-40">{clipPrefix(sender)}</span>
+                </div>
+              ))
           ) : (
             <div className="w-2/3 h-10 bg-gray-300 rounded-sm animate-pulse"></div>
           )}
@@ -126,6 +88,20 @@ function ConfigPage() {
       </section>
     </main>
   );
+}
+
+function getIconFromSender(sender: string) {
+  if (sender.includes("whatsapp:")) {
+    return <MessageCircleMoreIcon className="h-6 w-6 text-green-500" />;
+  } else if (sender.includes("rcs:")) {
+    return <MessageSquarePlusIcon className="h-6 w-6 text-blue-500" />;
+  } else {
+    return <MessageSquareIcon className="h-6 w-6 text-gray-500" />;
+  }
+}
+
+function clipPrefix(sender: string) {
+  return sender.replace(/^(whatsapp:|rcs:)/, "");
 }
 
 export default isClientAuth(

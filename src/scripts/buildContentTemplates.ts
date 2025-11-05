@@ -292,10 +292,8 @@ export function getOrderCancelledTemplate(
 
 export function getOrderReadyTemplate(
   templateName: string,
+  baseUrl: string,
 ): WhatsAppTemplateConfig {
-  const body =
-    "*Your {{0}} is ready*. You can skip the queue and collect it at {{2}} right away. Ask for order number #{{1}}.";
-
   return {
     friendly_name: templateName,
     language: "en",
@@ -305,8 +303,22 @@ export function getOrderReadyTemplate(
       "2": "order pickup location",
     },
     types: {
+      "whatsapp/card": {
+        actions: [],
+        body: "Skip the line and collect your {{0}} at the {{2}}. \n\nAsk for order number #{{1}} when you pick it up.",
+        media: [
+          `${baseUrl}/rcs-resources/ready.png`,
+        ],
+      },
+      "twilio/card": {
+        media: [`${baseUrl}/rcs-resources/ready.png`],
+        orientation: "VERTICAL",
+        title:
+          "Skip the line and collect your {{0}} at the {{2}}.",
+        body: "Ask for order number #{{1}} when you pick it up.",
+      },
       "twilio/text": {
-        body,
+        body: "Your {{0}} is ready. \n\nSkip the line and collect it at the {{2}} right away. \n\nAsk for order number #{{1}}.",
       },
     },
   };
@@ -316,7 +328,7 @@ export function getOrderReminderTemplate(
   templateName: string,
 ): WhatsAppTemplateConfig {
   const body =
-    "Heya! Don't forget your {{0}}. You can skip the queue and collect it at {{2}}. Ask for order number #{{1}}.";
+    "Heya! Don't forget your {{0}}. You can skip the queue and collect it at {{2}}. \n\nAsk for order number #{{1}}.";
 
   return {
     friendly_name: templateName,
@@ -372,6 +384,18 @@ export interface WhatsAppTemplateConfig {
   language: string;
   variables: Record<string, string>;
   types: {
+    "whatsapp/card"?: {
+      body: string;
+      footer?: string;
+      header_text?: string;
+      media?: string[];
+      actions?: Array<{
+        type: "url" | "postback";
+        text: string;
+        url?: string;
+        postback_data?: string;
+      }>;
+    };
     "twilio/list-picker"?: {
       body: string;
       items: Array<{
@@ -393,8 +417,9 @@ export interface WhatsAppTemplateConfig {
     };
     "twilio/card"?: {
       title?: string;
-      subtitle: string;
       media?: string[];
+      body: string;
+      orientation?: "HORIZONTAL" | "VERTICAL";
     };
   };
   links?: {

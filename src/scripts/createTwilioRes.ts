@@ -23,7 +23,7 @@ import {
 
 const CONTENT_PREFIX = nextConfig?.env?.CONTENT_PREFIX;
 
-let { OVERRIDE_TEMPLATES } = process.env;
+let { PUBLIC_BASE_URL = "", OVERRIDE_TEMPLATES } = process.env;
 
 (async () => {
   await createServiceInstances();
@@ -142,7 +142,7 @@ async function createWhatsAppTemplates() {
     templateName = `${CONTENT_PREFIX}order_ready`;
     checkIfExistsOrCreateTemplate(
       templateName,
-      getOrderReadyTemplate(templateName),
+      getOrderReadyTemplate(templateName, PUBLIC_BASE_URL),
       templates,
     );
 

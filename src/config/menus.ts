@@ -74,8 +74,8 @@ export default {
         description: "Espresso with cold milk and ice",
       },
       {
-        shortTitle: "Caffè Latte",
-        title: "Caffè Latte",
+        shortTitle: "Latte",
+        title: "Latte",
         description: "Espresso with steamed milk",
       },
       {
@@ -128,6 +128,11 @@ export default {
         shortTitle: "Apple Chamomile",
         title: "Apple Chamomile",
         description: "Apple and chamomile tea",
+      },
+      {
+        shortTitle: "Hot Chocolate",
+        title: "Hot Chocolate",
+        description: "Steamed milk with chocolate syrup",
       },
       {
         shortTitle: "Earl Grey",

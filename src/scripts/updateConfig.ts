@@ -11,13 +11,7 @@ import menus, { Menus } from "@/config/menus";
 
 export interface Configuration {
   menus: Menus;
-  possibleSenders: PossibleSender[];
-}
-
-interface PossibleSender {
-  whatsappChannel: boolean | null;
-  smsChannel: boolean;
-  sender: string;
+  possibleSenders: string[];
 }
 
 const NEXT_PUBLIC_CONFIG_DOC = nextConfig?.env?.NEXT_PUBLIC_CONFIG_DOC;
@@ -26,33 +20,6 @@ const NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP =
   nextConfig?.env?.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP;
 const NEXT_PUBLIC_FEEDBACK_LIST =
   nextConfig?.env?.NEXT_PUBLIC_FEEDBACK_LIST || "";
-
-export function mergeConfig(
-  newConfig: Configuration,
-  oldConfig: Configuration,
-) {
-  const oldSenders = oldConfig.possibleSenders?.map((s) => s.sender) ?? [];
-  const dedupedSenders = Array.from(
-    new Set([...oldSenders, ...newConfig.possibleSenders.map((s) => s.sender)]),
-  );
-  return {
-    ...newConfig,
-    possibleSenders: dedupedSenders.map((sender) => {
-      const oldSender = oldConfig.possibleSenders?.find(
-        (s) => s.sender === sender,
-      );
-      const newSender = newConfig.possibleSenders.find(
-        (s) => s.sender === sender,
-      );
-      return {
-        sender,
-        whatsappChannel:
-          newSender?.whatsappChannel ?? oldSender?.whatsappChannel ?? false,
-        smsChannel: newSender?.smsChannel ?? oldSender?.smsChannel ?? false,
-      };
-    }),
-  };
-}
 
 export async function updateConfig() {
   if (
@@ -70,20 +37,13 @@ export async function updateConfig() {
 
   await createSyncListIfNotExists(NEXT_PUBLIC_FEEDBACK_LIST);
   const configDoc = await createSyncDocIfNotExists(NEXT_PUBLIC_CONFIG_DOC);
-  const newConfig = mergeConfig(
-    {
-      menus,
-      possibleSenders: possibleSenders.map((phoneNumber) => ({
-        whatsappChannel: null,
-        smsChannel: true,
-        sender: phoneNumber,
-      })),
-    },
+  const config = {
+    ...configDoc.data,
+    menus,
+    possibleSenders,
+  };
 
-    // @ts-ignore  thinks is a object but actually it's a Config
-    configDoc.data,
-  );
-  await configDoc.update({ data: newConfig });
+  await configDoc.update({ data: config });
 }
 
 (async () => {

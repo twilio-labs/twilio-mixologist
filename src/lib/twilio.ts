@@ -111,6 +111,28 @@ export async function createWhatsAppTemplate(
     },
   );
 
+  try {
+    await axios.post(
+      `https://content.twilio.com/v1/Content/${data.sid}/ApprovalRequests/whatsapp`,
+      {
+        name: data.friendly_name,
+        category: "UTILITY",
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        auth: {
+          username: TWILIO_API_KEY,
+          password: TWILIO_API_SECRET,
+        },
+      },
+    );
+  } catch (e) {
+    // @ts-ignore these parameters exist on the error object
+    console.error(`Error creating WhatsApp Template Approval Request for ${data.friendly_name}`, e?.response?.statusText || e.message, e?.response?.data?.message || '');
+  }
+
   return data;
 }
 
@@ -523,13 +545,17 @@ export async function createConversationWithParticipant(
   const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
     accountSid: TWILIO_ACCOUNT_SID,
   });
-  const usingWhatsApp = sender.startsWith("whatsapp:");
+  const prefix = sender.startsWith("whatsapp:")
+    ? "whatsapp:"
+    : sender.startsWith("rcs:")
+      ? "rcs:"
+      : "";
   const identity = `Mixologist Kiosk Customer ${new Date().toISOString()}`;
   const conversation =
     await client.conversations.v1.conversationWithParticipants.create({
       friendlyName: identity,
       participant: [
-        `{"messaging_binding": {"address": "${sender}", "proxy_address": "${usingWhatsApp ? "whatsapp:" : ""}${twilioNumber}"}}`,
+        `{"messaging_binding": {"address": "${sender}", "proxy_address": "${prefix}${twilioNumber}"}}`,
         `{"identity": "${identity}"}`,
       ],
     });
@@ -549,8 +575,12 @@ export async function deleteConversation(conversationSid: string) {
 export async function getPossibleSenders() {
   "use server";
   const messagingService = await getMessagingService();
-  const senders = await messagingService.phoneNumbers().list(); // Add whatsapp senders here once the API is available
-  return senders.map((s) => s.phoneNumber);
+  const senders = await messagingService.phoneNumbers().list(); // Add whatsapp and rcs senders here once the API is available
+  const channelSenders = await messagingService.channelSenders().list();
+  return [
+    senders.map((s) => s.phoneNumber),
+    channelSenders.map((cs) => cs.sender),
+  ].flat();
 }
 
 export async function createServiceInstances() {
