@@ -28,13 +28,17 @@ export default function QrPopoverConent({ senders }: { senders: string[] }) {
       const ctx = canvas.getContext("2d");
       const img = new Image();
       img.onload = function () {
-        canvas.width = img.width + 40;
-        canvas.height = img.height + 40;
+        const targetSize = 800;
+        const margin = 40;
+        const qrSize = targetSize - margin * 2; // 720px
+        
+        canvas.width = targetSize;
+        canvas.height = targetSize;
         if (ctx) {
           ctx.strokeRect(0, 0, canvas.width, canvas.height);
           ctx.fillStyle = "#FFFFFF";
           ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.drawImage(img, 20, 20);
+          ctx.drawImage(img, margin, margin, qrSize, qrSize);
         }
         const pngFile = canvas.toDataURL("image/png", 1.0);
 
