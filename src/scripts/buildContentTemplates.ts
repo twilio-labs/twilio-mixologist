@@ -318,7 +318,7 @@ export function getOrderReadyTemplate(
         body: "Ask for order number #{{1}} when you pick it up.",
       },
       "twilio/text": {
-        body: "Your {{0}} is ready. \n\nSkip the line and collect it at the {{2}} right away. \n\nAsk for order number #{{2}}.",
+        body: "Your {{0}} is ready. \n\nSkip the line and collect it at the {{2}} right away. \n\nAsk for order number #{{1}}.",
       },
     },
   };
