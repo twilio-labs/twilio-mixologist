@@ -248,6 +248,7 @@ export default {
       "Coconut Syrup",
       "Mint Syrup",
       "Dulce de leche Syrup",
+      "Café de Olla Syrup",
       "Chocolate Sauce",
       "Brown Sugar Stick",
       "White Sugar Stick",
