@@ -210,7 +210,7 @@ export default {
         shortTitle: "Matcha Latte",
         title: "Matcha Latte",
         description:
-          "Finely ground Japanese green tea whisked into steamed milk",
+          "Green tea whisked into steamed milk",
       },
       {
         shortTitle: "Chai Latte",

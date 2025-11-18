@@ -30,8 +30,8 @@ export default function MenuItem({
         />
       )}
       <div className="text-center">
-        <h3 className="font-semibold">{title}</h3>
-        <p className="text-sm mt-2 max-w-xs">{description}</p>
+        <h3 className="text-[2.3rem] font-semibold">{title}</h3>
+        <p className="text-[1.8rem] mt-2 max-w-sm">{description}</p>
       </div>
     </div>
   );

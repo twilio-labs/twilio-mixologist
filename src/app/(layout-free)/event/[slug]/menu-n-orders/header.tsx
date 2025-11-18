@@ -10,7 +10,7 @@ export default function Header({ number }: { number: string }) {
           style={{ fill: "white" }}
         />
         <div className="flex items-center ">
-          <h1 className="text-[2.5rem] ">Barista Menu</h1>
+          <h1 className="text-[4rem]">Barista Menu</h1>
         </div>
         {/* <p className="text-sm">SEND YOUR ORDER TO {number}</p> */}
         <CoffeeShopIcon
