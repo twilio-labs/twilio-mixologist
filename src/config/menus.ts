@@ -210,7 +210,7 @@ export default {
         shortTitle: "Matcha Latte",
         title: "Matcha Latte",
         description:
-          "Finely ground Japanese green tea whisked into steamed milk",
+          "Green tea whisked into steamed milk",
       },
       {
         shortTitle: "Chai Latte",
@@ -231,6 +231,7 @@ export default {
       },
     ],
     modifiers: [
+      "Decaf",
       "Milk",
       "Soy Milk",
       "Almond Milk",
@@ -248,6 +249,7 @@ export default {
       "Coconut Syrup",
       "Mint Syrup",
       "Dulce de leche Syrup",
+      "Café de Olla Syrup",
       "Chocolate Sauce",
       "Brown Sugar Stick",
       "White Sugar Stick",
@@ -334,6 +336,32 @@ export default {
         shortTitle: "Espresso Martini",
         description: "Vodka, Espresso, Coffee Liqueur, Sugar Syrup",
         title: "Espresso Martini",
+      },
+      {
+        title: "Maracuia Fitzgerald",
+        shortTitle: "Maracuia Fitzgerald",
+        description:
+          "Gin, limão siciliano e maracujá; cítrico e herbal",
+      },
+      {
+        title: "Negroni",
+        shortTitle: "Negroni",
+        description: "Gin, vermute rosso e Campari; amargo e intenso",
+      },
+      {
+        title: "Macunaíma",
+        shortTitle: "Macunaíma",
+        description: "Cachaça, limão Taiti e Fener; cítrico e levemente amargo",
+      },
+      {
+        title: "Especiado (Não Alcoólico)",
+        shortTitle: "Especiado",
+        description: "Maracujá, especiarias e limão; cítrico, frutado e picante",
+      },
+      {
+        title: "Verdejo (Não Alcoólico)",
+        shortTitle: "Verdejo",
+        description: "Chá de laranja, manjericão e limão; herbal e levemente doce",
       },
     ],
   },

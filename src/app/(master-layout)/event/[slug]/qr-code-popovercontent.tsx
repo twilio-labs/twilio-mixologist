@@ -14,7 +14,7 @@ function getActionableLink(sender: string, ctaMessage: string) {
   return `smsto:${sender}:${ctaMessage}`;
 }
 export default function QrPopoverConent({ senders }: { senders: string[] }) {
-  const [ctaMessage, setCtaMessage] = useState("");
+  const [ctaMessage, setCtaMessage] = useState("Send this message to order a coffee ☕️");
 
   const qrContainerRef = useRef<HTMLDivElement>(null);
   const downloadQR = async () => {
