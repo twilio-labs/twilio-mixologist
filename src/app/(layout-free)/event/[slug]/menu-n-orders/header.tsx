@@ -10,7 +10,14 @@ export default function Header({ number }: { number: string }) {
           style={{ fill: "white" }}
         />
         <div className="flex items-center ">
-          <h1 className="text-[4rem]">Barista Menu</h1>
+          <object
+            data="/twilio.svg"
+            type="image/svg+xml"
+            width="153"
+            height="45"
+            className="mr-2"
+          />
+          <h1 className="text-[2.5rem] ">cafe</h1>
         </div>
         {/* <p className="text-sm">SEND YOUR ORDER TO {number}</p> */}
         <CoffeeShopIcon
