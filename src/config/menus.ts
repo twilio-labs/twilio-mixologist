@@ -346,7 +346,7 @@ export default {
       {
         title: "Negroni",
         shortTitle: "Negroni",
-        description: "Gin, vermute rosso e Campari; amargo e intenso",  
+        description: "Gin, vermute rosso e Campari; amargo e intenso",
       },
       {
         title: "Macunaíma",
