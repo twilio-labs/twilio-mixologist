@@ -231,6 +231,7 @@ export default {
       },
     ],
     modifiers: [
+      "Decaff",
       "Milk",
       "Soy Milk",
       "Almond Milk",
@@ -335,6 +336,32 @@ export default {
         shortTitle: "Espresso Martini",
         description: "Vodka, Espresso, Coffee Liqueur, Sugar Syrup",
         title: "Espresso Martini",
+      },
+      {
+        title: "Maracuia Fitzgerald",
+        shortTitle: "Maracuia Fitzgerald",
+        description:
+          "Gin, limão siciliano e maracujá; cítrico e herbal",
+      },
+      {
+        title: "Negroni",
+        shortTitle: "Negroni",
+        description: "Gin, vermute rosso e Campari; amargo e intenso",  
+      },
+      {
+        title: "Macunaíma",
+        shortTitle: "Macunaíma",
+        description: "Cachaça, limão Taiti e Fener; cítrico e levemente amargo",
+      },
+      {
+        title: "Especiado (Não Alcoólico)",
+        shortTitle: "Especiado",
+        description: "Maracujá, especiarias e limão; cítrico, frutado e picante",
+      },
+      {
+        title: "Verdejo (Não Alcoólico)",
+        shortTitle: "Verdejo",
+        description: "Chá de laranja, manjericão e limão; herbal e levemente doce",
       },
     ],
   },
