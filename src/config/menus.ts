@@ -231,7 +231,7 @@ export default {
       },
     ],
     modifiers: [
-      "Decaff",
+      "Decaf",
       "Milk",
       "Soy Milk",
       "Almond Milk",
