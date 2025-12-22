@@ -60,6 +60,7 @@ const iconMap: { [key: string]: any } = {
   Especiado: WhiteWineIcon,
   Verdejo: WhiteWineIcon,
   "White Russian": WhiteWineIcon,
+  "Hot White Russian": WhiteWineIcon,
   "Irish Coffee": WhiteWineIcon,
   "Café Colada": FlatWhiteIcon,
   Cortadito: FlatWhiteIcon,

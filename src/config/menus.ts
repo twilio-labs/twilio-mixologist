@@ -209,8 +209,7 @@ export default {
       {
         shortTitle: "Matcha Latte",
         title: "Matcha Latte",
-        description:
-          "Green tea whisked into steamed milk",
+        description: "Green tea whisked into steamed milk",
       },
       {
         shortTitle: "Chai Latte",
@@ -318,14 +317,19 @@ export default {
         description: "Vodka, Espresso, Coffee Liqueur, Sugar Syrup",
       },
       {
-        title: "The Cloud Coffee - White Russian",
-        shortTitle: "White Russian",
+        title: "Hot White Russian",
+        shortTitle: "Hot White Russian",
         description: "Vodka, Coffee Liqueur, Cream",
       },
       {
-        title: "The Twilio Roast - Irish Coffee",
+        title: "Irish Coffee",
         shortTitle: "Irish Coffee",
         description: "Whiskey, Coffee, Cream",
+      },
+      {
+        shortTitle: "Coffee",
+        title: "Regular Coffee",
+        description: "Brewed coffee, black",
       },
       {
         title: "The API Pour - Mudslide",
@@ -340,8 +344,7 @@ export default {
       {
         title: "Maracuia Fitzgerald",
         shortTitle: "Maracuia Fitzgerald",
-        description:
-          "Gin, limão siciliano e maracujá; cítrico e herbal",
+        description: "Gin, limão siciliano e maracujá; cítrico e herbal",
       },
       {
         title: "Negroni",
@@ -356,13 +359,16 @@ export default {
       {
         title: "Especiado (Não Alcoólico)",
         shortTitle: "Especiado",
-        description: "Maracujá, especiarias e limão; cítrico, frutado e picante",
+        description:
+          "Maracujá, especiarias e limão; cítrico, frutado e picante",
       },
       {
         title: "Verdejo (Não Alcoólico)",
         shortTitle: "Verdejo",
-        description: "Chá de laranja, manjericão e limão; herbal e levemente doce",
+        description:
+          "Chá de laranja, manjericão e limão; herbal e levemente doce",
       },
     ],
+    modifiers: ["Whipped Cream"],
   },
 } as Menus;
