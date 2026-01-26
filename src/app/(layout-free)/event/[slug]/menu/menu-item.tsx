@@ -11,6 +11,9 @@ export default function MenuItem({
   description: string;
 }) {
   const IconComponent = iconMap[shortTitle];
+  if(!IconComponent){
+    console.debug(`No icon found for menu item: ${shortTitle}`);
+  }
   return (
     <div className="flex flex-col cursor-pointer">
       {IconComponent ? (
