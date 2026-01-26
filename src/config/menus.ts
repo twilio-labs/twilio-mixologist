@@ -41,7 +41,7 @@ export default {
       {
         shortTitle: "Espresso",
         title: "Espresso",
-        description: "Strong black coffee",
+        description: "30ml straight espresso shot",
       },
       {
         shortTitle: "Double Espresso",
@@ -51,7 +51,7 @@ export default {
       {
         shortTitle: "Flat White",
         title: "Flat White",
-        description: "Espresso with velvety milk",
+        description: "40ml double ristretto with smooth micro-foamed milk",
       },
       {
         shortTitle: "Macchiato",
@@ -106,12 +106,12 @@ export default {
       {
         shortTitle: "Espresso Macchiato",
         title: "Espresso Macchiato",
-        description: "Espresso with a dash of milk",
+        description: "30ml espresso with a touch of foamed milk",
       },
       {
         shortTitle: "Americano",
         title: "Americano",
-        description: "Espresso with hot water",
+        description: "30ml espresso made long with hot water",
       },
       {
         shortTitle: "Iced Americano",
@@ -147,7 +147,7 @@ export default {
       {
         shortTitle: "Hot Chocolate",
         title: "Hot Chocolate",
-        description: "Steamed milk with chocolate syrup",
+        description: "Rich chocolate and foamed milk",
       },
       {
         shortTitle: "Earl Grey",
@@ -167,7 +167,12 @@ export default {
       {
         shortTitle: "Cloud Cappuccino",
         title: "Cloud Cappuccino",
-        description: "Made with espresso, steamed milk and milk foam",
+        description: "30ml espresso with foamed milk cap and chocolate dust",
+      },
+      { shortTitle: "Cafè Latte",
+        title: "Caffè Latte",
+        description:
+          "30 ml espresso with smooth micro-foamed milk"
       },
       {
         shortTitle: "Twilio Latte",
@@ -193,7 +198,7 @@ export default {
       {
         shortTitle: "Cortado",
         title: "Cortado",
-        description: "One Shot of Espresso + Dash Steamed Milk",
+        description: "30ml espresso with a smooth micro-foamed milk in a 4-ounce cup",
       },
       {
         shortTitle: "Caramelo Cortado",

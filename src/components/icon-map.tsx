@@ -29,6 +29,7 @@ const iconMap: { [key: string]: any } = {
   Americano: AmericanoIcon,
   "Latte Macchiato": LatteMacchiatoIcon,
   "Caffè Latte": LatteMacchiatoIcon,
+  "Cafè Latte": LatteMacchiatoIcon,
   "Twilio Latte": LatteMacchiatoIcon,
   "Flat White": FlatWhiteIcon,
   Macchiato: EspressoMacchiatoIcon,
