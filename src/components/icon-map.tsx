@@ -22,6 +22,9 @@ import {
 const iconMap: { [key: string]: any } = {
   "Double Espresso": EspressoDopioIcon,
   Espresso: EspressoIcon,
+  Ristretto: EspressoIcon,
+  Mochaccino: FlatWhiteIcon,
+  "Various teas": CupIcon,
   "SMS Espresso": EspressoIcon,
   Americano: AmericanoIcon,
   "Latte Macchiato": LatteMacchiatoIcon,

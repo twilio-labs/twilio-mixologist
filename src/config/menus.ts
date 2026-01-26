@@ -79,6 +79,21 @@ export default {
         description: "Espresso with steamed milk",
       },
       {
+        shortTitle: "Mochaccino",
+        title: "Mochaccino",
+        description: "Espresso with chocolate and steamed milk",
+      },
+      {
+        shortTitle: "Various teas",
+        title: "Various teas",
+        description: "Selection of finest herbal and black teas",
+      },
+      {
+        shortTitle: "Ristretto",
+        title: "Ristretto",
+        description: "Concentrated shot of espresso",
+      },
+      {
         shortTitle: "Cappuccino",
         title: "Cappuccino",
         description: "Espresso with steamed milk",
