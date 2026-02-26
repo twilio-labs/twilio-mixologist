@@ -41,7 +41,7 @@ export default {
       {
         shortTitle: "Espresso",
         title: "Espresso",
-        description: "Strong black coffee",
+        description: "30ml straight espresso shot",
       },
       {
         shortTitle: "Double Espresso",
@@ -51,7 +51,7 @@ export default {
       {
         shortTitle: "Flat White",
         title: "Flat White",
-        description: "Espresso with velvety milk",
+        description: "40ml double ristretto with smooth micro-foamed milk",
       },
       {
         shortTitle: "Macchiato",
@@ -79,6 +79,21 @@ export default {
         description: "Espresso with steamed milk",
       },
       {
+        shortTitle: "Mochaccino",
+        title: "Mochaccino",
+        description: "Espresso with chocolate and steamed milk",
+      },
+      {
+        shortTitle: "Various teas",
+        title: "Various teas",
+        description: "Selection of finest herbal and black teas",
+      },
+      {
+        shortTitle: "Ristretto",
+        title: "Ristretto",
+        description: "Concentrated shot of espresso",
+      },
+      {
         shortTitle: "Cappuccino",
         title: "Cappuccino",
         description: "Espresso with steamed milk",
@@ -91,12 +106,12 @@ export default {
       {
         shortTitle: "Espresso Macchiato",
         title: "Espresso Macchiato",
-        description: "Espresso with a dash of milk",
+        description: "30ml espresso with a touch of foamed milk",
       },
       {
         shortTitle: "Americano",
         title: "Americano",
-        description: "Espresso with hot water",
+        description: "30ml espresso made long with hot water",
       },
       {
         shortTitle: "Iced Americano",
@@ -132,7 +147,7 @@ export default {
       {
         shortTitle: "Hot Chocolate",
         title: "Hot Chocolate",
-        description: "Steamed milk with chocolate syrup",
+        description: "Rich chocolate and foamed milk",
       },
       {
         shortTitle: "Earl Grey",
@@ -152,7 +167,12 @@ export default {
       {
         shortTitle: "Cloud Cappuccino",
         title: "Cloud Cappuccino",
-        description: "Made with espresso, steamed milk and milk foam",
+        description: "30ml espresso with foamed milk cap and chocolate dust",
+      },
+      { shortTitle: "Cafè Latte",
+        title: "Caffè Latte",
+        description:
+          "30 ml espresso with smooth micro-foamed milk"
       },
       {
         shortTitle: "Twilio Latte",
@@ -178,7 +198,7 @@ export default {
       {
         shortTitle: "Cortado",
         title: "Cortado",
-        description: "One Shot of Espresso + Dash Steamed Milk",
+        description: "30ml espresso with a smooth micro-foamed milk in a 4-ounce cup",
       },
       {
         shortTitle: "Caramelo Cortado",
@@ -209,8 +229,7 @@ export default {
       {
         shortTitle: "Matcha Latte",
         title: "Matcha Latte",
-        description:
-          "Green tea whisked into steamed milk",
+        description: "Green tea whisked into steamed milk",
       },
       {
         shortTitle: "Chai Latte",
@@ -233,16 +252,21 @@ export default {
     modifiers: [
       "Decaf",
       "Milk",
+      "Whole Milk",
       "Soy Milk",
       "Almond Milk",
       "Oat Milk",
+      "Skim Milk",
       "Semi-skimmed Milk",
+      "Half & Half",
       "Coconut Milk",
       "Rice Milk",
-      "Sugarfree Vanilla Syrup",
+      "Sugar Free Vanilla Syrup",
       "Chocolate Caramel Syrup",
       "Vanilla Syrup",
       "Chocolate Syrup",
+      "Salted Caramel Syrup",
+      "Peppermint Syrup",
       "Caramel Syrup",
       "Hazelnut Syrup",
       "Cinnamon Syrup",
@@ -251,6 +275,8 @@ export default {
       "Dulce de leche Syrup",
       "Café de Olla Syrup",
       "Chocolate Sauce",
+      "Chocolate Shavings",
+      "Whipped Cream",
       "Brown Sugar Stick",
       "White Sugar Stick",
     ],
@@ -299,8 +325,8 @@ export default {
         description: "Mango, Cane Sugar, Assam Black Tea, Boba 🥭🧋",
       },
       {
-        title: "Lychee Peachy Green Tea with Lychee Jelly",
-        shortTitle: "Lychee Peachy Tea",
+        title: "Lychee Peachy Green Tea",
+        shortTitle: "Lychee Peachy Green Tea",
         description: "Lychee, Peach, Jasmine Green Tea, Lychee Jelly 🍑🍵",
       },
       {
@@ -308,7 +334,23 @@ export default {
         shortTitle: "Caramel Milk Tea",
         description: "Caramel, Oatmilk, Assam Black Tea 🍯🥛",
       },
+      {
+        title: "Matcha Latte",
+        shortTitle: "Matcha Latte",
+        description: "Matcha green tea blended with milk 🍵🥛",
+      },
+      {
+        title: "Strawberry Matcha Latte",
+        shortTitle: "Strawberry Matcha Latte",
+        description: "Matcha, strawberry, and milk layered over ice 🍓🍵",
+      },
+      {
+        title: "Strawberry Lemonade Tea",
+        shortTitle: "Strawberry Lemonade Tea",
+        description: "Strawberry and lemonade tea served chilled 🍓🍋",
+      },
     ],
+    modifiers: ["Lactose Free Whole Milk", "Oat Milk"],
   },
   cocktail: {
     items: [
@@ -318,14 +360,24 @@ export default {
         description: "Vodka, Espresso, Coffee Liqueur, Sugar Syrup",
       },
       {
-        title: "The Cloud Coffee - White Russian",
-        shortTitle: "White Russian",
+        title: "Hot White Russian",
+        shortTitle: "Hot White Russian",
         description: "Vodka, Coffee Liqueur, Cream",
       },
       {
-        title: "The Twilio Roast - Irish Coffee",
+        title: "White Russian",
+        shortTitle: "White Russian",
+        description: "Coffee Liqueur, Vodka, Cream",
+      },
+      {
+        title: "Irish Coffee",
         shortTitle: "Irish Coffee",
-        description: "Whiskey, Coffee, Cream",
+        description: "Espresso, Irish Whiskey, Raw Sugar, Fresh Cream",
+      },
+      {
+        shortTitle: "Coffee",
+        title: "Regular Coffee",
+        description: "Brewed coffee, black",
       },
       {
         title: "The API Pour - Mudslide",
@@ -334,14 +386,13 @@ export default {
       },
       {
         shortTitle: "Espresso Martini",
-        description: "Vodka, Espresso, Coffee Liqueur, Sugar Syrup",
+        description: "Espresso, Vodka, Coffee Liqueur",
         title: "Espresso Martini",
       },
       {
         title: "Maracuia Fitzgerald",
         shortTitle: "Maracuia Fitzgerald",
-        description:
-          "Gin, limão siciliano e maracujá; cítrico e herbal",
+        description: "Gin, limão siciliano e maracujá; cítrico e herbal",
       },
       {
         title: "Negroni",
@@ -356,13 +407,16 @@ export default {
       {
         title: "Especiado (Não Alcoólico)",
         shortTitle: "Especiado",
-        description: "Maracujá, especiarias e limão; cítrico, frutado e picante",
+        description:
+          "Maracujá, especiarias e limão; cítrico, frutado e picante",
       },
       {
         title: "Verdejo (Não Alcoólico)",
         shortTitle: "Verdejo",
-        description: "Chá de laranja, manjericão e limão; herbal e levemente doce",
+        description:
+          "Chá de laranja, manjericão e limão; herbal e levemente doce",
       },
     ],
+    modifiers: ["Whipped Cream"],
   },
 } as Menus;

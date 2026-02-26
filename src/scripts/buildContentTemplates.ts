@@ -318,7 +318,7 @@ export function getOrderReadyTemplate(
         body: "Ask for order number #{{1}} when you pick it up.",
       },
       "twilio/text": {
-        body: "Your {{0}} is ready. \n\nSkip the line and collect it at the {{2}} right away. \n\nAsk for order number #{{1}}.",
+        body: "Your {{0}} is ready. \n\nSkip the line and collect it at the {{2}} right away. \n\nAsk for order number #{{1}} when you pick it up.",
       },
     },
   };
@@ -328,7 +328,7 @@ export function getOrderReminderTemplate(
   templateName: string,
 ): WhatsAppTemplateConfig {
   const body =
-    "Heya! Don't forget your {{0}}. You can skip the queue and collect it at {{2}}. \n\nAsk for order number #{{1}}.";
+    "Heya! Don't forget your {{0}}. You can skip the queue and collect it at {{2}}. \n\nAsk for order number #{{1}} when you pick it up.";
 
   return {
     friendly_name: templateName,
