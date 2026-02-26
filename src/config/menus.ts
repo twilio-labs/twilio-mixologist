@@ -252,16 +252,21 @@ export default {
     modifiers: [
       "Decaf",
       "Milk",
+      "Whole Milk",
       "Soy Milk",
       "Almond Milk",
       "Oat Milk",
+      "Skim Milk",
       "Semi-skimmed Milk",
+      "Half & Half",
       "Coconut Milk",
       "Rice Milk",
-      "Sugarfree Vanilla Syrup",
+      "Sugar Free Vanilla Syrup",
       "Chocolate Caramel Syrup",
       "Vanilla Syrup",
       "Chocolate Syrup",
+      "Salted Caramel Syrup",
+      "Peppermint Syrup",
       "Caramel Syrup",
       "Hazelnut Syrup",
       "Cinnamon Syrup",
@@ -270,6 +275,8 @@ export default {
       "Dulce de leche Syrup",
       "Café de Olla Syrup",
       "Chocolate Sauce",
+      "Chocolate Shavings",
+      "Whipped Cream",
       "Brown Sugar Stick",
       "White Sugar Stick",
     ],
@@ -318,8 +325,8 @@ export default {
         description: "Mango, Cane Sugar, Assam Black Tea, Boba 🥭🧋",
       },
       {
-        title: "Lychee Peachy Green Tea with Lychee Jelly",
-        shortTitle: "Lychee Peachy Tea",
+        title: "Lychee Peachy Green Tea",
+        shortTitle: "Lychee Peachy Green Tea",
         description: "Lychee, Peach, Jasmine Green Tea, Lychee Jelly 🍑🍵",
       },
       {
@@ -327,7 +334,23 @@ export default {
         shortTitle: "Caramel Milk Tea",
         description: "Caramel, Oatmilk, Assam Black Tea 🍯🥛",
       },
+      {
+        title: "Matcha Latte",
+        shortTitle: "Matcha Latte",
+        description: "Matcha green tea blended with milk 🍵🥛",
+      },
+      {
+        title: "Strawberry Matcha Latte",
+        shortTitle: "Strawberry Matcha Latte",
+        description: "Matcha, strawberry, and milk layered over ice 🍓🍵",
+      },
+      {
+        title: "Strawberry Lemonade Tea",
+        shortTitle: "Strawberry Lemonade Tea",
+        description: "Strawberry and lemonade tea served chilled 🍓🍋",
+      },
     ],
+    modifiers: ["Lactose Free Whole Milk", "Oat Milk"],
   },
   cocktail: {
     items: [
@@ -342,9 +365,14 @@ export default {
         description: "Vodka, Coffee Liqueur, Cream",
       },
       {
+        title: "White Russian",
+        shortTitle: "White Russian",
+        description: "Coffee Liqueur, Vodka, Cream",
+      },
+      {
         title: "Irish Coffee",
         shortTitle: "Irish Coffee",
-        description: "Whiskey, Coffee, Cream",
+        description: "Espresso, Irish Whiskey, Raw Sugar, Fresh Cream",
       },
       {
         shortTitle: "Coffee",
@@ -358,7 +386,7 @@ export default {
       },
       {
         shortTitle: "Espresso Martini",
-        description: "Vodka, Espresso, Coffee Liqueur, Sugar Syrup",
+        description: "Espresso, Vodka, Coffee Liqueur",
         title: "Espresso Martini",
       },
       {
