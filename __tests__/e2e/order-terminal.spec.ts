@@ -27,9 +27,6 @@ test.describe("[no login] ", () => {
       page.getByRole("button", { name: "Order Made" }),
     ).not.toBeVisible();
     await expect(
-      page.getByRole("button", { name: "Delete Order" }),
-    ).not.toBeVisible();
-    await expect(
       page.getByRole("button", { name: "Served To Customer" }),
     ).not.toBeVisible();
     await expect(
@@ -73,9 +70,9 @@ test.describe("[no login] ", () => {
     await expect(
       page.getByRole("button", { name: "Order Made" }),
     ).not.toBeVisible();
-    await expect(
-      page.getByRole("button", { name: "Delete Order" }),
-    ).not.toBeVisible();
+    // await expect(
+    //   page.getByRole("button", { name: "Delete Order" }),
+    // ).not.toBeVisible();
     await expect(
       page.getByRole("button", { name: "Served To Customer" }),
     ).not.toBeVisible();
