@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 
 import { pushToSyncList } from "@/lib/twilio";
-import { Privilege, getAuthenticatedRole } from "@/middleware";
+import { getAuthenticatedRole, Privilege } from "@/middleware";
 
 export async function POST(request: Request) {
   const [headersList, data] = await Promise.all([headers(), request.json()]);
@@ -30,12 +30,12 @@ export async function POST(request: Request) {
       },
     );
   }
-
+  let item;
   try {
-    await pushToSyncList(data.event, data.order);
+    item = await pushToSyncList(data.event, data.order);
   } catch (e: any) {
     console.error(e);
     return new Response(e.message, { status: 500, statusText: e.message });
   }
-  return new Response(null, { status: 201 });
+  return new Response(JSON.stringify({ key: item.index }), { status: 201 });
 }
