@@ -211,7 +211,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="maxOrders">Max Orders Per Customer</Label>
+            <Label htmlFor="maxOrders">Max Orders Per Customer Per Day</Label>
             <Input
               id="maxOrders"
               type="number"
