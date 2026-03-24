@@ -17,7 +17,7 @@ import FunnelChart from "./funnelChart";
 import { MixologistStats } from "@/app/api/event/[slug]/stats/helper";
 import { use, useEffect, useState } from "react";
 import CountriesChart from "./countriesChart";
-import { Privilege } from "@/middleware";
+import { Privilege } from "@/proxy";
 
 function StatsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { toast } = useToast();

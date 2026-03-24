@@ -2,6 +2,7 @@ export interface MenuItem {
   shortTitle: string;
   title: string;
   description: string;
+  originalTitle?: string;
 }
 
 export enum modes {
@@ -51,7 +52,7 @@ export default {
       {
         shortTitle: "Flat White",
         title: "Flat White",
-        description: "40ml double ristretto with smooth micro-foamed milk",
+        description: "Espresso with velvety milk",
       },
       {
         shortTitle: "Macchiato",
@@ -106,12 +107,12 @@ export default {
       {
         shortTitle: "Espresso Macchiato",
         title: "Espresso Macchiato",
-        description: "30ml espresso with a touch of foamed milk",
+        description: "Espresso with a dash of milk",
       },
       {
         shortTitle: "Americano",
         title: "Americano",
-        description: "30ml espresso made long with hot water",
+        description: "Espresso with hot water",
       },
       {
         shortTitle: "Iced Americano",
@@ -167,7 +168,7 @@ export default {
       {
         shortTitle: "Cloud Cappuccino",
         title: "Cloud Cappuccino",
-        description: "30ml espresso with foamed milk cap and chocolate dust",
+        description: "Made with espresso, steamed milk and milk foam",
       },
       { shortTitle: "Cafè Latte",
         title: "Caffè Latte",
@@ -198,7 +199,7 @@ export default {
       {
         shortTitle: "Cortado",
         title: "Cortado",
-        description: "30ml espresso with a smooth micro-foamed milk in a 4-ounce cup",
+        description: "One Shot of Espresso + Dash Steamed Milk",
       },
       {
         shortTitle: "Caramelo Cortado",
@@ -415,6 +416,16 @@ export default {
         shortTitle: "Verdejo",
         description:
           "Chá de laranja, manjericão e limão; herbal e levemente doce",
+      },
+      {
+        title: "Cosmopolitan",
+        shortTitle: "Cosmo",
+        description: "Vodka, Triple Sec, Cranberry Juice, Lime Juice",
+      },
+      {
+        title: "Appletini",
+        shortTitle: "Appletini",
+        description: "Vodka, Apple Schnapps, Apple Juice",
       },
     ],
     modifiers: ["Whipped Cream"],

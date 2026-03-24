@@ -89,13 +89,20 @@ export async function POST(request: NextRequest) {
       `Couldn't create order since the customer already has an active order for a ${lastOrder.data.item}, order # ${lastOrder.index}`,
       { status: 500 },
     );
-  } else if (
-    // @ts-ignore  thinks is a object but actually it's a string
-    conversationRecord?.orderCount > event.maxOrders &&
+  }
+
+  const today = new Date().toISOString().split("T")[0];
+  const isNewDay = conversationRecord?.dailyOrderDate !== today;
+  const dailyOrderCount = isNewDay
+    ? 0
+    : Number(conversationRecord?.dailyOrderCount ?? 0);
+
+  if (
+    dailyOrderCount >= event.maxOrders &&
     !UNLIMTED_ORDERS.includes(phoneNumber)
   ) {
     return new Response(
-      `Couldn't create order since the customer already ordered the maximum number of drinks allowed.`,
+      `Couldn't create order since the customer already ordered the maximum number of drinks allowed today.`,
       { status: 500 },
     );
   }
@@ -124,6 +131,8 @@ export async function POST(request: NextRequest) {
         event: event.slug,
         lastOrderNumber: orderNumber,
         orderCount,
+        dailyOrderCount: dailyOrderCount + 1,
+        dailyOrderDate: today,
         stage: orderCount === 1 ? Stages.FIRST_ORDER : Stages.REPEAT_CUSTOMER,
       },
       TwoWeeksInSeconds,

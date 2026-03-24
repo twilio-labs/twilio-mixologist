@@ -2,7 +2,7 @@
 
 import { updateAiAssistant } from "@/lib/twilio";
 import { headers } from "next/headers";
-import { Privilege, getAuthenticatedRole } from "@/middleware";
+import { Privilege, getAuthenticatedRole } from "@/proxy";
 
 export async function PUT(
   request: Request,

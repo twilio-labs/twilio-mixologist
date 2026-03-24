@@ -40,6 +40,7 @@ async function MenuPage(props: { params: Promise<{ slug: string }> }) {
                     title={item.title}
                     shortTitle={item.shortTitle}
                     description={item.description}
+                    originalTitle={item.originalTitle}
                   />
                 </div>
               </div>

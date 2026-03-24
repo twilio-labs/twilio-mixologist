@@ -1,5 +1,5 @@
 import { test, expect, type Locator } from "@playwright/test";
-import { Privilege } from "@/middleware";
+import { Privilege } from "@/proxy";
 
 test.describe("[no login]", () => {
   test("Should not see the page", async ({ page }) => {

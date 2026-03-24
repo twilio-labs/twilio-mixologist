@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Privilege } from "@/middleware";
+import { Privilege } from "@/proxy";
 import { getCookie } from "cookies-next";
 
 import { Button } from "@/components/ui/button";

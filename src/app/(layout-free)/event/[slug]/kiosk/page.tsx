@@ -1,4 +1,4 @@
-import { Privilege } from "@/middleware";
+import { Privilege } from "@/proxy";
 import { cookies } from "next/headers";
 import { getSyncService } from "@/lib/twilio";
 import OrderForm from "@/app/(master-layout)/event/[slug]/orders/order-form";

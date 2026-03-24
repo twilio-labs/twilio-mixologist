@@ -8,7 +8,7 @@ import {
 } from "react";
 import { getCookie } from "cookies-next";
 import { createToken } from "@/lib/twilio";
-import { Privilege } from "@/middleware";
+import { Privilege } from "@/proxy";
 import {
   Client,
   SyncMap,

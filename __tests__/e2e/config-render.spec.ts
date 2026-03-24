@@ -1,4 +1,4 @@
-import { Privilege } from "@/middleware";
+import { Privilege } from "@/proxy";
 import { test, expect } from "@playwright/test";
 
 test("should not be navigable from home [no login]", async ({ page }) => {

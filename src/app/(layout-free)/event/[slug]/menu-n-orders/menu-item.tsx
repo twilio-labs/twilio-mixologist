@@ -5,12 +5,14 @@ export default function MenuItem({
   title,
   shortTitle,
   description,
+  originalTitle,
 }: {
   title: string;
   shortTitle: string;
   description: string;
+  originalTitle?: string;
 }) {
-  const IconComponent = iconMap[shortTitle];
+  const IconComponent = iconMap[originalTitle ?? shortTitle];
   return (
     <div className="flex flex-col cursor-pointer">
       {IconComponent ? (

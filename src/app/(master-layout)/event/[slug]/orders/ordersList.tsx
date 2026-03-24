@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Privilege } from "@/middleware";
+import { Privilege } from "@/proxy";
 import { getCookie } from "cookies-next";
 import { addMessageToConversation } from "@/lib/twilio";
 import { Badge } from "@/components/ui/badge";
@@ -12,9 +12,8 @@ import { useToast } from "@/components/ui/use-toast";
 
 import { Event } from "@/app/(master-layout)/event/[slug]/page";
 
-import { Check, Trash2Icon, BellRing, UserCheck } from "lucide-react";
+import { Check, BellRing, UserCheck } from "lucide-react";
 import {
-  getOrderCancelledMessage,
   getOrderReadyMessage,
   getOrderReadyReminderMessage,
 } from "@/scripts/fetchContentTemplates";
@@ -23,16 +22,12 @@ export default function OrdersList({
   ordersList,
   event,
   updateEvent,
-  deleteOrder,
   updateOrder,
-  updateOrderTTL,
 }: {
   ordersList: any[];
   event: Event;
   updateEvent: (data: any) => void;
-  deleteOrder: (index: number) => void;
   updateOrder: (index: number, data: any) => void;
-  updateOrderTTL: (index: number, ttl: number) => void;
 }) {
   const { toast } = useToast();
   const [noOfOrdersVisible, showMore] = useState<number>(50);
@@ -156,6 +151,7 @@ export default function OrdersList({
                             data.item,
                             index,
                             event.pickupLocation,
+                            event.language,
                           );
                           addMessageToConversation(
                             data.key,
@@ -240,49 +236,6 @@ export default function OrdersList({
                       <UserCheck />
                     </Button>
                   )}
-                  {data.status !== "cancelled" &&
-                    data.status !== "delivered" && (
-                      <Button
-                        className="hover:bg-red-300 flex items-center justify-center"
-                        title="Delete Order"
-                        disabled={isProcessing(index, "delete")}
-                        onClick={async () => {
-                          startProcessing(index, "delete");
-                          try {
-                            updateOrder(index, { status: "cancelled" });
-                            updateOrderTTL(index, 5 * 60);
-
-                            await updateEvent({
-                              cancelledCount:
-                                Number(event?.cancelledCount || 0) + 1,
-                            });
-
-                            if (!data?.manual) {
-                              const message = await getOrderCancelledMessage(
-                                data.item,
-                                index,
-                              );
-                              addMessageToConversation(
-                                data.key,
-                                "",
-                                message.contentSid,
-                                message.contentVariables,
-                              );
-                            }
-                            toast({
-                              title: "Order Cancelled",
-                              description: data?.manual
-                                ? "Please inform the customer that their order has been cancelled."
-                                : `Customer has been sent a message to let them know order was cancelled.`,
-                            });
-                          } finally {
-                            stopProcessing(index, "delete");
-                          }
-                        }}
-                      >
-                        <Trash2Icon />
-                      </Button>
-                    )}
                 </div>
               )}
             </div>

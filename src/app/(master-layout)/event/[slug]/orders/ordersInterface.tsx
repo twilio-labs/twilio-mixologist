@@ -54,13 +54,10 @@ export default function OrdersInterface({
   // @ts-ignore TODO Fix this TS issue
   const internalEvent = eventsMap?.get(slug) as Event;
 
-  let [
-    ordersList,
-    deleteOrder,
-    updateOrder,
-    updateOrderTTL,
-    orderListInitialized,
-  ] = useSyncList(slug, 300);
+  let [ordersList, , updateOrder, , orderListInitialized] = useSyncList(
+    slug,
+    300,
+  );
 
   if (!mapInitialized || !internalEvent || !orderListInitialized) {
     return (
@@ -103,10 +100,6 @@ export default function OrdersInterface({
           updateOrder={updateOrder}
           event={internalEvent}
           updateEvent={fetchUpdateEvent}
-          // @ts-ignore // TODO Fix this TS issue
-          updateOrderTTL={updateOrderTTL}
-          // @ts-ignore // TODO Fix this TS issue
-          deleteOrder={deleteOrder}
         />
       </section>
     </div>

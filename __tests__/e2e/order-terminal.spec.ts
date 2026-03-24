@@ -1,5 +1,5 @@
 import { test, expect, type Locator } from "@playwright/test";
-import { Privilege } from "@/middleware";
+import { Privilege } from "@/proxy";
 
 test.describe("[no login] ", () => {
   test("Only elements with permissions should be visible / page 1/2", async ({
@@ -25,9 +25,6 @@ test.describe("[no login] ", () => {
 
     await expect(
       page.getByRole("button", { name: "Order Made" }),
-    ).not.toBeVisible();
-    await expect(
-      page.getByRole("button", { name: "Delete Order" }),
     ).not.toBeVisible();
     await expect(
       page.getByRole("button", { name: "Served To Customer" }),
@@ -73,9 +70,9 @@ test.describe("[no login] ", () => {
     await expect(
       page.getByRole("button", { name: "Order Made" }),
     ).not.toBeVisible();
-    await expect(
-      page.getByRole("button", { name: "Delete Order" }),
-    ).not.toBeVisible();
+    // await expect(
+    //   page.getByRole("button", { name: "Delete Order" }),
+    // ).not.toBeVisible();
     await expect(
       page.getByRole("button", { name: "Served To Customer" }),
     ).not.toBeVisible();

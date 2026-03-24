@@ -5,7 +5,7 @@ import {
   createSyncListIfNotExists,
   createAiAssistant,
 } from "@/lib/twilio";
-import { Privilege, getAuthenticatedRole } from "@/middleware";
+import { Privilege, getAuthenticatedRole } from "@/proxy";
 import { revalidatePath } from "next/cache";
 
 export async function POST(request: Request) {

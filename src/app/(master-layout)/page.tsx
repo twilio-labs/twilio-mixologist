@@ -3,7 +3,7 @@
 import { Card } from "@/components/ui/card";
 import EventCard from "@/components/event-card";
 import { Button } from "@/components/ui/button";
-import { Privilege } from "@/middleware";
+import { Privilege } from "@/proxy";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { getSyncService } from "@/lib/twilio";

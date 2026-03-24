@@ -24,13 +24,21 @@ import {
 import LoadingSpinner from "@/components/loading-spinner";
 import { MenuSelect, Selection } from "@/components/menu-select";
 import { useEffect, useRef, useState, use } from "react";
-import { Privilege } from "@/middleware";
-import { AlertTriangleIcon } from "lucide-react";
+import { Privilege } from "@/proxy";
+import { AlertTriangleIcon, ChevronDown } from "lucide-react";
 import QrCodePopoverContent from "./qr-code-popovercontent";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { modes } from "@/config/menus";
 import { EventState } from "@/lib/utils";
 import { Textarea } from "@/components/ui/text-area";
+import { Language } from "@/lib/stringTemplates";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export interface Event {
   name: string;
@@ -42,6 +50,7 @@ export interface Event {
   pickupLocation: string;
   maxOrders: number;
   welcomeMessage: string;
+  language?: Language;
   assistantId?: string;
   cancelledCount?: number;
   deliveredCount?: number;
@@ -87,9 +96,73 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
     pickupLocation: "",
     maxOrders: 70,
     welcomeMessage: "",
+    language: "en",
   });
 
   const timerRef = useRef<NodeJS.Timeout>(undefined);
+  const aiUpdateTimerRef = useRef<NodeJS.Timeout>(undefined);
+
+  const [collapsed, setCollapsed] = useState({
+    general: false,
+    communication: false,
+    menu: false,
+    customize: false,
+  });
+
+  function toggleSection(section: keyof typeof collapsed) {
+    if (!isNewEvent) setCollapsed((c) => ({ ...c, [section]: !c[section] }));
+  }
+  function updateMenuItemField(
+    index: number,
+    field: "title" | "shortTitle" | "description",
+    value: string,
+  ) {
+    const updatedItems = internalEvent.selection.items.map((item, i) => {
+      if (i !== index) return item;
+      const updated = { ...item, [field]: value };
+      if (field === "shortTitle" && !item.originalTitle) {
+        updated.originalTitle = item.shortTitle;
+      }
+      return updated;
+    });
+    const newEvent = {
+      ...internalEvent,
+      selection: { ...internalEvent.selection, items: updatedItems },
+    };
+    updateEvent(newEvent);
+    clearTimeout(aiUpdateTimerRef.current);
+    aiUpdateTimerRef.current = setTimeout(() => {
+      fetch(`/api/event/${newEvent.slug}/selection`, {
+        method: "PUT",
+        body: JSON.stringify({
+          selection: newEvent.selection,
+          assistantId: newEvent.assistantId,
+        }),
+      });
+    }, 1500);
+  }
+
+  function updateModifierField(index: number, value: string) {
+    const updatedModifiers = internalEvent.selection.modifiers.map((m, i) =>
+      i !== index ? m : value,
+    );
+    const newEvent = {
+      ...internalEvent,
+      selection: { ...internalEvent.selection, modifiers: updatedModifiers },
+    };
+    updateEvent(newEvent);
+    clearTimeout(aiUpdateTimerRef.current);
+    aiUpdateTimerRef.current = setTimeout(() => {
+      fetch(`/api/event/${newEvent.slug}/selection`, {
+        method: "PUT",
+        body: JSON.stringify({
+          selection: newEvent.selection,
+          assistantId: newEvent.assistantId,
+        }),
+      });
+    }, 1500);
+  }
+
   function updateEvent(newEvent: Event) {
     clearTimeout(timerRef.current);
     updateInternalEvent(newEvent);
@@ -160,9 +233,17 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
   return (
     <div className="flex flex-col gap-4">
       <Card>
-        <CardHeader className="flex flex-row space-between">
-          <CardTitle>General</CardTitle>
-          <div className="ml-auto flex items-center space-x-2">
+        <CardHeader className="flex flex-row items-center">
+          <div
+            className={`flex items-center gap-2 flex-1 ${!isNewEvent ? "cursor-pointer" : ""}`}
+            onClick={() => toggleSection("general")}
+          >
+            <CardTitle>General</CardTitle>
+            {!isNewEvent && (
+              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${collapsed.general ? "" : "rotate-180"}`} />
+            )}
+          </div>
+          <div className="flex items-center space-x-2">
             {!isNewEvent && (
               <>
                 <Label htmlFor="event-state">
@@ -182,7 +263,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
             )}
           </div>
         </CardHeader>
-        <CardContent className="space-y-4">
+        {!collapsed.general && <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="eventName">Event Name</Label>
             <Input
@@ -211,7 +292,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="maxOrders">Max Orders Per Customer</Label>
+            <Label htmlFor="maxOrders">Max Orders Per Customer Per Day</Label>
             <Input
               id="maxOrders"
               type="number"
@@ -241,14 +322,20 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
               }}
             />
           </div>
-        </CardContent>
+        </CardContent>}
       </Card>
 
       <Card>
-        <CardHeader>
+        <CardHeader
+          className={`flex flex-row items-center justify-between ${!isNewEvent ? "cursor-pointer" : ""}`}
+          onClick={() => toggleSection("communication")}
+        >
           <CardTitle>Communication</CardTitle>
+          {!isNewEvent && (
+            <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${collapsed.communication ? "" : "rotate-180"}`} />
+          )}
         </CardHeader>
-        <CardContent className="space-y-4">
+        {!collapsed.communication && <CardContent className="space-y-4">
           <div className="mt-2">
             <Label htmlFor="phoneNumbers">Senders</Label>
             {unknownSenders.length > 0 && (
@@ -312,6 +399,26 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
               </div>
             )}
             <div className="space-y-2">
+              <Label htmlFor="language">Language</Label>
+              <Select
+                value={internalEvent.language ?? "en"}
+                onValueChange={(value) => {
+                  updateEvent({
+                    ...internalEvent,
+                    language: value as Language,
+                  });
+                }}
+              >
+                <SelectTrigger id="language">
+                  <SelectValue placeholder="Select language" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="en">English</SelectItem>
+                  <SelectItem value="pt-BR">Português (Brasil)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="welcomeMessage">Custom Welcome Message</Label>
               <Textarea
                 id="welcomeMessage"
@@ -331,13 +438,19 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
               />
             </div>
           </div>
-        </CardContent>
+        </CardContent>}
       </Card>
       <Card>
-        <CardHeader>
+        <CardHeader
+          className={`flex flex-row items-center justify-between ${!isNewEvent ? "cursor-pointer" : ""}`}
+          onClick={() => toggleSection("menu")}
+        >
           <CardTitle>Menu</CardTitle>
+          {!isNewEvent && (
+            <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${collapsed.menu ? "" : "rotate-180"}`} />
+          )}
         </CardHeader>
-        <CardContent className="space-y-4">
+        {!collapsed.menu && <CardContent className="space-y-4">
           <MenuSelect
             menus={config.menus}
             selection={internalEvent.selection}
@@ -358,8 +471,88 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
               });
             }}
           />
-        </CardContent>
+        </CardContent>}
       </Card>
+
+      {!isNewEvent && internalEvent.selection.items.length > 0 && (
+        <Card>
+          <CardHeader
+            className="flex flex-row items-center justify-between cursor-pointer"
+            onClick={() => toggleSection("customize")}
+          >
+            <CardTitle>Customize Menu Items</CardTitle>
+            <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${collapsed.customize ? "" : "rotate-180"}`} />
+          </CardHeader>
+          {!collapsed.customize && <CardContent className="space-y-6">
+            {internalEvent.selection.items.map((item, index) => (
+              <div key={item.originalTitle ?? item.shortTitle} className="space-y-2 border rounded-lg p-4">
+                <p className="text-xs text-gray-400">
+                  Original: {item.originalTitle ?? item.shortTitle}
+                </p>
+                <div className="space-y-1">
+                  <Label>Display Name</Label>
+                  <Input
+                    value={item.title}
+                    maxLength={24}
+                    onChange={(e) =>
+                      updateMenuItemField(index, "title", e.target.value)
+                    }
+                  />
+                  <p className="text-xs text-gray-400 text-right">
+                    {item.title.length}/24
+                  </p>
+                </div>
+                <div className="space-y-1">
+                  <Label>Short Title</Label>
+                  <Input
+                    value={item.shortTitle}
+                    maxLength={24}
+                    onChange={(e) =>
+                      updateMenuItemField(index, "shortTitle", e.target.value)
+                    }
+                  />
+                  <p className="text-xs text-gray-400 text-right">
+                    {item.shortTitle.length}/24
+                  </p>
+                </div>
+                <div className="space-y-1">
+                  <Label>Description</Label>
+                  <Textarea
+                    value={item.description}
+                    maxLength={72}
+                    onChange={(e) =>
+                      updateMenuItemField(index, "description", e.target.value)
+                    }
+                  />
+                  <p className="text-xs text-gray-400 text-right">
+                    {item.description.length}/72
+                  </p>
+                </div>
+              </div>
+            ))}
+            {internalEvent.selection.modifiers.length > 0 && (
+              <div className="border-t pt-4">
+                <p className="text-sm font-medium mb-3">Modifiers</p>
+                {internalEvent.selection.modifiers.map((modifier, index) => {
+                  const original = (internalEvent.selection.originalModifiers ?? internalEvent.selection.modifiers)[index];
+                  return (
+                    <div key={original} className="space-y-2 border rounded-lg p-4 mb-3">
+                      <p className="text-xs text-gray-400">Original: {original}</p>
+                      <div className="space-y-1">
+                        <Label>Display Name</Label>
+                        <Input
+                          value={modifier}
+                          onChange={(e) => updateModifierField(index, e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </CardContent>}
+        </Card>
+      )}
 
       {isNewEvent && (
         <TooltipProvider>

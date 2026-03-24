@@ -13,7 +13,8 @@ describe("getShowHelpTemplate", () => {
   test("should return an object with the correct number of variables", () => {
     const numOptions = 2;
     const result = getShowHelpTemplate(numOptions, "testTemplate");
-    expect(Object.keys(result.variables)).toHaveLength(numOptions * 3);
+    // intro ({{0}}) + 3 vars per option + outro ({{numOptions*3+1}})
+    expect(Object.keys(result.variables)).toHaveLength(numOptions * 3 + 2);
   });
 
   test("should return an object with the correct types", () => {
@@ -28,10 +29,10 @@ describe("getShowHelpTemplate", () => {
     expect(result.types["twilio/list-picker"]?.items).toHaveLength(numOptions);
   });
 
-  test("all values in the returned variables should be empty strings", () => {
+  test("all values in the returned variables should be non-empty strings", () => {
     const numOptions = Math.floor(Math.random() * 10) + 1; // random number between 1 and 10
     const result = getShowHelpTemplate(numOptions, "testTemplate");
     const values = Object.values(result.variables);
-    values.forEach((value) => expect(value).toBe(""));
+    values.forEach((value) => expect(value).not.toBe(""));
   });
 });

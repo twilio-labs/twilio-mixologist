@@ -1,7 +1,7 @@
 "use server";
 
 import { headers } from "next/headers";
-import { getAuthenticatedRole, Privilege } from "@/middleware";
+import { getAuthenticatedRole, Privilege } from "@/proxy";
 import { calcStatsForEvent } from "./helper";
 
 export async function GET(

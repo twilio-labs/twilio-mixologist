@@ -2,7 +2,7 @@
 
 import { getCookie } from "cookies-next";
 import { useState, useEffect } from "react";
-import { Privilege } from "@/middleware";
+import { Privilege } from "@/proxy";
 import { redirect } from "next/navigation";
 
 export function isClientAuth(privileges: Privilege[], Component: any) {

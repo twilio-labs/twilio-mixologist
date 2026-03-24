@@ -2,21 +2,29 @@
 
 import { modes } from "@/config/menus";
 import { Event } from "@/app/(master-layout)/event/[slug]/page";
+import { Language } from "@/lib/stringTemplates";
 
 const axios = require("axios");
 
 const { SERVICE_INSTANCE_PREFIX = "" } = process.env;
 const formattedServicePrefix = SERVICE_INSTANCE_PREFIX.toLowerCase();
 
-function modeToBeverage(mode: modes, plural: boolean = false) {
+const LANG_SUFFIX: Record<Language, string> = { "en": "", "pt-BR": "_ptbr" };
+
+function modeToBeverage(mode: modes, language: Language, plural: boolean = false) {
+  if (language === "pt-BR") {
+    return mode === "smoothie"
+      ? plural ? "smoothies" : "smoothie"
+      : mode === "cocktail"
+        ? plural ? "bebidas" : "bebida"
+        : mode === "tea"
+          ? plural ? "chás" : "chá"
+          : plural ? "cafés" : "café";
+  }
   return mode === "smoothie"
-    ? plural
-      ? "smoothies"
-      : "smoothie"
+    ? plural ? "smoothies" : "smoothie"
     : mode === "cocktail"
-      ? plural
-        ? "drinks"
-        : "drink"
+      ? plural ? "drinks" : "drink"
       : mode === "tea"
         ? "tea"
         : "coffee";
@@ -62,9 +70,11 @@ async function getTemplate(templateName: string) {
 export async function getWrongOrderMessage(
   originalMessage: string,
   availableOptions: any[],
+  language: Language = "en",
 ) {
+  const suffix = LANG_SUFFIX[language];
   const template = await getTemplate(
-    `${formattedServicePrefix}_wrong_order_${availableOptions.length}`,
+    `${formattedServicePrefix}_wrong_order_${availableOptions.length}${suffix}`,
   );
 
   return {
@@ -81,9 +91,11 @@ export async function getWrongOrderMessage(
 export async function getOrderCancelledMessage(
   product: string,
   orderNumber: string,
+  language: Language = "en",
 ) {
+  const suffix = LANG_SUFFIX[language];
   const template = await getTemplate(
-    `${formattedServicePrefix}_order_cancelled`,
+    `${formattedServicePrefix}_order_cancelled${suffix}`,
   );
 
   return {
@@ -96,8 +108,10 @@ export async function getOrderReadyMessage(
   product: string,
   orderNumber: string,
   orderPickupLocation: string,
+  language: Language = "en",
 ) {
-  const template = await getTemplate(`${formattedServicePrefix}_order_ready`);
+  const suffix = LANG_SUFFIX[language];
+  const template = await getTemplate(`${formattedServicePrefix}_order_ready${suffix}`);
 
   return {
     contentSid: template.sid,
@@ -113,9 +127,11 @@ export async function getOrderReadyReminderMessage(
   product: string,
   orderNumber: string,
   orderPickupLocation: string,
+  language: Language = "en",
 ) {
+  const suffix = LANG_SUFFIX[language];
   const template = await getTemplate(
-    `${formattedServicePrefix}_order_reminder`,
+    `${formattedServicePrefix}_order_reminder${suffix}`,
   );
 
   return {
@@ -132,9 +148,11 @@ export async function getShowMenuMessage(
   intro: string,
   availableOptions: any[],
   outro: string,
+  language: Language = "en",
 ) {
+  const suffix = LANG_SUFFIX[language];
   const template = await getTemplate(
-    `${formattedServicePrefix}_show_menu_${availableOptions.length}`,
+    `${formattedServicePrefix}_show_menu_${availableOptions.length}${suffix}`,
   );
   return {
     contentSid: template.sid,
@@ -152,9 +170,11 @@ export async function getShowModifiersMessage(
   intro: string,
   availableModifiers: string[],
   outro: string,
+  language: Language = "en",
 ) {
+  const suffix = LANG_SUFFIX[language];
   const template = await getTemplate(
-    `${formattedServicePrefix}_show_menu_${availableModifiers.length}`,
+    `${formattedServicePrefix}_show_menu_${availableModifiers.length}${suffix}`,
   );
   return {
     contentSid: template.sid,
@@ -171,9 +191,10 @@ export async function getReadyToOrderMessage(
   availableOptions: any[],
   maxNumberOrders: number,
   emailValidationSuffix: boolean,
+  language: Language = "en",
 ) {
   const { mode, items, modifiers } = event.selection;
-  const maxOrders = `${maxNumberOrders} ${modeToBeverage(mode, true)}`;
+  const maxOrders = `${maxNumberOrders} ${modeToBeverage(mode, language, true)}`;
   let sampleOrder = items[1].title;
   if (modifiers.length > 0) {
     sampleOrder += ` with ${modifiers[modifiers.length - 1]}`;
@@ -181,9 +202,10 @@ export async function getReadyToOrderMessage(
 
   const limitess = maxNumberOrders >= 50 ? "_limitless" : "";
   const emailSuffix = emailValidationSuffix ? "_without_email" : "";
+  const langSuffix = LANG_SUFFIX[language];
 
   const template = await getTemplate(
-    `${formattedServicePrefix}_ready_to_order${limitess}${emailSuffix}_${availableOptions.length}`,
+    `${formattedServicePrefix}_ready_to_order${limitess}${emailSuffix}_${availableOptions.length}${langSuffix}`,
   );
 
   return {
@@ -198,9 +220,10 @@ export async function getReadyToOrderMessage(
   };
 }
 
-export async function getEventRegistrationMessage(eventOptions: any[]) {
+export async function getEventRegistrationMessage(eventOptions: any[], language: Language = "en") {
+  const suffix = LANG_SUFFIX[language];
   const template = await getTemplate(
-    `${formattedServicePrefix}_event_registration_${eventOptions.length}`,
+    `${formattedServicePrefix}_event_registration_${eventOptions.length}${suffix}`,
   );
 
   return {

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { Privilege } from "@/middleware";
+import { Privilege } from "@/proxy";
 import axios from "axios";
 
 const {

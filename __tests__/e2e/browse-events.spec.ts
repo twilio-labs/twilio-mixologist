@@ -1,5 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-import { Privilege } from "@/middleware";
+import { Privilege } from "@/proxy";
 
 test.describe("[no login]", () => {
   test("should not be navigable", async ({ page }) => {
@@ -93,9 +93,9 @@ test.describe("[admin]", () => {
     );
     await expect(page.getByPlaceholder("Event slug will be")).toBeDisabled();
 
-    await expect(page.getByText("Max Orders Per Customer")).toHaveValue("1860");
+    await expect(page.getByText("Max Orders Per Customer Per Day")).toHaveValue("1860");
 
-    await expect(page.getByText("Max Orders Per Customer")).toBeEditable();
+    await expect(page.getByText("Max Orders Per Customer Per Day")).toBeEditable();
 
     await expect(page.getByPlaceholder("Where to find the booth")).toHaveValue(
       "Pickup location",
@@ -226,7 +226,7 @@ test.describe("[admin]", () => {
     await expect(page.getByPlaceholder("Enter event name")).toHaveValue("");
     await expect(page.getByPlaceholder("Event slug will be")).toHaveValue("");
 
-    await expect(page.getByText("Max Orders Per Customer")).toHaveValue("70");
+    await expect(page.getByText("Max Orders Per Customer Per Day")).toHaveValue("70");
 
     await page.getByPlaceholder("Enter event name").fill("ranDOM23");
     await expect(page.getByPlaceholder("Event slug will be")).toHaveValue(

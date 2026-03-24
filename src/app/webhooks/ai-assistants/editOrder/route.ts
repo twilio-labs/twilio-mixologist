@@ -12,7 +12,7 @@ import {
   verifyOrder,
 } from "../../mixologist-helper";
 import { headers } from "next/headers";
-import { getAuthenticatedRole, Privilege } from "@/middleware";
+import { getAuthenticatedRole, Privilege } from "@/proxy";
 
 const NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP =
   process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP || "";

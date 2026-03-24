@@ -4,7 +4,7 @@ import { deleteAiAssistant, updateSyncMapItem } from "@/lib/twilio";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { getSyncService } from "@/lib/twilio";
-import { Privilege, getAuthenticatedRole } from "@/middleware";
+import { Privilege, getAuthenticatedRole } from "@/proxy";
 import { getEvent } from "@/app/webhooks/mixologist-helper";
 
 const NEXT_PUBLIC_EVENTS_MAP = process.env.NEXT_PUBLIC_EVENTS_MAP || "";

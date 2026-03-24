@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
-import { Privilege } from "@/middleware";
+import { Privilege } from "@/proxy";
 import { Toaster } from "@/components/ui/toaster";
 
 import { SettingsIcon } from "lucide-react";

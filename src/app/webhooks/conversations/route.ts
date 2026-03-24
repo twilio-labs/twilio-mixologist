@@ -44,6 +44,7 @@ import {
   getSentEmailMessage,
   getWelcomeBackMessage,
   getWelcomeMessage,
+  Language,
 } from "@/lib/stringTemplates";
 import { headers } from "next/headers";
 import { Event } from "@/app/(master-layout)/event/[slug]/page";
@@ -56,6 +57,10 @@ const {
 const NEXT_PUBLIC_EVENTS_MAP = process.env.NEXT_PUBLIC_EVENTS_MAP || "",
   NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP =
     process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP || "";
+
+function lang(event: Event): Language {
+  return event.language ?? "en";
+}
 
 export async function POST(request: Request) {
   const [data, headerList] = await Promise.all([request.formData(), headers()]);
@@ -99,6 +104,7 @@ export async function POST(request: Request) {
         newEvent.selection.mode,
         newEvent.welcomeMessage,
         newEvent.enableLeadCollection,
+        lang(newEvent),
       );
       addMessageToConversation(conversationSid, welcomeMessage);
 
@@ -118,13 +124,14 @@ export async function POST(request: Request) {
 
       if (!newEvent.enableLeadCollection) {
         await sleep(2000);
-        const dataPolicy = getDataPolicy(newEvent.selection.mode);
+        const dataPolicy = getDataPolicy(newEvent.selection.mode, lang(newEvent));
         addMessageToConversation(conversationSid, dataPolicy);
         const message = await getReadyToOrderMessage(
           newEvent,
           newEvent.selection.items,
           newEvent.maxOrders,
           true,
+          lang(newEvent),
         );
         addMessageToConversation(
           conversationSid,
@@ -137,6 +144,7 @@ export async function POST(request: Request) {
           await sleep(1500);
           const modifiersNote = getModifiersMessage(
             newEvent.selection.modifiers,
+            lang(newEvent),
           );
           addMessageToConversation(conversationSid, modifiersNote);
         }
@@ -156,6 +164,7 @@ export async function POST(request: Request) {
           newEvent.selection.mode,
           newEvent.welcomeMessage,
           newEvent.enableLeadCollection,
+          lang(newEvent),
         );
         addMessageToConversation(conversationSid, welcomeMessage);
 
@@ -175,13 +184,14 @@ export async function POST(request: Request) {
         );
         if (!newEvent.enableLeadCollection) {
           await sleep(2000);
-          const dataPolicy = getDataPolicy(newEvent.selection.mode);
+          const dataPolicy = getDataPolicy(newEvent.selection.mode, lang(newEvent));
           addMessageToConversation(conversationSid, dataPolicy);
           const message = await getReadyToOrderMessage(
             newEvent,
             newEvent.selection.items,
             newEvent.maxOrders,
             true,
+            lang(newEvent),
           );
           addMessageToConversation(
             conversationSid,
@@ -194,6 +204,7 @@ export async function POST(request: Request) {
             await sleep(1500);
             const modifiersNote = getModifiersMessage(
               newEvent.selection.modifiers,
+              lang(newEvent),
             );
             addMessageToConversation(conversationSid, modifiersNote);
           }
@@ -230,6 +241,7 @@ export async function POST(request: Request) {
         newEvent.selection.mode,
         newEvent.name,
         newEvent.welcomeMessage,
+        lang(newEvent),
       );
       addMessageToConversation(conversationSid, welcomeBackMessage);
       const message = await getReadyToOrderMessage(
@@ -237,11 +249,15 @@ export async function POST(request: Request) {
         newEvent.selection.items,
         newEvent.maxOrders,
         true,
+        lang(newEvent),
       );
 
       if (newEvent.selection.modifiers.length > 1) {
         await sleep(500);
-        const modifiersNote = getModifiersMessage(newEvent.selection.modifiers);
+        const modifiersNote = getModifiersMessage(
+          newEvent.selection.modifiers,
+          lang(newEvent),
+        );
         addMessageToConversation(conversationSid, modifiersNote);
       }
 
@@ -276,6 +292,7 @@ export async function POST(request: Request) {
           newEvent.selection.mode,
           newEvent.name,
           newEvent.welcomeMessage,
+          lang(newEvent),
         );
         addMessageToConversation(conversationSid, welcomeMessage);
 
@@ -296,6 +313,7 @@ export async function POST(request: Request) {
           newEvent.selection.items,
           newEvent.maxOrders,
           true,
+          lang(newEvent),
         );
         addMessageToConversation(
           conversationSid,
@@ -308,6 +326,7 @@ export async function POST(request: Request) {
           await sleep(500);
           const modifiersNote = getModifiersMessage(
             newEvent.selection.modifiers,
+            lang(newEvent),
           );
           addMessageToConversation(conversationSid, modifiersNote);
         }
@@ -325,12 +344,13 @@ export async function POST(request: Request) {
       return new Response("Requesting Event", { status: 200 });
     }
   }
+
   if (
     event.enableLeadCollection &&
     // @ts-ignore  thinks is a object but actually it's a stage
     conversationRecord.stage === Stages.NEW_USER
   ) {
-    const message = getPromptForEmail();
+    const message = getPromptForEmail(lang(event));
     addMessageToConversation(conversationSid, message);
     await updateSyncMapItem(
       NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP,
@@ -348,7 +368,7 @@ export async function POST(request: Request) {
     conversationRecord.stage === Stages.NAME_CONFIRMED
   ) {
     if (!incomingMessageBody || !regexForEmail.test(incomingMessageBody)) {
-      const message = getInvalidEmailMessage();
+      const message = getInvalidEmailMessage(lang(event));
       addMessageToConversation(conversationSid, message);
       return new Response("Invalid Email", { status: 200 });
     } else {
@@ -359,11 +379,11 @@ export async function POST(request: Request) {
         check = await createVerification(email, event.name);
       } catch (error: any) {
         console.error(error);
-        const message = getErrorDuringEmailVerificationMessage(error.message);
+        const message = getErrorDuringEmailVerificationMessage(error.message, lang(event));
         addMessageToConversation(conversationSid, message);
         return new Response("Error During Verifiction", { status: 500 });
       }
-      const message = getSentEmailMessage();
+      const message = getSentEmailMessage(lang(event));
       addMessageToConversation(conversationSid, message);
       await updateSyncMapItem(
         NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP,
@@ -395,7 +415,7 @@ export async function POST(request: Request) {
         console.error(error);
         return new Response("Error During Verifiction", { status: 500 });
       }
-      const message = getSentEmailMessage();
+      const message = getSentEmailMessage(lang(event));
       addMessageToConversation(conversationSid, message);
       await updateSyncMapItem(
         NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP,
@@ -411,7 +431,7 @@ export async function POST(request: Request) {
       !regexFor6ConsecutiveDigits.test(incomingMessageBody) ||
       incomingMessageBody === null
     ) {
-      const message = getInvalidVerificationCodeMessage();
+      const message = getInvalidVerificationCodeMessage(lang(event));
       addMessageToConversation(conversationSid, message);
       return new Response("No Verification Code Sent", { status: 200 });
     }
@@ -424,7 +444,7 @@ export async function POST(request: Request) {
         code,
       );
       if (!verification.valid) {
-        const message = getInvalidVerificationCodeMessage();
+        const message = getInvalidVerificationCodeMessage(lang(event));
         addMessageToConversation(conversationSid, message);
         return new Response("Invalid Verification", { status: 200 });
       }
@@ -460,6 +480,7 @@ export async function POST(request: Request) {
         event.selection.items,
         event.maxOrders,
         false,
+        lang(event),
       );
       addMessageToConversation(
         conversationSid,
@@ -470,18 +491,18 @@ export async function POST(request: Request) {
 
       if (event.selection.modifiers.length > 1) {
         await sleep(1500);
-        const modifiersNote = getModifiersMessage(event.selection.modifiers);
+        const modifiersNote = getModifiersMessage(event.selection.modifiers, lang(event));
         addMessageToConversation(conversationSid, modifiersNote);
       }
 
       await sleep(2000);
-      const dataPolicy = getDataPolicy(event.selection.mode);
+      const dataPolicy = getDataPolicy(event.selection.mode, lang(event));
       addMessageToConversation(conversationSid, dataPolicy);
 
       return new Response("Email was verified", { status: 200 });
     } catch (error) {
       console.error(error);
-      const message = getInvalidVerificationCodeMessage();
+      const message = getInvalidVerificationCodeMessage(lang(event));
       addMessageToConversation(conversationSid, message);
       return new Response("Error During Verifiction", { status: 500 });
     }
@@ -499,7 +520,7 @@ export async function POST(request: Request) {
   }
 
   if (event.state === EventState.CLOSED) {
-    const message = getPausedEventMessage();
+    const message = getPausedEventMessage(lang(event));
     addMessageToConversation(conversationSid, message);
     return new Response("Event Orders Paused", { status: 200 });
   }
