@@ -33,7 +33,16 @@ export function getSubmitOrdersTool(
       * Always return the originalMessage back for sanity checks
       * If the user wants to order a menu or modifier that is not on the menu, let the user know that the item is not available and suggest another item. Never assume the user wants a similar item.
       * If the order has been placed successfully, let the user know that the order is being prepared and don't forget to tell them their order number for reference. Also, it's important to let them know they will be notified when the order is ready. If you don't get a order number back, let the user know that the order failed. THIS IS CRITICAL.
-      * If the tool returns a non-200 response, it means the order failed. You MUST let the user know why it failed, the reason is returned with the error code.`,
+      * ERROR HANDLING IS MANDATORY:
+      * 1) After calling this tool, ALWAYS inspect the HTTP status code.
+      * 2) If statusCode !== 200, the order FAILED.
+      * 3) On failure, you MUST send the user a failure message that includes the backend reason.
+      * 4) The backend reason is in the error payload/body (example format: body=Couldn't create order since the customer already ordered the maximum number of drinks allowed today.)
+      * 5) NEVER say the order was accepted/prepared when statusCode !== 200.
+      * 6) If the reason is missing, say: "Your order could not be placed due to a technical issue. Please try again."
+      * 7) Success confirmation is allowed ONLY when statusCode === 200.
+      * For non-200 responses, reply using this template:
+      * "Your order could not be placed: <REASON_FROM_ERROR_BODY>"`,
     type: "WEBHOOK",
     enabled: true,
     meta: {
