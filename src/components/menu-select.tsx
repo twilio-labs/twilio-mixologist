@@ -13,7 +13,9 @@ export interface Selection {
 }
 
 function menuItemIncluded(menuItem: MenuItemInterface, selection: Selection) {
-  return selection.items.some((item) => item.title === menuItem.title);
+  return selection.items.some(
+    (item) => (item.originalTitle ?? item.shortTitle) === menuItem.shortTitle,
+  );
 }
 
 function sortAlphabetically(a: string, b: string) {
@@ -93,7 +95,9 @@ export function MenuSelect({
                   ? {
                       ...selection,
                       items: selection.items.filter(
-                        (item) => item.title !== menuItem.title,
+                        (item) =>
+                          (item.originalTitle ?? item.shortTitle) !==
+                          menuItem.shortTitle,
                       ),
                     }
                   : {

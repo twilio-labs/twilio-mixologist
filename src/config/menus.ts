@@ -2,6 +2,7 @@ export interface MenuItem {
   shortTitle: string;
   title: string;
   description: string;
+  originalTitle?: string;
 }
 
 export enum modes {
