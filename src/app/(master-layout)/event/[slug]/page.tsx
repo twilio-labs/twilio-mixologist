@@ -31,6 +31,14 @@ import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { modes } from "@/config/menus";
 import { EventState } from "@/lib/utils";
 import { Textarea } from "@/components/ui/text-area";
+import { Language } from "@/lib/stringTemplates";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export interface Event {
   name: string;
@@ -42,6 +50,7 @@ export interface Event {
   pickupLocation: string;
   maxOrders: number;
   welcomeMessage: string;
+  language?: Language;
   assistantId?: string;
   cancelledCount?: number;
   deliveredCount?: number;
@@ -87,6 +96,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
     pickupLocation: "",
     maxOrders: 70,
     welcomeMessage: "",
+    language: "en",
   });
 
   const timerRef = useRef<NodeJS.Timeout>(undefined);
@@ -118,6 +128,27 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
     const newEvent = {
       ...internalEvent,
       selection: { ...internalEvent.selection, items: updatedItems },
+    };
+    updateEvent(newEvent);
+    clearTimeout(aiUpdateTimerRef.current);
+    aiUpdateTimerRef.current = setTimeout(() => {
+      fetch(`/api/event/${newEvent.slug}/selection`, {
+        method: "PUT",
+        body: JSON.stringify({
+          selection: newEvent.selection,
+          assistantId: newEvent.assistantId,
+        }),
+      });
+    }, 1500);
+  }
+
+  function updateModifierField(index: number, value: string) {
+    const updatedModifiers = internalEvent.selection.modifiers.map((m, i) =>
+      i !== index ? m : value,
+    );
+    const newEvent = {
+      ...internalEvent,
+      selection: { ...internalEvent.selection, modifiers: updatedModifiers },
     };
     updateEvent(newEvent);
     clearTimeout(aiUpdateTimerRef.current);
@@ -368,6 +399,26 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
               </div>
             )}
             <div className="space-y-2">
+              <Label htmlFor="language">Language</Label>
+              <Select
+                value={internalEvent.language ?? "en"}
+                onValueChange={(value) => {
+                  updateEvent({
+                    ...internalEvent,
+                    language: value as Language,
+                  });
+                }}
+              >
+                <SelectTrigger id="language">
+                  <SelectValue placeholder="Select language" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="en">English</SelectItem>
+                  <SelectItem value="pt-BR">Português (Brasil)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="welcomeMessage">Custom Welcome Message</Label>
               <Textarea
                 id="welcomeMessage"
@@ -479,6 +530,26 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
                 </div>
               </div>
             ))}
+            {internalEvent.selection.modifiers.length > 0 && (
+              <div className="border-t pt-4">
+                <p className="text-sm font-medium mb-3">Modifiers</p>
+                {internalEvent.selection.modifiers.map((modifier, index) => {
+                  const original = (internalEvent.selection.originalModifiers ?? internalEvent.selection.modifiers)[index];
+                  return (
+                    <div key={original} className="space-y-2 border rounded-lg p-4 mb-3">
+                      <p className="text-xs text-gray-400">Original: {original}</p>
+                      <div className="space-y-1">
+                        <Label>Display Name</Label>
+                        <Input
+                          value={modifier}
+                          onChange={(e) => updateModifierField(index, e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </CardContent>}
         </Card>
       )}

@@ -62,7 +62,8 @@ export async function POST(request: NextRequest) {
   );
 
   if (menuItems.length > 1) {
-    const helpMessage = await getShowMenuMessage(intro, menuItems, outro);
+    // @ts-ignore  thinks is a object but actually it's an Event
+    const helpMessage = await getShowMenuMessage(intro, menuItems, outro, event.language);
     addMessageToConversation(
       conversationSid,
       undefined,
@@ -81,7 +82,8 @@ export async function POST(request: NextRequest) {
   );
 
   if (modifers.length > 1) {
-    const helpMessage = await getShowModifiersMessage(intro, modifers, outro);
+    // @ts-ignore  thinks is a object but actually it's an Event
+    const helpMessage = await getShowModifiersMessage(intro, modifers, outro, event.language);
     addMessageToConversation(
       conversationSid,
       undefined,

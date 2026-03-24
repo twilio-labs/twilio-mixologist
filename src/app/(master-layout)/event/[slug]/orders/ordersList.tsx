@@ -134,6 +134,7 @@ export default function OrdersList({
                           data.item,
                           index,
                           event.pickupLocation,
+                          event.language,
                         );
                         addMessageToConversation(
                           data.key,
@@ -168,6 +169,7 @@ export default function OrdersList({
                             data.item,
                             index,
                             event.pickupLocation,
+                            event.language,
                           );
                           addMessageToConversation(
                             data.key,

@@ -9,6 +9,7 @@ const MAX_SELECTABLE_ITEMS = 10;
 export interface Selection {
   items: MenuItemInterface[];
   modifiers: string[];
+  originalModifiers?: string[];
   mode: modes;
 }
 
@@ -130,29 +131,30 @@ export function MenuSelect({
               <div
                 key={`${selection.mode}-${modifier}`}
                 onClick={() => {
-                  const isAlreadySelected =
-                    selection.modifiers.includes(modifier);
-                  onSelectionChange(
-                    isAlreadySelected
-                      ? {
-                          ...selection,
-                          modifiers: selection.modifiers.filter(
-                            (item) => item !== modifier,
-                          ),
-                        }
-                      : {
-                          ...selection,
-                          modifiers: [...selection.modifiers, modifier],
-                        },
-                  );
+                  const originals = selection.originalModifiers ?? selection.modifiers;
+                  const isAlreadySelected = originals.includes(modifier);
+                  if (isAlreadySelected) {
+                    const idx = originals.indexOf(modifier);
+                    onSelectionChange({
+                      ...selection,
+                      modifiers: selection.modifiers.filter((_, i) => i !== idx),
+                      originalModifiers: originals.filter((_, i) => i !== idx),
+                    });
+                  } else {
+                    onSelectionChange({
+                      ...selection,
+                      modifiers: [...selection.modifiers, modifier],
+                      originalModifiers: [...originals, modifier],
+                    });
+                  }
                 }}
                 className={`${
-                  selection.modifiers.includes(modifier) ? "bg-slate-200" : ""
+                  (selection.originalModifiers ?? selection.modifiers).includes(modifier) ? "bg-slate-200" : ""
                 } border rounded-lg p-4 flex items-start gap-4 cursor-pointer hover:bg-slate-300`}
               >
                 <Checkbox
                   className="mt-1 self-center"
-                  checked={selection.modifiers.includes(modifier)}
+                  checked={(selection.originalModifiers ?? selection.modifiers).includes(modifier)}
                 />
                 <span>{modifier}</span>
               </div>
