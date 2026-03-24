@@ -32,6 +32,7 @@ export default function HeaderControls({
 
   const [broadcastPopoverIsOpen, openBroadcastPopover] = useState(false);
   const [customOrderPopoverIsOpen, openCustomOrderPopover] = useState(false);
+  const [isUpdatingEvent, setIsUpdatingEvent] = useState(false);
 
   const isPriviledged = [Privilege.ADMIN, Privilege.MIXOLOGIST].includes(
     getCookie("privilege") as Privilege,
@@ -44,20 +45,23 @@ export default function HeaderControls({
       <Button
         className="rounded-full bg-slate-200 hover:bg-slate-400 h-15 w-15 p-5"
         data-testid="pause-orders"
-        disabled={event.state === EventState.ENDED}
-        onClick={async (ev) => {
-          (ev.target as HTMLInputElement).disabled = true;
-          await updateEvent({
-            state:
-              event?.state === EventState.OPEN
-                ? EventState.CLOSED
-                : EventState.OPEN,
-          });
-          toast({
-            title: `EVENT ${event?.state === EventState.OPEN ? EventState.CLOSED : EventState.OPEN}`,
-            description: `Event has been ${event?.state === EventState.OPEN ? "paused" : "opened"}, attendees can ${event?.state === EventState.OPEN ? "not" : "now"} make new orders`,
-          });
-          (ev.target as HTMLInputElement).disabled = false;
+        disabled={event.state === EventState.ENDED || isUpdatingEvent}
+        onClick={async () => {
+          setIsUpdatingEvent(true);
+          try {
+            await updateEvent({
+              state:
+                event?.state === EventState.OPEN
+                  ? EventState.CLOSED
+                  : EventState.OPEN,
+            });
+            toast({
+              title: `EVENT ${event?.state === EventState.OPEN ? EventState.CLOSED : EventState.OPEN}`,
+              description: `Event has been ${event?.state === EventState.OPEN ? "paused" : "opened"}, attendees can ${event?.state === EventState.OPEN ? "not" : "now"} make new orders`,
+            });
+          } finally {
+            setIsUpdatingEvent(false);
+          }
         }}
       >
         {event.state === EventState.CLOSED && <PlayIcon className="h-6 w-6" />}

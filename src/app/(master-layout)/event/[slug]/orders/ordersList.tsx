@@ -31,6 +31,25 @@ export default function OrdersList({
 }) {
   const { toast } = useToast();
   const [noOfOrdersVisible, showMore] = useState<number>(50);
+  const [processingOrders, setProcessingOrders] = useState<Set<string>>(
+    new Set(),
+  );
+
+  function startProcessing(index: number, action: string) {
+    setProcessingOrders((prev) => new Set(prev).add(`${index}-${action}`));
+  }
+
+  function stopProcessing(index: number, action: string) {
+    setProcessingOrders((prev) => {
+      const next = new Set(prev);
+      next.delete(`${index}-${action}`);
+      return next;
+    });
+  }
+
+  function isProcessing(index: number, action: string) {
+    return processingOrders.has(`${index}-${action}`);
+  }
 
   const isPriviledged = [Privilege.ADMIN, Privilege.MIXOLOGIST].includes(
     getCookie("privilege") as Privilege,
@@ -121,51 +140,14 @@ export default function OrdersList({
                       className="w-full hover:bg-yellow-300 items-center justify-center"
                       title="Send Reminder"
                       disabled={
-                        Date.now() - dateUpdated < 3 * 60 * 1000 &&
-                        data?.reminded
+                        isProcessing(index, "remind") ||
+                        (Date.now() - dateUpdated < 3 * 60 * 1000 &&
+                          data?.reminded)
                       }
-                      onClick={async (
-                        ev: React.MouseEvent<HTMLButtonElement, MouseEvent> & {
-                          target: HTMLButtonElement;
-                        },
-                      ) => {
-                        ev.target.disabled = true;
-                        const message = await getOrderReadyReminderMessage(
-                          data.item,
-                          index,
-                          event.pickupLocation,
-                          event.language,
-                        );
-                        addMessageToConversation(
-                          data.key,
-                          "",
-                          message.contentSid,
-                          message.contentVariables,
-                        );
-                        updateOrder(index, { reminded: true });
-                        toast({
-                          title: "Customer Reminded",
-                          description: `Customer has been sent a message reminding them that their order is ready`,
-                        });
-                      }}
-                    >
-                      <BellRing />
-                    </Button>
-                  )}
-                  {data.status == "queued" && (
-                    <Button
-                      className=" hover:bg-green-300 flex items-center justify-center"
-                      title="Order Made"
-                      onClick={async (
-                        ev: React.MouseEvent<HTMLButtonElement, MouseEvent> & {
-                          target: HTMLButtonElement;
-                        },
-                      ) => {
-                        ev.target.disabled = true;
-                        updateOrder(index, { status: "ready" });
-
-                        if (!data?.manual) {
-                          const message = await getOrderReadyMessage(
+                      onClick={async () => {
+                        startProcessing(index, "remind");
+                        try {
+                          const message = await getOrderReadyReminderMessage(
                             data.item,
                             index,
                             event.pickupLocation,
@@ -177,14 +159,52 @@ export default function OrdersList({
                             message.contentSid,
                             message.contentVariables,
                           );
+                          updateOrder(index, { reminded: true });
+                          toast({
+                            title: "Customer Reminded",
+                            description: `Customer has been sent a message reminding them that their order is ready`,
+                          });
+                        } finally {
+                          stopProcessing(index, "remind");
                         }
+                      }}
+                    >
+                      <BellRing />
+                    </Button>
+                  )}
+                  {data.status == "queued" && (
+                    <Button
+                      className=" hover:bg-green-300 flex items-center justify-center"
+                      title="Order Made"
+                      disabled={isProcessing(index, "made")}
+                      onClick={async () => {
+                        startProcessing(index, "made");
+                        try {
+                          updateOrder(index, { status: "ready" });
 
-                        toast({
-                          title: "Order Made",
-                          description: data?.manual
-                            ? "Please inform the customer that their order is ready."
-                            : `Customer has been sent a message letting them know their order is ready`,
-                        });
+                          if (!data?.manual) {
+                            const message = await getOrderReadyMessage(
+                              data.item,
+                              index,
+                              event.pickupLocation,
+                            );
+                            addMessageToConversation(
+                              data.key,
+                              "",
+                              message.contentSid,
+                              message.contentVariables,
+                            );
+                          }
+
+                          toast({
+                            title: "Order Made",
+                            description: data?.manual
+                              ? "Please inform the customer that their order is ready."
+                              : `Customer has been sent a message letting them know their order is ready`,
+                          });
+                        } finally {
+                          stopProcessing(index, "made");
+                        }
                       }}
                     >
                       <Check />
@@ -194,23 +214,23 @@ export default function OrdersList({
                     <Button
                       className="hover:bg-green-300 flex items-center justify-center"
                       title="Served to Customer"
-                      onClick={async (
-                        ev: React.MouseEvent<HTMLButtonElement, MouseEvent> & {
-                          target: HTMLButtonElement;
-                        },
-                      ) => {
-                        ev.target.disabled = true;
-                        updateOrder(index, { status: "delivered" });
-                        // updateOrderTTL(index, 5 * 60);
+                      disabled={isProcessing(index, "served")}
+                      onClick={async () => {
+                        startProcessing(index, "served");
+                        try {
+                          updateOrder(index, { status: "delivered" });
 
-                        await updateEvent({
-                          deliveredCount:
-                            Number(event?.deliveredCount || 0) + 1,
-                        });
-                        toast({
-                          title: "Order Served",
-                          description: `The Order was delivered`,
-                        });
+                          await updateEvent({
+                            deliveredCount:
+                              Number(event?.deliveredCount || 0) + 1,
+                          });
+                          toast({
+                            title: "Order Served",
+                            description: `The Order was delivered`,
+                          });
+                        } finally {
+                          stopProcessing(index, "served");
+                        }
                       }}
                     >
                       <UserCheck />
