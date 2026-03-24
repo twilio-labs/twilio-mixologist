@@ -39,10 +39,10 @@ export function getSubmitOrdersTool(
       * 3) On failure, you MUST send the user a failure message that includes the backend reason.
       * 4) The backend reason is in the error payload/body (example format: body=Couldn't create order since the customer already ordered the maximum number of drinks allowed today.)
       * 5) NEVER say the order was accepted/prepared when statusCode !== 200.
-      * 6) If the reason is missing, say: "Your order could not be placed due to a technical issue. Please try again."
+      * 6) If the reason is missing, say: "Your order could not be placed. It is possible the maximum number of drinks allowed today has been reached. Please try again or ask a Twilion for help."
       * 7) Success confirmation is allowed ONLY when statusCode === 200.
       * For non-200 responses, reply using this template:
-      * "Your order could not be placed: <REASON_FROM_ERROR_BODY>"`,
+      * "Your order could not be placed. It is possible the maximum number of drinks allowed today has been reached. Reason: <REASON_FROM_ERROR_BODY>"`,
     type: "WEBHOOK",
     enabled: true,
     meta: {
