@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
-import { Privilege } from "@/middleware";
+import { Privilege } from "@/proxy";
 import { redirect } from "next/navigation";
 
 import { LogOutIcon, UserIcon } from "lucide-react";

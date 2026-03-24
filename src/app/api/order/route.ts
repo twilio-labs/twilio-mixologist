@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 
 import { pushToSyncList } from "@/lib/twilio";
-import { getAuthenticatedRole, Privilege } from "@/middleware";
+import { getAuthenticatedRole, Privilege } from "@/proxy";
 
 export async function POST(request: Request) {
   const [headersList, data] = await Promise.all([headers(), request.json()]);

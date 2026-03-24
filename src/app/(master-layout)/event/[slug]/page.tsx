@@ -24,7 +24,7 @@ import {
 import LoadingSpinner from "@/components/loading-spinner";
 import { MenuSelect, Selection } from "@/components/menu-select";
 import { useEffect, useRef, useState, use } from "react";
-import { Privilege } from "@/middleware";
+import { Privilege } from "@/proxy";
 import { AlertTriangleIcon, ChevronDown } from "lucide-react";
 import QrCodePopoverContent from "./qr-code-popovercontent";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";

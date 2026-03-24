@@ -18,7 +18,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { isClientAuth } from "@/lib/customHooks";
-import { Privilege } from "@/middleware";
+import { Privilege } from "@/proxy";
 
 function SyncDemoPage() {
   const [doc, setDocData, docInitialized] = useSyncDocument("demo-doc");

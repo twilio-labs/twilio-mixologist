@@ -5,7 +5,7 @@ import { Stages } from "@/lib/utils";
 import { Event } from "@/app/(master-layout)/event/[slug]/page";
 import { modes } from "@/config/menus";
 import { headers } from "next/headers";
-import { getAuthenticatedRole, Privilege } from "@/middleware";
+import { getAuthenticatedRole, Privilege } from "@/proxy";
 
 const NEXT_PUBLIC_EVENTS_MAP = process.env.NEXT_PUBLIC_EVENTS_MAP || "";
 

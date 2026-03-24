@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 import { fetchSyncListItems, addMessageToConversation } from "@/lib/twilio";
-import { Privilege, getAuthenticatedRole } from "@/middleware";
+import { Privilege, getAuthenticatedRole } from "@/proxy";
 
 export async function POST(
   request: Request,

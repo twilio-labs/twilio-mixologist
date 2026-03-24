@@ -1,5 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-import { Privilege } from "@/middleware";
+import { Privilege } from "@/proxy";
 
 test.describe("[no login]", () => {
   test("should not be navigable", async ({ page }) => {

@@ -13,7 +13,7 @@ const [MIXOLOGIST_USER, MIXOLOGIST_PASS] = (
 ).split(":");
 const [KIOSK_USER, KIOSK_PASS] = (process.env.KIOSK_LOGIN || ":").split(":");
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const response = NextResponse.next();
   const authheader =
     req.headers.get("authorization") || req.headers.get("Authorization");

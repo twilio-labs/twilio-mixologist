@@ -2,7 +2,7 @@
 
 import twilio, { validateRequest } from "twilio";
 import { appendFileSync } from "fs";
-import { Privilege, getAuthenticatedRole } from "@/middleware";
+import { Privilege, getAuthenticatedRole } from "@/proxy";
 import { headers } from "next/headers";
 import axios from "axios";
 import AccessToken, { SyncGrant } from "twilio/lib/jwt/AccessToken";

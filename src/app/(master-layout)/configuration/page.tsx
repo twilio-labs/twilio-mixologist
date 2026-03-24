@@ -8,7 +8,7 @@ import {
   MessageSquarePlusIcon,
 } from "lucide-react";
 
-import { Privilege } from "@/middleware";
+import { Privilege } from "@/proxy";
 import MenuItem from "@/components/menu-item";
 import { modes } from "@/config/menus";
 
