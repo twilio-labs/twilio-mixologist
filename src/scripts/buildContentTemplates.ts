@@ -72,8 +72,8 @@ function getSampleOrder(language: Language) {
 
 function getOrderLimitationNote(language: Language) {
   return language === "pt-BR"
-    ? `\n\nPS: Cada participante pode pedir até {{0}}.`
-    : `\n\nPS: Every attendee can get up to {{0}}.`;
+    ? `\n\nPS: Cada participante pode pedir até {{0}} por dia.`
+    : `\n\nPS: Every attendee can get up to {{0}} per day.`;
 }
 
 function getMoreDetailsButton(language: Language) {
