@@ -10,6 +10,7 @@ export enum modes {
   smoothie = "smoothie",
   cocktail = "cocktail",
   tea = "tea",
+  waffles = "waffles",
 }
 
 export type Menus = {
@@ -362,6 +363,37 @@ export default {
       },
     ],
     modifiers: ["Lactose Free Whole Milk", "Oat Milk"],
+  },
+  waffles: {
+    items: [
+      {
+        title: "Classic Buttermilk Waffle",
+        shortTitle: "Classic Waffle",
+        description: "Golden buttermilk waffle with a crisp outside and fluffy center",
+      },
+      {
+        title: "Chocolate Waffle",
+        shortTitle: "Chocolate Waffle",
+        description: "Cocoa-infused waffle with rich chocolate flavor",
+      },
+      {
+        title: "Cinnamon Sugar Waffle",
+        shortTitle: "Cinnamon Sugar Waffle",
+        description: "Warm spiced waffle dusted with cinnamon sugar",
+      },
+      {
+        title: "Berry Crunch Waffle",
+        shortTitle: "Berry Waffle",
+        description: "Waffle topped with mixed berry compote and light crunch",
+      },
+    ],
+    modifiers: [
+      "Maple Syrup",
+      "Whipped Cream",
+      "Fresh Strawberries",
+      "Chocolate Drizzle",
+      "Toasted Almonds",
+    ],
   },
   cocktail: {
     items: [

@@ -5589,3 +5589,94 @@ export function SmoothieBlenderIcon(props: any) {
     </svg>
   );
 }
+
+export function WaffleIcon(props: any) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 256 256"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <rect x="36" y="76" width="184" height="144" rx="26" />
+      <path d="M56 76c8-20 26-32 47-32h50c21 0 39 12 47 32" />
+      <path d="M74 106v84" />
+      <path d="M110 106v84" />
+      <path d="M146 106v84" />
+      <path d="M182 106v84" />
+      <path d="M54 124h148" />
+      <path d="M54 154h148" />
+      <path d="M54 184h148" />
+    </svg>
+  );
+}
+
+export function ChocolateWaffleIcon(props: any) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 256 256"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <rect x="36" y="76" width="184" height="144" rx="26" />
+      <path d="M56 76c8-20 26-32 47-32h50c21 0 39 12 47 32" />
+      <path d="M74 106v84" />
+      <path d="M110 106v84" />
+      <path d="M146 106v84" />
+      <path d="M182 106v84" />
+      <path d="M54 124h148" />
+      <path d="M54 154h148" />
+      <path d="M54 184h148" />
+      <path d="M88 56c0 8-4 12-4 18" />
+      <path d="M126 52c0 10-5 14-5 20" />
+      <path d="M164 56c0 8-4 12-4 18" />
+      <circle cx="96" cy="58" r="4" />
+      <circle cx="152" cy="62" r="4" />
+    </svg>
+  );
+}
+
+export function BerryWaffleIcon(props: any) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 256 256"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <rect x="36" y="76" width="184" height="144" rx="26" />
+      <path d="M56 76c8-20 26-32 47-32h50c21 0 39 12 47 32" />
+      <path d="M74 106v84" />
+      <path d="M110 106v84" />
+      <path d="M146 106v84" />
+      <path d="M182 106v84" />
+      <path d="M54 124h148" />
+      <path d="M54 154h148" />
+      <path d="M54 184h148" />
+      <circle cx="102" cy="56" r="8" />
+      <circle cx="128" cy="50" r="8" />
+      <circle cx="154" cy="56" r="8" />
+      <path d="M128 38l10-8" />
+      <path d="M128 38l-10-8" />
+    </svg>
+  );
+}

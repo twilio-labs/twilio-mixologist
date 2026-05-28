@@ -19,6 +19,8 @@ function modeToBeverage(mode: modes, language: Language, plural: boolean = false
         ? plural ? "bebidas" : "bebida"
         : mode === "tea"
           ? plural ? "chás" : "chá"
+          : mode === "waffles"
+            ? plural ? "waffles" : "waffle"
           : plural ? "cafés" : "café";
   }
   return mode === "smoothie"
@@ -26,7 +28,9 @@ function modeToBeverage(mode: modes, language: Language, plural: boolean = false
     : mode === "cocktail"
       ? plural ? "drinks" : "drink"
       : mode === "tea"
-        ? "tea"
+        ? plural ? "teas" : "tea"
+        : mode === "waffles"
+          ? plural ? "waffles" : "waffle"
         : "coffee";
 }
 
