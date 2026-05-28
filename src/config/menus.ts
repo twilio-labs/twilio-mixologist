@@ -120,10 +120,20 @@ export default {
         description: "Espresso shots with cold water and ice.",
       },
       {
+        shortTitle: "Cold Brew",
+        title: "Cold Brew",
+        description: "Slow-steeped coffee served chilled over ice.",
+      },
+      {
         shortTitle: "Matcha",
         title: "Matcha",
         description:
           "Powder made from ground-up green tea leaves brewed into tea.",
+      },
+      {
+        shortTitle: "Iced Matcha",
+        title: "Iced Matcha",
+        description: "Matcha whisked with milk and poured over ice.",
       },
       {
         shortTitle: "Mocha",

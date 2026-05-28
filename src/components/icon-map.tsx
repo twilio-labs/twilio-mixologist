@@ -46,6 +46,7 @@ const iconMap: { [key: string]: any } = {
   Mocha: CupIcon,
   "Iced Latte": FrappuccinoIcon,
   "Iced Americano": FrappuccinoIcon,
+  "Iced Matcha": FrappuccinoIcon,
   "Black Tea": CupIcon,
   "British Breakfast Tea": CupIcon,
   "Apple Chamomile": CupIcon,
