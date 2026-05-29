@@ -40,6 +40,19 @@ function buildReadyToOrderSampleVars(numOptions: number): Record<string, string>
   return vars;
 }
 
+// Builds sample variables for limitless ready_to_order templates (no {{0}} order-limit placeholder):
+// {{1}} = sample order, {{i*3+2}} = full title, {{i*3+3}} = short title, {{i*3+4}} = description
+function buildReadyToOrderLimitlessSampleVars(numOptions: number): Record<string, string> {
+  const vars: Record<string, string> = { "1": "Espresso" };
+  for (let i = 0; i < numOptions; i++) {
+    const item = SAMPLE_ITEMS[i % SAMPLE_ITEMS.length];
+    vars[String(i * 3 + 2)] = item.title;
+    vars[String(i * 3 + 3)] = item.shortTitle;
+    vars[String(i * 3 + 4)] = item.description;
+  }
+  return vars;
+}
+
 // Builds sample variables for event_registration templates:
 // {{i*2}} = event name, {{i*2+1}} = event id
 function buildEventRegistrationSampleVars(numOptions: number): Record<string, string> {
@@ -165,10 +178,7 @@ export function getReadyToOrderLimitlessTemplate(
   templateName: string,
   language: Language = "en",
 ): WhatsAppTemplateConfig {
-  // The first variable defines the mode and second is not used
-  // and then 3 additional vars (short title, full title, desc) per options  => numOptions * 3 + 1
-
-  const variables = buildReadyToOrderSampleVars(numOptions);
+  const variables = buildReadyToOrderLimitlessSampleVars(numOptions);
 
   const indiciesOfFullTitles = [],
     items = [];
@@ -243,10 +253,7 @@ export function getReadyToOrderLimitlessWithoutEmailValidationTemplate(
   templateName: string,
   language: Language = "en",
 ): WhatsAppTemplateConfig {
-  // The first variable defines the mode and second is not used
-  // and then 3 additional vars (short title, full title, desc) per options  => numOptions * 3 + 1
-
-  const variables = buildReadyToOrderSampleVars(numOptions);
+  const variables = buildReadyToOrderLimitlessSampleVars(numOptions);
 
   const indiciesOfFullTitles = [],
     items = [];
