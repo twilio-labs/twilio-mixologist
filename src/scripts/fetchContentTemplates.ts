@@ -34,10 +34,10 @@ function modeToBeverage(mode: modes, language: Language, plural: boolean = false
         : "coffee";
 }
 
-function buildContentVariables(variables: any[]) {
+function buildContentVariables(variables: any[], startIndex = 0) {
   const contentVariables: any = {};
-  variables.forEach((value, key) => {
-    contentVariables[key] = value;
+  variables.forEach((value, i) => {
+    contentVariables[String(i + startIndex)] = value;
   });
   return JSON.stringify(contentVariables);
 }
@@ -211,6 +211,23 @@ export async function getReadyToOrderMessage(
   const template = await getTemplate(
     `${formattedServicePrefix}_ready_to_order${limitess}${emailSuffix}_${availableOptions.length}${langSuffix}`,
   );
+
+  const isLimitless = maxNumberOrders >= 50;
+
+  if (isLimitless) {
+    return {
+      contentSid: template.sid,
+      contentVariables: buildContentVariables(
+        [
+          sampleOrder,
+          ...availableOptions
+            .map((o) => [o.title, o.shortTitle, o.description])
+            .flat(),
+        ],
+        1,
+      ),
+    };
+  }
 
   return {
     contentSid: template.sid,
