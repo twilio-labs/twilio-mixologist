@@ -96,6 +96,12 @@ const iconMap: { [key: string]: any } = {
   Macarena: SmoothieStrawberryIcon,
   "La Isla Bonita": SmoothiePineappleIcon,
   "Des.pa.cito": SmoothieAppleIcon,
+  "Berry Burst": SmoothieStrawberryIcon,
+  "Passion Storm": SmoothieOrangeIcon,
+  "Mango Dream": SmoothiePineappleIcon,
+  "Strawberry Delight": SmoothieStrawberryIcon,
+  "Green Reviver": SmoothieAppleIcon,
+  "Ginger Beets": SmoothieStrawberryIcon,
 };
 
 export default iconMap;

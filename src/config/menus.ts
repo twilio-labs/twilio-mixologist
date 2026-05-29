@@ -327,6 +327,36 @@ export default {
         shortTitle: "Des.pa.cito",
         description: "Green 🍏🍌🌿 with citrus zing 🍋",
       },
+      {
+        title: "Berry Burst",
+        shortTitle: "Berry Burst",
+        description: "Blackcurrant, blueberry, blackberry, banana & cranberry 🫐🍌",
+      },
+      {
+        title: "Passion Storm",
+        shortTitle: "Passion Storm",
+        description: "Passionfruit, peach, pineapple, papaya & aloe vera 🍑🍍",
+      },
+      {
+        title: "Mango Dream",
+        shortTitle: "Mango Dream",
+        description: "Mango, pear & pineapple 🥭🍍",
+      },
+      {
+        title: "Strawberry Delight",
+        shortTitle: "Strawberry Delight",
+        description: "Strawberry, peach & papaya 🍓🍑",
+      },
+      {
+        title: "Green Reviver",
+        shortTitle: "Green Reviver",
+        description: "Kale, lemongrass, banana & mango 🌿🍌🥭",
+      },
+      {
+        title: "Ginger Beets",
+        shortTitle: "Ginger Beets",
+        description: "Ginger, beetroot, pineapple & blueberries 🫚🍍🫐",
+      },
     ],
   },
   tea: {
