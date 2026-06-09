@@ -351,20 +351,20 @@ export function getOrderReadyTemplate(
   language: Language = "en",
 ): WhatsAppTemplateConfig {
   const cardBody = language === "pt-BR"
-    ? "Pule a fila e retire seu {{0}} no {{2}}. \n\nPeça pelo número do pedido #{{1}} ao retirar."
-    : "Skip the line and collect your {{0}} at the {{2}}. \n\nAsk for order number #{{1}} when you pick it up.";
+    ? "Pule a fila e retire seu {{0}} no {{2}}. \nEsteja pronto para compartilhar o número do seu pedido no balcão."
+    : "Skip the line and collect your {{0}} at the {{2}}. \nBe ready to share your order number at the counter.";
 
   const cardTitle = language === "pt-BR"
-    ? "Pule a fila e retire seu {{0}} no {{2}}."
-    : "Skip the line and collect your {{0}} at the {{2}}.";
+    ? "Pule a fila e retire seu {{0}} no {{2}}. \n\n"
+    : "Skip the line and collect your {{0}} at the {{2}}. \n\n";
 
   const cardBodyShort = language === "pt-BR"
-    ? "Peça pelo número do pedido #{{1}} ao retirar."
-    : "Ask for order number #{{1}} when you pick it up.";
+    ? "Peça pelo número do pedido *{{1}}* ao retirar."
+    : "Ask for order number *{{1}}* when you pick it up.";
 
   const textBody = language === "pt-BR"
-    ? "Seu {{0}} está pronto. \n\nPule a fila e retire agora no {{2}}. \n\nPeça pelo número do pedido #{{1}} ao retirar."
-    : "Your {{0}} is ready. \n\nSkip the line and collect it at the {{2}} right away. \n\nAsk for order number #{{1}} when you pick it up.";
+    ? "Seu {{0}} está pronto.\n\nPule a fila e retire agora no {{2}}. \n\nPeça pelo número do pedido *{{1}}* ao retirar."
+    : "Your {{0}} is ready.\n\nSkip the line and collect it at the {{2}} right away. \n\nAsk for order number *{{1}}* when you pick it up.";
 
   return {
     friendly_name: templateName,
