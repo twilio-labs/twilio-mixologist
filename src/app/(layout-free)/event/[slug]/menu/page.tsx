@@ -50,13 +50,15 @@ function MenuPage(props: { params: Promise<{ slug: string }> }) {
 
   const itemsCount = internalEvent.selection.items.length;
   const columns = screenOrientation.includes("landscape")
-    ? itemsCount <= 4
-      ? 2
-      : itemsCount % 3 === 0
-        ? 3
-        : itemsCount % 4 === 0
-          ? 4
-          : 5
+    ? itemsCount > 8
+      ? 5
+      : itemsCount <= 4
+        ? 2
+        : itemsCount % 3 === 0
+          ? 3
+          : itemsCount % 4 === 0
+            ? 4
+            : 5
     : itemsCount % 3 === 0
       ? 3
       : 2;
