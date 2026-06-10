@@ -43,7 +43,7 @@ export default {
       {
         shortTitle: "Espresso",
         title: "Espresso",
-        description: "30ml straight espresso shot",
+        description: "Strong black coffee",
       },
       {
         shortTitle: "Double Espresso",
@@ -184,7 +184,7 @@ export default {
       { shortTitle: "Cafè Latte",
         title: "Caffè Latte",
         description:
-          "30 ml espresso with smooth micro-foamed milk"
+          "Espresso with steamed milk and light foam"
       },
       {
         shortTitle: "Twilio Latte",

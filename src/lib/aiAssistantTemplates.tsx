@@ -32,8 +32,9 @@ export function getSubmitOrdersTool(
     description: `Use this to submit sanitized orders for a barista. 
       * Always return the originalMessage back for sanity checks
       * If the user wants to order a menu or modifier that is not on the menu, let the user know that the item is not available and suggest another item. Never assume the user wants a similar item.
-      * If the order has been placed successfully, let the user know that the order is being prepared and don't forget to tell them their order number for reference. Also, it's important to let them know they will be notified when the order is ready. If you don't get a order number back, let the user know that the order failed. THIS IS CRITICAL.
-      * If the tool returns a non-200 response, it means the order failed. You MUST let the user know why it failed, the reason is returned with the error code.`,
+      * If the order has been placed successfully, let the user know that the order has been accepted and is being prepared. Don't forget to tell them their order number for reference. Also, it's important to let them know they will be notified when the order is ready. If you don't get a order number back, let the user know that the order failed. THIS IS CRITICAL.
+      * For non-200 responses, reply using this template:
+      * "Your order could not be placed. It is possible the maximum number of drinks allowed today has been reached or that your previous order is still being processed. Please try again in a bit or ask a Twilion for help."`,
     type: "WEBHOOK",
     enabled: true,
     meta: {
