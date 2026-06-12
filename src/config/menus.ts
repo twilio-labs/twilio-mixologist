@@ -398,33 +398,32 @@ export default {
   waffles: {
     items: [
       {
-        title: "Classic Buttermilk Waffle",
-        shortTitle: "Classic Waffle",
-        description: "Golden buttermilk waffle with a crisp outside and fluffy center",
+        title: "Nuttello",
+        shortTitle: "Nuttello",
+        description: "Nutella drizzled over strawberries and ice cream",
       },
       {
-        title: "Chocolate Waffle",
-        shortTitle: "Chocolate Waffle",
-        description: "Cocoa-infused waffle with rich chocolate flavor",
+        title: "Banoffee",
+        shortTitle: "Banoffee",
+        description: "Dulce de Leche over banana, Biscoff crumble and ice cream",
       },
       {
-        title: "Cinnamon Sugar Waffle",
-        shortTitle: "Cinnamon Sugar Waffle",
-        description: "Warm spiced waffle dusted with cinnamon sugar",
+        title: "Oreo",
+        shortTitle: "Oreo",
+        description: "Dark chocolate drizzled over Oreo cookie crumble",
       },
       {
-        title: "Berry Crunch Waffle",
-        shortTitle: "Berry Waffle",
-        description: "Waffle topped with mixed berry compote and light crunch",
+        title: "Snikero",
+        shortTitle: "Snikero",
+        description: "Dulce de Leche, chocolate, Snickers and crushed peanuts",
+      },
+      {
+        title: "Vegan Delight",
+        shortTitle: "Vegan Delight",
+        description: "Strawberries, banana, Oreo crumble and maple syrup",
       },
     ],
-    modifiers: [
-      "Maple Syrup",
-      "Whipped Cream",
-      "Fresh Strawberries",
-      "Chocolate Drizzle",
-      "Toasted Almonds",
-    ],
+    modifiers: ["Cream", "Ice Cream"],
   },
   cocktail: {
     items: [
