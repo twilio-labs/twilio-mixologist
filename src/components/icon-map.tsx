@@ -90,7 +90,7 @@ const iconMap: { [key: string]: any } = {
   "Matcha Green Tea": CupIcon,
   "Cucumber Juice": CupIcon,
   Nuttello: WaffleIcon,
-  Banoffee: WaffleIcon,
+  Banoffo: WaffleIcon,
   Oreo: ChocolateWaffleIcon,
   Snikero: ChocolateWaffleIcon,
   "Vegan Delight": BerryWaffleIcon,

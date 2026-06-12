@@ -403,8 +403,8 @@ export default {
         description: "Nutella drizzled over strawberries and ice cream",
       },
       {
-        title: "Banoffee",
-        shortTitle: "Banoffee",
+        title: "Banoffo",
+        shortTitle: "Banoffo",
         description: "Dulce de Leche over banana, Biscoff crumble and ice cream",
       },
       {
