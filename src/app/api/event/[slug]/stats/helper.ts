@@ -16,6 +16,7 @@ export type MixologistStats = {
   mostOrderedItemCount: number;
   summedUpStages: { id: string; value: number; label: string }[];
   countries: Record<string, number>;
+  channels: Record<string, number>;
   deliveredCount: number;
   cancelledCount: number;
   customerCount: number;
@@ -48,6 +49,7 @@ export async function calcStatsForEvent(
   const orderStatusCounter: Record<string, number> = {};
   const customerCountryCounter: Record<string, number> = {};
   const orderItemCounter: any = {};
+  const channelCounter: Record<string, number> = {};
 
   orders.forEach((order: any) => {
     const { data } = order;
@@ -60,6 +62,9 @@ export async function calcStatsForEvent(
       orderItemCounter[data.item] = 0;
     }
     orderItemCounter[data.item]++;
+
+    const channel: string = data.channel ?? "other";
+    channelCounter[channel] = (channelCounter[channel] ?? 0) + 1;
   });
 
   customers.forEach((customer: any) => {
@@ -123,5 +128,6 @@ export async function calcStatsForEvent(
     deliveredCount: event.deliveredCount || 0,
     customerCount: customers.length,
     countries: customerCountryCounter,
+    channels: channelCounter,
   };
 }

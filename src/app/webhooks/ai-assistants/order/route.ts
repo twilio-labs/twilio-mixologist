@@ -107,6 +107,16 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const channel = identityHeader.startsWith("rcs:")
+    ? "rcs"
+    : identityHeader.startsWith("whatsapp:")
+      ? "whatsapp"
+      : identityHeader.startsWith("sms:")
+        ? "sms"
+        : identityHeader.match(/^\+?\d/)
+          ? "sms"
+          : "other";
+
   const order: Order = {
     key: conversationSid,
     address: await redact(identityHeader),
@@ -117,6 +127,7 @@ export async function POST(request: NextRequest) {
       }),
     originalText: originalMessage,
     status: "queued",
+    channel,
   };
   const orderCount = Number(conversationRecord?.orderCount) + 1;
 

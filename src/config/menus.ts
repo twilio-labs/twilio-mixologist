@@ -30,6 +30,7 @@ export interface Order {
   originalText?: string;
   status: "queued" | "cancelled" | "ready" | "delivered";
   reminded?: true;
+  channel?: "rcs" | "whatsapp" | "sms" | "other";
 }
 
 export default {
