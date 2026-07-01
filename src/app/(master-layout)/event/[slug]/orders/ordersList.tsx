@@ -3,14 +3,14 @@
 import { useState } from "react";
 import { Privilege } from "@/proxy";
 import { getCookie } from "cookies-next";
-import { addMessageToConversation } from "@/lib/twilio";
+import { sendMessage } from "@/lib/twilio";
 import { Badge } from "@/components/ui/badge";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
-import { Event } from "@/app/(master-layout)/event/[slug]/page";
+import type { Event } from "@/types";
 
 import { Check, BellRing, UserCheck } from "lucide-react";
 import {
@@ -113,6 +113,12 @@ export default function OrdersList({
     </>
   );
 
+  function toAddress(data: any): string {
+    if (data.channel === "whatsapp") return `whatsapp:${data.key}`;
+    if (data.channel === "rcs") return `rcs:${data.key}`;
+    return data.key;
+  }
+
   function listComponent(orders: any[]) {
     return orders.map((order) => {
       const { data, index, dateUpdated } = order;
@@ -153,8 +159,8 @@ export default function OrdersList({
                             event.pickupLocation,
                             event.language,
                           );
-                          addMessageToConversation(
-                            data.key,
+                          sendMessage(
+                            toAddress(data),
                             "",
                             message.contentSid,
                             message.contentVariables,
@@ -188,8 +194,8 @@ export default function OrdersList({
                               index,
                               event.pickupLocation,
                             );
-                            addMessageToConversation(
-                              data.key,
+                            sendMessage(
+                              toAddress(data),
                               "",
                               message.contentSid,
                               message.contentVariables,

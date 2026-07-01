@@ -1,0 +1,91 @@
+"use server";
+
+import { throttledQueue } from "throttled-queue";
+import { twilioClient, TWILIO_API_KEY, TWILIO_API_SECRET } from "./client";
+
+const {
+  TWILIO_MESSAGING_SERVICE_SID = "",
+  TWILIO_PHONE_NUMBER = "",
+  SEGMENT_SPACE_ID = "",
+  SEGMENT_PROFILE_KEY = "",
+} = process.env;
+
+const throttle = throttledQueue({ maxPerInterval: 25, interval: 1000 });
+
+const axios = require("axios");
+
+export async function getMessagingService() {
+  if (!TWILIO_MESSAGING_SERVICE_SID) {
+    throw new Error("Missing sid for for messaging service");
+  }
+  const messagingClient = twilioClient.messaging.v1.services(
+    TWILIO_MESSAGING_SERVICE_SID,
+  );
+  return messagingClient.fetch();
+}
+
+export async function getPossibleSenders() {
+  "use server";
+  const messagingService = await getMessagingService();
+  const senders = await messagingService.phoneNumbers().list();
+  const channelSenders = await messagingService.channelSenders().list();
+  return [
+    senders.map((s) => s.phoneNumber),
+    channelSenders.map((cs) => cs.sender),
+  ].flat();
+}
+
+export async function sendMessage(
+  to: string,
+  body: string = "",
+  contentSid: string = "",
+  contentVariables: string = "",
+) {
+  if (to === "test-order") {
+    return;
+  }
+
+  const from = TWILIO_MESSAGING_SERVICE_SID || TWILIO_PHONE_NUMBER || "";
+
+  try {
+    throttle(() => {
+      twilioClient.messages.create({
+        to,
+        ...(TWILIO_MESSAGING_SERVICE_SID
+          ? { messagingServiceSid: TWILIO_MESSAGING_SERVICE_SID }
+          : { from }),
+        ...(body ? { body } : {}),
+        ...(contentSid ? { contentSid } : {}),
+        ...(contentVariables ? { contentVariables } : {}),
+      } as any);
+    });
+    return;
+  } catch (err) {
+    console.log(err);
+    return;
+  }
+}
+
+export async function fetchSegmentTraits(
+  email: string,
+  specificTrait?: string,
+) {
+  let url = `https://profiles.segment.com/v1/spaces/${SEGMENT_SPACE_ID}/collections/users/profiles/email:${email.toLowerCase()}/traits`;
+  if (specificTrait) {
+    url += `?include=${specificTrait}`;
+  }
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Basic ${btoa(SEGMENT_PROFILE_KEY + ":")}`,
+      },
+    });
+    return response.data.traits;
+  } catch (e: any) {
+    if (e.response?.status === 404) {
+      return null;
+    } else {
+      throw e;
+    }
+  }
+}

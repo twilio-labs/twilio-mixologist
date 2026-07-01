@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Event } from "@/app/(master-layout)/event/[slug]/page";
+import type { Event } from "@/types";
 import MenuItem from "./menu-item";
 import Header from "./header";
 import { useSyncList, useSyncMap } from "@/provider/syncProvider";

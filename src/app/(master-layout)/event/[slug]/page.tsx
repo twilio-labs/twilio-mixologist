@@ -22,16 +22,14 @@ import {
 } from "@/components/ui/tooltip";
 
 import LoadingSpinner from "@/components/loading-spinner";
-import { MenuSelect, Selection } from "@/components/menu-select";
+import { MenuSelect } from "@/components/menu-select";
 import { useEffect, useRef, useState, use } from "react";
 import { Privilege } from "@/proxy";
 import { AlertTriangleIcon, ChevronDown } from "lucide-react";
 import QrCodePopoverContent from "./qr-code-popovercontent";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
-import { modes } from "@/config/menus";
-import { EventState } from "@/lib/utils";
+import { modes, EventState } from "@/types";
 import { Textarea } from "@/components/ui/text-area";
-import { Language } from "@/lib/stringTemplates";
 import {
   Select,
   SelectContent,
@@ -39,22 +37,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import type { Event, Language } from "@/types";
 
-export interface Event {
-  name: string;
-  slug: string;
-  state: EventState;
-  enableLeadCollection: boolean;
-  senders: string[];
-  selection: Selection;
-  pickupLocation: string;
-  maxOrders: number;
-  welcomeMessage: string;
-  language?: Language;
-  assistantId?: string;
-  cancelledCount?: number;
-  deliveredCount?: number;
-}
+export type { Event };
 
 function EventPage({ params }: { params: Promise<{ slug: string }> }) {
   if (
@@ -134,10 +119,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
     aiUpdateTimerRef.current = setTimeout(() => {
       fetch(`/api/event/${newEvent.slug}/selection`, {
         method: "PUT",
-        body: JSON.stringify({
-          selection: newEvent.selection,
-          assistantId: newEvent.assistantId,
-        }),
+        body: JSON.stringify({ selection: newEvent.selection }),
       });
     }, 1500);
   }
@@ -155,10 +137,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
     aiUpdateTimerRef.current = setTimeout(() => {
       fetch(`/api/event/${newEvent.slug}/selection`, {
         method: "PUT",
-        body: JSON.stringify({
-          selection: newEvent.selection,
-          assistantId: newEvent.assistantId,
-        }),
+        body: JSON.stringify({ selection: newEvent.selection }),
       });
     }, 1500);
   }
@@ -387,17 +366,6 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
                 }}
               />
             </div>
-            {internalEvent.assistantId && (
-              <div className="space-y-2">
-                <Label htmlFor="assistantId">Assistant ID</Label>
-                <Input
-                  id="assistantId"
-                  placeholder="Assistant ID"
-                  value={internalEvent.assistantId}
-                  disabled
-                />
-              </div>
-            )}
             <div className="space-y-2">
               <Label htmlFor="language">Language</Label>
               <Select
@@ -459,10 +427,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
                 // make async for now to avoid delay, may need to change in the future
                 fetch(`/api/event/${internalEvent.slug}/selection`, {
                   method: "PUT",
-                  body: JSON.stringify({
-                    selection: newSelection,
-                    assistantId: internalEvent.assistantId,
-                  }),
+                  body: JSON.stringify({ selection: newSelection }),
                 });
               }
               updateEvent({

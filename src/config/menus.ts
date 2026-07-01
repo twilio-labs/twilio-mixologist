@@ -1,37 +1,6 @@
-export interface MenuItem {
-  shortTitle: string;
-  title: string;
-  description: string;
-  originalTitle?: string;
-}
-
-export enum modes {
-  barista = "barista",
-  smoothie = "smoothie",
-  cocktail = "cocktail",
-  tea = "tea",
-  waffles = "waffles",
-}
-
-export type Menus = {
-  [key in modes]: {
-    items: MenuItem[];
-    modifiers?: string[];
-  };
-};
-
-export interface Order {
-  key: string;
-  manual?: boolean;
-  item: string;
-  modifiers?: string;
-  address?: string;
-  orderNumber?: number;
-  originalText?: string;
-  status: "queued" | "cancelled" | "ready" | "delivered";
-  reminded?: true;
-  channel?: "rcs" | "whatsapp" | "sms" | "other";
-}
+export type { MenuItem, Menus, Order } from "@/types";
+export { modes } from "@/types";
+import type { Menus } from "@/types";
 
 export default {
   barista: {

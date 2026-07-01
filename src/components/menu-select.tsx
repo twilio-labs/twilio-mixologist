@@ -1,17 +1,12 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import MenuItem from "./menu-item";
-import { MenuItem as MenuItemInterface, Menus, modes } from "@/config/menus";
+import type { MenuItem as MenuItemInterface, Menus, modes, Selection } from "@/types";
 import { Label } from "./ui/label";
 import { useToast } from "./ui/use-toast";
 
-const MAX_SELECTABLE_ITEMS = 10;
+export type { Selection } from "@/types";
 
-export interface Selection {
-  items: MenuItemInterface[];
-  modifiers: string[];
-  originalModifiers?: string[];
-  mode: modes;
-}
+const MAX_SELECTABLE_ITEMS = 10;
 
 function menuItemIncluded(menuItem: MenuItemInterface, selection: Selection) {
   return selection.items.some(

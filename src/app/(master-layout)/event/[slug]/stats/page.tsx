@@ -123,7 +123,7 @@ function StatsPage({ params }: { params: Promise<{ slug: string }> }) {
                 </CardHeader>
                 {stats ? (
                   <CardContent>
-                    <p className="text-4xl font-bold">{stats.customerCount}</p>
+                    <p className="text-4xl font-bold">{stats.attendeeCount}</p>
                   </CardContent>
                 ) : (
                   <CardContent>

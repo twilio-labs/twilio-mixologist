@@ -1,9 +1,8 @@
 "use server";
 
 import { fetchSyncListItems, findSyncMapItems } from "@/lib/twilio";
+import type { Event, modes } from "@/types";
 import { Stages } from "@/lib/utils";
-import { Event } from "@/app/(master-layout)/event/[slug]/page";
-import { modes } from "@/config/menus";
 import { headers } from "next/headers";
 import { getAuthenticatedRole, Privilege } from "@/proxy";
 
@@ -19,7 +18,7 @@ export type MixologistStats = {
   channels: Record<string, number>;
   deliveredCount: number;
   cancelledCount: number;
-  customerCount: number;
+  attendeeCount: number;
   mode: modes;
 };
 
@@ -29,16 +28,16 @@ export async function calcStatsForEvent(
   if (
     !process.env.NEXT_PUBLIC_CONFIG_DOC ||
     !process.env.NEXT_PUBLIC_EVENTS_MAP ||
-    !process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP
+    !process.env.NEXT_PUBLIC_ATTENDEES_MAP
   ) {
     throw new Error("No config doc specified");
   }
-  const [orders, eventRes, customers] = await Promise.all([
+  const [orders, eventRes, attendees] = await Promise.all([
     fetchSyncListItems(slug),
     findSyncMapItems(process.env.NEXT_PUBLIC_EVENTS_MAP, {
       slug,
     }),
-    findSyncMapItems(process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP, {
+    findSyncMapItems(process.env.NEXT_PUBLIC_ATTENDEES_MAP, {
       event: slug,
     }),
   ]);
@@ -47,7 +46,7 @@ export async function calcStatsForEvent(
   const event = eventRes[0].data as Event;
 
   const orderStatusCounter: Record<string, number> = {};
-  const customerCountryCounter: Record<string, number> = {};
+  const attendeeCountryCounter: Record<string, number> = {};
   const orderItemCounter: any = {};
   const channelCounter: Record<string, number> = {};
 
@@ -67,12 +66,12 @@ export async function calcStatsForEvent(
     channelCounter[channel] = (channelCounter[channel] ?? 0) + 1;
   });
 
-  customers.forEach((customer: any) => {
-    const { data } = customer;
-    if (!customerCountryCounter[data.country]) {
-      customerCountryCounter[data.country] = 0;
+  attendees.forEach((attendee: any) => {
+    const { data } = attendee;
+    if (!attendeeCountryCounter[data.country]) {
+      attendeeCountryCounter[data.country] = 0;
     }
-    customerCountryCounter[data.country]++;
+    attendeeCountryCounter[data.country]++;
   });
 
   // @ts-ignore
@@ -81,8 +80,8 @@ export async function calcStatsForEvent(
     (key) => orderItemCounter[key] === mostOrderedItemCount,
   );
 
-  const attendeeStages = customers.reduce((acc: any, customer: any) => {
-    const { data } = customer;
+  const attendeeStages = attendees.reduce((acc: any, attendee: any) => {
+    const { data } = attendee;
     const attendeeStage = data.stage;
     if (!acc[attendeeStage]) {
       acc[attendeeStage] = 0;
@@ -126,8 +125,8 @@ export async function calcStatsForEvent(
     mode: event.selection.mode,
     cancelledCount: event.cancelledCount || 0,
     deliveredCount: event.deliveredCount || 0,
-    customerCount: customers.length,
-    countries: customerCountryCounter,
+    attendeeCount: attendees.length,
+    countries: attendeeCountryCounter,
     channels: channelCounter,
   };
 }

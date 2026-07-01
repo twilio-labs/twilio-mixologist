@@ -8,7 +8,6 @@ import nextConfig from "../../next.config";
 import {
   getEventRegistrationTemplate,
   getOrderCancelledTemplate,
-  getOrderConfirmationTemplate,
   getOrderReadyTemplate,
   getOrderReminderTemplate,
   getReadyToOrderLimitlessTemplate,
@@ -158,7 +157,4 @@ async function createWhatsAppTemplates() {
   } catch (e: any) {
     console.error("Error creating WhatsApp Templates ", e.message);
   }
-}
-export async function createTwilioRes() {
-  await createWhatsAppTemplates();
 }

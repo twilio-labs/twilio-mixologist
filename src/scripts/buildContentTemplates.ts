@@ -1,4 +1,4 @@
-import { Language } from "@/lib/stringTemplates";
+import type { Language } from "@/types";
 
 const SAMPLE_ITEMS = [
   { title: "Espresso", shortTitle: "Espresso", description: "Rich Italian coffee" },

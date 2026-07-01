@@ -1,8 +1,6 @@
 "use server";
 
-import { modes } from "@/config/menus";
-import { Event } from "@/app/(master-layout)/event/[slug]/page";
-import { Language } from "@/lib/stringTemplates";
+import type { modes, Event, Language } from "@/types";
 
 const axios = require("axios");
 
@@ -37,7 +35,7 @@ function modeToBeverage(mode: modes, language: Language, plural: boolean = false
 function buildContentVariables(variables: any[], startIndex = 0) {
   const contentVariables: any = {};
   variables.forEach((value, i) => {
-    contentVariables[String(i + startIndex)] = value;
+    contentVariables[String(i + startIndex)] = String(value ?? "");
   });
   return JSON.stringify(contentVariables);
 }
@@ -69,43 +67,6 @@ async function getTemplate(templateName: string) {
     throw new Error(`Template ${templateName} not found`);
   }
   return match;
-}
-
-export async function getWrongOrderMessage(
-  originalMessage: string,
-  availableOptions: any[],
-  language: Language = "en",
-) {
-  const suffix = LANG_SUFFIX[language];
-  const template = await getTemplate(
-    `${formattedServicePrefix}_wrong_order_${availableOptions.length}${suffix}`,
-  );
-
-  return {
-    contentSid: template.sid,
-    contentVariables: buildContentVariables([
-      originalMessage,
-      ...availableOptions
-        .map((o) => [o.title, o.shortTitle, o.description])
-        .flat(),
-    ]),
-  };
-}
-
-export async function getOrderCancelledMessage(
-  product: string,
-  orderNumber: string,
-  language: Language = "en",
-) {
-  const suffix = LANG_SUFFIX[language];
-  const template = await getTemplate(
-    `${formattedServicePrefix}_order_cancelled${suffix}`,
-  );
-
-  return {
-    contentSid: template.sid,
-    contentVariables: buildContentVariables([product, orderNumber]),
-  };
 }
 
 export async function getOrderReadyMessage(

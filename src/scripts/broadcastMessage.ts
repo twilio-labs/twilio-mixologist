@@ -1,6 +1,6 @@
 import twilio from "twilio";
 import { throttledQueue } from "throttled-queue";
-import { addMessageToConversation } from "@/lib/twilio";
+import { sendMessage } from "@/lib/twilio";
 
 const {
   TWILIO_API_KEY = "",
@@ -26,26 +26,26 @@ const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
 const throttle = throttledQueue({ maxPerInterval: 20, interval: 1000 }); // 20 requests per second
 
 (async () => {
-  let customerPage = await client.sync.v1
+  let attendeePage = await client.sync.v1
     .services(TWILIO_SYNC_SERVICE_SID)
-    .syncMaps("ActiveCustomers")
+    .syncMaps("Attendees")
     .syncMapItems.page({ pageSize: 200 });
 
   let counter = 0;
 
-  while (customerPage && customerPage.instances.length > 0) {
-    customerPage.instances.map((item) => {
+  while (attendeePage && attendeePage.instances.length > 0) {
+    attendeePage.instances.map((item) => {
       // @ts-ignore  thinks is a object but actually it's a string
       if (item.data.event === eventName) {
         counter++;
         throttle(() => {
-          return addMessageToConversation(item.key, MESSAGE);
+          return sendMessage(item.key, MESSAGE);
         });
       }
     });
 
     // @ts-ignore
-    customerPage = await customerPage.nextPage();
+    attendeePage = await attendeePage.nextPage();
   }
 
   throttle(() => {
