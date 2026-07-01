@@ -15,10 +15,15 @@ Different versions of this system have been used at events such as:
 
 - [NDC Oslo](https://ndcoslo.com) 2016, 2017
 - [CSSConf EU](https://2017.cssconf.eu/) && [JSConf EU](https://2017.jsconf.eu/) 2017
-- [WeAreDevelopers World Congress](https://www.wearedevelopers.com/world-congress) 2023, 2024
-- [Mobile World Congress Barcelona](https://www.mwcbarcelona.com/) 2023, 2024
+- [WeAreDevelopers World Congress](https://www.wearedevelopers.com/world-congress) 2023, 2024, 2026
+- [Mobile World Congress Barcelona](https://www.mwcbarcelona.com/) 2023, 2024, 2025, 2026
 - [Money 20/20](https://www.money2020.com/) 2023
 - [Twilio SIGNAL](https://signal.twilio.com/) 2023, 2024
+- [NRF](https://nrf.com/) 2025, 2026
+- [NDC London](https://ndclondon.com) 2026
+- [HIMSS](https://www.himss.org/global-conference) 2026
+- [HumanX](https://www.humanx.co/) 2026
+- [SIGNAL Berlin](https://signal.twilio.com/) 2026
 
 ## Features
 
