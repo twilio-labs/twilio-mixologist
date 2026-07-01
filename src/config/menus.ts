@@ -316,12 +316,17 @@ export default {
       {
         title: "Macarena",
         shortTitle: "Macarena",
-        description: "Fruity 🍓🍍🍏 mix with exotic notes",
+        description: "Strawberry, Pineapple, Apple, Passion Fruit, Goji, Vanilla 🍓🍍",
       },
       {
         title: "La Isla Bonita",
         shortTitle: "La Isla Bonita",
-        description: "Creamy 🍍🍌🥥 with a blue twist 💙",
+        description: "Pineapple, Banana, Coconut Milk, Dates, Blue Spirulina 🍍🍌🥥",
+      },
+      {
+        title: "Calma",
+        shortTitle: "Calma",
+        description: "Mango, Pineapple, Spinach, Banana, Almonds, Ginger, Lemon 🥭🌿",
       },
       {
         title: "Des.pa.cito",
