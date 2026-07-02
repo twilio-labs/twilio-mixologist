@@ -2,6 +2,8 @@ import { headers } from "next/headers";
 
 import { pushToSyncList } from "@/lib/twilio";
 import { getAuthenticatedRole, Privilege } from "@/proxy";
+import { getEvent } from "@/app/webhooks/mixologist-helper";
+import { EventState } from "@/lib/utils";
 
 export async function POST(request: Request) {
   const [headersList, data] = await Promise.all([headers(), request.json()]);
@@ -30,6 +32,15 @@ export async function POST(request: Request) {
       },
     );
   }
+
+  const event = await getEvent(data.event);
+  if (!event) {
+    return new Response("Event not found", { status: 404, statusText: "Event not found" });
+  }
+  if (event.state === EventState.CLOSED) {
+    return new Response("Event is closed", { status: 403, statusText: "Event is closed" });
+  }
+
   let item;
   try {
     item = await pushToSyncList(data.event, data.order);
