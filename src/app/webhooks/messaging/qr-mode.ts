@@ -227,6 +227,7 @@ export async function handleQrMode(
     return;
   }
 
+
   const firstName = badgeData.firstName?.trim() || undefined;
   const fullName = [badgeData.firstName, badgeData.lastName].filter(Boolean).join(" ").trim() || undefined;
 
@@ -246,11 +247,11 @@ export async function handleQrMode(
     phone,
     {
       stage: Stages.VERIFIED_USER,
-      fullName: fullName ?? "",
-      email: badgeData.email ?? "",
-      company: badgeData.company ?? "",
-      jobTitle: badgeData.jobTitle ?? "",
-      country: badgeData.country ?? "",
+      ...(fullName ? { fullName } : {}),
+      ...(badgeData.email ? { email: badgeData.email } : {}),
+      ...(badgeData.company ? { company: badgeData.company } : {}),
+      ...(badgeData.jobTitle ? { jobTitle: badgeData.jobTitle } : {}),
+      ...(badgeData.country ? { country: badgeData.country } : {}),
       profileId: profileId ?? undefined,
       ...segmentData,
     },

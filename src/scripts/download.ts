@@ -1,6 +1,7 @@
 import twilio from "twilio";
 import { writeFileSync } from "fs";
 import { Stages } from "@/lib/utils";
+import type { AttendeeRecord } from "@/types";
 
 const {
   TWILIO_API_KEY = "",
@@ -34,7 +35,7 @@ if (!eventName || eventName.startsWith("/") || eventName.includes("=")) {
   while (attendeePage && attendeePage.instances.length > 0) {
     const attendees = attendeePage.instances
       // @ts-ignore  thinks is a object but actually it's a user
-      .map((item) => item.data as { stage: Stages; event: string })
+      .map((item) => item.data as AttendeeRecord)
       .filter(
         (a) =>
           (a.stage === Stages.VERIFIED_USER ||
