@@ -1,71 +1,65 @@
-import { describe, test, expect, beforeAll, afterAll } from "vitest";
-import axios from "axios";
+import { describe, test, expect, vi, beforeEach } from "vitest";
+import { EventState } from "@/lib/utils";
 
-const {
-  PUBLIC_BASE_URL = "http://localhost:3000",
-  ADMIN_LOGIN = ":",
-} = process.env;
+// Mock next/headers before importing the route
+vi.mock("next/headers", () => ({
+  headers: vi.fn().mockResolvedValue({
+    get: () => "Basic " + btoa(process.env.KIOSK_LOGIN ?? ":"),
+  }),
+}));
 
-const adminAuth = { Authorization: `Basic ${btoa(ADMIN_LOGIN)}` };
-const TEST_SLUG = "test-closed-event";
+vi.mock("@/app/webhooks/mixologist-helper", () => ({
+  getEvent: vi.fn(),
+}));
 
-async function createEvent(state: "OPEN" | "CLOSED") {
-  return axios.post(
-    `${PUBLIC_BASE_URL}/api/event`,
-    {
-      name: "Closed Event Test",
-      slug: TEST_SLUG,
-      state,
-      senders: ["+1234567890"],
-      selection: {
-        items: [{ title: "Espresso", shortTitle: "Espresso", description: "" }],
-        modifiers: [],
-        mode: "barista",
-      },
-      pickupLocation: "Test",
-      maxOrders: 100,
-      welcomeMessage: "Welcome",
-    },
-    { headers: { "Content-Type": "application/json", ...adminAuth } },
-  );
-}
+vi.mock("@/lib/twilio", () => ({
+  pushToSyncList: vi.fn().mockResolvedValue({ index: 42 }),
+}));
 
-async function deleteEvent() {
-  try {
-    await axios.delete(`${PUBLIC_BASE_URL}/api/event/${TEST_SLUG}`, {
-      headers: adminAuth,
-    });
-  } catch {}
-}
+import { POST } from "@/app/api/order/route";
+import { getEvent } from "@/app/webhooks/mixologist-helper";
 
-async function submitOrder() {
-  return axios.post(
-    `${PUBLIC_BASE_URL}/api/order`,
-    {
-      event: TEST_SLUG,
+const OPEN_EVENT = {
+  name: "Test Event",
+  slug: "test-event",
+  state: EventState.OPEN,
+  enableLeadCollection: false,
+  senders: [],
+  selection: { items: [], modifiers: [], mode: "barista" },
+  pickupLocation: "",
+  maxOrders: 100,
+  welcomeMessage: "",
+};
+
+function makeRequest() {
+  return new Request("http://localhost/api/order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      event: "test-event",
       order: { key: "+1234567890", item: "Espresso", status: "queued" },
-    },
-    {
-      headers: { "Content-Type": "application/json", ...adminAuth },
-      validateStatus: () => true,
-    },
-  );
+    }),
+  });
 }
 
 describe("POST /api/order", () => {
-  beforeAll(deleteEvent);
-  afterAll(deleteEvent);
+  beforeEach(() => vi.clearAllMocks());
 
-  test("rejects orders for a closed event with 403", async () => {
-    await createEvent("CLOSED");
-    const res = await submitOrder();
+  test("returns 403 when event is closed", async () => {
+    vi.mocked(getEvent).mockResolvedValue({ ...OPEN_EVENT, state: EventState.CLOSED });
+    const res = await POST(makeRequest());
     expect(res.status).toBe(403);
   });
 
-  test("accepts orders for an open event", async () => {
-    await deleteEvent();
-    await createEvent("OPEN");
-    const res = await submitOrder();
+  test("returns 404 when event does not exist", async () => {
+    vi.mocked(getEvent).mockResolvedValue(null);
+    const res = await POST(makeRequest());
+    expect(res.status).toBe(404);
+  });
+
+  test("returns 201 when event is open", async () => {
+    vi.mocked(getEvent).mockResolvedValue({ ...OPEN_EVENT, state: EventState.OPEN });
+    const res = await POST(makeRequest());
     expect(res.status).toBe(201);
   });
 });
