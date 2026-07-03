@@ -60,11 +60,13 @@ export interface Selection {
   mode: modes;
 }
 
+export type LeadCollection = "MANUAL" | "WeAreDevs_QR" | "NONE";
+
 export interface Event {
   name: string;
   slug: string;
   state: EventState;
-  enableLeadCollection: boolean;
+  leadCollection: LeadCollection;
   senders: string[];
   selection: Selection;
   pickupLocation: string;

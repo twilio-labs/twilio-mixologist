@@ -83,7 +83,6 @@ async function selectEventForCustomer(
   sender: string,
   incomingMessageBody: string,
   isReturning: boolean,
-  LEAD_COLLECTION: string,
 ): Promise<Response | null> {
   const activeEvents = await getActiveEvents();
 
@@ -97,7 +96,7 @@ async function selectEventForCustomer(
     const newEvent = activeEvents[0].data as Event;
     const welcomeMsg = isReturning
       ? getWelcomeBackMessage(newEvent.selection.mode, newEvent.name, newEvent.welcomeMessage, eventLang(newEvent))
-      : getWelcomeMessage(newEvent.selection.mode, newEvent.welcomeMessage, newEvent.enableLeadCollection, eventLang(newEvent), LEAD_COLLECTION);
+      : getWelcomeMessage(newEvent.selection.mode, newEvent.welcomeMessage, newEvent.leadCollection, eventLang(newEvent));
     sendMessage(sender, welcomeMsg);
 
     const country = getCountryFromPhone(sender);
@@ -113,7 +112,7 @@ async function selectEventForCustomer(
       TwoWeeksInSeconds,
     );
 
-    if (isReturning || !newEvent.enableLeadCollection) {
+    if (isReturning || newEvent.leadCollection === "NONE") {
       await sleep(isReturning ? 500 : 2000);
       if (!isReturning) {
         sendMessage(sender, getDataPolicy(newEvent.selection.mode, eventLang(newEvent)));
@@ -136,7 +135,7 @@ async function selectEventForCustomer(
     const newEvent = matches[0].data as Event;
     const welcomeMsg = isReturning
       ? getWelcomeBackMessage(newEvent.selection.mode, newEvent.name, newEvent.welcomeMessage, eventLang(newEvent))
-      : getWelcomeMessage(newEvent.selection.mode, newEvent.welcomeMessage, newEvent.enableLeadCollection, eventLang(newEvent));
+      : getWelcomeMessage(newEvent.selection.mode, newEvent.welcomeMessage, newEvent.leadCollection, eventLang(newEvent));
     sendMessage(sender, welcomeMsg);
 
     const country = getCountryFromPhone(sender);
@@ -153,7 +152,7 @@ async function selectEventForCustomer(
     );
 
     await sleep(500);
-    if (!isReturning && newEvent.enableLeadCollection) {
+    if (!isReturning && newEvent.leadCollection !== "NONE") {
       return twimlResponse(201);
     }
     await sendReadyToOrderSequence(sender, newEvent);
@@ -222,8 +221,6 @@ export async function POST(request: Request) {
 
   const { sender, incomingMessageBody, mediaUrl } = parsed;
 
-  const { LEAD_COLLECTION = "MANUAL" } = process.env;
-
   if (!sender) {
     return new Response("Missing sender", { status: 400 });
   }
@@ -238,7 +235,7 @@ export async function POST(request: Request) {
 
   // New customer — no event assigned yet
   if (!attendeeRecord.event) {
-    const result = await selectEventForCustomer(phone, sender, incomingMessageBody, false, LEAD_COLLECTION);
+    const result = await selectEventForCustomer(phone, sender, incomingMessageBody, false);
     if (result) return result;
   }
 
@@ -247,13 +244,13 @@ export async function POST(request: Request) {
 
   // Returning customer whose stored event is no longer active
   if (!event) {
-    const result = await selectEventForCustomer(phone, sender, incomingMessageBody, true, LEAD_COLLECTION);
+    const result = await selectEventForCustomer(phone, sender, incomingMessageBody, true);
     if (result) return result;
   }
 
   // "Forget me" — delete all stored data for this attendee
   if (incomingMessageBody.toLowerCase().includes("forget me")) {
-    const profileId = LEAD_COLLECTION === "QR"
+    const profileId = event?.leadCollection === "WeAreDevs_QR"
       ? (attendeeRecord as any).profileId as string | undefined
       : undefined;
     try {
@@ -276,47 +273,45 @@ export async function POST(request: Request) {
   }
 
   // Lead collection dispatch
-  if (event.enableLeadCollection) {
-    if (LEAD_COLLECTION === "QR") {
-      const currentStage = (attendeeRecord as any).stage as Stages;
-      const alreadyVerified =
-        currentStage === Stages.VERIFIED_USER ||
-        currentStage === Stages.FIRST_ORDER ||
-        currentStage === Stages.REPEAT_CUSTOMER;
+  if (event.leadCollection === "WeAreDevs_QR") {
+    const currentStage = (attendeeRecord as any).stage as Stages;
+    const alreadyVerified =
+      currentStage === Stages.VERIFIED_USER ||
+      currentStage === Stages.FIRST_ORDER ||
+      currentStage === Stages.REPEAT_CUSTOMER;
 
-      if (!alreadyVerified) {
-        const memoryClient = await createQrModeMemoryClient();
-        if (memoryClient) {
-          await handleQrMode(
-            phone,
-            attendeeRecord,
-            memoryClient,
-            event,
-            incomingMessageBody,
-            mediaUrl,
-            sender,
-          );
-          return new Response(emptyTwiml(), { status: 200, headers: { "Content-Type": "text/xml" } });
-        } else {
-          sendMessage(
-            sender,
-            "Registration is temporarily unavailable. Please try again in a moment.",
-          );
-          return new Response(emptyTwiml(), { status: 200, headers: { "Content-Type": "text/xml" } });
-        }
-      }
-    } else {
-      const handled = await handleProfileMode(
-        phone,
-        sender,
-        attendeeRecord,
-        event,
-        incomingMessageBody,
-        LEAD_COLLECTION,
-      );
-      if (handled) {
+    if (!alreadyVerified) {
+      const memoryClient = await createQrModeMemoryClient();
+      if (memoryClient) {
+        await handleQrMode(
+          phone,
+          attendeeRecord,
+          memoryClient,
+          event,
+          incomingMessageBody,
+          mediaUrl,
+          sender,
+        );
+        return new Response(emptyTwiml(), { status: 200, headers: { "Content-Type": "text/xml" } });
+      } else {
+        sendMessage(
+          sender,
+          "Registration is temporarily unavailable. Please try again in a moment.",
+        );
         return new Response(emptyTwiml(), { status: 200, headers: { "Content-Type": "text/xml" } });
       }
+    }
+  } else if (event.leadCollection === "MANUAL") {
+    const handled = await handleProfileMode(
+      phone,
+      sender,
+      attendeeRecord,
+      event,
+      incomingMessageBody,
+      event.leadCollection,
+    );
+    if (handled) {
+      return new Response(emptyTwiml(), { status: 200, headers: { "Content-Type": "text/xml" } });
     }
   }
 

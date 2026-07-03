@@ -37,7 +37,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Event, Language } from "@/types";
+import type { Event, Language, LeadCollection } from "@/types";
 
 export type { Event };
 
@@ -71,7 +71,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
     name: "",
     slug: "",
     state: EventState.OPEN,
-    enableLeadCollection: true,
+    leadCollection: "MANUAL",
     senders: [],
     selection: {
       items: [],
@@ -286,20 +286,26 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
               }}
             />
           </div>
-          <div className="space-y-2 flex flex-col">
-            <Label htmlFor="disableLeadCollection">
-              Enable Lead Collection
-            </Label>
-            <Switch
-              id="enableLeadCollection"
-              checked={internalEvent.enableLeadCollection}
-              onCheckedChange={(newState) => {
+          <div className="space-y-2">
+            <Label htmlFor="leadCollection">Lead Collection</Label>
+            <Select
+              value={internalEvent.leadCollection}
+              onValueChange={(value) => {
                 updateEvent({
                   ...internalEvent,
-                  enableLeadCollection: newState,
+                  leadCollection: value as LeadCollection,
                 });
               }}
-            />
+            >
+              <SelectTrigger id="leadCollection">
+                <SelectValue placeholder="Select lead collection mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="MANUAL">Manual (name + email)</SelectItem>
+                <SelectItem value="WeAreDevs_QR">WeAreDevelopers QR Badge</SelectItem>
+                <SelectItem value="NONE">None</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </CardContent>}
       </Card>

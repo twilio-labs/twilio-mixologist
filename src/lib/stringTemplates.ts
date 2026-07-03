@@ -1,4 +1,4 @@
-import type { Event, modes, Language } from "@/types";
+import type { Event, modes, Language, LeadCollection } from "@/types";
 
 export type { Language } from "@/types";
 
@@ -71,9 +71,8 @@ export function getInvalidVerificationCodeMessage(language: Language = "en") {
 export function getWelcomeMessage(
   mode: modes,
   customWelcomeMessage?: string,
-  willCollectedLeads?: boolean,
+  leadCollection: LeadCollection = "NONE",
   language: Language = "en",
-  leadCollectionMode: string = "MANUAL",
 ) {
   const defaultWelcome = language === "pt-BR"
     ? `Bem-vindo ao Estande da Twilio! Está pronto para um ${modeToBeverage(mode, language)} por nossa conta? 🎉`
@@ -82,16 +81,14 @@ export function getWelcomeMessage(
   const welcomeMessage = customWelcomeMessage || defaultWelcome;
 
   let leadCollectionSuffix = "";
-  if (willCollectedLeads) {
-    if (leadCollectionMode === "QR") {
-      leadCollectionSuffix = language === "pt-BR"
-        ? "\nEnvie uma foto do QR code do seu crachá para começar."
-        : "\nSend a photo of your badge QR code to get started.";
-    } else {
-      leadCollectionSuffix = language === "pt-BR"
-        ? "\nResponda com seu nome completo para começar."
-        : "\nReply with your full name to get started.";
-    }
+  if (leadCollection === "WeAreDevs_QR") {
+    leadCollectionSuffix = language === "pt-BR"
+      ? "\nEnvie uma foto do QR code do seu crachá para começar."
+      : "\nSend a photo of your badge QR code to get started.";
+  } else if (leadCollection === "MANUAL") {
+    leadCollectionSuffix = language === "pt-BR"
+      ? "\nResponda com seu nome completo para começar."
+      : "\nReply with your full name to get started.";
   }
   return `${welcomeMessage}\n${leadCollectionSuffix}`;
 }

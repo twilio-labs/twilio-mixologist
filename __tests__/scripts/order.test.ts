@@ -1,5 +1,7 @@
 import { describe, test, expect, vi, beforeEach } from "vitest";
 import { EventState } from "@/lib/utils";
+import { modes } from "@/types";
+import type { Event } from "@/types";
 
 // Mock next/headers before importing the route
 vi.mock("next/headers", () => ({
@@ -19,13 +21,13 @@ vi.mock("@/lib/twilio", () => ({
 import { POST } from "@/app/api/order/route";
 import { getEvent } from "@/app/webhooks/mixologist-helper";
 
-const OPEN_EVENT = {
+const OPEN_EVENT: Event = {
   name: "Test Event",
   slug: "test-event",
   state: EventState.OPEN,
-  enableLeadCollection: false,
+  leadCollection: "NONE",
   senders: [],
-  selection: { items: [], modifiers: [], mode: "barista" },
+  selection: { items: [], modifiers: [], mode: modes.barista },
   pickupLocation: "",
   maxOrders: 100,
   welcomeMessage: "",

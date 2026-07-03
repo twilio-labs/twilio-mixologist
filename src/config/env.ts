@@ -20,7 +20,6 @@ export const env = {
   // App config
   publicBaseUrl: process.env.PUBLIC_BASE_URL ?? "",
   serviceInstancePrefix: process.env.SERVICE_INSTANCE_PREFIX ?? "",
-  leadCollection: process.env.LEAD_COLLECTION ?? "MANUAL",
   unlimitedOrders: (process.env.UNLIMITED_ORDERS ?? "").split(","),
 
   // Auth
