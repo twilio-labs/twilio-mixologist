@@ -202,6 +202,11 @@ if ! az containerapp env show \
     --output none
 fi
 
+# Allow deploy-specific credential overrides
+ADMIN_LOGIN="${DEPLOY_ADMIN_LOGIN:-$ADMIN_LOGIN}"
+MIXOLOGIST_LOGIN="${DEPLOY_MIXOLOGIST_LOGIN:-$MIXOLOGIST_LOGIN}"
+KIOSK_LOGIN="${DEPLOY_KIOSK_LOGIN:-$KIOSK_LOGIN}"
+
 secret_keys=(
   TWILIO_ACCOUNT_SID
   TWILIO_API_KEY
