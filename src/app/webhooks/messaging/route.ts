@@ -83,6 +83,7 @@ async function selectEventForCustomer(
   sender: string,
   incomingMessageBody: string,
   isReturning: boolean,
+  attendeeRecord?: any,
 ): Promise<Response | null> {
   const activeEvents = await getActiveEvents();
 
@@ -94,6 +95,27 @@ async function selectEventForCustomer(
   if (activeEvents.length === 1) {
     // @ts-ignore  data is typed as object but is actually an Event
     const newEvent = activeEvents[0].data as Event;
+
+    // For QR mode on first contact: assign the event silently so handleQrMode
+    // runs immediately on this request and sends the correct greeting based on
+    // whether the user is already known in Memory.
+    if (!isReturning && newEvent.leadCollection === "WeAreDevs_QR") {
+      const country = getCountryFromPhone(sender);
+      await updateOrCreateSyncMapItem(
+        NEXT_PUBLIC_ATTENDEES_MAP,
+        phone,
+        {
+          event: newEvent.slug,
+          orderCount: 0,
+          stage: Stages.NEW_USER,
+          country: country?.name === "Canada" ? "United States" : country?.name,
+        },
+        TwoWeeksInSeconds,
+      );
+      if (attendeeRecord) attendeeRecord.event = newEvent.slug;
+      return null;
+    }
+
     const welcomeMsg = isReturning
       ? getWelcomeBackMessage(newEvent.selection.mode, newEvent.name, newEvent.welcomeMessage, eventLang(newEvent))
       : getWelcomeMessage(newEvent.selection.mode, newEvent.welcomeMessage, newEvent.leadCollection, eventLang(newEvent));
@@ -235,7 +257,7 @@ export async function POST(request: Request) {
 
   // New customer — no event assigned yet
   if (!attendeeRecord.event) {
-    const result = await selectEventForCustomer(phone, sender, incomingMessageBody, false);
+    const result = await selectEventForCustomer(phone, sender, incomingMessageBody, false, attendeeRecord);
     if (result) return result;
   }
 
