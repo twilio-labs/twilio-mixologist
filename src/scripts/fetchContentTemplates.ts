@@ -159,7 +159,7 @@ export async function getReadyToOrderMessage(
   language: Language = "en",
 ) {
   const { mode, items, modifiers } = event.selection;
-  const maxOrders = `${maxNumberOrders} ${modeToBeverage(mode, language, true)}`;
+  const maxOrders = `${maxNumberOrders} ${modeToBeverage(mode, language, maxNumberOrders !== 1)}`;
   let sampleOrder = items[1].title;
   if (modifiers.length > 0) {
     sampleOrder += ` with ${modifiers[modifiers.length - 1]}`;

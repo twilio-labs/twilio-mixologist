@@ -216,6 +216,7 @@ secret_keys=(
   TWILIO_MESSAGING_SERVICE_SID
   TWILIO_SYNC_SERVICE_SID
   TWILIO_VERIFY_SERVICE_SID
+  OPENAI_API_KEY
   ADMIN_LOGIN
   MIXOLOGIST_LOGIN
   KIOSK_LOGIN
@@ -272,9 +273,33 @@ registry_password="$(az acr credential show \
 
 env_vars=("${plain_env_vars[@]}" "${secret_env_vars[@]}")
 
-if az containerapp show \
-  --name "$AZURE_CONTAINER_APP_NAME" \
-  --resource-group "$AZURE_RESOURCE_GROUP" >/dev/null 2>&1; then
+_do_create_container_app() {
+  echo "Creating Container App: $AZURE_CONTAINER_APP_NAME"
+  create_args=(
+    --name "$AZURE_CONTAINER_APP_NAME"
+    --resource-group "$AZURE_RESOURCE_GROUP"
+    --environment "$AZURE_CONTAINER_ENV_NAME"
+    --image "$REMOTE_IMAGE"
+    --target-port "$APP_PORT"
+    --ingress external
+    --registry-server "$ACR_LOGIN_SERVER"
+    --registry-username "$registry_username"
+    --registry-password "$registry_password"
+    --tags created_by="$AZURE_USER"
+  )
+
+  if [[ ${#secret_args[@]} -gt 0 ]]; then
+    create_args+=(--secrets "${secret_args[@]}")
+  fi
+
+  if [[ ${#env_vars[@]} -gt 0 ]]; then
+    create_args+=(--env-vars "${env_vars[@]}")
+  fi
+
+  az containerapp create "${create_args[@]}" --output none
+}
+
+_do_update_container_app() {
   echo "Updating Container App: $AZURE_CONTAINER_APP_NAME"
 
   if [[ ${#secret_args[@]} -gt 0 ]]; then
@@ -311,31 +336,26 @@ if az containerapp show \
     --username "$registry_username" \
     --password "$registry_password" \
     --output none
+}
+
+_err_tmp="$(mktemp)"
+if az containerapp show \
+  --name "$AZURE_CONTAINER_APP_NAME" \
+  --resource-group "$AZURE_RESOURCE_GROUP" >/dev/null 2>&1; then
+  _do_update_container_app 2>"$_err_tmp" || {
+    if grep -qi "does not exist" "$_err_tmp"; then
+      echo "Container app disappeared during update, creating instead..."
+      _do_create_container_app
+    else
+      cat "$_err_tmp" >&2
+      rm -f "$_err_tmp"
+      exit 1
+    fi
+  }
 else
-  echo "Creating Container App: $AZURE_CONTAINER_APP_NAME"
-  create_args=(
-    --name "$AZURE_CONTAINER_APP_NAME"
-    --resource-group "$AZURE_RESOURCE_GROUP"
-    --environment "$AZURE_CONTAINER_ENV_NAME"
-    --image "$REMOTE_IMAGE"
-    --target-port "$APP_PORT"
-    --ingress external
-    --registry-server "$ACR_LOGIN_SERVER"
-    --registry-username "$registry_username"
-    --registry-password "$registry_password"
-    --tags created_by="$AZURE_USER"
-  )
-
-  if [[ ${#secret_args[@]} -gt 0 ]]; then
-    create_args+=(--secrets "${secret_args[@]}")
-  fi
-
-  if [[ ${#env_vars[@]} -gt 0 ]]; then
-    create_args+=(--env-vars "${env_vars[@]}")
-  fi
-
-  az containerapp create "${create_args[@]}" --output none
+  _do_create_container_app
 fi
+rm -f "$_err_tmp"
 
 echo "Setting replica scale to 1/1"
 az containerapp update \
