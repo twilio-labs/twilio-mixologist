@@ -266,23 +266,6 @@ export default {
   smoothie: {
     items: [
       {
-        title: "Colombia (Red like Twilio!)",
-        shortTitle: "Colombia",
-        description: "Strawberry, Pineapple, Apple, Sunflower Seeds 🍓🍍🍏🌻",
-      },
-      {
-        title: "Aquamarine (Blue like SendGrid!)",
-        shortTitle: "Aquamarine",
-        description:
-          "Pineapple, Banana, Coconut Milk, Dates, Flaxseed 🍍🍌🥥🌴",
-      },
-      {
-        title: "Lambada (Green like Segment!)",
-        shortTitle: "Lambada",
-        description:
-          "Orange, Mango, Banana, Passion Fruit, Flaxseed, Coconut Oil 🍊🥭🍌🥥",
-      },
-      {
         title: "Macarena",
         shortTitle: "Macarena",
         description: "Strawberry, Pineapple, Apple, Passion Fruit, Goji, Vanilla 🍓🍍",
