@@ -15,27 +15,29 @@ export default async function SessionButton(
 
   return (
     <div {...props}>
-      <li className={`mx-2 ${loggedIn ? "hidden" : ""}`}>
-        <Link className="text-white text-lg flex" href="/login">
-          <UserIcon className="mr-2 text-white text-lg " />
+      <li className={`${loggedIn ? "hidden" : ""}`}>
+        <Link
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[#9cafc8] hover:text-white hover:bg-[#1e2d42] transition-colors text-sm"
+          href="/login"
+        >
+          <UserIcon className="h-4 w-4" />
           <span className="hidden md:block">Login</span>
         </Link>
       </li>
-      <li className={`mx-2 ${!loggedIn ? "hidden" : ""}`}>
+      <li className={`${!loggedIn ? "hidden" : ""}`}>
         <form
           action={async function clearPrivilegeCookies() {
             "use server";
-
             const cs = await cookies();
             cs.delete("privilege");
             redirect("/");
           }}
         >
           <button
-            className="text-white text-lg flex items-center"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[#9cafc8] hover:text-white hover:bg-[#1e2d42] transition-colors text-sm"
             type="submit"
           >
-            <LogOutIcon className="mr-2 text-white text-lg " />
+            <LogOutIcon className="h-4 w-4" />
             <span className="hidden md:block">Log out</span>
           </button>
         </form>

@@ -1,8 +1,6 @@
 // Copyright (c) 2025 Twilio Inc.
 
-import { Card } from "@/components/ui/card";
 import EventCard from "@/components/event-card";
-import { Button } from "@/components/ui/button";
 import { Privilege } from "@/proxy";
 import Link from "next/link";
 import { cookies } from "next/headers";
@@ -31,7 +29,11 @@ export default async function Home() {
 
       return (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 select-none">
+          <div className="mb-6">
+            <h1 className="text-2xl font-semibold text-twilio-ink tracking-tight">Events</h1>
+            <p className="text-sm text-gray-500 mt-1">Select an event to manage orders</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 select-none">
             {items.map((item) => {
               return (
                 <EventCard
@@ -46,14 +48,15 @@ export default async function Home() {
               );
             })}
             {isAdmin && (
-              <Card className="w-full bg-blue-100 hover:bg-blue-200 flex">
-                <Link
-                  className="flex-1 flex items-center justify-center"
-                  href="/event/new"
-                >
-                  <Button variant="default">+ Create New Event</Button>
-                </Link>
-              </Card>
+              <Link
+                className="flex items-center justify-center rounded-xl border-2 border-dashed border-warm-strong hover:border-twilio-red hover:bg-red-50 transition-colors min-h-[140px] group"
+                href="/event/new"
+              >
+                <div className="flex flex-col items-center gap-2 text-gray-400 group-hover:text-twilio-red transition-colors">
+                  <div className="w-8 h-8 rounded-full border-2 border-current flex items-center justify-center text-xl font-light">+</div>
+                  <span className="text-sm font-medium">New Event</span>
+                </div>
+              </Link>
             )}
           </div>
         </>

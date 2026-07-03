@@ -24,36 +24,38 @@ export default async function MainLayout({
   return (
     <>
       <Toaster />
-      <div className="bg-gray-100 min-h-screen flex flex-col">
-        <header className="bg-twilio-red py-4">
-          <div className="mx-4 flex space-between items-center">
-            <Link className="flex-1" href="/">
-              <h1 className="text-white text-3xl font-bold">
-                Twilio Mixologist
-              </h1>
+      <div className="bg-warm min-h-screen flex flex-col">
+        <header className="bg-twilio-ink border-b border-[#1e2d42]">
+          <div className="mx-4 md:mx-8 py-3 flex items-center gap-4">
+            <Link className="flex-1 min-w-0" href="/">
+              <div className="flex items-center gap-2.5">
+                <div className="w-6 h-6 rounded bg-twilio-red flex-shrink-0" />
+                <h1 className="text-white text-lg font-semibold tracking-tight truncate">
+                  Twilio Mixologist
+                </h1>
+              </div>
             </Link>
-            <nav className="">
-              <ul className="space-x flex ">
+            <nav>
+              <ul className="flex items-center gap-1">
                 {isAdmin && (
                   <Link
-                    className="hover:bg-red-600 p-1 rounded-md text-white text-lg flex"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[#9cafc8] hover:text-white hover:bg-[#1e2d42] transition-colors text-sm"
                     href="/configuration"
                   >
-                    <SettingsIcon className="mr-2 text-white text-lg " />
+                    <SettingsIcon className="h-4 w-4" />
                     <span className="hidden md:block">Configuration</span>
                   </Link>
                 )}
-
-                <SessionButton className="hover:bg-red-600 p-1 rounded-md" />
+                <SessionButton className="flex items-center" />
               </ul>
             </nav>
           </div>
         </header>
-        <main className="container mx-auto p-4 flex-1 flex flex-col">
+        <main className="container mx-auto px-4 md:px-8 py-6 flex-1 flex flex-col">
           {children}
         </main>
-        <footer className="bg-twilio-red p-4 text-center text-white">
-          <p>Made with ❤️ by Twilio</p>
+        <footer className="border-t border-warm-strong py-4 text-center text-sm text-gray-400">
+          Made with ❤️ by Twilio
         </footer>
       </div>
     </>
