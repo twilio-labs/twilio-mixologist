@@ -147,7 +147,6 @@ export default function OrdersList({
       return (
         <div
           key={index}
-          role="row"
           className={`${rowBg} border rounded-xl px-4 py-3 flex items-center gap-4 mb-2 transition-colors`}
         >
           {/* Order number */}
@@ -166,7 +165,7 @@ export default function OrdersList({
             <p className="text-xs text-gray-400 truncate mt-0.5">
               {data?.manual ? data?.name : data?.address}
               {data?.originalText && (
-                <span className="ml-1 italic">"{data.originalText}"</span>
+                <span className="ml-1 italic">&ldquo;{data.originalText}&rdquo;</span>
               )}
             </p>
           </div>
@@ -176,12 +175,12 @@ export default function OrdersList({
             <div className="flex items-center gap-2 flex-shrink-0">
               {isReady && !data?.manual && (
                 <button
-                  title="Send Reminder"
+                  aria-label="Send reminder"
                   disabled={
                     isProcessing(index, "remind") ||
                     (Date.now() - dateUpdated < 3 * 60 * 1000 && data?.reminded)
                   }
-                  className="w-10 h-10 rounded-lg border border-amber-300 bg-amber-50 text-amber-600 hover:bg-amber-100 disabled:opacity-40 flex items-center justify-center transition-colors"
+                  className="w-10 h-10 rounded-lg border border-amber-300 bg-amber-50 text-amber-600 hover:bg-amber-100 disabled:opacity-40 flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-500 focus-visible:outline-none"
                   onClick={async () => {
                     startProcessing(index, "remind");
                     try {
@@ -196,14 +195,14 @@ export default function OrdersList({
                     }
                   }}
                 >
-                  <BellRing className="h-4 w-4" />
+                  <BellRing aria-hidden="true" className="h-4 w-4" />
                 </button>
               )}
               {isQueued && (
                 <button
-                  title="Mark as Ready"
+                  aria-label="Mark order ready"
                   disabled={isProcessing(index, "made")}
-                  className="w-10 h-10 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 disabled:opacity-40 flex items-center justify-center transition-colors"
+                  className="w-10 h-10 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 disabled:opacity-40 flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
                   onClick={async () => {
                     startProcessing(index, "made");
                     try {
@@ -223,14 +222,14 @@ export default function OrdersList({
                     }
                   }}
                 >
-                  <Check className="h-4 w-4" />
+                  <Check aria-hidden="true" className="h-4 w-4" />
                 </button>
               )}
               {isReady && (
                 <button
-                  title="Mark as Served"
+                  aria-label="Mark order served"
                   disabled={isProcessing(index, "served")}
-                  className="w-10 h-10 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-40 flex items-center justify-center transition-colors"
+                  className="w-10 h-10 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-40 flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-emerald-600 focus-visible:outline-none"
                   onClick={async () => {
                     startProcessing(index, "served");
                     try {
@@ -242,7 +241,7 @@ export default function OrdersList({
                     }
                   }}
                 >
-                  <UserCheck className="h-4 w-4" />
+                  <UserCheck aria-hidden="true" className="h-4 w-4" />
                 </button>
               )}
             </div>

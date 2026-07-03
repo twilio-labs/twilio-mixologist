@@ -36,14 +36,14 @@ export default function EventCard({ title, slug, isAdmin }: EventCardProps) {
           href={`/event/${slug}/orders`}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-gray-600 hover:bg-warm hover:text-twilio-ink transition-colors font-medium"
         >
-          <ListTodoIcon className="h-3.5 w-3.5" />
+          <ListTodoIcon aria-hidden="true" className="h-3.5 w-3.5" />
           Orders
         </Link>
         <Link
           href={`/event/${slug}/menu`}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-gray-600 hover:bg-warm hover:text-twilio-ink transition-colors font-medium"
         >
-          <MenuIcon className="h-3.5 w-3.5" />
+          <MenuIcon aria-hidden="true" className="h-3.5 w-3.5" />
           Menu
         </Link>
         {isAdmin && (
@@ -51,7 +51,7 @@ export default function EventCard({ title, slug, isAdmin }: EventCardProps) {
             href={`/event/${slug}/stats`}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-gray-600 hover:bg-warm hover:text-twilio-ink transition-colors font-medium"
           >
-            <LineChartIcon className="h-3.5 w-3.5" />
+            <LineChartIcon aria-hidden="true" className="h-3.5 w-3.5" />
             Stats
           </Link>
         )}
@@ -75,7 +75,7 @@ export default function EventCard({ title, slug, isAdmin }: EventCardProps) {
                   });
               }}
             >
-              <Trash2Icon className="h-4 w-4 text-gray-400 hover:text-red-500 transition-colors" />
+              <Trash2Icon aria-label={`Delete ${title}`} className="h-4 w-4 text-gray-400 hover:text-red-500 transition-colors" />
             </ConfirmDialog>
           </div>
         )}

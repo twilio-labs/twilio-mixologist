@@ -39,18 +39,18 @@ export default function HeaderControls({
 
   if (!isPriviledged) return null;
 
-  const btnBase = "w-10 h-10 rounded-lg flex items-center justify-center transition-colors disabled:opacity-40";
+  const btnBase = "w-10 h-10 rounded-lg flex items-center justify-center transition-colors disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-twilio-ink focus-visible:outline-none";
 
   return (
     <div className="flex items-center gap-2">
       <Popover open={customOrderPopoverIsOpen} onOpenChange={openCustomOrderPopover}>
         <PopoverTrigger asChild>
           <button
-            title="Add Manual Order"
+            aria-label="Add manual order"
             onClick={() => openCustomOrderPopover(true)}
             className={`${btnBase} border border-warm-strong bg-white hover:bg-warm text-gray-600`}
           >
-            <PlusIcon className="h-4 w-4" />
+            <PlusIcon aria-hidden="true" className="h-4 w-4" />
           </button>
         </PopoverTrigger>
         <CustomOrderPopoverContent
@@ -63,11 +63,11 @@ export default function HeaderControls({
       <Popover open={broadcastPopoverIsOpen} onOpenChange={openBroadcastPopover}>
         <PopoverTrigger asChild>
           <button
-            title="Broadcast Message"
+            aria-label="Broadcast message"
             onClick={() => openBroadcastPopover(true)}
             className={`${btnBase} border border-warm-strong bg-white hover:bg-warm text-gray-600`}
           >
-            <MessageSquareIcon className="h-4 w-4" />
+            <MessageSquareIcon aria-hidden="true" className="h-4 w-4" />
           </button>
         </PopoverTrigger>
         <BroadcastPopoverContent
@@ -79,7 +79,7 @@ export default function HeaderControls({
       <button
         data-testid="pause-orders"
         disabled={event.state === EventState.ENDED || isUpdatingEvent}
-        title={event.state === EventState.OPEN ? "Pause orders" : "Resume orders"}
+        aria-label={event.state === EventState.OPEN ? "Pause orders" : "Resume orders"}
         className={`${btnBase} ${
           event.state === EventState.OPEN
             ? "bg-amber-50 border border-amber-300 text-amber-600 hover:bg-amber-100"
@@ -102,9 +102,9 @@ export default function HeaderControls({
           }
         }}
       >
-        {event.state === EventState.CLOSED && <PlayIcon className="h-4 w-4" />}
-        {event.state === EventState.OPEN && <PauseIcon className="h-4 w-4" />}
-        {event.state === EventState.ENDED && <BanIcon className="h-4 w-4" />}
+        {event.state === EventState.CLOSED && <PlayIcon aria-hidden="true" className="h-4 w-4" />}
+        {event.state === EventState.OPEN && <PauseIcon aria-hidden="true" className="h-4 w-4" />}
+        {event.state === EventState.ENDED && <BanIcon aria-hidden="true" className="h-4 w-4" />}
       </button>
     </div>
   );

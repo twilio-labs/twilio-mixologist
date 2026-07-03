@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { LogOutIcon, UserIcon } from "lucide-react";
 
 export default async function SessionButton(
-  props: React.HTMLAttributes<HTMLDivElement>,
+  props: React.HTMLAttributes<HTMLUListElement>,
 ) {
   const cookiesStore = await cookies();
   const loggedIn = [Privilege.ADMIN, Privilege.MIXOLOGIST].includes(
@@ -14,13 +14,13 @@ export default async function SessionButton(
   );
 
   return (
-    <div {...props}>
+    <ul {...props}>
       <li className={`${loggedIn ? "hidden" : ""}`}>
         <Link
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[#9cafc8] hover:text-white hover:bg-[#1e2d42] transition-colors text-sm"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[#9cafc8] hover:text-white hover:bg-[#1e2d42] transition-colors text-sm focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-twilio-ink focus-visible:outline-none"
           href="/login"
         >
-          <UserIcon className="h-4 w-4" />
+          <UserIcon aria-hidden="true" className="h-4 w-4" />
           <span className="hidden md:block">Login</span>
         </Link>
       </li>
@@ -34,14 +34,14 @@ export default async function SessionButton(
           }}
         >
           <button
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[#9cafc8] hover:text-white hover:bg-[#1e2d42] transition-colors text-sm"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[#9cafc8] hover:text-white hover:bg-[#1e2d42] transition-colors text-sm focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-twilio-ink focus-visible:outline-none"
             type="submit"
           >
-            <LogOutIcon className="h-4 w-4" />
+            <LogOutIcon aria-hidden="true" className="h-4 w-4" />
             <span className="hidden md:block">Log out</span>
           </button>
         </form>
       </li>
-    </div>
+    </ul>
   );
 }
