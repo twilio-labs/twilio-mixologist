@@ -23,7 +23,6 @@ import type { Event, Order } from "@/types";
 
 const NEXT_PUBLIC_ATTENDEES_MAP =
   process.env.NEXT_PUBLIC_ATTENDEES_MAP || "";
-const UNLIMITED_ORDERS = (process.env.UNLIMITED_ORDERS || "").split(",");
 
 // Prompt injection guard — block attempts to override the system role
 const INJECTION_PATTERNS = [
@@ -73,7 +72,8 @@ async function toolPlaceOrder(
   const today = new Date().toISOString().split("T")[0];
   const isNewDay = (record as any)?.dailyOrderDate !== today;
   const dailyCount = isNewDay ? 0 : Number((record as any)?.dailyOrderCount ?? 0);
-  if (dailyCount >= event.maxOrders && !UNLIMITED_ORDERS.includes(phone)) {
+  const unlimitedOrders = (process.env.UNLIMITED_ORDERS || "").split(",");
+  if (dailyCount >= event.maxOrders && !unlimitedOrders.includes(phone)) {
     return `You've reached the daily limit of ${event.maxOrders} orders.`;
   }
 
@@ -219,8 +219,6 @@ Menu:
 ${menuDetails}
 
 Available add-ons: ${modifierList}
-Max orders per day: ${event.maxOrders}
-
 Rules:
 * Only help with drink orders and related tasks. Politely decline any other topics.
 * Use the item descriptions to make personalised suggestions when the user asks for a recommendation or describes what they feel like.
@@ -229,8 +227,8 @@ Rules:
 * Never add new menu items or modifier options that are not listed above.
 * If the user doesn't specify a modifier, don't ask for it — assume they don't want one.
 * If the user's message is ambiguous, ask one short clarifying question.
-* If the user wants to order, first call the appropriate tool. Once the tool returns a success message, confirm the order number and let them know they will be notified when it is ready.
-* If the order tool returns a non-200 / error response, reply: "Your order could not be placed. It is possible the maximum number of drinks allowed today has been reached or that your previous order is still being processed. Please try again in a bit or ask a Twilion for help."
+* If the user wants to order, ALWAYS call the place_order tool — never pre-emptively refuse based on order counts. The tool enforces all limits and will return an error message if the limit is reached.
+* If the order tool returns an error, relay the error message exactly as returned.
 * Always reply in the same language the user used in their previous message (if they wrote more than 6 words in that language).
 * When suggesting menu items, ALWAYS format them as a markdown list.
 * Never fabricate information on tool execution failures. Acknowledge errors without speculation.
