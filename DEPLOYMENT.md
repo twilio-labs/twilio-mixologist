@@ -1,6 +1,6 @@
 # Deploy to Azure Container Apps
 
-This guide deploys Wheel of Twilio to Azure Container Apps with public HTTPS ingress so Twilio can call `/api/incoming`.
+This guide deploys Twilio Mixologist to Azure Container Apps with public HTTPS ingress so Twilio can call `/webhooks/messaging`.
 
 ## Prerequisites
 
@@ -73,13 +73,13 @@ When deployment finishes, the script prints:
 
 ```text
 App URL: https://<your-app-fqdn>
-Twilio incoming webhook: https://<your-app-fqdn>/api/incoming
+Twilio webhook: https://<your-app-fqdn>/webhooks/messaging
 ```
 
 In Twilio Console, configure your WhatsApp or SMS sender incoming message webhook:
 
 ```text
-https://<your-app-fqdn>/api/incoming
+https://<your-app-fqdn>/webhooks/messaging
 ```
 
 ## 5. Verify
@@ -93,7 +93,7 @@ curl -i "https://<your-app-fqdn>/"
 Check the incoming webhook route:
 
 ```sh
-curl -i "https://<your-app-fqdn>/api/incoming"
+curl -i "https://<your-app-fqdn>/webhooks/messaging"
 ```
 
 Stream logs:
@@ -136,13 +136,13 @@ Open `http://localhost:3000`.
 Set these before running `./deploy.sh` if you do not want to use the prompts:
 
 ```sh
-export AZURE_RESOURCE_GROUP="wheel-of-twilio-rg"
+export AZURE_RESOURCE_GROUP="rg-twilio-mixologist"
 export AZURE_LOCATION="northeurope"
-export AZURE_ACR_NAME="wheeloftwilioacr"
-export AZURE_CONTAINER_APP_NAME="wheel-of-twilio"
-export AZURE_CONTAINER_ENV_NAME="cae-wheel-of-twilio"
-export AZURE_LOG_ANALYTICS_WORKSPACE="logs-wheel-of-twilio"
-export IMAGE_NAME="wheel-of-twilio"
+export AZURE_ACR_NAME="twiliomixologistacr"
+export AZURE_CONTAINER_APP_NAME="twilio-mixologist"
+export AZURE_CONTAINER_ENV_NAME="cae-twilio-mixologist"
+export AZURE_LOG_ANALYTICS_WORKSPACE="logs-twilio-mixologist"
+export IMAGE_NAME="twilio-mixologist"
 export IMAGE_TAG="latest"
 export ENV_FILE=".env.local"
 ```

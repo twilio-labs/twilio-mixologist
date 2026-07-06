@@ -53,7 +53,7 @@ The current [Twilio Channels] are:
 
 ### Requirements
 
-- [Node.js] version 20 or higher
+- [Node.js] version 22 or higher
 - [pnpm]
 - A Twilio account - [Sign up here](https://www.twilio.com/try-twilio)
 
@@ -182,10 +182,10 @@ MIT
 [twilio messaging]: https://www.twilio.com/messaging
 [twilio whatsapp]: https://www.twilio.com/en-us/messaging/channels/whatsapp
 [twilio conversations]: https://www.twilio.com/conversations
-[twilio sync]: https://wwww.twilio.com/sync
+[twilio sync]: https://www.twilio.com/sync
 [twilio channels]: https://www.twilio.com/channels
 [preact cli]: https://github.com/developit/preact-cli
 [node.js]: https://nodejs.org
-[nppm]: https://pnpm.io/
+[pnpm]: https://pnpm.io/
 [ngrok]: https://ngrok.com/
 [express]: http://expressjs.com/
