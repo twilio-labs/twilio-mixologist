@@ -199,6 +199,7 @@ export async function handleQrMode(
   }
 
   // Step 3: try to decode QR from the photo
+  sendMessage(sender, "Got your image! Scanning the QR code now...");
   const qrData = await decodeQrFromUrl(mediaUrl);
   if (!qrData) {
     sendMessage(

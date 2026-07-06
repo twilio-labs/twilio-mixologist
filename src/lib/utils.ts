@@ -27,9 +27,13 @@ export async function sleep(ms: number) {
 export { EventState, Stages } from "@/types";
 
 export async function redact(address: string) {
-  let redacted =
-    address.substring(0, 4) + "****" + address.substring(address.length - 3);
-  return redacted;
+  const prefixMatch = address.match(/^(whatsapp:|rcs:)/);
+  if (prefixMatch) {
+    const prefix = prefixMatch[1];
+    const number = address.slice(prefix.length);
+    return prefix + number.substring(0, 3) + "****" + number.substring(number.length - 3);
+  }
+  return address.substring(0, 4) + "****" + address.substring(address.length - 3);
 }
 
 export const TwoWeeksInSeconds = 2 * 7 * 24 * 60 * 60;
