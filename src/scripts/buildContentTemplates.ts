@@ -1,4 +1,4 @@
-import { Language } from "@/lib/stringTemplates";
+import type { Language } from "@/types";
 
 const SAMPLE_ITEMS = [
   { title: "Espresso", shortTitle: "Espresso", description: "Rich Italian coffee" },
@@ -31,6 +31,19 @@ function buildShowMenuSampleVars(numOptions: number): Record<string, string> {
 // {{0}} = max orders, {{1}} = sample order, {{i*3+2}} = full title, {{i*3+3}} = short title, {{i*3+4}} = description
 function buildReadyToOrderSampleVars(numOptions: number): Record<string, string> {
   const vars: Record<string, string> = { "0": "2 drinks", "1": "Espresso" };
+  for (let i = 0; i < numOptions; i++) {
+    const item = SAMPLE_ITEMS[i % SAMPLE_ITEMS.length];
+    vars[String(i * 3 + 2)] = item.title;
+    vars[String(i * 3 + 3)] = item.shortTitle;
+    vars[String(i * 3 + 4)] = item.description;
+  }
+  return vars;
+}
+
+// Builds sample variables for limitless ready_to_order templates (no {{0}} order-limit placeholder):
+// {{1}} = sample order, {{i*3+2}} = full title, {{i*3+3}} = short title, {{i*3+4}} = description
+function buildReadyToOrderLimitlessSampleVars(numOptions: number): Record<string, string> {
+  const vars: Record<string, string> = { "1": "Espresso" };
   for (let i = 0; i < numOptions; i++) {
     const item = SAMPLE_ITEMS[i % SAMPLE_ITEMS.length];
     vars[String(i * 3 + 2)] = item.title;
@@ -165,10 +178,7 @@ export function getReadyToOrderLimitlessTemplate(
   templateName: string,
   language: Language = "en",
 ): WhatsAppTemplateConfig {
-  // The first variable defines the mode and second is not used
-  // and then 3 additional vars (short title, full title, desc) per options  => numOptions * 3 + 1
-
-  const variables = buildReadyToOrderSampleVars(numOptions);
+  const variables = buildReadyToOrderLimitlessSampleVars(numOptions);
 
   const indiciesOfFullTitles = [],
     items = [];
@@ -243,10 +253,7 @@ export function getReadyToOrderLimitlessWithoutEmailValidationTemplate(
   templateName: string,
   language: Language = "en",
 ): WhatsAppTemplateConfig {
-  // The first variable defines the mode and second is not used
-  // and then 3 additional vars (short title, full title, desc) per options  => numOptions * 3 + 1
-
-  const variables = buildReadyToOrderSampleVars(numOptions);
+  const variables = buildReadyToOrderLimitlessSampleVars(numOptions);
 
   const indiciesOfFullTitles = [],
     items = [];
@@ -344,20 +351,20 @@ export function getOrderReadyTemplate(
   language: Language = "en",
 ): WhatsAppTemplateConfig {
   const cardBody = language === "pt-BR"
-    ? "Pule a fila e retire seu {{0}} no {{2}}. \n\nPeça pelo número do pedido #{{1}} ao retirar."
-    : "Skip the line and collect your {{0}} at the {{2}}. \n\nAsk for order number #{{1}} when you pick it up.";
+    ? "Pule a fila e retire seu {{0}} no {{2}}. \nEsteja pronto para compartilhar o número do seu pedido no balcão."
+    : "Skip the line and collect your {{0}} at the {{2}}. \nBe ready to share your order number at the counter.";
 
   const cardTitle = language === "pt-BR"
-    ? "Pule a fila e retire seu {{0}} no {{2}}."
-    : "Skip the line and collect your {{0}} at the {{2}}.";
+    ? "Pule a fila e retire seu {{0}} no {{2}}. \n\n"
+    : "Skip the line and collect your {{0}} at the {{2}}. \n\n";
 
   const cardBodyShort = language === "pt-BR"
-    ? "Peça pelo número do pedido #{{1}} ao retirar."
-    : "Ask for order number #{{1}} when you pick it up.";
+    ? "Peça pelo número do pedido *{{1}}* ao retirar."
+    : "Ask for order number *{{1}}* when you pick it up.";
 
   const textBody = language === "pt-BR"
-    ? "Seu {{0}} está pronto. \n\nPule a fila e retire agora no {{2}}. \n\nPeça pelo número do pedido #{{1}} ao retirar."
-    : "Your {{0}} is ready. \n\nSkip the line and collect it at the {{2}} right away. \n\nAsk for order number #{{1}} when you pick it up.";
+    ? "Seu {{0}} está pronto.\n\nPule a fila e retire agora no {{2}}. \n\nPeça pelo número do pedido *{{1}}* ao retirar."
+    : "Your {{0}} is ready.\n\nSkip the line and collect it at the {{2}} right away. \n\nAsk for order number *{{1}}* when you pick it up.";
 
   return {
     friendly_name: templateName,

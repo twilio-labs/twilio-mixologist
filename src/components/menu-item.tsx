@@ -1,4 +1,4 @@
-import { XIcon } from "lucide-react";
+import { CupSodaIcon } from "lucide-react";
 import iconMap from "./icon-map";
 
 export default function MenuItem({
@@ -15,27 +15,29 @@ export default function MenuItem({
   const IconComponent = iconMap[originalTitle ?? shortTitle];
 
   return (
-    <div className="flex items-start py-4">
-      {IconComponent ? (
-        <IconComponent
-          width="3rem"
-          height="3rem"
-          style={{ fill: "black" }}
-          className="m-2 mr-6"
-        />
-      ) : (
-        <XIcon
-          width="3rem"
-          height="3rem"
-          style={{ fill: "black" }}
-          className="m-2 mr-6"
-        />
-      )}
-      <div>
-        <h3 className="font-semibold">{title}</h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          {description}
+    <div className="flex items-start gap-3 rounded-lg border border-warm bg-white px-3 py-2.5">
+      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-twilio-paper mt-0.5">
+        {IconComponent ? (
+          <IconComponent
+            aria-hidden="true"
+            width="1rem"
+            height="1rem"
+            style={{ fill: "currentColor" }}
+            className="text-twilio-ink"
+          />
+        ) : (
+          <CupSodaIcon aria-hidden="true" className="h-4 w-4 text-twilio-ink" />
+        )}
+      </div>
+      <div className="min-w-0">
+        <p className="text-sm font-medium text-gray-900 leading-snug">
+          {title}
         </p>
+        {description && (
+          <p className="text-xs text-gray-400 mt-0.5 leading-snug">
+            {description}
+          </p>
+        )}
       </div>
     </div>
   );

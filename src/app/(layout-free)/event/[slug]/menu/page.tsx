@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Event } from "@/app/(master-layout)/event/[slug]/page";
+import type { Event } from "@/types";
 import MenuItem from "./menu-item";
 import Header from "./header";
 import { useSyncList, useSyncMap } from "@/provider/syncProvider";
@@ -50,13 +50,15 @@ function MenuPage(props: { params: Promise<{ slug: string }> }) {
 
   const itemsCount = internalEvent.selection.items.length;
   const columns = screenOrientation.includes("landscape")
-    ? itemsCount <= 4
-      ? 2
-      : itemsCount % 3 === 0
-        ? 3
-        : itemsCount % 4 === 0
-          ? 4
-          : 5
+    ? itemsCount > 8
+      ? 5
+      : itemsCount <= 4
+        ? 2
+        : itemsCount % 3 === 0
+          ? 3
+          : itemsCount % 4 === 0
+            ? 4
+            : 5
     : itemsCount % 3 === 0
       ? 3
       : 2;

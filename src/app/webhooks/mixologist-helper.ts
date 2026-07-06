@@ -1,5 +1,4 @@
-import { Event } from "@/app/(master-layout)/event/[slug]/page";
-import { MenuItem, Order } from "@/config/menus";
+import type { Event, MenuItem, Order } from "@/types";
 
 import {
   fetchSyncListItem,

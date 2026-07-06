@@ -22,16 +22,14 @@ import {
 } from "@/components/ui/tooltip";
 
 import LoadingSpinner from "@/components/loading-spinner";
-import { MenuSelect, Selection } from "@/components/menu-select";
+import { MenuSelect } from "@/components/menu-select";
 import { useEffect, useRef, useState, use } from "react";
 import { Privilege } from "@/proxy";
 import { AlertTriangleIcon, ChevronDown } from "lucide-react";
 import QrCodePopoverContent from "./qr-code-popovercontent";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
-import { modes } from "@/config/menus";
-import { EventState } from "@/lib/utils";
+import { modes, EventState } from "@/types";
 import { Textarea } from "@/components/ui/text-area";
-import { Language } from "@/lib/stringTemplates";
 import {
   Select,
   SelectContent,
@@ -39,22 +37,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import type { Event, Language, LeadCollection } from "@/types";
 
-export interface Event {
-  name: string;
-  slug: string;
-  state: EventState;
-  enableLeadCollection: boolean;
-  senders: string[];
-  selection: Selection;
-  pickupLocation: string;
-  maxOrders: number;
-  welcomeMessage: string;
-  language?: Language;
-  assistantId?: string;
-  cancelledCount?: number;
-  deliveredCount?: number;
-}
+export type { Event };
 
 function EventPage({ params }: { params: Promise<{ slug: string }> }) {
   if (
@@ -86,7 +71,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
     name: "",
     slug: "",
     state: EventState.OPEN,
-    enableLeadCollection: true,
+    leadCollection: "MANUAL",
     senders: [],
     selection: {
       items: [],
@@ -134,10 +119,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
     aiUpdateTimerRef.current = setTimeout(() => {
       fetch(`/api/event/${newEvent.slug}/selection`, {
         method: "PUT",
-        body: JSON.stringify({
-          selection: newEvent.selection,
-          assistantId: newEvent.assistantId,
-        }),
+        body: JSON.stringify({ selection: newEvent.selection }),
       });
     }, 1500);
   }
@@ -155,10 +137,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
     aiUpdateTimerRef.current = setTimeout(() => {
       fetch(`/api/event/${newEvent.slug}/selection`, {
         method: "PUT",
-        body: JSON.stringify({
-          selection: newEvent.selection,
-          assistantId: newEvent.assistantId,
-        }),
+        body: JSON.stringify({ selection: newEvent.selection }),
       });
     }, 1500);
   }
@@ -231,367 +210,314 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
   );
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="w-full py-8 space-y-4">
+      {/* Page header */}
+      <div className="border-b border-gray-200 pb-5">
+        <h1 className="text-2xl font-semibold text-twilio-ink tracking-tight">
+          {isNewEvent ? "New Event" : internalEvent.name}
+        </h1>
+        <p className="text-base text-gray-500 mt-1">
+          {isNewEvent ? "Configure and launch a new event" : `Slug: ${internalEvent.slug}`}
+        </p>
+      </div>
+
+      {/* General */}
       <Card>
         <CardHeader className="flex flex-row items-center">
           <div
             className={`flex items-center gap-2 flex-1 ${!isNewEvent ? "cursor-pointer" : ""}`}
             onClick={() => toggleSection("general")}
           >
-            <CardTitle>General</CardTitle>
+            <CardTitle className="text-base font-semibold">General</CardTitle>
             {!isNewEvent && (
-              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${collapsed.general ? "" : "rotate-180"}`} />
+              <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${collapsed.general ? "" : "rotate-180"}`} />
             )}
           </div>
-          <div className="flex items-center space-x-2">
-            {!isNewEvent && (
-              <>
-                <Label htmlFor="event-state">
-                  {internalEvent.state === EventState.OPEN ? "Open" : "Ended"}
-                </Label>
-                <Switch
-                  id="event-state"
-                  checked={internalEvent.state === EventState.OPEN}
-                  onCheckedChange={(newState) => {
-                    updateEvent({
-                      ...internalEvent,
-                      state: newState ? EventState.OPEN : EventState.ENDED,
-                    });
-                  }}
-                />
-              </>
-            )}
-          </div>
+          {!isNewEvent && (
+            <div className="flex items-center gap-2">
+              <span className={`text-sm font-medium ${internalEvent.state === EventState.OPEN ? "text-green-600" : "text-gray-400"}`}>
+                {internalEvent.state === EventState.OPEN ? "Open" : "Ended"}
+              </span>
+              <Switch
+                id="event-state"
+                checked={internalEvent.state === EventState.OPEN}
+                onCheckedChange={(newState) =>
+                  updateEvent({ ...internalEvent, state: newState ? EventState.OPEN : EventState.ENDED })
+                }
+              />
+            </div>
+          )}
         </CardHeader>
-        {!collapsed.general && <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="eventName">Event Name</Label>
-            <Input
-              id="eventName"
-              placeholder="Enter event name"
-              disabled={!isNewEvent}
-              required
-              pattern=".{4,}"
-              value={internalEvent.name}
-              onChange={(ev) => {
-                updateEvent({
-                  ...internalEvent,
-                  name: ev.target.value,
-                  slug: toKebabCase(ev.target.value),
-                });
-              }}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="eventSlug">Slug</Label>
-            <Input
-              disabled
-              id="eventSlug"
-              placeholder="Event slug will be auto-generated"
-              value={internalEvent.slug}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="maxOrders">Max Orders Per Customer Per Day</Label>
-            <Input
-              id="maxOrders"
-              type="number"
-              min={1}
-              required
-              value={internalEvent.maxOrders}
-              onChange={(ev) => {
-                updateEvent({
-                  ...internalEvent,
-                  maxOrders: parseInt(ev.target.value),
-                });
-              }}
-            />
-          </div>
-          <div className="space-y-2 flex flex-col">
-            <Label htmlFor="disableLeadCollection">
-              Enable Lead Collection
-            </Label>
-            <Switch
-              id="enableLeadCollection"
-              checked={internalEvent.enableLeadCollection}
-              onCheckedChange={(newState) => {
-                updateEvent({
-                  ...internalEvent,
-                  enableLeadCollection: newState,
-                });
-              }}
-            />
-          </div>
-        </CardContent>}
+        {!collapsed.general && (
+          <CardContent className="grid sm:grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="eventName">Event Name</Label>
+              <Input
+                id="eventName"
+                placeholder="Enter event name"
+                disabled={!isNewEvent}
+                required
+                pattern=".{4,}"
+                value={internalEvent.name}
+                onChange={(ev) =>
+                  updateEvent({ ...internalEvent, name: ev.target.value, slug: toKebabCase(ev.target.value) })
+                }
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="eventSlug">Slug</Label>
+              <Input disabled id="eventSlug" placeholder="Auto-generated" value={internalEvent.slug} />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="maxOrders">Max Orders Per Customer / Day</Label>
+              <Input
+                id="maxOrders"
+                type="number"
+                min={1}
+                required
+                value={internalEvent.maxOrders}
+                onChange={(ev) =>
+                  updateEvent({ ...internalEvent, maxOrders: parseInt(ev.target.value) })
+                }
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="leadCollection">Lead Collection</Label>
+              <Select
+                value={internalEvent.leadCollection}
+                onValueChange={(value) =>
+                  updateEvent({ ...internalEvent, leadCollection: value as LeadCollection })
+                }
+              >
+                <SelectTrigger id="leadCollection">
+                  <SelectValue placeholder="Select mode" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="MANUAL">Manual (name + email)</SelectItem>
+                  <SelectItem value="WeAreDevs_QR">WeAreDevelopers QR Badge</SelectItem>
+                  <SelectItem value="NONE">None</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </CardContent>
+        )}
       </Card>
 
+      {/* Communication */}
       <Card>
         <CardHeader
           className={`flex flex-row items-center justify-between ${!isNewEvent ? "cursor-pointer" : ""}`}
           onClick={() => toggleSection("communication")}
         >
-          <CardTitle>Communication</CardTitle>
+          <CardTitle className="text-base font-semibold">Communication</CardTitle>
           {!isNewEvent && (
-            <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${collapsed.communication ? "" : "rotate-180"}`} />
+            <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${collapsed.communication ? "" : "rotate-180"}`} />
           )}
         </CardHeader>
-        {!collapsed.communication && <CardContent className="space-y-4">
-          <div className="mt-2">
-            <Label htmlFor="phoneNumbers">Senders</Label>
-            {unknownSenders.length > 0 && (
-              <Alert className="my-2" variant="destructive">
-                <AlertTriangleIcon className="h-4 w-4" />
-                <AlertTitle>Invalid Sender Configuration</AlertTitle>
-                <AlertDescription>
-                  The following senders are no longer available:{" "}
-                  {unknownSenders.join(", ")}
-                </AlertDescription>
-              </Alert>
-            )}
-            <MultiSelect
-              placeholder="Senders to be used for this event"
-              value={internalEvent.senders.map((s) => {
-                return { label: s, value: s };
-              })}
-              onChange={(selected) => {
-                updateEvent({
-                  ...internalEvent,
-                  senders: selected.map((s) => s.value),
-                });
-              }}
-              options={options}
-            />
-            <Popover>
-              <PopoverTrigger>
-                <span className="text-xs font-bold underline text-blue-700 cursor-pointer">
-                  Show QR codes
-                </span>
-              </PopoverTrigger>
-              <QrCodePopoverContent senders={internalEvent.senders} />
-            </Popover>
-            <div className="mt-2">
-              <Label aria-required htmlFor="pickupLocation">
-                Pickup Location
-              </Label>
-              <Input
-                id="pickupLocation"
-                placeholder="Where to find the booth"
-                required
-                pattern=".{3,}"
-                value={internalEvent.pickupLocation}
-                onChange={(ev) => {
-                  updateEvent({
-                    ...internalEvent,
-                    pickupLocation: ev.target.value,
-                  });
-                }}
+        {!collapsed.communication && (
+          <CardContent className="space-y-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="phoneNumbers">Senders</Label>
+              {unknownSenders.length > 0 && (
+                <Alert className="my-2" variant="destructive">
+                  <AlertTriangleIcon className="h-4 w-4" />
+                  <AlertTitle>Invalid Sender Configuration</AlertTitle>
+                  <AlertDescription>
+                    The following senders are no longer available: {unknownSenders.join(", ")}
+                  </AlertDescription>
+                </Alert>
+              )}
+              <MultiSelect
+                placeholder="Senders to be used for this event"
+                value={internalEvent.senders.map((s) => ({ label: s, value: s }))}
+                onChange={(selected) =>
+                  updateEvent({ ...internalEvent, senders: selected.map((s) => s.value) })
+                }
+                options={options}
               />
+              {internalEvent.senders.length > 0 && (
+                <Popover>
+                  <PopoverTrigger>
+                    <span className="text-xs font-semibold text-twilio-red cursor-pointer hover:underline">
+                      Show QR codes
+                    </span>
+                  </PopoverTrigger>
+                  <QrCodePopoverContent senders={internalEvent.senders} />
+                </Popover>
+              )}
             </div>
-            {internalEvent.assistantId && (
-              <div className="space-y-2">
-                <Label htmlFor="assistantId">Assistant ID</Label>
+
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <Label htmlFor="pickupLocation">Pickup Location</Label>
                 <Input
-                  id="assistantId"
-                  placeholder="Assistant ID"
-                  value={internalEvent.assistantId}
-                  disabled
+                  id="pickupLocation"
+                  placeholder="Where to find the booth"
+                  required
+                  pattern=".{3,}"
+                  value={internalEvent.pickupLocation}
+                  onChange={(ev) =>
+                    updateEvent({ ...internalEvent, pickupLocation: ev.target.value })
+                  }
                 />
               </div>
-            )}
-            <div className="space-y-2">
-              <Label htmlFor="language">Language</Label>
-              <Select
-                value={internalEvent.language ?? "en"}
-                onValueChange={(value) => {
-                  updateEvent({
-                    ...internalEvent,
-                    language: value as Language,
-                  });
-                }}
-              >
-                <SelectTrigger id="language">
-                  <SelectValue placeholder="Select language" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="en">English</SelectItem>
-                  <SelectItem value="pt-BR">Português (Brasil)</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="space-y-1.5">
+                <Label htmlFor="language">Language</Label>
+                <Select
+                  value={internalEvent.language ?? "en"}
+                  onValueChange={(value) =>
+                    updateEvent({ ...internalEvent, language: value as Language })
+                  }
+                >
+                  <SelectTrigger id="language">
+                    <SelectValue placeholder="Select language" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="en">English</SelectItem>
+                    <SelectItem value="pt-BR">Português (Brasil)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-            <div className="space-y-2">
+
+            <div className="space-y-1.5">
               <Label htmlFor="welcomeMessage">Custom Welcome Message</Label>
               <Textarea
                 id="welcomeMessage"
-                placeholder={`Shown on first contact with the bot. Sample structure: 
-
-- Say hi to the attendee
-- Shoutout to a product/campaign
-- Invite to order
-- Link Resource`}
+                placeholder={`Shown on first contact with the bot. Sample structure:\n\n- Say hi to the attendee\n- Shoutout to a product/campaign\n- Invite to order\n- Link Resource`}
                 value={internalEvent.welcomeMessage}
-                onChange={(ev) => {
-                  updateEvent({
-                    ...internalEvent,
-                    welcomeMessage: ev.target.value,
-                  });
-                }}
+                onChange={(ev) =>
+                  updateEvent({ ...internalEvent, welcomeMessage: ev.target.value })
+                }
               />
             </div>
-          </div>
-        </CardContent>}
+          </CardContent>
+        )}
       </Card>
+
+      {/* Menu */}
       <Card>
         <CardHeader
           className={`flex flex-row items-center justify-between ${!isNewEvent ? "cursor-pointer" : ""}`}
           onClick={() => toggleSection("menu")}
         >
-          <CardTitle>Menu</CardTitle>
+          <CardTitle className="text-base font-semibold">Menu</CardTitle>
           {!isNewEvent && (
-            <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${collapsed.menu ? "" : "rotate-180"}`} />
+            <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${collapsed.menu ? "" : "rotate-180"}`} />
           )}
         </CardHeader>
-        {!collapsed.menu && <CardContent className="space-y-4">
-          <MenuSelect
-            menus={config.menus}
-            selection={internalEvent.selection}
-            onSelectionChange={async (newSelection) => {
-              if (!isNewEvent) {
-                // make async for now to avoid delay, may need to change in the future
-                fetch(`/api/event/${internalEvent.slug}/selection`, {
-                  method: "PUT",
-                  body: JSON.stringify({
-                    selection: newSelection,
-                    assistantId: internalEvent.assistantId,
-                  }),
-                });
-              }
-              updateEvent({
-                ...internalEvent,
-                selection: newSelection,
-              });
-            }}
-          />
-        </CardContent>}
+        {!collapsed.menu && (
+          <CardContent>
+            <MenuSelect
+              menus={config.menus}
+              selection={internalEvent.selection}
+              onSelectionChange={async (newSelection) => {
+                if (!isNewEvent) {
+                  fetch(`/api/event/${internalEvent.slug}/selection`, {
+                    method: "PUT",
+                    body: JSON.stringify({ selection: newSelection }),
+                  });
+                }
+                updateEvent({ ...internalEvent, selection: newSelection });
+              }}
+            />
+          </CardContent>
+        )}
       </Card>
 
+      {/* Customize Menu Items */}
       {!isNewEvent && internalEvent.selection.items.length > 0 && (
         <Card>
           <CardHeader
             className="flex flex-row items-center justify-between cursor-pointer"
             onClick={() => toggleSection("customize")}
           >
-            <CardTitle>Customize Menu Items</CardTitle>
-            <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${collapsed.customize ? "" : "rotate-180"}`} />
+            <CardTitle className="text-base font-semibold">Customize Menu Items</CardTitle>
+            <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${collapsed.customize ? "" : "rotate-180"}`} />
           </CardHeader>
-          {!collapsed.customize && <CardContent className="space-y-6">
-            {internalEvent.selection.items.map((item, index) => (
-              <div key={item.originalTitle ?? item.shortTitle} className="space-y-2 border rounded-lg p-4">
-                <p className="text-xs text-gray-400">
-                  Original: {item.originalTitle ?? item.shortTitle}
-                </p>
-                <div className="space-y-1">
-                  <Label>Display Name</Label>
-                  <Input
-                    value={item.title}
-                    maxLength={24}
-                    onChange={(e) =>
-                      updateMenuItemField(index, "title", e.target.value)
-                    }
-                  />
-                  <p className="text-xs text-gray-400 text-right">
-                    {item.title.length}/24
-                  </p>
-                </div>
-                <div className="space-y-1">
-                  <Label>Short Title</Label>
-                  <Input
-                    value={item.shortTitle}
-                    maxLength={24}
-                    onChange={(e) =>
-                      updateMenuItemField(index, "shortTitle", e.target.value)
-                    }
-                  />
-                  <p className="text-xs text-gray-400 text-right">
-                    {item.shortTitle.length}/24
-                  </p>
-                </div>
-                <div className="space-y-1">
-                  <Label>Description</Label>
-                  <Textarea
-                    value={item.description}
-                    maxLength={72}
-                    onChange={(e) =>
-                      updateMenuItemField(index, "description", e.target.value)
-                    }
-                  />
-                  <p className="text-xs text-gray-400 text-right">
-                    {item.description.length}/72
-                  </p>
-                </div>
-              </div>
-            ))}
-            {internalEvent.selection.modifiers.length > 0 && (
-              <div className="border-t pt-4">
-                <p className="text-sm font-medium mb-3">Modifiers</p>
-                {internalEvent.selection.modifiers.map((modifier, index) => {
-                  const original = (internalEvent.selection.originalModifiers ?? internalEvent.selection.modifiers)[index];
-                  return (
-                    <div key={original} className="space-y-2 border rounded-lg p-4 mb-3">
-                      <p className="text-xs text-gray-400">Original: {original}</p>
-                      <div className="space-y-1">
-                        <Label>Display Name</Label>
-                        <Input
-                          value={modifier}
-                          onChange={(e) => updateModifierField(index, e.target.value)}
-                        />
-                      </div>
+          {!collapsed.customize && (
+            <CardContent className="space-y-6">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {internalEvent.selection.items.map((item, index) => (
+                  <div key={item.originalTitle ?? item.shortTitle} className="space-y-3 rounded-lg border border-gray-100 bg-gray-50 p-4">
+                    <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">
+                      {item.originalTitle ?? item.shortTitle}
+                    </p>
+                    <div className="space-y-1">
+                      <Label className="text-xs">Display Name</Label>
+                      <Input
+                        value={item.title}
+                        maxLength={24}
+                        onChange={(e) => updateMenuItemField(index, "title", e.target.value)}
+                      />
+                      <p className="text-xs text-gray-400 text-right">{item.title.length}/24</p>
                     </div>
-                  );
-                })}
+                    <div className="space-y-1">
+                      <Label className="text-xs">Short Title</Label>
+                      <Input
+                        value={item.shortTitle}
+                        maxLength={24}
+                        onChange={(e) => updateMenuItemField(index, "shortTitle", e.target.value)}
+                      />
+                      <p className="text-xs text-gray-400 text-right">{item.shortTitle.length}/24</p>
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-xs">Description</Label>
+                      <Textarea
+                        value={item.description}
+                        maxLength={72}
+                        onChange={(e) => updateMenuItemField(index, "description", e.target.value)}
+                      />
+                      <p className="text-xs text-gray-400 text-right">{item.description.length}/72</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            )}
-          </CardContent>}
+
+              {internalEvent.selection.modifiers.length > 0 && (
+                <div className="border-t pt-4">
+                  <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-3">Modifiers</p>
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {internalEvent.selection.modifiers.map((modifier, index) => {
+                      const original = (internalEvent.selection.originalModifiers ?? internalEvent.selection.modifiers)[index];
+                      return (
+                        <div key={original} className="space-y-2 rounded-lg border border-gray-100 bg-gray-50 p-3">
+                          <p className="text-xs text-gray-400">Original: {original}</p>
+                          <Input
+                            value={modifier}
+                            onChange={(e) => updateModifierField(index, e.target.value)}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          )}
         </Card>
       )}
 
+      {/* Create button */}
       {isNewEvent && (
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
-                className={`w-full flex items-center justify-center ${isFormInvalid(internalEvent) ? "bg-blue-50 hover:bg-blue-100 text-slate-300" : "bg-blue-100 hover:bg-blue-200"}`}
-                variant="default"
-                // disabled={validateButtonState(internalEvent)}
-                onClick={(
-                  ev: React.MouseEvent<HTMLButtonElement, MouseEvent> & {
-                    target: HTMLButtonElement;
-                  },
-                ) => {
-                  if (isFormInvalid(internalEvent)) {
-                    return;
-                  }
+                className="w-full bg-twilio-red hover:bg-red-600 text-white disabled:opacity-40"
+                disabled={isFormInvalid(internalEvent)}
+                onClick={(ev: React.MouseEvent<HTMLButtonElement, MouseEvent> & { target: HTMLButtonElement }) => {
+                  if (isFormInvalid(internalEvent)) return;
                   ev.target.disabled = true;
-
-                  fetch("/api/event", {
-                    method: "POST",
-                    body: JSON.stringify(internalEvent),
-                  })
+                  fetch("/api/event", { method: "POST", body: JSON.stringify(internalEvent) })
                     .then((res) => {
                       if (res.ok) {
-                        toast({
-                          title: "Event Created",
-                          description: `The event ${internalEvent.name} was created`,
-                        });
+                        toast({ title: "Event Created", description: `The event ${internalEvent.name} was created` });
                         return router.push(`/event/${internalEvent.slug}`);
                       }
-                      toast({
-                        title: "Creation Failed",
-                        description: res.statusText,
-                      });
+                      toast({ title: "Creation Failed", description: res.statusText });
                     })
-                    .finally(() => {
-                      ev.target.disabled = false;
-                    });
+                    .finally(() => { ev.target.disabled = false; });
                 }}
               >
                 Create Event

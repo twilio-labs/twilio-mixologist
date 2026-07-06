@@ -1,7 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { MenuItem } from "@/config/menus";
-import { Event } from "@/app/(master-layout)/event/[slug]/page";
 import { ICountry, countries } from "countries-list";
 import { PhoneNumberUtil } from "google-libphonenumber";
 
@@ -22,33 +20,20 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function add(a: number, b: number) {
-  return a + b;
-}
-
 export async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export enum EventState {
-  OPEN = "OPEN",
-  ENDED = "ENDED",
-  CLOSED = "CLOSED",
-}
-
-export enum Stages {
-  NEW_USER = "NEW_USER",
-  NAME_CONFIRMED = "NAME_CONFIRMED",
-  VERIFYING = "VERIFYING",
-  VERIFIED_USER = "VERIFIED_USER",
-  FIRST_ORDER = "FIRST_ORDER",
-  REPEAT_CUSTOMER = "REPEAT_CUSTOMER",
-}
+export { EventState, Stages } from "@/types";
 
 export async function redact(address: string) {
-  let redacted =
-    address.substring(0, 4) + "****" + address.substring(address.length - 3);
-  return redacted;
+  const prefixMatch = address.match(/^(whatsapp:|rcs:)/);
+  if (prefixMatch) {
+    const prefix = prefixMatch[1];
+    const number = address.slice(prefix.length);
+    return prefix + number.substring(0, 3) + "****" + number.substring(number.length - 3);
+  }
+  return address.substring(0, 4) + "****" + address.substring(address.length - 3);
 }
 
 export const TwoWeeksInSeconds = 2 * 7 * 24 * 60 * 60;

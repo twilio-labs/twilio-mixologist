@@ -1,9 +1,12 @@
-import { Event } from "@/app/(master-layout)/event/[slug]/page";
-import { modes } from "@/config/menus";
+import type { Event, modes, Language, LeadCollection } from "@/types";
 
-export type Language = "en" | "pt-BR";
+export type { Language } from "@/types";
 
-function modeToBeverage(mode: modes, language: Language, plural: boolean = false) {
+export function eventLang(event: Event): Language {
+  return event.language ?? "en";
+}
+
+export function modeToBeverage(mode: modes, language: Language, plural: boolean = false) {
   if (language === "pt-BR") {
     return mode === "smoothie"
       ? plural ? "smoothies" : "smoothie"
@@ -11,6 +14,8 @@ function modeToBeverage(mode: modes, language: Language, plural: boolean = false
         ? plural ? "bebidas" : "bebida"
         : mode === "tea"
           ? plural ? "chás" : "chá"
+          : mode === "waffles"
+            ? plural ? "waffles" : "waffle"
           : plural ? "cafés" : "café";
   }
   return mode === "smoothie"
@@ -18,7 +23,9 @@ function modeToBeverage(mode: modes, language: Language, plural: boolean = false
     : mode === "cocktail"
       ? plural ? "drinks" : "drink"
       : mode === "tea"
-        ? "tea"
+        ? plural ? "teas" : "tea"
+        : mode === "waffles"
+          ? plural ? "waffles" : "waffle"
         : "coffee";
 }
 
@@ -31,28 +38,6 @@ export function getModifiersMessage(modifiers: string[], language: Language = "e
   return `You can add the following add-ons to your order:\n${modifiers
     .map((m) => `- ${m}`)
     .join("\n")}`;
-}
-
-export function getSystemOfflineMessage(event: Event, language: Language = "en") {
-  const { mode } = event.selection;
-  if (language === "pt-BR") {
-    return `Sem mais ${modeToBeverage(mode, language, true)} 😱\nParece que ficamos sem ${modeToBeverage(mode, language, true)} por hoje. Tenha um ótimo dia!`;
-  }
-  return `No more ${modeToBeverage(mode, language, true)} 😱\nIt seems like we are out of  ${modeToBeverage(mode, language, true)} for today. Have a great day!`;
-}
-
-export function getOopsMessage(error: any, language: Language = "en") {
-  if (language === "pt-BR") {
-    return `Ops, algo deu errado! Fale com alguém da Twilio e veja se eles podem te ajudar.`;
-  }
-  return `Oops, something went wrong! Talk to someone from Twilio and see if they can help you.`;
-}
-
-export function getNoMediaHandlerMessage(language: Language = "en") {
-  if (language === "pt-BR") {
-    return "Desculpe, não suportamos mensagens de mídia. Por favor, envie uma mensagem de texto para fazer seu pedido.";
-  }
-  return "Sorry, we don't support media messages. Please send a text message to order a drink on us.";
 }
 
 export function getInvalidEmailMessage(language: Language = "en") {
@@ -86,7 +71,7 @@ export function getInvalidVerificationCodeMessage(language: Language = "en") {
 export function getWelcomeMessage(
   mode: modes,
   customWelcomeMessage?: string,
-  willCollectedLeads?: boolean,
+  leadCollection: LeadCollection = "NONE",
   language: Language = "en",
 ) {
   const defaultWelcome = language === "pt-BR"
@@ -95,11 +80,16 @@ export function getWelcomeMessage(
 
   const welcomeMessage = customWelcomeMessage || defaultWelcome;
 
-  const leadCollectionSuffix = willCollectedLeads
-    ? language === "pt-BR"
+  let leadCollectionSuffix = "";
+  if (leadCollection === "WeAreDevs_QR") {
+    leadCollectionSuffix = language === "pt-BR"
+      ? "\nEnvie uma foto do QR code do seu crachá para começar."
+      : "\nSend a photo of your badge QR code to get started.";
+  } else if (leadCollection === "MANUAL") {
+    leadCollectionSuffix = language === "pt-BR"
       ? "\nResponda com seu nome completo para começar."
-      : "\nReply with your full name to get started."
-    : "";
+      : "\nReply with your full name to get started.";
+  }
   return `${welcomeMessage}\n${leadCollectionSuffix}`;
 }
 

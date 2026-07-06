@@ -10,7 +10,7 @@ import {
   Card,
 } from "@/components/ui/card";
 
-import { Coffee, CupSoda, Globe2Icon, User2Icon } from "lucide-react";
+import { Coffee, CupSoda, Globe2Icon, MessageCircleIcon, User2Icon } from "lucide-react";
 import OrdersChart from "./ordersChart";
 import { modes } from "@/config/menus";
 import FunnelChart from "./funnelChart";
@@ -123,7 +123,7 @@ function StatsPage({ params }: { params: Promise<{ slug: string }> }) {
                 </CardHeader>
                 {stats ? (
                   <CardContent>
-                    <p className="text-4xl font-bold">{stats.customerCount}</p>
+                    <p className="text-4xl font-bold">{stats.attendeeCount}</p>
                   </CardContent>
                 ) : (
                   <CardContent>
@@ -195,6 +195,36 @@ function StatsPage({ params }: { params: Promise<{ slug: string }> }) {
                 <CardContent>
                   <OrdersChart
                     orders={Object.entries(stats.orderItemCounter).map(
+                      ([key, value]) => ({
+                        name: key,
+                        count: value,
+                      }),
+                    )}
+                  />
+                </CardContent>
+              ) : (
+                <CardContent>
+                  <div className="w-2/3 mx-auto h-10 bg-gray-300 rounded-sm animate-pulse"></div>
+                </CardContent>
+              )}
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                <div className="flex flex-col space-y-0.5">
+                  <CardTitle className="text-sm font-medium">
+                    Orders by Channel
+                  </CardTitle>
+                  <CardDescription className="text-xs">
+                    Breakdown of orders by messaging channel
+                  </CardDescription>
+                </div>
+                <MessageCircleIcon className="w-4 h-4 text-gray-500" />
+              </CardHeader>
+              {stats ? (
+                <CardContent>
+                  <OrdersChart
+                    orders={Object.entries(stats.channels).map(
                       ([key, value]) => ({
                         name: key,
                         count: value,

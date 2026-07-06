@@ -2,20 +2,38 @@
 
 @config '../../tailwind.config.ts';
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
 @layer base {
+  html {
+    font-size: 18px;
+  }
+
   *,
   ::after,
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
+    border-color: var(--color-warm-border, #e8e3de);
+  }
+
+  :root {
+    --warm-bg: #f9f7f5;
+    --warm-surface: #ffffff;
+    --warm-border: #e8e3de;
+    --warm-border-strong: #d0c9c2;
+  }
+}
+
+@layer utilities {
+  .bg-warm { background-color: var(--warm-bg); }
+  .bg-warm-surface { background-color: var(--warm-surface); }
+  .border-warm { border-color: var(--warm-border); }
+  .border-warm-strong { border-color: var(--warm-border-strong); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

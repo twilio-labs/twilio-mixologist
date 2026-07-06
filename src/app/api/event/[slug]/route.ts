@@ -1,6 +1,6 @@
 "use server";
 
-import { deleteAiAssistant, updateSyncMapItem } from "@/lib/twilio";
+import { updateSyncMapItem } from "@/lib/twilio";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { getSyncService } from "@/lib/twilio";
@@ -41,9 +41,6 @@ export async function DELETE(request: Request) {
     .syncMaps()(NEXT_PUBLIC_EVENTS_MAP)
     .syncMapItems(slug)
     .fetch();
-
-  // @ts-ignore  thinks is a object but actually it's a string
-  if (event.data.assistantId) await deleteAiAssistant(event.data.assistantId);
 
   try {
     await syncService

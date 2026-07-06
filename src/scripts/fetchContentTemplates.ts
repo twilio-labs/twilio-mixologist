@@ -1,8 +1,6 @@
 "use server";
 
-import { modes } from "@/config/menus";
-import { Event } from "@/app/(master-layout)/event/[slug]/page";
-import { Language } from "@/lib/stringTemplates";
+import type { modes, Event, Language } from "@/types";
 
 const axios = require("axios");
 
@@ -19,6 +17,8 @@ function modeToBeverage(mode: modes, language: Language, plural: boolean = false
         ? plural ? "bebidas" : "bebida"
         : mode === "tea"
           ? plural ? "chás" : "chá"
+          : mode === "waffles"
+            ? plural ? "waffles" : "waffle"
           : plural ? "cafés" : "café";
   }
   return mode === "smoothie"
@@ -26,14 +26,16 @@ function modeToBeverage(mode: modes, language: Language, plural: boolean = false
     : mode === "cocktail"
       ? plural ? "drinks" : "drink"
       : mode === "tea"
-        ? "tea"
+        ? plural ? "teas" : "tea"
+        : mode === "waffles"
+          ? plural ? "waffles" : "waffle"
         : "coffee";
 }
 
-function buildContentVariables(variables: any[]) {
+function buildContentVariables(variables: any[], startIndex = 0) {
   const contentVariables: any = {};
-  variables.forEach((value, key) => {
-    contentVariables[key] = value;
+  variables.forEach((value, i) => {
+    contentVariables[String(i + startIndex)] = String(value ?? "");
   });
   return JSON.stringify(contentVariables);
 }
@@ -65,43 +67,6 @@ async function getTemplate(templateName: string) {
     throw new Error(`Template ${templateName} not found`);
   }
   return match;
-}
-
-export async function getWrongOrderMessage(
-  originalMessage: string,
-  availableOptions: any[],
-  language: Language = "en",
-) {
-  const suffix = LANG_SUFFIX[language];
-  const template = await getTemplate(
-    `${formattedServicePrefix}_wrong_order_${availableOptions.length}${suffix}`,
-  );
-
-  return {
-    contentSid: template.sid,
-    contentVariables: buildContentVariables([
-      originalMessage,
-      ...availableOptions
-        .map((o) => [o.title, o.shortTitle, o.description])
-        .flat(),
-    ]),
-  };
-}
-
-export async function getOrderCancelledMessage(
-  product: string,
-  orderNumber: string,
-  language: Language = "en",
-) {
-  const suffix = LANG_SUFFIX[language];
-  const template = await getTemplate(
-    `${formattedServicePrefix}_order_cancelled${suffix}`,
-  );
-
-  return {
-    contentSid: template.sid,
-    contentVariables: buildContentVariables([product, orderNumber]),
-  };
 }
 
 export async function getOrderReadyMessage(
@@ -194,7 +159,7 @@ export async function getReadyToOrderMessage(
   language: Language = "en",
 ) {
   const { mode, items, modifiers } = event.selection;
-  const maxOrders = `${maxNumberOrders} ${modeToBeverage(mode, language, true)}`;
+  const maxOrders = `${maxNumberOrders} ${modeToBeverage(mode, language, maxNumberOrders !== 1)}`;
   let sampleOrder = items[1].title;
   if (modifiers.length > 0) {
     sampleOrder += ` with ${modifiers[modifiers.length - 1]}`;
@@ -207,6 +172,23 @@ export async function getReadyToOrderMessage(
   const template = await getTemplate(
     `${formattedServicePrefix}_ready_to_order${limitess}${emailSuffix}_${availableOptions.length}${langSuffix}`,
   );
+
+  const isLimitless = maxNumberOrders >= 50;
+
+  if (isLimitless) {
+    return {
+      contentSid: template.sid,
+      contentVariables: buildContentVariables(
+        [
+          sampleOrder,
+          ...availableOptions
+            .map((o) => [o.title, o.shortTitle, o.description])
+            .flat(),
+        ],
+        1,
+      ),
+    };
+  }
 
   return {
     contentSid: template.sid,

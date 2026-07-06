@@ -5,7 +5,7 @@ export default async function OrdersPage(props: {
 }) {
   const params = await props.params;
   return (
-    <main className="p-4 md:p-6 lg:p-8 space-y-8">
+    <main className="w-full">
       <OrdersInterface slug={params.slug} />
     </main>
   );

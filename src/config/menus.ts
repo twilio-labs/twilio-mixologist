@@ -1,35 +1,6 @@
-export interface MenuItem {
-  shortTitle: string;
-  title: string;
-  description: string;
-  originalTitle?: string;
-}
-
-export enum modes {
-  barista = "barista",
-  smoothie = "smoothie",
-  cocktail = "cocktail",
-  tea = "tea",
-}
-
-export type Menus = {
-  [key in modes]: {
-    items: MenuItem[];
-    modifiers?: string[];
-  };
-};
-
-export interface Order {
-  key: string;
-  manual?: boolean;
-  item: string;
-  modifiers?: string;
-  address?: string;
-  orderNumber?: number;
-  originalText?: string;
-  status: "queued" | "cancelled" | "ready" | "delivered";
-  reminded?: true;
-}
+export type { MenuItem, Menus, Order } from "@/types";
+export { modes } from "@/types";
+import type { Menus } from "@/types";
 
 export default {
   barista: {
@@ -120,10 +91,20 @@ export default {
         description: "Espresso shots with cold water and ice.",
       },
       {
+        shortTitle: "Cold Brew",
+        title: "Cold Brew",
+        description: "Slow-steeped coffee served chilled over ice.",
+      },
+      {
         shortTitle: "Matcha",
         title: "Matcha",
         description:
           "Powder made from ground-up green tea leaves brewed into tea.",
+      },
+      {
+        shortTitle: "Iced Matcha",
+        title: "Iced Matcha",
+        description: "Matcha whisked with milk and poured over ice.",
       },
       {
         shortTitle: "Mocha",
@@ -285,36 +266,54 @@ export default {
   smoothie: {
     items: [
       {
-        title: "Colombia (Red like Twilio!)",
-        shortTitle: "Colombia",
-        description: "Strawberry, Pineapple, Apple, Sunflower Seeds 🍓🍍🍏🌻",
-      },
-      {
-        title: "Aquamarine (Blue like SendGrid!)",
-        shortTitle: "Aquamarine",
-        description:
-          "Pineapple, Banana, Coconut Milk, Dates, Flaxseed 🍍🍌🥥🌴",
-      },
-      {
-        title: "Lambada (Green like Segment!)",
-        shortTitle: "Lambada",
-        description:
-          "Orange, Mango, Banana, Passion Fruit, Flaxseed, Coconut Oil 🍊🥭🍌🥥",
-      },
-      {
         title: "Macarena",
         shortTitle: "Macarena",
-        description: "Fruity 🍓🍍🍏 mix with exotic notes",
+        description: "Strawberry, Pineapple, Apple, Passion Fruit, Goji, Vanilla 🍓🍍",
       },
       {
         title: "La Isla Bonita",
         shortTitle: "La Isla Bonita",
-        description: "Creamy 🍍🍌🥥 with a blue twist 💙",
+        description: "Pineapple, Banana, Coconut Milk, Dates, Blue Spirulina 🍍🍌🥥",
+      },
+      {
+        title: "Calma",
+        shortTitle: "Calma",
+        description: "Mango, Pineapple, Spinach, Banana, Almonds, Ginger, Lemon 🥭🌿",
       },
       {
         title: "Des.pa.cito",
         shortTitle: "Des.pa.cito",
         description: "Green 🍏🍌🌿 with citrus zing 🍋",
+      },
+      {
+        title: "Berry Burst",
+        shortTitle: "Berry Burst",
+        description: "Blackcurrant, blueberry, blackberry, banana & cranberry 🫐🍌",
+      },
+      {
+        title: "Passion Storm",
+        shortTitle: "Passion Storm",
+        description: "Passionfruit, peach, pineapple, papaya & aloe vera 🍑🍍",
+      },
+      {
+        title: "Mango Dream",
+        shortTitle: "Mango Dream",
+        description: "Mango, pear & pineapple 🥭🍍",
+      },
+      {
+        title: "Strawberry Delight",
+        shortTitle: "Strawberry Delight",
+        description: "Strawberry, peach & papaya 🍓🍑",
+      },
+      {
+        title: "Green Reviver",
+        shortTitle: "Green Reviver",
+        description: "Kale, lemongrass, banana & mango 🌿🍌🥭",
+      },
+      {
+        title: "Ginger Beets",
+        shortTitle: "Ginger Beets",
+        description: "Ginger, beetroot, pineapple & blueberries 🫚🍍🫐",
       },
     ],
   },
@@ -352,6 +351,36 @@ export default {
       },
     ],
     modifiers: ["Lactose Free Whole Milk", "Oat Milk"],
+  },
+  waffles: {
+    items: [
+      {
+        title: "Nuttello",
+        shortTitle: "Nuttello",
+        description: "Nutella drizzled over strawberries and ice cream",
+      },
+      {
+        title: "Banoffo",
+        shortTitle: "Banoffo",
+        description: "Dulce de Leche over banana, Biscoff crumble and ice cream",
+      },
+      {
+        title: "Oreo",
+        shortTitle: "Oreo",
+        description: "Dark chocolate drizzled over Oreo cookie crumble",
+      },
+      {
+        title: "Snikero",
+        shortTitle: "Snikero",
+        description: "Dulce de Leche, chocolate, Snickers and crushed peanuts",
+      },
+      {
+        title: "Vegan Delight",
+        shortTitle: "Vegan Delight",
+        description: "Strawberries, banana, Oreo crumble and maple syrup",
+      },
+    ],
+    modifiers: ["Cream", "Ice Cream"],
   },
   cocktail: {
     items: [

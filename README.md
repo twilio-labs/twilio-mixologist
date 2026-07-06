@@ -15,10 +15,15 @@ Different versions of this system have been used at events such as:
 
 - [NDC Oslo](https://ndcoslo.com) 2016, 2017
 - [CSSConf EU](https://2017.cssconf.eu/) && [JSConf EU](https://2017.jsconf.eu/) 2017
-- [WeAreDevelopers World Congress](https://www.wearedevelopers.com/world-congress) 2023, 2024
-- [Mobile World Congress Barcelona](https://www.mwcbarcelona.com/) 2023, 2024
+- [WeAreDevelopers World Congress](https://www.wearedevelopers.com/world-congress) 2023, 2024, 2026
+- [Mobile World Congress Barcelona](https://www.mwcbarcelona.com/) 2023, 2024, 2025, 2026
 - [Money 20/20](https://www.money2020.com/) 2023
 - [Twilio SIGNAL](https://signal.twilio.com/) 2023, 2024
+- [NRF](https://nrf.com/) 2025, 2026
+- [NDC London](https://ndclondon.com) 2026
+- [HIMSS](https://www.himss.org/global-conference) 2026
+- [HumanX](https://www.humanx.co/) 2026
+- [SIGNAL Berlin](https://signal.twilio.com/) 2026
 
 ## Features
 
@@ -48,7 +53,7 @@ The current [Twilio Channels] are:
 
 ### Requirements
 
-- [Node.js] version 20 or higher
+- [Node.js] version 22 or higher
 - [pnpm]
 - A Twilio account - [Sign up here](https://www.twilio.com/try-twilio)
 
@@ -177,10 +182,10 @@ MIT
 [twilio messaging]: https://www.twilio.com/messaging
 [twilio whatsapp]: https://www.twilio.com/en-us/messaging/channels/whatsapp
 [twilio conversations]: https://www.twilio.com/conversations
-[twilio sync]: https://wwww.twilio.com/sync
+[twilio sync]: https://www.twilio.com/sync
 [twilio channels]: https://www.twilio.com/channels
 [preact cli]: https://github.com/developit/preact-cli
 [node.js]: https://nodejs.org
-[nppm]: https://pnpm.io/
+[pnpm]: https://pnpm.io/
 [ngrok]: https://ngrok.com/
 [express]: http://expressjs.com/

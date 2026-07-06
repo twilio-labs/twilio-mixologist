@@ -2,7 +2,7 @@
 
 import { useSyncList, useSyncMap } from "@/provider/syncProvider";
 
-import { Event } from "@/app/(master-layout)/event/[slug]/page";
+import type { Event } from "@/types";
 import { EventState } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
 import HeaderControls from "./headerControls";
@@ -61,7 +61,12 @@ export default function OrdersInterface({
 
   if (!mapInitialized || !internalEvent || !orderListInitialized) {
     return (
-      <div className="w-2/3 mx-auto h-10 bg-gray-300 rounded-sm animate-pulse"></div>
+      <div className="w-full space-y-3">
+        <div className="h-8 w-48 bg-gray-200 rounded-lg animate-pulse" />
+        <div className="h-16 bg-gray-100 rounded-xl animate-pulse" />
+        <div className="h-16 bg-gray-100 rounded-xl animate-pulse opacity-70" />
+        <div className="h-16 bg-gray-100 rounded-xl animate-pulse opacity-40" />
+      </div>
     );
   }
 
@@ -82,26 +87,25 @@ export default function OrdersInterface({
 
   return (
     <div className="w-full">
-      <div className="flex">
-        <h2 className="flex-1 text-2xl font-semibold mb-6 text-center">
-          Orders for {internalEvent?.name}
-          <span className="text-sm text-gray-500">
-            <br />
-            {terminalSuffix}
-          </span>
-        </h2>
+      <div className="flex items-start justify-between mb-6">
+        <div>
+          <h2 className="text-2xl font-semibold text-twilio-ink tracking-tight">
+            {internalEvent?.name}
+          </h2>
+          {terminalSuffix && (
+            <p className="text-sm text-gray-400 mt-0.5">{terminalSuffix}</p>
+          )}
+        </div>
         <HeaderControls event={internalEvent} updateEvent={fetchUpdateEvent} />
       </div>
-      <section className="mt-4">
-        <OrdersList
-          // @ts-ignore // TODO Fix this TS issue
-          ordersList={ordersList}
-          // @ts-ignore // TODO Fix this TS issue
-          updateOrder={updateOrder}
-          event={internalEvent}
-          updateEvent={fetchUpdateEvent}
-        />
-      </section>
+      <OrdersList
+        // @ts-ignore // TODO Fix this TS issue
+        ordersList={ordersList}
+        // @ts-ignore // TODO Fix this TS issue
+        updateOrder={updateOrder}
+        event={internalEvent}
+        updateEvent={fetchUpdateEvent}
+      />
     </div>
   );
 }

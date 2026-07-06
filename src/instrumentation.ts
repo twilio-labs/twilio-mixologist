@@ -6,7 +6,6 @@ export async function register() {
       getVerifyService,
       getMessagingService,
       getSyncService,
-      getConversationService,
     } = await import("@/lib/twilio");
     const { updateConfig } = await import("@/scripts/updateConfig");
     await import("@/scripts/createTwilioRes"); // this automatically runs const createTwilioRes()
@@ -18,7 +17,6 @@ export async function register() {
       await getVerifyService();
       await getMessagingService();
       await getSyncService();
-      await getConversationService();
       await updateConfig();
     } catch (e: any) {
       throw new Error(e.message);
@@ -33,7 +31,6 @@ async function checkIfAllEnvVarsAreSet() {
     "TWILIO_API_SECRET",
     "TWILIO_SYNC_SERVICE_SID",
     "TWILIO_MESSAGING_SERVICE_SID",
-    "TWILIO_CONVERSATIONS_SERVICE_SID",
     "TWILIO_VERIFY_SERVICE_SID",
   ];
   const missingEnvVars = envVarName.filter((envVar) => !process.env[envVar]);

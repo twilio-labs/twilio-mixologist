@@ -1,6 +1,7 @@
 import twilio from "twilio";
 import { writeFileSync } from "fs";
 import { Stages } from "@/lib/utils";
+import type { AttendeeRecord } from "@/types";
 
 const {
   TWILIO_API_KEY = "",
@@ -24,17 +25,17 @@ if (!eventName || eventName.startsWith("/") || eventName.includes("=")) {
 }
 
 (async () => {
-  let customerPage = await client.sync.v1
+  let attendeePage = await client.sync.v1
     .services(TWILIO_SYNC_SERVICE_SID)
-    .syncMaps("ActiveCustomers")
+    .syncMaps("Attendees")
     .syncMapItems.page({ pageSize: 200 });
 
   let verifiedAttendees: any[] = [];
 
-  while (customerPage && customerPage.instances.length > 0) {
-    const attendees = customerPage.instances
+  while (attendeePage && attendeePage.instances.length > 0) {
+    const attendees = attendeePage.instances
       // @ts-ignore  thinks is a object but actually it's a user
-      .map((item) => item.data as { stage: Stages; event: string })
+      .map((item) => item.data as AttendeeRecord)
       .filter(
         (a) =>
           (a.stage === Stages.VERIFIED_USER ||
@@ -46,17 +47,36 @@ if (!eventName || eventName.startsWith("/") || eventName.includes("=")) {
     verifiedAttendees = verifiedAttendees.concat(attendees);
 
     // @ts-ignore
-    customerPage = await customerPage.nextPage();
+    attendeePage = await attendeePage.nextPage();
+  }
+
+  function escapeCsv(value: unknown): string {
+    const str = value == null ? "" : String(value);
+    return str.includes(",") || str.includes('"') || str.includes("\n")
+      ? `"${str.replace(/"/g, '""')}"` : str;
   }
 
   try {
+    const traitHeader = SEGMENT_TRAIT_CHECK || "SegmentTrait";
     const csv = verifiedAttendees.map((attendee) => {
-      return `${attendee.fullName},${attendee.email},${attendee.country},${attendee.foundInSegment},${attendee[SEGMENT_TRAIT_CHECK]},${attendee.event},${attendee.stage}`;
+      const traitValue = SEGMENT_TRAIT_CHECK ? attendee[SEGMENT_TRAIT_CHECK] : undefined;
+      return [
+        attendee.fullName,
+        attendee.email,
+        attendee.country,
+        attendee.company,
+        attendee.jobTitle,
+        attendee.foundInSegment,
+        traitValue,
+        attendee.event,
+        attendee.stage,
+      ].map(escapeCsv).join(",");
     });
     writeFileSync(
       `attendees-${eventName}.csv`,
-      `FullName,Email,Country,FoundInSegment,CompletedSignup,Event,Stage\n${csv.join("\n")}`,
+      `FullName,Email,Country,Company,JobTitle,FoundInSegment,${traitHeader},Event,Stage\n${csv.join("\n")}`,
     );
+    console.log(`Exported ${csv.length} attendees to attendees-${eventName}.csv`);
   } catch (e) {
     console.error(e);
   }

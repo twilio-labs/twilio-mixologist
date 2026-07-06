@@ -3,7 +3,6 @@ import { headers } from "next/headers";
 import {
   createSyncMapItemIfNotExists,
   createSyncListIfNotExists,
-  createAiAssistant,
 } from "@/lib/twilio";
 import { Privilege, getAuthenticatedRole } from "@/proxy";
 import { revalidatePath } from "next/cache";
@@ -45,10 +44,6 @@ export async function POST(request: Request) {
   }
 
   try {
-    const assistant = await createAiAssistant(event);
-
-    event.assistantId = assistant.id;
-
     await createSyncMapItemIfNotExists(
       process.env.NEXT_PUBLIC_EVENTS_MAP,
       event.slug,

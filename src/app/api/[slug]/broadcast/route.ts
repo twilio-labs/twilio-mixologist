@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import { fetchSyncListItems, addMessageToConversation } from "@/lib/twilio";
+import { fetchSyncListItems, sendMessage } from "@/lib/twilio";
 import { Privilege, getAuthenticatedRole } from "@/proxy";
 
 export async function POST(
@@ -18,7 +18,7 @@ export async function POST(
     Privilege.ADMIN === role || Privilege.MIXOLOGIST === role;
   if (
     !process.env.NEXT_PUBLIC_EVENTS_MAP ||
-    !process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP
+    !process.env.NEXT_PUBLIC_ATTENDEES_MAP
   ) {
     console.error("No config doc specified");
     return new Response("No config doc specified", {
@@ -48,7 +48,7 @@ export async function POST(
 
     queuedOrders.forEach((order) => {
       // @ts-ignore  thinks is a object but actually it's a string
-      addMessageToConversation(order.data.key, message);
+      sendMessage(order.data.key, message);
     });
 
     return new Response(null, { status: 201 });

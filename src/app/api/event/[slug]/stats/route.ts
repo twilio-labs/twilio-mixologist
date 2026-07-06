@@ -18,7 +18,7 @@ export async function GET(
   if (
     !process.env.NEXT_PUBLIC_CONFIG_DOC ||
     !process.env.NEXT_PUBLIC_EVENTS_MAP ||
-    !process.env.NEXT_PUBLIC_ACTIVE_CUSTOMERS_MAP
+    !process.env.NEXT_PUBLIC_ATTENDEES_MAP
   ) {
     return new Response("No config doc specified", { status: 500 });
   }
