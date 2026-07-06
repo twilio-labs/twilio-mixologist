@@ -23,10 +23,10 @@ Edit `.env.local` and fill in the required Twilio values:
 TWILIO_ACCOUNT_SID="ACxxxxx"
 TWILIO_API_KEY="SKxxxxx"
 TWILIO_API_SECRET="xxxxx"
-VERIFY_SERVICE_SID="VAxxxxx"
-SYNC_SERVICE_SID="ISxxxxx"
-MESSAGING_SERVICE_SID="MGxxxxx"
-NEXT_PUBLIC_TWILIO_PHONE_NUMBER="+15551234567"
+TWILIO_VERIFY_SERVICE_SID="VAxxxxx"
+TWILIO_SYNC_SERVICE_SID="ISxxxxx"
+TWILIO_MESSAGING_SERVICE_SID="MGxxxxx"
+TWILIO_PHONE_NUMBER="+15551234567"
 ```
 
 The deploy script uses `.env.local` for both build-time values, such as `NEXT_PUBLIC_*`, and runtime environment variables.
