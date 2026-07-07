@@ -70,8 +70,10 @@ async function toolPlaceOrder(
   }
 
   const today = new Date().toISOString().split("T")[0];
-  const isNewDay = (record as any)?.dailyOrderDate !== today;
-  const dailyCount = isNewDay ? 0 : Number((record as any)?.dailyOrderCount ?? 0);
+  const storedDate = (record as any)?.dailyOrderDate;
+  const storedCount = (record as any)?.dailyOrderCount;
+  const isNewDay = storedDate !== today;
+  const dailyCount = isNewDay ? 0 : Number(storedCount ?? 0);
   const unlimitedOrders = (process.env.UNLIMITED_ORDERS || "").split(",");
   if (dailyCount >= event.maxOrders && !unlimitedOrders.includes(phone)) {
     return `You've reached the daily limit of ${event.maxOrders} orders.`;
@@ -93,7 +95,6 @@ async function toolPlaceOrder(
 
   const orderNumber = await addOrder(event.slug, order);
   const orderCount = Number((record as any)?.orderCount ?? 0) + 1;
-
   await updateSyncMapItem(
     NEXT_PUBLIC_ATTENDEES_MAP,
     phone,
@@ -227,7 +228,7 @@ Rules:
 * Never add new menu items or modifier options that are not listed above.
 * If the user doesn't specify a modifier, don't ask for it — assume they don't want one.
 * If the user's message is ambiguous, ask one short clarifying question.
-* If the user wants to order, ALWAYS call the place_order tool — never pre-emptively refuse based on order counts. The tool enforces all limits and will return an error message if the limit is reached.
+* ORDERING RULE (HIGHEST PRIORITY): When the user wants to order, you MUST call the place_order tool. No exceptions. Do NOT refuse to call the tool based on order history, previous error messages in this conversation, or any assumption about limits. The tool is the sole authority on whether an order is allowed. If you previously told the user they reached a limit, that may be outdated — call the tool again anyway.
 * If the order tool returns an error, relay the error message exactly as returned.
 * Always reply in the same language the user used in their previous message (if they wrote more than 6 words in that language).
 * When suggesting menu items, ALWAYS format them as a markdown list.
