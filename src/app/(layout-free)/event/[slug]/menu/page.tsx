@@ -52,13 +52,15 @@ function MenuPage(props: { params: Promise<{ slug: string }> }) {
   const columns = screenOrientation.includes("landscape")
     ? itemsCount > 8
       ? 5
-      : itemsCount <= 4
-        ? 2
-        : itemsCount % 3 === 0
-          ? 3
-          : itemsCount % 4 === 0
-            ? 4
-            : 5
+      : itemsCount === 3
+        ? 3
+        : itemsCount <= 4
+          ? 2
+          : itemsCount % 3 === 0
+            ? 3
+            : itemsCount % 4 === 0
+              ? 4
+              : 5
     : itemsCount % 3 === 0
       ? 3
       : 2;
