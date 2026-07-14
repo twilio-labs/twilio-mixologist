@@ -59,7 +59,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "NODE_ENV=test pnpm run dev",
+    command: process.env.CI ? "NODE_ENV=test node .next/standalone/server.js" : "NODE_ENV=test pnpm run dev",
     url: baseURL,
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,

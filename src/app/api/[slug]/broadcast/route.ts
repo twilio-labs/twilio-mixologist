@@ -48,7 +48,9 @@ export async function POST(
 
     queuedOrders.forEach((order) => {
       // @ts-ignore  thinks is a object but actually it's a string
-      sendMessage(order.data.key, message);
+      const { key, channel } = order.data;
+      const to = channel === "whatsapp" ? `whatsapp:${key}` : channel === "rcs" ? `rcs:${key}` : key;
+      sendMessage(to, message);
     });
 
     return new Response(null, { status: 201 });
