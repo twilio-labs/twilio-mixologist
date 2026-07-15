@@ -1,13 +1,32 @@
-import { Checkbox } from "@/components/ui/checkbox";
+import { Check } from "lucide-react";
 import MenuItem from "./menu-item";
 import type { MenuItem as MenuItemInterface, Menus, modes, Selection } from "@/types";
 import { useToast } from "./ui/use-toast";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
 import { Badge } from "./ui/badge";
+import { cn } from "@/lib/utils";
 
 export type { Selection } from "@/types";
 
 const MAX_SELECTABLE_ITEMS = 10;
+
+// Purely decorative checked-state indicator — the surrounding <button> already
+// carries the interactive/checkbox semantics, so this must never render a real
+// <button> (Radix's Checkbox does) or the browser flags a <button> nested in a <button>.
+function CheckboxIndicator({ checked, className }: { checked: boolean; className?: string }) {
+  return (
+    <div
+      aria-hidden="true"
+      className={cn(
+        "flex h-4 w-4 shrink-0 items-center justify-center rounded-xs border border-primary",
+        checked ? "bg-primary text-primary-foreground" : "bg-background",
+        className,
+      )}
+    >
+      {checked && <Check className="h-4 w-4" />}
+    </div>
+  );
+}
 
 function menuItemIncluded(menuItem: MenuItemInterface, selection: Selection) {
   return selection.items.some(
@@ -94,7 +113,7 @@ export function MenuSelect({
                     }`}
                   >
                     <div className="absolute top-2.5 right-2.5">
-                      <Checkbox checked={checked} className="pointer-events-none" />
+                      <CheckboxIndicator checked={checked} />
                     </div>
                     <MenuItem
                       title={menuItem.title}
@@ -142,7 +161,7 @@ export function MenuSelect({
                             : "border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50"
                         }`}
                       >
-                        <Checkbox checked={checked} className="pointer-events-none h-3 w-3" />
+                        <CheckboxIndicator checked={checked} className="h-3 w-3" />
                         {modifier}
                       </button>
                     );
