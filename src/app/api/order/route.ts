@@ -43,7 +43,10 @@ export async function POST(request: Request) {
 
   let item;
   try {
-    item = await pushToSyncList(data.event, data.order);
+    item = await pushToSyncList(data.event, {
+      ...data.order,
+      channel: "api",
+    });
   } catch (e: any) {
     console.error(e);
     return new Response(e.message, { status: 500, statusText: e.message });
