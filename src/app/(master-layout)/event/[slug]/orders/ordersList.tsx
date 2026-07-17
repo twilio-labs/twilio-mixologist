@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Privilege } from "@/proxy";
 import { getCookie } from "cookies-next";
-import { sendMessage, createSyncMapItemIfNotExists } from "@/lib/twilio";
+import { sendMessage, getPinnedSender } from "@/lib/twilio";
 import { Badge } from "@/components/ui/badge";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -129,12 +129,8 @@ export default function OrdersList({
 
   // The sender the attendee last messaged in on — pinned so replies never
   // come from a different Messaging Service-selected sender/channel.
-  async function pinnedFrom(phone: string): Promise<string> {
-    const { data } = await createSyncMapItemIfNotExists(
-      process.env.NEXT_PUBLIC_ATTENDEES_MAP || "",
-      phone,
-    );
-    return (data as any)?.from || "";
+  function pinnedFrom(phone: string): Promise<string> {
+    return getPinnedSender(process.env.NEXT_PUBLIC_ATTENDEES_MAP || "", phone);
   }
 
   function listComponent(orders: any[]) {
@@ -222,7 +218,9 @@ export default function OrdersList({
                       updateOrder(index, { status: "ready" });
                       if (!data?.manual) {
                         const [message, from] = await Promise.all([
-                          getOrderReadyMessage(data.item, index, event.pickupLocation),
+                          getOrderReadyMessage(
+                            data.item, index, event.pickupLocation, event.language,
+                          ),
                           pinnedFrom(data.key),
                         ]);
                         sendMessage(toAddress(data), "", message.contentSid, message.contentVariables, from);

@@ -18,6 +18,7 @@ import {
   verifyOrder,
 } from "../mixologist-helper";
 import { getReadyToOrderMessage } from "@/scripts/fetchContentTemplates";
+import { eventLang } from "@/lib/stringTemplates";
 import { redact, Stages, TwoWeeksInSeconds } from "@/lib/utils";
 import type { Event, Order } from "@/types";
 
@@ -54,9 +55,13 @@ async function toolPlaceOrder(
   sender: string,
 ): Promise<string> {
   const { item, modifiers = [], original_message } = args;
+  const language = eventLang(event);
 
   if (!verifyOrder(item, event, modifiers)) {
-    return `"${item}" is not on the menu. Valid items: ${event.selection.items.map((i) => i.title).join(", ")}.`;
+    const validItems = event.selection.items.map((i) => i.title).join(", ");
+    return language === "pt-BR"
+      ? `"${item}" não está no cardápio. Itens válidos: ${validItems}.`
+      : `"${item}" is not on the menu. Valid items: ${validItems}.`;
   }
 
   const { data: record } = await createSyncMapItemIfNotExists(
@@ -66,7 +71,9 @@ async function toolPlaceOrder(
 
   const lastOrder = await fetchOrder(event.slug, (record as any)?.lastOrderNumber);
   if ((lastOrder?.data as any)?.status === "queued") {
-    return `You already have an active order (#${lastOrder!.index}) for a ${(lastOrder!.data as any).item}. Cancel or modify it first.`;
+    return language === "pt-BR"
+      ? `Você já tem um pedido ativo (#${lastOrder!.index}) de ${(lastOrder!.data as any).item}. Cancele ou altere antes de continuar.`
+      : `You already have an active order (#${lastOrder!.index}) for a ${(lastOrder!.data as any).item}. Cancel or modify it first.`;
   }
 
   const today = new Date().toISOString().split("T")[0];
@@ -76,7 +83,9 @@ async function toolPlaceOrder(
   const dailyCount = isNewDay ? 0 : Number(storedCount ?? 0);
   const unlimitedOrders = (process.env.UNLIMITED_ORDERS || "").split(",");
   if (dailyCount >= event.maxOrders && !unlimitedOrders.includes(phone)) {
-    return `You've reached the daily limit of ${event.maxOrders} orders.`;
+    return language === "pt-BR"
+      ? `Você atingiu o limite diário de ${event.maxOrders} pedidos.`
+      : `You've reached the daily limit of ${event.maxOrders} orders.`;
   }
 
   const channel = sender.startsWith("whatsapp:") ? "whatsapp"
@@ -109,7 +118,9 @@ async function toolPlaceOrder(
     TwoWeeksInSeconds,
   );
 
-  return `Order #${orderNumber} for a ${item}${modifiers.length > 0 ? ` with ${modifiers.join(", ")}` : ""} placed successfully.`;
+  return language === "pt-BR"
+    ? `Pedido #${orderNumber} de ${item}${modifiers.length > 0 ? ` com ${modifiers.join(", ")}` : ""} realizado com sucesso.`
+    : `Order #${orderNumber} for a ${item}${modifiers.length > 0 ? ` with ${modifiers.join(", ")}` : ""} placed successfully.`;
 }
 
 async function toolEditOrder(
@@ -118,6 +129,7 @@ async function toolEditOrder(
   phone: string,
 ): Promise<string> {
   const { action, item, modifiers = [], original_message } = args;
+  const language = eventLang(event);
 
   const { data: record } = await createSyncMapItemIfNotExists(
     NEXT_PUBLIC_ATTENDEES_MAP,
@@ -126,16 +138,21 @@ async function toolEditOrder(
   const lastOrder = await fetchOrder(event.slug, (record as any)?.lastOrderNumber);
 
   if (!lastOrder || (lastOrder.data as any)?.status !== "queued") {
+    if (language === "pt-BR") {
+      return action === "cancel" ? "Não há pedido ativo para cancelar." : "Não há pedido ativo para alterar.";
+    }
     return action === "cancel" ? "No active order to cancel." : "No active order to edit.";
   }
 
   if (action === "cancel") {
     await cancelOrder(event, lastOrder.index, lastOrder.data as Order);
-    return `Order #${lastOrder.index} cancelled.`;
+    return language === "pt-BR" ? `Pedido #${lastOrder.index} cancelado.` : `Order #${lastOrder.index} cancelled.`;
   }
 
   if (!verifyOrder(item, event, modifiers)) {
-    return `"${item}" is not a valid menu item.`;
+    return language === "pt-BR"
+      ? `"${item}" não é um item válido do cardápio.`
+      : `"${item}" is not a valid menu item.`;
   }
 
   await updateOrder(event.slug, lastOrder.index, {
@@ -146,11 +163,13 @@ async function toolEditOrder(
     status: "queued",
   });
 
-  return `Order #${lastOrder.index} updated to ${item}${modifiers.length > 0 ? ` with ${modifiers.join(", ")}` : ""}.`;
+  return language === "pt-BR"
+    ? `Pedido #${lastOrder.index} alterado para ${item}${modifiers.length > 0 ? ` com ${modifiers.join(", ")}` : ""}.`
+    : `Order #${lastOrder.index} updated to ${item}${modifiers.length > 0 ? ` with ${modifiers.join(", ")}` : ""}.`;
 }
 
 async function toolShowMenu(event: Event, sender: string, from: string): Promise<string> {
-  const language = event.language ?? "en";
+  const language = eventLang(event);
   const message = await getReadyToOrderMessage(
     event,
     event.selection.items,
@@ -163,6 +182,7 @@ async function toolShowMenu(event: Event, sender: string, from: string): Promise
 }
 
 async function toolGetOrderStatus(event: Event, phone: string): Promise<string> {
+  const language = eventLang(event);
   const { data: record } = await createSyncMapItemIfNotExists(
     NEXT_PUBLIC_ATTENDEES_MAP,
     phone,
@@ -170,17 +190,27 @@ async function toolGetOrderStatus(event: Event, phone: string): Promise<string> 
   const lastOrderNumber = (record as any)?.lastOrderNumber as number;
   const lastOrder = await fetchOrder(event.slug, lastOrderNumber);
 
-  if (!lastOrder) return "No orders found.";
+  if (!lastOrder) return language === "pt-BR" ? "Nenhum pedido encontrado." : "No orders found.";
 
+  const item = (lastOrder.data as any).item;
   const status = (lastOrder.data as any)?.status;
   if (status !== "queued") {
-    return `Your last order (#${lastOrder.index}) for a ${(lastOrder.data as any).item} has status: ${status}.`;
+    if (language === "pt-BR") {
+      const statusLabel = { ready: "pronto", delivered: "entregue", cancelled: "cancelado" }[status as string] ?? status;
+      return `Seu último pedido (#${lastOrder.index}) de ${item} está com status: ${statusLabel}.`;
+    }
+    return `Your last order (#${lastOrder.index}) for a ${item} has status: ${status}.`;
   }
 
   const pos = await getQueuePosition(event.slug, lastOrder.index);
+  if (language === "pt-BR") {
+    return pos !== null
+      ? `Seu pedido (#${lastOrder.index}) de ${item} está na posição ${pos} da fila.`
+      : `Seu pedido (#${lastOrder.index}) de ${item} está sendo preparado.`;
+  }
   return pos !== null
-    ? `Your order (#${lastOrder.index}) for a ${(lastOrder.data as any).item} is queued at position ${pos}.`
-    : `Your order (#${lastOrder.index}) for a ${(lastOrder.data as any).item} is being prepared.`;
+    ? `Your order (#${lastOrder.index}) for a ${item} is queued at position ${pos}.`
+    : `Your order (#${lastOrder.index}) for a ${item} is being prepared.`;
 }
 
 export async function runAiAgent(
@@ -196,8 +226,12 @@ export async function runAiAgent(
     return null;
   }
 
+  const language = eventLang(event);
+
   if (isInjectionAttempt(message)) {
-    return "I can only help you order, modify, or cancel a drink. What would you like?";
+    return language === "pt-BR"
+      ? "Só posso ajudar com pedidos de bebida, alterações ou cancelamentos. O que você gostaria?"
+      : "I can only help you order, modify, or cancel a drink. What would you like?";
   }
 
   // Fetch conversation record — history stored as [{role, content}] in Sync
@@ -215,6 +249,7 @@ export async function runAiAgent(
   const modifierList = event.selection.modifiers.length > 0
     ? event.selection.modifiers.map((m) => `'${m}'`).join(", ")
     : "none";
+  const languageName = language === "pt-BR" ? "Brazilian Portuguese" : "English";
   const systemPrompt = `You are a helpful barista that accepts ${event.selection.mode} orders. This is a marketing activation from Twilio used at a conference. You are free to tell the customers basic facts about Twilio but defer to the Twilio employees (Twilions) at the event if the customers have detailed questions.
 
 Menu:
@@ -231,7 +266,7 @@ Rules:
 * If the user's message is ambiguous, ask one short clarifying question.
 * ORDERING RULE (HIGHEST PRIORITY): When the user wants to order, you MUST call the place_order tool. No exceptions. Do NOT refuse to call the tool based on order history, previous error messages in this conversation, or any assumption about limits. The tool is the sole authority on whether an order is allowed. If you previously told the user they reached a limit, that may be outdated — call the tool again anyway.
 * If the order tool returns an error, relay the error message exactly as returned.
-* Always reply in the same language the user used in their previous message (if they wrote more than 6 words in that language).
+* Always reply in ${languageName}, regardless of what language the user writes in.
 * When suggesting menu items, ALWAYS format them as a markdown list.
 * Never fabricate information on tool execution failures. Acknowledge errors without speculation.
 * If the users want to learn more about Twilio, point them to the Twilio employees at the booth.

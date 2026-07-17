@@ -2,6 +2,7 @@
 
 import { throttledQueue } from "throttled-queue";
 import { twilioClient, TWILIO_API_KEY, TWILIO_API_SECRET } from "./client";
+import { createSyncMapItemIfNotExists } from "./sync";
 
 const {
   TWILIO_MESSAGING_SERVICE_SID = "",
@@ -70,6 +71,17 @@ export async function sendMessage(
     console.log(err);
     return;
   }
+}
+
+// Returns just the plain pinned-sender string — Client Components can't
+// receive the raw Twilio SDK instance createSyncMapItemIfNotExists resolves
+// to (Server Action return values must be plain-serializable).
+export async function getPinnedSender(
+  attendeesMap: string,
+  phone: string,
+): Promise<string> {
+  const { data } = await createSyncMapItemIfNotExists(attendeesMap, phone);
+  return (data as any)?.from || "";
 }
 
 export async function fetchSegmentTraits(
