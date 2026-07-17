@@ -39,20 +39,26 @@ export async function sendMessage(
   body: string = "",
   contentSid: string = "",
   contentVariables: string = "",
+  from: string = "",
 ) {
   if (to === "test-order") {
     return;
   }
 
-  const from = TWILIO_MESSAGING_SERVICE_SID;
+  const defaultFrom = TWILIO_MESSAGING_SERVICE_SID;
 
   try {
     throttle(() => {
       twilioClient.messages.create({
         to,
-        ...(TWILIO_MESSAGING_SERVICE_SID
-          ? { messagingServiceSid: TWILIO_MESSAGING_SERVICE_SID }
-          : { from }),
+        // Pin the exact sender the recipient last messaged in on — otherwise
+        // the Messaging Service can auto-select a different sender (e.g. RCS
+        // vs WhatsApp) that may be outside that channel's 24h session window.
+        ...(from
+          ? { from }
+          : TWILIO_MESSAGING_SERVICE_SID
+            ? { messagingServiceSid: TWILIO_MESSAGING_SERVICE_SID }
+            : { from: defaultFrom }),
         ...(body ? { body } : {}),
         ...(contentSid ? { contentSid } : {}),
         ...(contentVariables ? { contentVariables } : {}),

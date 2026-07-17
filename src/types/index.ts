@@ -83,6 +83,7 @@ export interface SegmentData {
 }
 
 export interface AttendeeRecord {
+  from?: string;
   event?: string;
   stage?: Stages;
   orderCount?: number;

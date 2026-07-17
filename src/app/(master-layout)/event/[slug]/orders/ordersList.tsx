@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Privilege } from "@/proxy";
 import { getCookie } from "cookies-next";
-import { sendMessage } from "@/lib/twilio";
+import { sendMessage, createSyncMapItemIfNotExists } from "@/lib/twilio";
 import { Badge } from "@/components/ui/badge";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -127,6 +127,16 @@ export default function OrdersList({
     return data.key;
   }
 
+  // The sender the attendee last messaged in on — pinned so replies never
+  // come from a different Messaging Service-selected sender/channel.
+  async function pinnedFrom(phone: string): Promise<string> {
+    const { data } = await createSyncMapItemIfNotExists(
+      process.env.NEXT_PUBLIC_ATTENDEES_MAP || "",
+      phone,
+    );
+    return (data as any)?.from || "";
+  }
+
   function listComponent(orders: any[]) {
     return orders.map((order) => {
       const { data, index, dateUpdated } = order;
@@ -184,10 +194,13 @@ export default function OrdersList({
                   onClick={async () => {
                     startProcessing(index, "remind");
                     try {
-                      const message = await getOrderReadyReminderMessage(
-                        data.item, index, event.pickupLocation, event.language,
-                      );
-                      sendMessage(toAddress(data), "", message.contentSid, message.contentVariables);
+                      const [message, from] = await Promise.all([
+                        getOrderReadyReminderMessage(
+                          data.item, index, event.pickupLocation, event.language,
+                        ),
+                        pinnedFrom(data.key),
+                      ]);
+                      sendMessage(toAddress(data), "", message.contentSid, message.contentVariables, from);
                       updateOrder(index, { reminded: true });
                       toast({ title: "Customer Reminded", description: "Reminder sent." });
                     } finally {
@@ -208,10 +221,13 @@ export default function OrdersList({
                     try {
                       updateOrder(index, { status: "ready" });
                       if (!data?.manual) {
-                        const message = await getOrderReadyMessage(
-                          data.item, index, event.pickupLocation, event.language,
-                        );
-                        sendMessage(toAddress(data), "", message.contentSid, message.contentVariables);
+                        const [message, from] = await Promise.all([
+                          getOrderReadyMessage(
+                            data.item, index, event.pickupLocation, event.language,
+                          ),
+                          pinnedFrom(data.key),
+                        ]);
+                        sendMessage(toAddress(data), "", message.contentSid, message.contentVariables, from);
                       }
                       toast({
                         title: "Order Ready",
