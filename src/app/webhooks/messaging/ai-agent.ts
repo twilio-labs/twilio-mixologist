@@ -149,7 +149,7 @@ async function toolEditOrder(
   return `Order #${lastOrder.index} updated to ${item}${modifiers.length > 0 ? ` with ${modifiers.join(", ")}` : ""}.`;
 }
 
-async function toolShowMenu(event: Event, sender: string): Promise<string> {
+async function toolShowMenu(event: Event, sender: string, from: string): Promise<string> {
   const language = event.language ?? "en";
   const message = await getReadyToOrderMessage(
     event,
@@ -158,7 +158,7 @@ async function toolShowMenu(event: Event, sender: string): Promise<string> {
     false,
     language,
   );
-  sendMessage(sender, "", message.contentSid, message.contentVariables);
+  sendMessage(sender, "", message.contentSid, message.contentVariables, from);
   return "Menu sent to the user.";
 }
 
@@ -188,6 +188,7 @@ export async function runAiAgent(
   event: Event,
   phone: string,
   sender: string,
+  from: string,
 ): Promise<string | null> {
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
   if (!OPENAI_API_KEY) {
@@ -347,7 +348,7 @@ Rules:
             result = await toolGetOrderStatus(event, phone);
             break;
           case "show_menu":
-            result = await toolShowMenu(event, sender);
+            result = await toolShowMenu(event, sender, from);
             break;
           case "log_feedback":
             console.log(`[feedback] ${phone}: ${args.attempted_action}`);

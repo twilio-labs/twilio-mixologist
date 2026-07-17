@@ -41,9 +41,16 @@ const throttle = throttledQueue({ maxPerInterval: 10, interval: 1000, evenlySpac
       // @ts-ignore  thinks is a object but actually it's a string
       if (item.data.event === eventName) {
         counter++;
+        // @ts-ignore  thinks is a object but actually it's a string
+        const from: string = item.data.from || "";
+        // The pinned `from` carries the channel prefix (whatsapp:/rcs:) the
+        // attendee is actually reachable on — reuse it for `to` instead of
+        // sending a bare number, which would default to SMS.
+        const channelPrefix = from.match(/^(whatsapp:|rcs:)/)?.[1] || "";
+        const to = `${channelPrefix}${item.key}`;
         throttle(async () => {
           try {
-            return await sendMessage(item.key, MESSAGE);
+            return await sendMessage(to, MESSAGE, undefined, undefined, from);
           } catch (e) {
             if (isRateLimited(e)) {
               throw new RetryError({ pauseQueue: true });
