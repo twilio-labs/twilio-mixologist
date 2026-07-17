@@ -230,6 +230,11 @@ export default {
         description:
           "Cucumber Juice, Wildflower Honey, Parsley, Pellegrino, mint-garnished",
       },
+      {
+        shortTitle: "Moka",
+        title: "Moka",
+        description: "Stovetop-brewed coffee, rich and strong",
+      },
     ],
     modifiers: [
       "Decaf",
@@ -455,6 +460,24 @@ export default {
         title: "Appletini",
         shortTitle: "Appletini",
         description: "Vodka, Apple Schnapps, Apple Juice",
+      },
+      {
+        title: "Irish Lovers",
+        shortTitle: "Irish Lovers",
+        description:
+          "Espresso, brown sugar, Jameson, topped with macadamia-infused cream",
+      },
+      {
+        title: "Shakerato Lovers",
+        shortTitle: "Shakerato Lovers",
+        description:
+          "Espresso shaken with ice, Leblon Cachaça, lemon syrup, sugarcane molasses",
+      },
+      {
+        title: "Blue Gin Lovers",
+        shortTitle: "Blue Gin Lovers",
+        description:
+          "Espresso, blue curaçao, tonic water and gin, garnished with lemon",
       },
     ],
     modifiers: ["Whipped Cream"],
