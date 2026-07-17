@@ -30,6 +30,12 @@ export async function deleteWhatsAppTemplate(
   return data;
 }
 
+// WhatsApp never approves a template whose richest content type is
+// twilio/list-picker — list-picker/interactive-list messages are only
+// usable within an already-open session, never as a pre-approved
+// outbound template. Submitting these always fails, so skip it.
+const RICHEST_TYPES_INELIGIBLE_FOR_APPROVAL = ["twilio/list-picker"];
+
 export async function createWhatsAppTemplate(
   template: WhatsAppTemplateConfig,
 ): Promise<WhatsAppTemplate> {
@@ -38,6 +44,16 @@ export async function createWhatsAppTemplate(
     template,
     contentApiAuth(),
   );
+
+  const ineligibleType = RICHEST_TYPES_INELIGIBLE_FOR_APPROVAL.find(
+    (type) => type in template.types,
+  );
+  if (ineligibleType) {
+    console.log(
+      `Skipping WhatsApp approval request for "${data.friendly_name}" — ${ineligibleType} is not eligible for approval.`,
+    );
+    return data;
+  }
 
   try {
     await axios.post(
