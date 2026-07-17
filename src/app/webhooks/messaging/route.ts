@@ -248,8 +248,9 @@ export async function POST(request: Request) {
     if (result) return result;
   }
 
-  // "Forget me" — delete all stored data for this attendee
-  if (incomingMessageBody.toLowerCase().includes("forget me")) {
+  // "Forget me" / "Esqueça de mim" — delete all stored data for this attendee
+  const lowerBody = incomingMessageBody.toLowerCase();
+  if (lowerBody.includes("forget me") || lowerBody.includes("esqueça de mim") || lowerBody.includes("esqueca de mim")) {
     const profileId = event?.leadCollection === "WeAreDevs_QR"
       ? (attendeeRecord as any).profileId as string | undefined
       : undefined;
@@ -267,7 +268,9 @@ export async function POST(request: Request) {
     }
     sendMessage(
       sender,
-      "✅ Done! Your data has been deleted from our system.",
+      eventLang(event) === "pt-BR"
+        ? "✅ Pronto! Seus dados foram excluídos do nosso sistema."
+        : "✅ Done! Your data has been deleted from our system.",
       undefined,
       undefined,
       from,

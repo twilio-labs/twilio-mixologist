@@ -18,6 +18,7 @@ export {
   getMessagingService,
   getPossibleSenders,
   sendMessage,
+  getPinnedSender,
   fetchSegmentTraits,
 } from "./messaging";
 export { getVerifyService, createVerification, checkVerification } from "./verify";
