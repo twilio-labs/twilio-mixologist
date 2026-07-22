@@ -47,15 +47,13 @@ Run the deploy script from the repository root:
 ./deploy.sh
 ```
 
-The script prompts for:
+The script runs non-interactively and uses these defaults unless overridden via environment variables:
 
-- Azure resource group
-- Azure region
-- Azure Container Registry name
-- Container App name
-- Container Apps environment name
-
-You can press Enter to accept the defaults.
+- Azure resource group: `AZURE_RESOURCE_GROUP` (default `rg-twilio-mixologist`)
+- Azure region: `AZURE_LOCATION` (default `northeurope`)
+- Azure Container Registry name: `AZURE_ACR_NAME` (default derived from the app name)
+- Container App name: `AZURE_CONTAINER_APP_NAME` (default `twilio-mixologist`)
+- Container Apps environment name: `AZURE_CONTAINER_ENV_NAME` (default `cae-twilio-mixologist`)
 
 The script creates or updates:
 
@@ -114,6 +112,27 @@ az containerapp show \
   --query "properties.configuration.ingress.{external:external,fqdn:fqdn,targetPort:targetPort}" \
   --output json
 ```
+
+## 6. CI Deployment (GitHub Actions)
+
+`.github/workflows/deploy.yml` runs `./deploy.sh` automatically on every push to `main`
+(i.e. whenever a PR is merged), authenticating to Azure via OIDC instead of `az login`.
+
+This repo's Actions policy only allows GitHub-owned actions, so the workflow performs
+the OIDC token exchange by hand rather than via `azure/login`. For it to work, an Azure
+AD App Registration needs a federated credential trusting this repo's `main` branch
+(**Certificates & secrets → Federated credentials**, entity type "Branch", branch `main`),
+with the **Contributor** role on the target subscription/resource group. Then set these
+as repo secrets:
+
+- `AZURE_CLIENT_ID`
+- `AZURE_TENANT_ID`
+- `AZURE_SUBSCRIPTION_ID`
+
+The workflow also writes a `.env.local` file from repo secrets/variables before calling
+`deploy.sh`, mirroring the variables in `sample.env`. Add any missing ones (e.g.
+`OPENAI_API_KEY`, `SEGMENT_PROFILE_KEY`, `BADGE_API_KEY`) as repo secrets, or as repo
+variables for non-sensitive values, so they're picked up the same way.
 
 Expected ingress values:
 
