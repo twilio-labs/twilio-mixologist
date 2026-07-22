@@ -66,6 +66,7 @@ export function MenuSelect({
                   <button
                     key={`${mode}-${menuItem.shortTitle}`}
                     type="button"
+                    aria-pressed={checked}
                     onClick={() => {
                       if (!checked && selection.items.length >= MAX_SELECTABLE_ITEMS) {
                         toast({

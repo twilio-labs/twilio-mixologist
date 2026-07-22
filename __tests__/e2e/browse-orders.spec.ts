@@ -10,10 +10,10 @@ test.describe("[no login]", () => {
     await expect(page.getByRole("tab", { name: "Delivered" })).toBeVisible();
 
     const firstInQueue: Locator = page
-      .getByText(new RegExp(/#(\d|[1-9]\d)Espresso Original Message/i))
+      .getByText(new RegExp(/#(\d|[1-9]\d)Espresso/i))
       .first();
     const secondInQueue: Locator = page
-      .getByText(new RegExp(/#(\d|[1-9]\d)Espresso Original Message/i))
+      .getByText(new RegExp(/#(\d|[1-9]\d)Espresso/i))
       .nth(1);
 
     await expect(firstInQueue).toBeVisible();
@@ -31,12 +31,12 @@ test.describe("[no login]", () => {
 
     await page.getByTestId("cancelledTab").click();
     expect(
-      await page.getByText('Original Message - "A Cancelled Order"').count(),
+      await page.getByText("A Cancelled Order").count(),
     ).toBeGreaterThan(0);
 
     await page.getByTestId("deliveredTab").click();
     expect(
-      await page.getByText('Original Message - "A Delivered Order"').count(),
+      await page.getByText("A Delivered Order").count(),
     ).toBeGreaterThan(0);
 
     await expect(page.getByTestId("pause-orders")).toBeHidden();
@@ -45,15 +45,15 @@ test.describe("[no login]", () => {
   test("Scroll through extra orders", async ({ page }) => {
     await page.goto("/event/test-event/orders");
 
-    await expect(page.getByRole("button", { name: "Show More" })).toBeVisible();
+    await expect(page.getByRole("button", { name: /Show \d+ more/i })).toBeVisible();
     await expect(page.getByText("#61")).not.toBeVisible();
 
-    await page.getByRole("button", { name: "Show More" }).click();
-    while (await page.getByRole("button", { name: "Show More" }).isVisible()) {
-      await page.getByRole("button", { name: "Show More" }).click();
+    await page.getByRole("button", { name: /Show \d+ more/i }).click();
+    while (await page.getByRole("button", { name: /Show \d+ more/i }).isVisible()) {
+      await page.getByRole("button", { name: /Show \d+ more/i }).click();
     }
     await expect(
-      page.getByRole("button", { name: "Show More" }),
+      page.getByRole("button", { name: /Show \d+ more/i }),
     ).not.toBeVisible();
     expect(await page.getByText("#61").count()).toBeGreaterThan(0);
   });
@@ -62,7 +62,7 @@ test.describe("[no login]", () => {
     await page.goto("/event/test-event/orders");
 
     await expect(
-      page.getByRole("button", { name: "Send Message to all open" }),
+      page.getByRole("button", { name: "Broadcast message" }),
     ).toBeHidden();
   });
 
@@ -70,7 +70,7 @@ test.describe("[no login]", () => {
     await page.goto("/event/test-event/orders");
 
     await expect(
-      page.getByRole("button", { name: "Create a Manual Order" }),
+      page.getByRole("button", { name: "Add manual order" }),
     ).toBeHidden();
   });
 });
@@ -84,7 +84,7 @@ test.describe("[mixologist]", () => {
         url: "http://localhost:3000",
       },
     ]);
-    context.setExtraHTTPHeaders({
+    await context.setExtraHTTPHeaders({
       Authorization: `Basic ${btoa(process.env.ADMIN_LOGIN || ":")}`,
     });
 
@@ -104,20 +104,20 @@ test.describe("[mixologist]", () => {
         url: "http://localhost:3000",
       },
     ]);
-    context.setExtraHTTPHeaders({
+    await context.setExtraHTTPHeaders({
       Authorization: `Basic ${btoa(process.env.ADMIN_LOGIN || ":")}`,
     });
     await page.goto("/event/test-event/orders");
 
-    await expect(page.getByRole("button", { name: "Show More" })).toBeVisible();
+    await expect(page.getByRole("button", { name: /Show \d+ more/i })).toBeVisible();
     await expect(page.getByText("#61")).not.toBeVisible();
 
-    await page.getByRole("button", { name: "Show More" }).click();
-    while (await page.getByRole("button", { name: "Show More" }).isVisible()) {
-      await page.getByRole("button", { name: "Show More" }).click();
+    await page.getByRole("button", { name: /Show \d+ more/i }).click();
+    while (await page.getByRole("button", { name: /Show \d+ more/i }).isVisible()) {
+      await page.getByRole("button", { name: /Show \d+ more/i }).click();
     }
     await expect(
-      page.getByRole("button", { name: "Show More" }),
+      page.getByRole("button", { name: /Show \d+ more/i }),
     ).not.toBeVisible();
     expect(await page.getByText("#61").count()).toBeGreaterThan(0);
   });
@@ -130,14 +130,14 @@ test.describe("[mixologist]", () => {
         url: "http://localhost:3000",
       },
     ]);
-    context.setExtraHTTPHeaders({
+    await context.setExtraHTTPHeaders({
       Authorization: `Basic ${btoa(process.env.ADMIN_LOGIN || ":")}`,
     });
 
     await page.goto("/event/test-event/orders");
 
     await page
-      .getByRole("button", { name: "Send Message to all open" })
+      .getByRole("button", { name: "Broadcast message" })
       .click();
     await page.getByPlaceholder("Type your message here...").fill("Hello test");
 
@@ -154,16 +154,16 @@ test.describe("[mixologist]", () => {
         url: "http://localhost:3000",
       },
     ]);
-    context.setExtraHTTPHeaders({
+    await context.setExtraHTTPHeaders({
       Authorization: `Basic ${btoa(process.env.ADMIN_LOGIN || ":")}`,
     });
 
     await page.goto("/event/test-event/orders");
 
-    await page.getByRole("button", { name: "Create a Manual Order" }).click();
+    await page.getByRole("button", { name: "Add manual order" }).click();
     await page.getByPlaceholder("Customer name").fill("Test Name");
     await page.getByLabel("Order Item").click();
-    await page.getByLabel("Espresso", { exact: true }).click();
+    await page.getByRole("option", { name: "Espresso", exact: true }).click();
     await page
       .getByPlaceholder("Without regular milk or similar...")
       .fill("Test Notes");
