@@ -48,6 +48,12 @@ jobs:
           ADMIN_LOGIN: ${{ vars.ADMIN_LOGIN }}
           MIXOLOGIST_LOGIN: ${{ vars.MIXOLOGIST_LOGIN }}
           KIOSK_LOGIN: ${{ vars.KIOSK_LOGIN }}
+          # Deploy-specific overrides — deploy.sh sets these as the live app's
+          # credentials instead of ADMIN_LOGIN/MIXOLOGIST_LOGIN/KIOSK_LOGIN
+          # above (which are the local-dev credentials) when present.
+          DEPLOY_ADMIN_LOGIN: ${{ secrets.DEPLOY_ADMIN_LOGIN }}
+          DEPLOY_MIXOLOGIST_LOGIN: ${{ secrets.DEPLOY_MIXOLOGIST_LOGIN }}
+          DEPLOY_KIOSK_LOGIN: ${{ secrets.DEPLOY_KIOSK_LOGIN }}
           SERVICE_INSTANCE_PREFIX: ${{ vars.SERVICE_INSTANCE_PREFIX }}
           UNLIMITED_ORDERS: ${{ vars.UNLIMITED_ORDERS }}
         run: |
@@ -73,6 +79,9 @@ jobs:
           ADMIN_LOGIN=$ADMIN_LOGIN
           MIXOLOGIST_LOGIN=$MIXOLOGIST_LOGIN
           KIOSK_LOGIN=$KIOSK_LOGIN
+          DEPLOY_ADMIN_LOGIN=$DEPLOY_ADMIN_LOGIN
+          DEPLOY_MIXOLOGIST_LOGIN=$DEPLOY_MIXOLOGIST_LOGIN
+          DEPLOY_KIOSK_LOGIN=$DEPLOY_KIOSK_LOGIN
           SERVICE_INSTANCE_PREFIX=$SERVICE_INSTANCE_PREFIX
           UNLIMITED_ORDERS=$UNLIMITED_ORDERS
           EOF
