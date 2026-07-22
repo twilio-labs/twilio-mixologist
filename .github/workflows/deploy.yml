@@ -1,0 +1,84 @@
+name: Deploy
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+  id-token: write
+jobs:
+  deploy:
+    timeout-minutes: 30
+    runs-on: ubuntu-x64
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Azure login (OIDC)
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        run: |
+          ID_TOKEN=$(curl -sSL -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=api://AzureADTokenExchange" | jq -r '.value')
+          az login --service-principal --username "$AZURE_CLIENT_ID" --tenant "$AZURE_TENANT_ID" --federated-token "$ID_TOKEN" --output none
+          az account set --subscription "$AZURE_SUBSCRIPTION_ID"
+
+      # deploy.sh reads its configuration from an env file (.env.local by
+      # default); write one from repo secrets/variables so it runs the same
+      # way here as it does locally.
+      - name: Write deploy environment file
+        env:
+          TWILIO_ACCOUNT_SID: ${{ vars.TWILIO_ACCOUNT_SID }}
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          TWILIO_API_KEY: ${{ secrets.TWILIO_API_KEY }}
+          TWILIO_API_SECRET: ${{ secrets.TWILIO_API_SECRET }}
+          TWILIO_PHONE_NUMBER: ${{ vars.TWILIO_PHONE_NUMBER }}
+          TWILIO_MESSAGING_SERVICE_SID: ${{ vars.TWILIO_MESSAGING_SERVICE_SID }}
+          TWILIO_SYNC_SERVICE_SID: ${{ vars.TWILIO_SYNC_SERVICE_SID }}
+          TWILIO_VERIFY_SERVICE_SID: ${{ vars.TWILIO_VERIFY_SERVICE_SID }}
+          PUBLIC_BASE_URL: ${{ vars.PUBLIC_BASE_URL }}
+          LEAD_COLLECTION: ${{ vars.LEAD_COLLECTION }}
+          EVENT_NAME: ${{ vars.EVENT_NAME }}
+          SEGMENT_SPACE_ID: ${{ vars.SEGMENT_SPACE_ID }}
+          SEGMENT_PROFILE_KEY: ${{ secrets.SEGMENT_PROFILE_KEY }}
+          SEGMENT_TRAIT_CHECK: ${{ vars.SEGMENT_TRAIT_CHECK }}
+          TWILIO_CONVERSATION_CONFIGURATION_ID: ${{ vars.TWILIO_CONVERSATION_CONFIGURATION_ID }}
+          TWILIO_MEMORY_STORE_ID: ${{ vars.TWILIO_MEMORY_STORE_ID }}
+          BADGE_API_KEY: ${{ secrets.BADGE_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ADMIN_LOGIN: ${{ vars.ADMIN_LOGIN }}
+          MIXOLOGIST_LOGIN: ${{ vars.MIXOLOGIST_LOGIN }}
+          KIOSK_LOGIN: ${{ vars.KIOSK_LOGIN }}
+          SERVICE_INSTANCE_PREFIX: ${{ vars.SERVICE_INSTANCE_PREFIX }}
+          UNLIMITED_ORDERS: ${{ vars.UNLIMITED_ORDERS }}
+        run: |
+          cat > .env.local <<EOF
+          TWILIO_ACCOUNT_SID=$TWILIO_ACCOUNT_SID
+          TWILIO_AUTH_TOKEN=$TWILIO_AUTH_TOKEN
+          TWILIO_API_KEY=$TWILIO_API_KEY
+          TWILIO_API_SECRET=$TWILIO_API_SECRET
+          TWILIO_PHONE_NUMBER=$TWILIO_PHONE_NUMBER
+          TWILIO_MESSAGING_SERVICE_SID=$TWILIO_MESSAGING_SERVICE_SID
+          TWILIO_SYNC_SERVICE_SID=$TWILIO_SYNC_SERVICE_SID
+          TWILIO_VERIFY_SERVICE_SID=$TWILIO_VERIFY_SERVICE_SID
+          PUBLIC_BASE_URL=$PUBLIC_BASE_URL
+          LEAD_COLLECTION=$LEAD_COLLECTION
+          EVENT_NAME=$EVENT_NAME
+          SEGMENT_SPACE_ID=$SEGMENT_SPACE_ID
+          SEGMENT_PROFILE_KEY=$SEGMENT_PROFILE_KEY
+          SEGMENT_TRAIT_CHECK=$SEGMENT_TRAIT_CHECK
+          TWILIO_CONVERSATION_CONFIGURATION_ID=$TWILIO_CONVERSATION_CONFIGURATION_ID
+          TWILIO_MEMORY_STORE_ID=$TWILIO_MEMORY_STORE_ID
+          BADGE_API_KEY=$BADGE_API_KEY
+          OPENAI_API_KEY=$OPENAI_API_KEY
+          ADMIN_LOGIN=$ADMIN_LOGIN
+          MIXOLOGIST_LOGIN=$MIXOLOGIST_LOGIN
+          KIOSK_LOGIN=$KIOSK_LOGIN
+          SERVICE_INSTANCE_PREFIX=$SERVICE_INSTANCE_PREFIX
+          UNLIMITED_ORDERS=$UNLIMITED_ORDERS
+          EOF
+
+      # AZURE_RESOURCE_GROUP/LOCATION/CONTAINER_APP_NAME/CONTAINER_ENV_NAME are
+      # intentionally left unset so deploy.sh falls back to its defaults, which
+      # already match the running production app.
+      - name: Deploy to Azure Container Apps
+        run: ./deploy.sh

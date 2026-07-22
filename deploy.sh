@@ -11,28 +11,6 @@ DEFAULT_IMAGE_NAME="${DEFAULT_IMAGE_NAME:-twilio-mixologist}"
 ENV_FILE="${ENV_FILE:-.env.local}"
 IMAGE_TAG="${IMAGE_TAG:-latest}"
 
-prompt() {
-  local var_name="$1"
-  local label="$2"
-  local default_value="${3:-}"
-  local current_value="${!var_name:-}"
-  local answer
-
-  if [[ -n "$current_value" ]]; then
-    return
-  fi
-
-  if [[ -n "$default_value" ]]; then
-    read -r -p "$label [$default_value]: " answer
-    printf -v "$var_name" '%s' "${answer:-$default_value}"
-  else
-    while [[ -z "${!var_name:-}" ]]; do
-      read -r -p "$label: " answer
-      printf -v "$var_name" '%s' "$answer"
-    done
-  fi
-}
-
 require_command() {
   local cmd="$1"
 
@@ -78,15 +56,14 @@ AZURE_LOG_ANALYTICS_WORKSPACE="${AZURE_LOG_ANALYTICS_WORKSPACE:-}"
 AZURE_USER="${AZURE_USER:-}"
 IMAGE_NAME="${IMAGE_NAME:-$DEFAULT_IMAGE_NAME}"
 
-prompt AZURE_RESOURCE_GROUP "Azure resource group" "$DEFAULT_RESOURCE_GROUP"
-prompt AZURE_LOCATION "Azure location" "$DEFAULT_LOCATION"
-prompt AZURE_CONTAINER_APP_NAME "Container App name" "$DEFAULT_APP_NAME"
-prompt AZURE_CONTAINER_ENV_NAME "Container Apps environment name" "$DEFAULT_ENV_NAME"
+AZURE_RESOURCE_GROUP="${AZURE_RESOURCE_GROUP:-$DEFAULT_RESOURCE_GROUP}"
+AZURE_LOCATION="${AZURE_LOCATION:-$DEFAULT_LOCATION}"
+AZURE_CONTAINER_APP_NAME="${AZURE_CONTAINER_APP_NAME:-$DEFAULT_APP_NAME}"
+AZURE_CONTAINER_ENV_NAME="${AZURE_CONTAINER_ENV_NAME:-$DEFAULT_ENV_NAME}"
 
 if [[ -z "$AZURE_ACR_NAME" ]]; then
-  suggested_acr="$(echo "${AZURE_CONTAINER_APP_NAME}acr" | tr -cd '[:alnum:]' | tr '[:upper:]' '[:lower:]')"
-  suggested_acr="${suggested_acr:0:40}"
-  prompt AZURE_ACR_NAME "Azure Container Registry name" "$suggested_acr"
+  AZURE_ACR_NAME="$(echo "${AZURE_CONTAINER_APP_NAME}acr" | tr -cd '[:alnum:]' | tr '[:upper:]' '[:lower:]')"
+  AZURE_ACR_NAME="${AZURE_ACR_NAME:0:40}"
 fi
 
 if [[ -z "$AZURE_LOG_ANALYTICS_WORKSPACE" ]]; then
