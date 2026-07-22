@@ -44,7 +44,11 @@ jobs:
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
       - name: Run Playwright tests
-        run: pnpm exec playwright test
+        # This runner only gets 1 worker by Playwright's CPU-based default,
+        # which serializes all 150 test instances (30 tests x 5 browser
+        # projects) and made the job run 25+ minutes instead of ~2. Force more
+        # parallelism explicitly.
+        run: pnpm exec playwright test --workers=4
         env:
           TWILIO_ACCOUNT_SID: ${{ vars.TWILIO_ACCOUNT_SID }}
           TWILIO_API_KEY: ${{ secrets.TWILIO_API_KEY }}
