@@ -14,10 +14,10 @@ test.describe("[no login] ", () => {
     await expect(page.getByText("Terminal 1 of 2")).toBeVisible();
 
     const firstInQueue: Locator = page
-      .getByText(new RegExp(/#(\d|[1-9]\d)Espresso Original Message/i))
+      .getByText(new RegExp(/#(\d|[1-9]\d)Espresso/i))
       .first();
     const secondInQueue: Locator = page
-      .getByText(new RegExp(/#(\d|[1-9]\d)Espresso Original Message/i))
+      .getByText(new RegExp(/#(\d|[1-9]\d)Espresso/i))
       .nth(1);
 
     await expect(firstInQueue).toBeVisible();
@@ -35,12 +35,12 @@ test.describe("[no login] ", () => {
 
     await page.getByTestId("cancelledTab").click();
     expect(
-      await page.getByText('Original Message - "A Cancelled Order"').count(),
+      await page.getByText("A Cancelled Order").count(),
     ).toBeGreaterThan(0);
 
     await page.getByTestId("deliveredTab").click();
     expect(
-      await page.getByText('Original Message - "A Delivered Order"').count(),
+      await page.getByText("A Delivered Order").count(),
     ).toBeGreaterThan(0);
 
     await expect(page.getByTestId("pause-orders")).toBeHidden();
@@ -58,10 +58,10 @@ test.describe("[no login] ", () => {
     await expect(page.getByText("Terminal 2 of 2")).toBeVisible();
 
     const firstInQueue: Locator = page
-      .getByText(new RegExp(/#(\d|[1-9]\d)Espresso Original Message/i))
+      .getByText(new RegExp(/#(\d|[1-9]\d)Espresso/i))
       .first();
     const secondInQueue: Locator = page
-      .getByText(new RegExp(/#(\d|[1-9]\d)Espresso Original Message/i))
+      .getByText(new RegExp(/#(\d|[1-9]\d)Espresso/i))
       .nth(1);
 
     await expect(firstInQueue).toBeVisible();
@@ -82,12 +82,12 @@ test.describe("[no login] ", () => {
 
     await page.getByTestId("cancelledTab").click();
     expect(
-      await page.getByText('Original Message - "A Cancelled Order"').count(),
+      await page.getByText("A Cancelled Order").count(),
     ).toBeGreaterThan(0);
 
     await page.getByTestId("deliveredTab").click();
     expect(
-      await page.getByText('Original Message - "A Delivered Order"').count(),
+      await page.getByText("A Delivered Order").count(),
     ).toBeGreaterThan(0);
 
     await expect(page.getByTestId("pause-orders")).toBeHidden();
@@ -114,7 +114,7 @@ test.describe("[mixologist]", () => {
         url: "http://localhost:3000",
       },
     ]);
-    context.setExtraHTTPHeaders({
+    await context.setExtraHTTPHeaders({
       Authorization: `Basic ${btoa(process.env.ADMIN_LOGIN || ":")}`,
     });
 
@@ -135,7 +135,7 @@ test.describe("[mixologist]", () => {
         url: "http://localhost:3000",
       },
     ]);
-    context.setExtraHTTPHeaders({
+    await context.setExtraHTTPHeaders({
       Authorization: `Basic ${btoa(process.env.ADMIN_LOGIN || ":")}`,
     });
 

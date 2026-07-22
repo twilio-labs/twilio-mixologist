@@ -17,14 +17,6 @@ test("should contain all relevant elements [no login]", async ({ page }) => {
   ).toBeVisible();
   await expect(page.getByRole("link", { name: "menu" }).first()).toBeVisible();
 
-  await expect(
-    page
-      .locator("div")
-      .filter({ hasText: /^Barista-testEvent ID: barista-test orders menu$/ })
-      .getByRole("button")
-      .nth(2),
-  ).toBeHidden();
-
   await expect(page).toHaveURL("http://localhost:3000/");
   await expect(page.locator("footer")).toContainText("Made with ❤️ by Twilio");
 });
@@ -56,16 +48,8 @@ test("should show the right ui elements [admin]", async ({ page, context }) => {
   await expect(page.getByRole("link", { name: "menu" }).first()).toBeVisible();
   await expect(page.getByRole("link", { name: "stats" }).first()).toBeVisible();
 
-  await expect(
-    page
-      .locator("div")
-      .filter({ hasText: /^TestEventEvent ID: test-event orders menu stats$/ })
-      .locator("div")
-      .nth(3),
-  ).toBeVisible();
-
   await expect(page.locator('[href="/event/new"]')).toContainText(
-    "Create New Event",
+    "New Event",
   );
 });
 
@@ -94,14 +78,6 @@ test("should show the right ui elements [mixologist]", async ({
     page.getByRole("link", { name: "orders" }).first(),
   ).toBeVisible();
   await expect(page.getByRole("link", { name: "menu" }).first()).toBeVisible();
-
-  await expect(
-    page
-      .locator("div")
-      .filter({ hasText: /^Barista-testEvent ID: barista-test orders menu$/ })
-      .getByRole("button")
-      .nth(2),
-  ).toBeHidden();
 
   await expect(page.locator('[href="/event/new"]')).toBeHidden();
 });

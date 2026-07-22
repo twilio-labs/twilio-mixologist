@@ -18,7 +18,7 @@ test.describe("[kiosk]", () => {
         url: "http://localhost:3000",
       },
     ]);
-    context.setExtraHTTPHeaders({
+    await context.setExtraHTTPHeaders({
       Authorization: `Basic ${btoa(process.env.KIOSK_LOGIN || ":")}`,
     });
 
@@ -26,7 +26,7 @@ test.describe("[kiosk]", () => {
 
     await page.getByPlaceholder("Customer name").fill("Test Name");
     await page.getByLabel("Order Item").click();
-    await page.getByLabel("Espresso", { exact: true }).click();
+    await page.getByRole("option", { name: "Espresso", exact: true }).click();
     await page
       .getByPlaceholder("Without regular milk or similar...")
       .fill("Test Notes");
