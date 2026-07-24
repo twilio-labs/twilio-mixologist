@@ -208,7 +208,9 @@ export default function OrdersList({
                     try {
                       updateOrder(index, { status: "ready" });
                       if (!data?.manual) {
-                        const message = await getOrderReadyMessage(data.item, index, event.pickupLocation);
+                        const message = await getOrderReadyMessage(
+                          data.item, index, event.pickupLocation, event.language,
+                        );
                         sendMessage(toAddress(data), "", message.contentSid, message.contentVariables);
                       }
                       toast({
