@@ -14,7 +14,6 @@ export const env = {
   twilioSyncServiceSid: process.env.TWILIO_SYNC_SERVICE_SID ?? "",
   twilioVerifyServiceSid: process.env.TWILIO_VERIFY_SERVICE_SID ?? "",
   twilioMessagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID ?? "",
-  twilioPhoneNumber: process.env.TWILIO_PHONE_NUMBER ?? "",
   twilioMemoryStoreId: process.env.TWILIO_MEMORY_STORE_ID ?? "",
 
   // App config

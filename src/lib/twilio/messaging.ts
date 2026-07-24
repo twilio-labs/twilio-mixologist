@@ -5,7 +5,6 @@ import { twilioClient, TWILIO_API_KEY, TWILIO_API_SECRET } from "./client";
 
 const {
   TWILIO_MESSAGING_SERVICE_SID = "",
-  TWILIO_PHONE_NUMBER = "",
   SEGMENT_SPACE_ID = "",
   SEGMENT_PROFILE_KEY = "",
 } = process.env;
@@ -45,7 +44,7 @@ export async function sendMessage(
     return;
   }
 
-  const from = TWILIO_MESSAGING_SERVICE_SID || TWILIO_PHONE_NUMBER || "";
+  const from = TWILIO_MESSAGING_SERVICE_SID;
 
   try {
     throttle(() => {
