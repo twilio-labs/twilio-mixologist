@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "dev": "next dev",
+    "dev": "env -u TWILIO_API_KEY -u TWILIO_API_SECRET -u TWILIO_ACCOUNT_SID next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
