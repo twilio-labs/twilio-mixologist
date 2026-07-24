@@ -12,11 +12,15 @@ export async function deleteIfExists(baseURL: string, slug: string = "test-event
   } catch (e) {}
 }
 
-export async function createEvent(baseURL: string, slug: string = "test-event") {
+export async function createEvent(
+  baseURL: string,
+  slug: string = "test-event",
+  name: string = "TestEvent",
+) {
   return Axios.post(
     `${baseURL}/api/event`,
     {
-      name: "TestEvent",
+      name,
       slug,
       state: "OPEN",
       senders: ["+4915199999999", "whatsapp:+447700161860"],

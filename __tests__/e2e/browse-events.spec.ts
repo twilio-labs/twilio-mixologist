@@ -131,12 +131,19 @@ test.describe("[admin]", () => {
     context,
   }, testInfo) => {
     // This test mutates item selection and mode, unlike its siblings which only
-    // read "test-event" — give it a private event (keyed by parallelIndex) so
-    // it never clobbers the shared fixture other spec files depend on.
+    // read "test-event" — give it a private event (keyed by parallelIndex, with
+    // its own display name) so it never clobbers the shared fixture other spec
+    // files depend on, and doesn't produce a duplicate "TestEvent" heading on
+    // the home page while other tests are concurrently asserting against it.
     const slug = `test-event-menu-cap-${testInfo.parallelIndex}`;
+    // Event names are capped at 20 chars by the API (src/app/api/event/route.ts).
+    // Must not contain "TestEvent" as a substring — other tests query
+    // getByRole(..., { name: "TestEvent" }) without exact:true, which matches
+    // on substring, so any name merely starting with "TestEvent" still collides.
+    const name = `MenuCapEvent${testInfo.parallelIndex}`;
     const baseURL = testInfo.project.use.baseURL || "http://localhost:3000";
     await deleteIfExists(baseURL, slug);
-    const response = await createEvent(baseURL, slug);
+    const response = await createEvent(baseURL, slug, name);
     expect(response.status).toBe(201);
 
     try {
@@ -153,7 +160,12 @@ test.describe("[admin]", () => {
 
       await page.goto(`http://localhost:3000/event/${slug}`);
 
-      await page.waitForTimeout(2000);
+      // Wait for the freshly-created event's menu to actually be rendered
+      // (Espresso pre-selected) rather than a fixed sleep, since a brand-new
+      // event's Sync data may take longer to propagate under concurrent load.
+      await expect(
+        page.getByRole("button", { name: "Espresso Strong black coffee" }),
+      ).toHaveAttribute("aria-pressed", "true");
 
       // TestEvent starts with 1 item selected (Espresso); select 9 more unselected
       // items to reach the 10-item cap. Scoped to the literal aria-pressed="false"
