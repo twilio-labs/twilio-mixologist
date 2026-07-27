@@ -1,7 +1,7 @@
 import { Privilege } from "@/proxy";
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 
-test("should contain all relevant elements [no login]", async ({ page }) => {
+test("should contain all relevant elements [no login]", async ({ page, testEvent }) => {
   // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
   await page.goto("/");
   // Find an element with the text 'About' and click on it
@@ -10,8 +10,8 @@ test("should contain all relevant elements [no login]", async ({ page }) => {
   await expect(page.locator('[href*="/login"]')).toContainText("Login");
   await expect(page.locator('button[type="submit"]')).toBeHidden();
   await expect(
-    page.getByRole("heading", { name: "TestEvent", exact: true }),
-  ).toContainText("TestEvent");
+    page.getByRole("heading", { name: testEvent.name, exact: true }),
+  ).toContainText(testEvent.name);
   await expect(
     page.getByRole("link", { name: "orders" }).first(),
   ).toBeVisible();

@@ -1,16 +1,17 @@
-import { test, expect, type Locator } from "@playwright/test";
+import { type Locator } from "@playwright/test";
 import { Privilege } from "@/proxy";
+import { test, expect } from "./fixtures";
 
 test.describe("[no login]", () => {
-  test("Should not see the page", async ({ page }) => {
-    await page.goto("/event/test-event/kiosk");
+  test("Should not see the page", async ({ page, testEvent }) => {
+    await page.goto(`/event/${testEvent.slug}/kiosk`);
 
     await expect(page.getByText("Unauthorized")).toBeVisible();
   });
 });
 
 test.describe("[kiosk]", () => {
-  test("Form should be visible", async ({ page, context }) => {
+  test("Form should be visible", async ({ page, context, testEvent }) => {
     await context.addCookies([
       {
         name: "privilege",
@@ -22,7 +23,7 @@ test.describe("[kiosk]", () => {
       Authorization: `Basic ${btoa(process.env.KIOSK_LOGIN || ":")}`,
     });
 
-    await page.goto("/event/test-event/kiosk");
+    await page.goto(`/event/${testEvent.slug}/kiosk`);
 
     await page.getByPlaceholder("Customer name").fill("Test Name");
     await page.getByLabel("Order Item").click();

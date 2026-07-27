@@ -37,10 +37,6 @@ export async function DELETE(request: Request) {
     throw new Error("No slug specified");
   }
   const syncService = await getSyncService();
-  const event = await syncService
-    .syncMaps()(NEXT_PUBLIC_EVENTS_MAP)
-    .syncMapItems(slug)
-    .fetch();
 
   try {
     await syncService

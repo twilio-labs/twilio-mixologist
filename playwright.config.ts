@@ -33,9 +33,6 @@ export default defineConfig({
   expect: { timeout: 20000 },
   timeout: 100000,
 
-  globalSetup: require.resolve("./__tests__/global-setup"),
-  globalTeardown: require.resolve("./__tests__/global-tear-down"),
-
   /* Configure projects for major browsers */
   projects: [
     {

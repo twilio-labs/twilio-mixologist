@@ -1,11 +1,13 @@
-import { test, expect, type Locator } from "@playwright/test";
+import { type Locator } from "@playwright/test";
 import { Privilege } from "@/proxy";
+import { test, expect } from "./fixtures";
 
 test.describe("[no login] ", () => {
   test("Only elements with permissions should be visible / page 1/2", async ({
     page,
+    testEvent,
   }) => {
-    await page.goto("/event/test-event/orders/1-2");
+    await page.goto(`/event/${testEvent.slug}/orders/1-2`);
 
     await expect(page.getByRole("tab", { name: "Queue" })).toBeVisible();
     await expect(page.getByRole("tab", { name: "Cancelled" })).toBeVisible();
@@ -48,8 +50,9 @@ test.describe("[no login] ", () => {
 
   test("Only elements with permissions should be visible / page 2/2", async ({
     page,
+    testEvent,
   }) => {
-    await page.goto("/event/test-event/orders/2-2");
+    await page.goto(`/event/${testEvent.slug}/orders/2-2`);
 
     await expect(page.getByRole("tab", { name: "Queue" })).toBeVisible();
     await expect(page.getByRole("tab", { name: "Cancelled" })).toBeVisible();
@@ -93,20 +96,20 @@ test.describe("[no login] ", () => {
     await expect(page.getByTestId("pause-orders")).toBeHidden();
   });
 
-  test("Should show right header for page 2/4", async ({ page }) => {
-    await page.goto("/event/test-event/orders/2-4");
+  test("Should show right header for page 2/4", async ({ page, testEvent }) => {
+    await page.goto(`/event/${testEvent.slug}/orders/2-4`);
     await expect(page.getByText("Terminal 2 of 4")).toBeVisible();
   });
 
-  test("Should not navigate to invalid pages like 6/4", async ({ page }) => {
-    await page.goto("/event/test-event/orders/6-4");
+  test("Should not navigate to invalid pages like 6/4", async ({ page, testEvent }) => {
+    await page.goto(`/event/${testEvent.slug}/orders/6-4`);
 
     await expect(page.getByText("404")).toBeVisible();
   });
 });
 
 test.describe("[mixologist]", () => {
-  test("All Tabs should be visible  / page 1/2", async ({ page, context }) => {
+  test("All Tabs should be visible  / page 1/2", async ({ page, context, testEvent }) => {
     await context.addCookies([
       {
         name: "privilege",
@@ -118,7 +121,7 @@ test.describe("[mixologist]", () => {
       Authorization: `Basic ${btoa(process.env.ADMIN_LOGIN || ":")}`,
     });
 
-    await page.goto("/event/test-event/orders/1-2");
+    await page.goto(`/event/${testEvent.slug}/orders/1-2`);
     await expect(page.getByText("Terminal 1 of 2")).toBeVisible();
 
     await expect(page.getByRole("tab", { name: "Queue" })).toBeVisible();
@@ -127,7 +130,7 @@ test.describe("[mixologist]", () => {
     await expect(page.getByTestId("pause-orders")).toBeVisible();
   });
 
-  test("All Tabs should be visible  / page 2/2", async ({ page, context }) => {
+  test("All Tabs should be visible  / page 2/2", async ({ page, context, testEvent }) => {
     await context.addCookies([
       {
         name: "privilege",
@@ -139,7 +142,7 @@ test.describe("[mixologist]", () => {
       Authorization: `Basic ${btoa(process.env.ADMIN_LOGIN || ":")}`,
     });
 
-    await page.goto("/event/test-event/orders/2-2");
+    await page.goto(`/event/${testEvent.slug}/orders/2-2`);
     await expect(page.getByText("Terminal 2 of 2")).toBeVisible();
 
     await expect(page.getByRole("tab", { name: "Queue" })).toBeVisible();

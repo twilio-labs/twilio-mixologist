@@ -284,7 +284,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
             <div className="space-y-1.5">
               <Label htmlFor="leadCollection">Lead Collection</Label>
               <Select
-                value={internalEvent.leadCollection}
+                value={internalEvent.leadCollection ?? "MANUAL"}
                 onValueChange={(value) =>
                   updateEvent({ ...internalEvent, leadCollection: value as LeadCollection })
                 }
