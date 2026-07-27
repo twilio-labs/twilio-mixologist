@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import { fetchSyncListItems, sendMessage } from "@/lib/twilio";
+import { fetchSyncListItems, sendMessage, createSyncMapItemIfNotExists } from "@/lib/twilio";
 import { Privilege, getAuthenticatedRole } from "@/proxy";
 
 export async function POST(
@@ -46,11 +46,17 @@ export async function POST(
         listItem.data?.status === "queued" || listItem.data?.status === "ready",
     );
 
-    queuedOrders.forEach((order) => {
+    queuedOrders.forEach(async (order) => {
       // @ts-ignore  thinks is a object but actually it's a string
       const { key, channel } = order.data;
       const to = channel === "whatsapp" ? `whatsapp:${key}` : channel === "rcs" ? `rcs:${key}` : key;
-      sendMessage(to, message);
+      // Pin the sender the attendee last messaged in on, so the reply never
+      // comes from a different Messaging Service-selected sender/channel.
+      const { data: attendee } = await createSyncMapItemIfNotExists(
+        process.env.NEXT_PUBLIC_ATTENDEES_MAP || "",
+        key,
+      );
+      sendMessage(to, message, undefined, undefined, (attendee as any)?.from || "");
     });
 
     return new Response(null, { status: 201 });

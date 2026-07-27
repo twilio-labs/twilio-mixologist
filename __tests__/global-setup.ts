@@ -1,9 +1,9 @@
 import { expect, type FullConfig } from "@playwright/test";
 import Axios from "axios";
 
-async function deleteIfExists(baseURL: string) {
+export async function deleteIfExists(baseURL: string, slug: string = "test-event") {
   try {
-    await Axios.delete(`${baseURL}/api/event/test-event`, {
+    await Axios.delete(`${baseURL}/api/event/${slug}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Basic ${btoa(process.env.ADMIN_LOGIN || ":")}`,
@@ -12,12 +12,16 @@ async function deleteIfExists(baseURL: string) {
   } catch (e) {}
 }
 
-async function createEvent(baseURL: string) {
+export async function createEvent(
+  baseURL: string,
+  slug: string = "test-event",
+  name: string = "TestEvent",
+) {
   return Axios.post(
     `${baseURL}/api/event`,
     {
-      name: "TestEvent",
-      slug: "test-event",
+      name,
+      slug,
       state: "OPEN",
       senders: ["+4915199999999", "whatsapp:+447700161860"],
       selection: {

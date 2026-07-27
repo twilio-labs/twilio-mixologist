@@ -216,7 +216,7 @@ function StatsPage({ params }: { params: Promise<{ slug: string }> }) {
                     Orders by Channel
                   </CardTitle>
                   <CardDescription className="text-xs">
-                    Breakdown of orders by messaging channel
+                    Breakdown of orders by channel (SMS, WhatsApp, RCS, API)
                   </CardDescription>
                 </div>
                 <MessageCircleIcon className="w-4 h-4 text-gray-500" />

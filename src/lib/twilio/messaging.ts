@@ -2,10 +2,10 @@
 
 import { throttledQueue } from "throttled-queue";
 import { twilioClient, TWILIO_API_KEY, TWILIO_API_SECRET } from "./client";
+import { createSyncMapItemIfNotExists } from "./sync";
 
 const {
   TWILIO_MESSAGING_SERVICE_SID = "",
-  TWILIO_PHONE_NUMBER = "",
   SEGMENT_SPACE_ID = "",
   SEGMENT_PROFILE_KEY = "",
 } = process.env;
@@ -40,20 +40,26 @@ export async function sendMessage(
   body: string = "",
   contentSid: string = "",
   contentVariables: string = "",
+  from: string = "",
 ) {
   if (to === "test-order") {
     return;
   }
 
-  const from = TWILIO_MESSAGING_SERVICE_SID || TWILIO_PHONE_NUMBER || "";
+  const defaultFrom = TWILIO_MESSAGING_SERVICE_SID;
 
   try {
     throttle(() => {
       twilioClient.messages.create({
         to,
-        ...(TWILIO_MESSAGING_SERVICE_SID
-          ? { messagingServiceSid: TWILIO_MESSAGING_SERVICE_SID }
-          : { from }),
+        // Pin the exact sender the recipient last messaged in on — otherwise
+        // the Messaging Service can auto-select a different sender (e.g. RCS
+        // vs WhatsApp) that may be outside that channel's 24h session window.
+        ...(from
+          ? { from }
+          : TWILIO_MESSAGING_SERVICE_SID
+            ? { messagingServiceSid: TWILIO_MESSAGING_SERVICE_SID }
+            : { from: defaultFrom }),
         ...(body ? { body } : {}),
         ...(contentSid ? { contentSid } : {}),
         ...(contentVariables ? { contentVariables } : {}),
@@ -64,6 +70,17 @@ export async function sendMessage(
     console.log(err);
     return;
   }
+}
+
+// Returns just the plain pinned-sender string — Client Components can't
+// receive the raw Twilio SDK instance createSyncMapItemIfNotExists resolves
+// to (Server Action return values must be plain-serializable).
+export async function getPinnedSender(
+  attendeesMap: string,
+  phone: string,
+): Promise<string> {
+  const { data } = await createSyncMapItemIfNotExists(attendeesMap, phone);
+  return (data as any)?.from || "";
 }
 
 export async function fetchSegmentTraits(

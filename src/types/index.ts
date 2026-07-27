@@ -50,7 +50,7 @@ export interface Order {
   originalText?: string;
   status: "queued" | "cancelled" | "ready" | "delivered";
   reminded?: true;
-  channel?: "rcs" | "whatsapp" | "sms" | "other";
+  channel?: "rcs" | "whatsapp" | "sms" | "api" | "other";
 }
 
 export interface Selection {
@@ -83,6 +83,7 @@ export interface SegmentData {
 }
 
 export interface AttendeeRecord {
+  from?: string;
   event?: string;
   stage?: Stages;
   orderCount?: number;

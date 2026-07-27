@@ -37,7 +37,6 @@ import { handleQrMode, createQrModeMemoryClient } from "./qr-mode";
 import { handleProfileMode } from "./profile-mode";
 import { deleteMemoryProfile } from "./memory";
 import { runAiAgent } from "./ai-agent";
-import type { ConversationWebhookPayload } from "twilio-agent-connect";
 
 const NEXT_PUBLIC_EVENTS_MAP = process.env.NEXT_PUBLIC_EVENTS_MAP || "",
   NEXT_PUBLIC_ATTENDEES_MAP =
@@ -56,7 +55,7 @@ async function getActiveEvents() {
 }
 
 /** Send the "ready to order" sequence: menu + data policy + optional modifiers note. */
-async function sendReadyToOrderSequence(sender: string, event: Event) {
+async function sendReadyToOrderSequence(sender: string, event: Event, from: string) {
   const message = await getReadyToOrderMessage(
     event,
     event.selection.items,
@@ -64,10 +63,10 @@ async function sendReadyToOrderSequence(sender: string, event: Event) {
     true,
     eventLang(event),
   );
-  sendMessage(sender, "", message.contentSid, message.contentVariables);
+  sendMessage(sender, "", message.contentSid, message.contentVariables, from);
   if (event.selection.modifiers.length > 1) {
     await sleep(500);
-    sendMessage(sender, getModifiersMessage(event.selection.modifiers, eventLang(event)));
+    sendMessage(sender, getModifiersMessage(event.selection.modifiers, eventLang(event)), undefined, undefined, from);
   }
 }
 
@@ -84,11 +83,12 @@ async function selectEventForCustomer(
   incomingMessageBody: string,
   isReturning: boolean,
   attendeeRecord?: any,
+  from: string = "",
 ): Promise<Response | null> {
   const activeEvents = await getActiveEvents();
 
   if (activeEvents.length === 0) {
-    sendMessage(sender, getNoActiveEventsMessage());
+    sendMessage(sender, getNoActiveEventsMessage(), undefined, undefined, from);
     return twimlResponse(200);
   }
 
@@ -119,7 +119,7 @@ async function selectEventForCustomer(
     const welcomeMsg = isReturning
       ? getWelcomeBackMessage(newEvent.selection.mode, newEvent.name, newEvent.welcomeMessage, eventLang(newEvent))
       : getWelcomeMessage(newEvent.selection.mode, newEvent.welcomeMessage, newEvent.leadCollection, eventLang(newEvent));
-    sendMessage(sender, welcomeMsg);
+    sendMessage(sender, welcomeMsg, undefined, undefined, from);
 
     const country = getCountryFromPhone(sender);
     await updateOrCreateSyncMapItem(
@@ -137,9 +137,9 @@ async function selectEventForCustomer(
     if (isReturning || newEvent.leadCollection === "NONE") {
       await sleep(isReturning ? 500 : 2000);
       if (!isReturning) {
-        sendMessage(sender, getDataPolicy(newEvent.selection.mode, eventLang(newEvent)));
+        sendMessage(sender, getDataPolicy(newEvent.selection.mode, eventLang(newEvent)), undefined, undefined, from);
       }
-      await sendReadyToOrderSequence(sender, newEvent);
+      await sendReadyToOrderSequence(sender, newEvent, from);
     }
 
     return twimlResponse(201);
@@ -158,7 +158,7 @@ async function selectEventForCustomer(
     const welcomeMsg = isReturning
       ? getWelcomeBackMessage(newEvent.selection.mode, newEvent.name, newEvent.welcomeMessage, eventLang(newEvent))
       : getWelcomeMessage(newEvent.selection.mode, newEvent.welcomeMessage, newEvent.leadCollection, eventLang(newEvent));
-    sendMessage(sender, welcomeMsg);
+    sendMessage(sender, welcomeMsg, undefined, undefined, from);
 
     const country = getCountryFromPhone(sender);
     await updateOrCreateSyncMapItem(
@@ -177,71 +177,40 @@ async function selectEventForCustomer(
     if (!isReturning && newEvent.leadCollection !== "NONE") {
       return twimlResponse(201);
     }
-    await sendReadyToOrderSequence(sender, newEvent);
+    await sendReadyToOrderSequence(sender, newEvent, from);
     return twimlResponse(201);
   }
 
   // No match — show the event picker
   const message = await getEventRegistrationMessage(activeEvents);
-  sendMessage(sender, "", message.contentSid, message.contentVariables);
+  sendMessage(sender, "", message.contentSid, message.contentVariables, from);
   return twimlResponse(200);
 }
 
 /**
- * Parse the incoming webhook — two formats:
- *
- * 1. Twilio Agent Connect (TAC) — JSON, Content-Type: application/json
- *    ConversationWebhookPayload: { eventType: "COMMUNICATION_CREATED", data: { author.address, content.text, content.url? } }
- *
- * 2. Raw Twilio Messaging Service — form data, Content-Type: application/x-www-form-urlencoded
- *    Fields: From, Body, NumMedia, MediaUrl0
+ * Parse the incoming webhook — raw Twilio Messaging Service, form data,
+ * Content-Type: application/x-www-form-urlencoded.
+ * Fields: From, To, Body, NumMedia, MediaUrl0
  */
 async function parseWebhook(request: Request): Promise<{
   sender: string;
   incomingMessageBody: string;
   mediaUrl: string | null;
-} | null> {
-  const contentType = request.headers.get("content-type") || "";
+  /** The exact Twilio-side sender address this message arrived on (pinned for replies). */
+  from: string;
+}> {
+  const data = await request.formData();
+  const sender = (data.get("From") as string) ?? "";
+  const from = (data.get("To") as string) ?? "";
+  const incomingMessageBody = (data.get("Body") as string) ?? "";
+  const numMedia = Number(data.get("NumMedia") || "0");
+  const mediaUrl = (data.get("MediaUrl0") as string | null) ?? (numMedia > 0 ? data.get("MediaUrl0") as string | null : null);
 
-  if (contentType.includes("application/json")) {
-    // Conversation Orchestrator / TAC webhook format
-    const payload = await request.json() as ConversationWebhookPayload;
-    const eventType = payload.eventType;
-
-    if (eventType && eventType !== "COMMUNICATION_CREATED") {
-      return null; // signal: wrong event type, skip processing
-    }
-
-    const sender = (payload.data?.author?.address as string) ?? "";
-    if (!sender) return null;
-
-    const content = payload.data?.content as Record<string, unknown> | undefined;
-    const incomingMessageBody = (content?.text as string) ?? "";
-    const mediaUrl = (content?.url as string) ?? (content?.mediaUrl as string) ?? null;
-
-    return { sender, incomingMessageBody, mediaUrl };
-  } else {
-    // Raw Twilio SMS / WhatsApp webhook (form-encoded)
-    const data = await request.formData();
-    const sender = data.get("From") as string;
-    if (!sender) return null;
-
-    const incomingMessageBody = (data.get("Body") as string) ?? "";
-    const numMedia = Number(data.get("NumMedia") || "0");
-    const mediaUrl = (data.get("MediaUrl0") as string | null) ?? (numMedia > 0 ? data.get("MediaUrl0") as string | null : null);
-
-    return { sender, incomingMessageBody, mediaUrl };
-  }
+  return { sender, incomingMessageBody, mediaUrl, from };
 }
 
 export async function POST(request: Request) {
-  const parsed = await parseWebhook(request);
-
-  if (parsed === null) {
-    return new Response("Wrong event type", { status: 200 });
-  }
-
-  const { sender, incomingMessageBody, mediaUrl } = parsed;
+  const { sender, incomingMessageBody, mediaUrl, from: receivedOn } = await parseWebhook(request);
 
   if (!sender) {
     return new Response("Missing sender", { status: 400 });
@@ -255,9 +224,18 @@ export async function POST(request: Request) {
     phone,
   );
 
+  // Pin the exact sender this message arrived on so replies (here and from
+  // other flows like broadcasts) go out from the same sender, never a
+  // different one auto-selected by the Messaging Service.
+  const from = receivedOn || ((attendeeRecord as any).from as string | undefined) || "";
+  if (receivedOn && receivedOn !== (attendeeRecord as any).from) {
+    await updateOrCreateSyncMapItem(NEXT_PUBLIC_ATTENDEES_MAP, phone, { from: receivedOn }, TwoWeeksInSeconds);
+    (attendeeRecord as any).from = receivedOn;
+  }
+
   // New customer — no event assigned yet
   if (!attendeeRecord.event) {
-    const result = await selectEventForCustomer(phone, sender, incomingMessageBody, false, attendeeRecord);
+    const result = await selectEventForCustomer(phone, sender, incomingMessageBody, false, attendeeRecord, from);
     if (result) return result;
   }
 
@@ -266,12 +244,13 @@ export async function POST(request: Request) {
 
   // Returning customer whose stored event is no longer active
   if (!event) {
-    const result = await selectEventForCustomer(phone, sender, incomingMessageBody, true);
+    const result = await selectEventForCustomer(phone, sender, incomingMessageBody, true, undefined, from);
     if (result) return result;
   }
 
-  // "Forget me" — delete all stored data for this attendee
-  if (incomingMessageBody.toLowerCase().includes("forget me")) {
+  // "Forget me" / "Esqueça de mim" — delete all stored data for this attendee
+  const lowerBody = incomingMessageBody.toLowerCase();
+  if (lowerBody.includes("forget me") || lowerBody.includes("esqueça de mim") || lowerBody.includes("esqueca de mim")) {
     const profileId = event?.leadCollection === "WeAreDevs_QR"
       ? (attendeeRecord as any).profileId as string | undefined
       : undefined;
@@ -289,7 +268,12 @@ export async function POST(request: Request) {
     }
     sendMessage(
       sender,
-      "✅ Done! Your data has been deleted from our system.",
+      eventLang(event) === "pt-BR"
+        ? "✅ Pronto! Seus dados foram excluídos do nosso sistema."
+        : "✅ Done! Your data has been deleted from our system.",
+      undefined,
+      undefined,
+      from,
     );
     return new Response(emptyTwiml(), { status: 200, headers: { "Content-Type": "text/xml" } });
   }
@@ -313,12 +297,16 @@ export async function POST(request: Request) {
           incomingMessageBody,
           mediaUrl,
           sender,
+          from,
         );
         return new Response(emptyTwiml(), { status: 200, headers: { "Content-Type": "text/xml" } });
       } else {
         sendMessage(
           sender,
           "Registration is temporarily unavailable. Please try again in a moment.",
+          undefined,
+          undefined,
+          from,
         );
         return new Response(emptyTwiml(), { status: 200, headers: { "Content-Type": "text/xml" } });
       }
@@ -331,6 +319,7 @@ export async function POST(request: Request) {
       event,
       incomingMessageBody,
       event.leadCollection,
+      from,
     );
     if (handled) {
       return new Response(emptyTwiml(), { status: 200, headers: { "Content-Type": "text/xml" } });
@@ -339,13 +328,13 @@ export async function POST(request: Request) {
 
   if (event.state === EventState.CLOSED) {
     const message = getPausedEventMessage(eventLang(event));
-    sendMessage(sender, message);
+    sendMessage(sender, message, undefined, undefined, from);
     return new Response(emptyTwiml(), { status: 200, headers: { "Content-Type": "text/xml" } });
   }
 
-  const reply = await runAiAgent(incomingMessageBody, event, phone, sender);
+  const reply = await runAiAgent(incomingMessageBody, event, phone, sender, from);
   if (reply) {
-    sendMessage(sender, reply);
+    sendMessage(sender, reply, undefined, undefined, from);
   }
 
   return new Response(emptyTwiml(), { status: 200, headers: { "Content-Type": "text/xml" } });

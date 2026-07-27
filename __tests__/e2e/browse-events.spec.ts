@@ -1,5 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
 import { Privilege } from "@/proxy";
+import { createEvent, deleteIfExists } from "../global-setup";
 
 test.describe("[no login]", () => {
   test("should not be navigable", async ({ page }) => {
@@ -64,10 +65,6 @@ test.describe("[mixologist]", () => {
 });
 
 test.describe("[admin]", () => {
-  // These tests mutate the shared "test-event" fixture (item selection, mode);
-  // run them in order rather than in parallel to avoid clobbering each other.
-  test.describe.configure({ mode: "serial" });
-
   test("should be navigable to an existing event", async ({
     page,
     context,
@@ -132,41 +129,69 @@ test.describe("[admin]", () => {
   test("should not be able to select more than 9 menu items + navigate to smoothie", async ({
     page,
     context,
-  }) => {
-    await context.addCookies([
-      {
-        name: "privilege",
-        value: Privilege.ADMIN,
-        url: "http://localhost:3000",
-      },
-    ]);
-    await context.setExtraHTTPHeaders({
-      Authorization: `Basic ${btoa(process.env.ADMIN_LOGIN || ":")}`,
-    });
+  }, testInfo) => {
+    // This test mutates item selection and mode, unlike its siblings which only
+    // read "test-event" — give it a private event (keyed by parallelIndex, with
+    // its own display name) so it never clobbers the shared fixture other spec
+    // files depend on, and doesn't produce a duplicate "TestEvent" heading on
+    // the home page while other tests are concurrently asserting against it.
+    const slug = `test-event-menu-cap-${testInfo.parallelIndex}`;
+    // Event names are capped at 20 chars by the API (src/app/api/event/route.ts).
+    // Must not contain "TestEvent" as a substring — other tests query
+    // getByRole(..., { name: "TestEvent" }) without exact:true, which matches
+    // on substring, so any name merely starting with "TestEvent" still collides.
+    const name = `MenuCapEvent${testInfo.parallelIndex}`;
+    const baseURL = testInfo.project.use.baseURL || "http://localhost:3000";
+    await deleteIfExists(baseURL, slug);
+    const response = await createEvent(baseURL, slug, name);
+    expect(response.status).toBe(201);
 
-    await page.goto("http://localhost:3000/event/test-event");
+    try {
+      await context.addCookies([
+        {
+          name: "privilege",
+          value: Privilege.ADMIN,
+          url: "http://localhost:3000",
+        },
+      ]);
+      await context.setExtraHTTPHeaders({
+        Authorization: `Basic ${btoa(process.env.ADMIN_LOGIN || ":")}`,
+      });
 
-    await page.waitForTimeout(2000);
+      await page.goto(`http://localhost:3000/event/${slug}`);
 
-    // TestEvent starts with 1 item selected (Espresso); select 9 more unselected
-    // items to reach the 10-item cap. Scoped to the literal aria-pressed="false"
-    // attribute (not the role=button pressed filter) — Chromium's accessibility
-    // tree reports pressed:false by default for any plain button, which would
-    // otherwise also match the header's "Log out" button and toast dismiss buttons.
-    const unselectedItem = page.locator('button[aria-pressed="false"]');
-    for (let i = 0; i < 9; i++) {
+      // Wait for the freshly-created event's menu to actually be rendered
+      // (Espresso pre-selected) rather than a fixed sleep, since a brand-new
+      // event's Sync data may take longer to propagate under concurrent load.
+      await expect(
+        page.getByRole("button", { name: "Espresso Strong black coffee" }),
+      ).toHaveAttribute("aria-pressed", "true");
+
+      // TestEvent starts with 1 item selected (Espresso); select 9 more unselected
+      // items to reach the 10-item cap. Scoped to the literal aria-pressed="false"
+      // attribute (not the role=button pressed filter) — Chromium's accessibility
+      // tree reports pressed:false by default for any plain button, which would
+      // otherwise also match the header's "Log out" button and toast dismiss buttons.
+      const unselectedItem = page.locator('button[aria-pressed="false"]');
+      for (let i = 0; i < 9; i++) {
+        await unselectedItem.first().click();
+        // Wait for this click's selection save to land before firing the
+        // next — the save is a fire-and-forget PUT, and rapid unawaited
+        // requests can complete out of order under latency, regressing the
+        // count if a later click's save is overtaken by an earlier one.
+        await expect(page.getByText(`${i + 2} of 10 items selected`)).toBeVisible();
+      }
+
+      // selecting an 11th item should be blocked
       await unselectedItem.first().click();
+      await expect(
+        page.getByText("Cannot select more items", { exact: true }),
+      ).toBeVisible();
+
+      await page.getByText("Smoothie").click();
+    } finally {
+      await deleteIfExists(baseURL, slug);
     }
-
-    await expect(page.getByText("10 of 10 items selected")).toBeVisible();
-
-    // selecting an 11th item should be blocked
-    await unselectedItem.first().click();
-    await expect(
-      page.getByText("Cannot select more items", { exact: true }),
-    ).toBeVisible();
-
-    await page.getByText("Smoothie").click();
   });
 
   test("should show warning for inactive number", async ({ page, context }) => {

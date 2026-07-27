@@ -30,7 +30,7 @@ export default async function KioskPage(props: {
 
     return (
       <div className="p-4 space-y-8 flex-1">
-        <p className="text-4xl">
+        <p className="text-xl md:text-4xl">
           Order your beverage here and pick it up at the Twilio booth.
         </p>
         {hasPermissions && (

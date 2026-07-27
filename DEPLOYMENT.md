@@ -26,7 +26,6 @@ TWILIO_API_SECRET="xxxxx"
 TWILIO_VERIFY_SERVICE_SID="VAxxxxx"
 TWILIO_SYNC_SERVICE_SID="ISxxxxx"
 TWILIO_MESSAGING_SERVICE_SID="MGxxxxx"
-TWILIO_PHONE_NUMBER="+15551234567"
 ```
 
 The deploy script uses `.env.local` for both build-time values, such as `NEXT_PUBLIC_*`, and runtime environment variables.

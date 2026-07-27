@@ -129,6 +129,7 @@ async function sendReadyToOrder(
   sender: string,
   event: Event,
   isReturning: boolean,
+  from: string,
 ) {
   const message = await getReadyToOrderMessage(
     event,
@@ -142,12 +143,16 @@ async function sendReadyToOrder(
     "",
     message.contentSid,
     message.contentVariables,
+    from,
   );
   if (event.selection.modifiers.length > 1) {
     await sleep(1500);
     sendMessage(
       sender,
       getModifiersMessage(event.selection.modifiers, eventLang(event)),
+      undefined,
+      undefined,
+      from,
     );
   }
 }
@@ -160,6 +165,7 @@ export async function handleQrMode(
   incomingMessageBody: string,
   mediaUrl: string | null,
   sender: string,
+  from: string,
 ): Promise<void> {
   // Step 1: check Memory store — known attendees go straight to menu
   const existingProfileId = await lookupProfileByPhone(memoryClient, phone);
@@ -178,13 +184,19 @@ export async function handleQrMode(
     sendMessage(
       sender,
       firstName ? `Welcome back, ${firstName}! 👋` : "Welcome back! 👋",
+      undefined,
+      undefined,
+      from,
     );
     await sleep(500);
-    await sendReadyToOrder(sender, event, true);
+    await sendReadyToOrder(sender, event, true, from);
     await sleep(2000);
     sendMessage(
       sender,
       getDataPolicy(event.selection.mode, eventLang(event)),
+      undefined,
+      undefined,
+      from,
     );
     return;
   }
@@ -194,17 +206,23 @@ export async function handleQrMode(
     sendMessage(
       sender,
       `To get started, please send a photo of your event badge QR code.\n\n_Your data will only be used to personalise your experience at this event and deleted afterwards._`,
+      undefined,
+      undefined,
+      from,
     );
     return;
   }
 
   // Step 3: try to decode QR from the photo
-  sendMessage(sender, "Got your image! Scanning the QR code now...");
+  sendMessage(sender, "Got your image! Scanning the QR code now...", undefined, undefined, from);
   const qrData = await decodeQrFromUrl(mediaUrl);
   if (!qrData) {
     sendMessage(
       sender,
       "I couldn't scan a QR code from that image. Please make sure your badge QR code is clearly visible, well-lit and in focus, then try again.",
+      undefined,
+      undefined,
+      from,
     );
     return;
   }
@@ -214,6 +232,9 @@ export async function handleQrMode(
     sendMessage(
       sender,
       "I scanned a QR code but it doesn't look like a WeAreDevelopers ticket. Are you sure you scanned the QR code on your badge and not another one? Please try again with your event badge.",
+      undefined,
+      undefined,
+      from,
     );
     return;
   }
@@ -224,6 +245,9 @@ export async function handleQrMode(
     sendMessage(
       sender,
       "I could read your badge QR code but couldn't retrieve your details from the event system. Please ask a Twilio team member for help.",
+      undefined,
+      undefined,
+      from,
     );
     return;
   }
@@ -263,13 +287,16 @@ export async function handleQrMode(
   const confirmation = firstName
     ? `That worked, ${firstName}! Which ${beverage} would you like to order?`
     : `That worked! Which ${beverage} would you like to order?`;
-  sendMessage(sender, confirmation);
+  sendMessage(sender, confirmation, undefined, undefined, from);
   await sleep(300);
-  await sendReadyToOrder(sender, event, true); // true = use _without_email template variant
+  await sendReadyToOrder(sender, event, true, from); // true = use _without_email template variant
   await sleep(2000);
   sendMessage(
     sender,
     getDataPolicy(event.selection.mode, eventLang(event)),
+    undefined,
+    undefined,
+    from,
   );
 }
 

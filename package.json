@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "dev": "next dev",
+    "dev": "env NODE_OPTIONS=--require=dotenv/config DOTENV_CONFIG_PATH=./.env.local DOTENV_CONFIG_OVERRIDE=true next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

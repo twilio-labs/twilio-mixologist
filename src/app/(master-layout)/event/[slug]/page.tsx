@@ -411,14 +411,22 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
             <MenuSelect
               menus={config.menus}
               selection={internalEvent.selection}
-              onSelectionChange={async (newSelection) => {
-                if (!isNewEvent) {
-                  fetch(`/api/event/${internalEvent.slug}/selection`, {
-                    method: "PUT",
-                    body: JSON.stringify({ selection: newSelection }),
-                  });
-                }
+              onSelectionChange={(newSelection) => {
                 updateEvent({ ...internalEvent, selection: newSelection });
+                if (!isNewEvent) {
+                  // Debounce the save (like updateMenuItemField/
+                  // updateModifierField below) so rapid successive
+                  // selections send a single PUT with the latest state,
+                  // rather than one fire-and-forget PUT per click that can
+                  // complete out of order and regress the saved selection.
+                  clearTimeout(aiUpdateTimerRef.current);
+                  aiUpdateTimerRef.current = setTimeout(() => {
+                    fetch(`/api/event/${internalEvent.slug}/selection`, {
+                      method: "PUT",
+                      body: JSON.stringify({ selection: newSelection }),
+                    });
+                  }, 1500);
+                }
               }}
             />
           </CardContent>
@@ -504,8 +512,8 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
-                className="w-full bg-twilio-red hover:bg-red-600 text-white disabled:opacity-40"
-                disabled={isFormInvalid(internalEvent)}
+                className="w-full bg-twilio-red hover:bg-red-600 text-white aria-disabled:opacity-40 aria-disabled:cursor-not-allowed"
+                aria-disabled={isFormInvalid(internalEvent)}
                 onClick={(ev: React.MouseEvent<HTMLButtonElement, MouseEvent> & { target: HTMLButtonElement }) => {
                   if (isFormInvalid(internalEvent)) return;
                   ev.target.disabled = true;
@@ -539,13 +547,16 @@ function toKebabCase(string: string) {
   // kebab case when a number is followed by a letter and vice versa
   // no starting or tailing dashes
   return string
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "") // strip diacritics, e.g. São -> Sao
     .replace(/([a-z])([A-Z])/g, "$1-$2")
     .replace(/\//g, "-")
     .replace(/([0-9])([a-zA-Z])/g, "$1-$2")
     .replace(/([a-zA-Z])([0-9])/g, "$1-$2")
     .replace(/[\s_]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .toLowerCase();
+    .toLowerCase()
+    .replace(/[^a-z0-9-]/g, "") // drop any remaining non-ascii characters
+    .replace(/^-+|-+$/g, "");
 }
 
 function isFormInvalid(internalEvent: Event) {
