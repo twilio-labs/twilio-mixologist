@@ -1,19 +1,19 @@
-import { test, expect, type Page } from "@playwright/test";
+import { type Page } from "@playwright/test";
 import { Privilege } from "@/proxy";
-import { createEvent, deleteIfExists } from "../global-setup";
+import { test, expect, createEvent, deleteIfExists } from "./fixtures";
 
 test.describe("[no login]", () => {
-  test("should not be navigable", async ({ page }) => {
+  test("should not be navigable", async ({ page, testEvent }) => {
     await page.goto("/");
 
     // Non-admin event cards render the title as a plain heading, not a link.
-    await page.getByRole("heading", { name: "TestEvent", exact: true }).click();
+    await page.getByRole("heading", { name: testEvent.name, exact: true }).click();
 
     await expect(page).toHaveURL(/localhost:3000\/$/);
   });
 
-  test("direct links should not work [no login]", async ({ page }) => {
-    await page.goto("http://localhost:3000/event/test-event");
+  test("direct links should not work [no login]", async ({ page, testEvent }) => {
+    await page.goto(`http://localhost:3000/event/${testEvent.slug}`);
 
     await page.waitForTimeout(4000);
 
@@ -26,7 +26,7 @@ test.describe("[no login]", () => {
 });
 
 test.describe("[mixologist]", () => {
-  test("should not be navigable", async ({ page, context }) => {
+  test("should not be navigable", async ({ page, context, testEvent }) => {
     await context.addCookies([
       {
         name: "privilege",
@@ -41,12 +41,12 @@ test.describe("[mixologist]", () => {
     await page.goto("/");
 
     // Non-admin event cards render the title as a plain heading, not a link.
-    await page.getByRole("heading", { name: "TestEvent", exact: true }).click();
+    await page.getByRole("heading", { name: testEvent.name, exact: true }).click();
 
     await expect(page).toHaveURL(/localhost:3000\/$/);
   });
 
-  test("direct links should not work", async ({ page, context }) => {
+  test("direct links should not work", async ({ page, context, testEvent }) => {
     await context.addCookies([
       {
         name: "privilege",
@@ -58,7 +58,7 @@ test.describe("[mixologist]", () => {
       Authorization: `Basic ${btoa(process.env.MIXOLOGIST_LOGIN || ":")}`,
     });
 
-    await page.goto("http://localhost:3000/event/test-event");
+    await page.goto(`http://localhost:3000/event/${testEvent.slug}`);
 
     await expect(page).toHaveURL(/localhost:3000\/$/);
   });
@@ -68,6 +68,7 @@ test.describe("[admin]", () => {
   test("should be navigable to an existing event", async ({
     page,
     context,
+    testEvent,
   }) => {
     await context.addCookies([
       {
@@ -82,17 +83,17 @@ test.describe("[admin]", () => {
 
     await page.goto("/");
     // Find an element with the text 'About' and click on it
-    await page.getByRole("link", { name: "TestEvent" }).click();
+    await page.getByRole("link", { name: testEvent.name, exact: true }).click();
 
-    await expect(page).toHaveURL("http://localhost:3000/event/test-event");
+    await expect(page).toHaveURL(`http://localhost:3000/event/${testEvent.slug}`);
 
     await expect(page.getByPlaceholder("Enter event name")).toHaveValue(
-      "TestEvent",
+      testEvent.name,
     );
     await expect(page.getByPlaceholder("Enter event name")).toBeDisabled();
 
     await expect(page.getByPlaceholder("Auto-generated")).toHaveValue(
-      "test-event",
+      testEvent.slug,
     );
     await expect(page.getByPlaceholder("Auto-generated")).toBeDisabled();
 
@@ -131,16 +132,14 @@ test.describe("[admin]", () => {
     context,
   }, testInfo) => {
     // This test mutates item selection and mode, unlike its siblings which only
-    // read "test-event" — give it a private event (keyed by parallelIndex, with
-    // its own display name) so it never clobbers the shared fixture other spec
-    // files depend on, and doesn't produce a duplicate "TestEvent" heading on
-    // the home page while other tests are concurrently asserting against it.
-    const slug = `test-event-menu-cap-${testInfo.parallelIndex}`;
+    // read the shared per-worker testEvent — give it its own private event
+    // (random slug/name, platform-prefixed) so it never clobbers the fixture
+    // other tests depend on, whether they're in this worker or another one.
+    const platform = process.env.CI ? "ci" : "local";
+    const rand = Math.random().toString(36).slice(2, 8);
+    const slug = `test-event-menu-cap-${platform}-${rand}`;
     // Event names are capped at 20 chars by the API (src/app/api/event/route.ts).
-    // Must not contain "TestEvent" as a substring — other tests query
-    // getByRole(..., { name: "TestEvent" }) without exact:true, which matches
-    // on substring, so any name merely starting with "TestEvent" still collides.
-    const name = `MenuCapEvent${testInfo.parallelIndex}`;
+    const name = `MC-${rand.slice(0, 6)}`;
     const baseURL = testInfo.project.use.baseURL || "http://localhost:3000";
     await deleteIfExists(baseURL, slug);
     const response = await createEvent(baseURL, slug, name);
@@ -167,7 +166,7 @@ test.describe("[admin]", () => {
         page.getByRole("button", { name: "Espresso Strong black coffee" }),
       ).toHaveAttribute("aria-pressed", "true");
 
-      // TestEvent starts with 1 item selected (Espresso); select 9 more unselected
+      // The event starts with 1 item selected (Espresso); select 9 more unselected
       // items to reach the 10-item cap. Scoped to the literal aria-pressed="false"
       // attribute (not the role=button pressed filter) — Chromium's accessibility
       // tree reports pressed:false by default for any plain button, which would
@@ -194,7 +193,7 @@ test.describe("[admin]", () => {
     }
   });
 
-  test("should show warning for inactive number", async ({ page, context }) => {
+  test("should show warning for inactive number", async ({ page, context, testEvent }) => {
     await context.addCookies([
       {
         name: "privilege",
@@ -206,7 +205,7 @@ test.describe("[admin]", () => {
       Authorization: `Basic ${btoa(process.env.ADMIN_LOGIN || ":")}`,
     });
 
-    await page.goto("http://localhost:3000/event/test-event");
+    await page.goto(`http://localhost:3000/event/${testEvent.slug}`);
 
     await expect(
       page.getByText(

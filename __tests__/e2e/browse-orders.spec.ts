@@ -1,9 +1,10 @@
-import { test, expect, type Locator } from "@playwright/test";
+import { type Locator } from "@playwright/test";
 import { Privilege } from "@/proxy";
+import { test, expect } from "./fixtures";
 
 test.describe("[no login]", () => {
-  test("Only elements with permissions should be visible", async ({ page }) => {
-    await page.goto("/event/test-event/orders");
+  test("Only elements with permissions should be visible", async ({ page, testEvent }) => {
+    await page.goto(`/event/${testEvent.slug}/orders`);
 
     await expect(page.getByRole("tab", { name: "Queue" })).toBeVisible();
     await expect(page.getByRole("tab", { name: "Cancelled" })).toBeVisible();
@@ -42,8 +43,8 @@ test.describe("[no login]", () => {
     await expect(page.getByTestId("pause-orders")).toBeHidden();
   });
 
-  test("Scroll through extra orders", async ({ page }) => {
-    await page.goto("/event/test-event/orders");
+  test("Scroll through extra orders", async ({ page, testEvent }) => {
+    await page.goto(`/event/${testEvent.slug}/orders`);
 
     await expect(page.getByRole("button", { name: /Show \d+ more/i })).toBeVisible();
     await expect(page.getByText("#61")).not.toBeVisible();
@@ -58,16 +59,16 @@ test.describe("[no login]", () => {
     expect(await page.getByText("#61").count()).toBeGreaterThan(0);
   });
 
-  test("broadcast message usable", async ({ page, context }) => {
-    await page.goto("/event/test-event/orders");
+  test("broadcast message usable", async ({ page, context, testEvent }) => {
+    await page.goto(`/event/${testEvent.slug}/orders`);
 
     await expect(
       page.getByRole("button", { name: "Broadcast message" }),
     ).toBeHidden();
   });
 
-  test("Custom Order usable", async ({ page, context }) => {
-    await page.goto("/event/test-event/orders");
+  test("Custom Order usable", async ({ page, context, testEvent }) => {
+    await page.goto(`/event/${testEvent.slug}/orders`);
 
     await expect(
       page.getByRole("button", { name: "Add manual order" }),
@@ -76,7 +77,7 @@ test.describe("[no login]", () => {
 });
 
 test.describe("[mixologist]", () => {
-  test("All Tabs should be visible", async ({ page, context }) => {
+  test("All Tabs should be visible", async ({ page, context, testEvent }) => {
     await context.addCookies([
       {
         name: "privilege",
@@ -88,7 +89,7 @@ test.describe("[mixologist]", () => {
       Authorization: `Basic ${btoa(process.env.ADMIN_LOGIN || ":")}`,
     });
 
-    await page.goto("/event/test-event/orders");
+    await page.goto(`/event/${testEvent.slug}/orders`);
 
     await expect(page.getByRole("tab", { name: "Queue" })).toBeVisible();
     await expect(page.getByRole("tab", { name: "Cancelled" })).toBeVisible();
@@ -96,7 +97,7 @@ test.describe("[mixologist]", () => {
     await expect(page.getByTestId("pause-orders")).toBeVisible();
   });
 
-  test("Scroll through extra orders", async ({ page, context }) => {
+  test("Scroll through extra orders", async ({ page, context, testEvent }) => {
     await context.addCookies([
       {
         name: "privilege",
@@ -107,7 +108,7 @@ test.describe("[mixologist]", () => {
     await context.setExtraHTTPHeaders({
       Authorization: `Basic ${btoa(process.env.ADMIN_LOGIN || ":")}`,
     });
-    await page.goto("/event/test-event/orders");
+    await page.goto(`/event/${testEvent.slug}/orders`);
 
     await expect(page.getByRole("button", { name: /Show \d+ more/i })).toBeVisible();
     await expect(page.getByText("#61")).not.toBeVisible();
@@ -122,7 +123,7 @@ test.describe("[mixologist]", () => {
     expect(await page.getByText("#61").count()).toBeGreaterThan(0);
   });
 
-  test("broadcast message usable", async ({ page, context }) => {
+  test("broadcast message usable", async ({ page, context, testEvent }) => {
     await context.addCookies([
       {
         name: "privilege",
@@ -134,7 +135,7 @@ test.describe("[mixologist]", () => {
       Authorization: `Basic ${btoa(process.env.ADMIN_LOGIN || ":")}`,
     });
 
-    await page.goto("/event/test-event/orders");
+    await page.goto(`/event/${testEvent.slug}/orders`);
 
     await page
       .getByRole("button", { name: "Broadcast message" })
@@ -146,7 +147,7 @@ test.describe("[mixologist]", () => {
       .isEnabled();
   });
 
-  test("Custom Order usable", async ({ page, context }) => {
+  test("Custom Order usable", async ({ page, context, testEvent }) => {
     await context.addCookies([
       {
         name: "privilege",
@@ -158,7 +159,7 @@ test.describe("[mixologist]", () => {
       Authorization: `Basic ${btoa(process.env.ADMIN_LOGIN || ":")}`,
     });
 
-    await page.goto("/event/test-event/orders");
+    await page.goto(`/event/${testEvent.slug}/orders`);
 
     await page.getByRole("button", { name: "Add manual order" }).click();
     await page.getByPlaceholder("Customer name").fill("Test Name");
