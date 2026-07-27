@@ -411,14 +411,22 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
             <MenuSelect
               menus={config.menus}
               selection={internalEvent.selection}
-              onSelectionChange={async (newSelection) => {
-                if (!isNewEvent) {
-                  fetch(`/api/event/${internalEvent.slug}/selection`, {
-                    method: "PUT",
-                    body: JSON.stringify({ selection: newSelection }),
-                  });
-                }
+              onSelectionChange={(newSelection) => {
                 updateEvent({ ...internalEvent, selection: newSelection });
+                if (!isNewEvent) {
+                  // Debounce the save (like updateMenuItemField/
+                  // updateModifierField below) so rapid successive
+                  // selections send a single PUT with the latest state,
+                  // rather than one fire-and-forget PUT per click that can
+                  // complete out of order and regress the saved selection.
+                  clearTimeout(aiUpdateTimerRef.current);
+                  aiUpdateTimerRef.current = setTimeout(() => {
+                    fetch(`/api/event/${internalEvent.slug}/selection`, {
+                      method: "PUT",
+                      body: JSON.stringify({ selection: newSelection }),
+                    });
+                  }, 1500);
+                }
               }}
             />
           </CardContent>

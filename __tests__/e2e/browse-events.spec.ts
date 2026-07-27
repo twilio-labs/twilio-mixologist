@@ -175,9 +175,12 @@ test.describe("[admin]", () => {
       const unselectedItem = page.locator('button[aria-pressed="false"]');
       for (let i = 0; i < 9; i++) {
         await unselectedItem.first().click();
+        // Wait for this click's selection save to land before firing the
+        // next — the save is a fire-and-forget PUT, and rapid unawaited
+        // requests can complete out of order under latency, regressing the
+        // count if a later click's save is overtaken by an earlier one.
+        await expect(page.getByText(`${i + 2} of 10 items selected`)).toBeVisible();
       }
-
-      await expect(page.getByText("10 of 10 items selected")).toBeVisible();
 
       // selecting an 11th item should be blocked
       await unselectedItem.first().click();
