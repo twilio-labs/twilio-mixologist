@@ -97,6 +97,20 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
   function toggleSection(section: keyof typeof collapsed) {
     if (!isNewEvent) setCollapsed((c) => ({ ...c, [section]: !c[section] }));
   }
+
+  // Fields the user has interacted with at least once — gates the inline
+  // per-field error messages so a blank new-event form doesn't light up red
+  // before anyone's typed anything.
+  const [touched, setTouched] = useState<Record<keyof EventFieldErrors, boolean>>({
+    name: false,
+    maxOrders: false,
+    pickupLocation: false,
+    senders: false,
+    items: false,
+  });
+  function markTouched(field: keyof EventFieldErrors) {
+    setTouched((t) => (t[field] ? t : { ...t, [field]: true }));
+  }
   function updateMenuItemField(
     index: number,
     field: "title" | "shortTitle" | "description",
@@ -209,6 +223,10 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
       }),
   );
 
+  // Only relevant during creation — existing events have no equivalent
+  // save-gate, so there's nothing for these to guard there.
+  const fieldErrors = isNewEvent ? getFieldErrors(internalEvent) : {};
+
   return (
     <div className="w-full py-8 space-y-4">
       {/* Page header */}
@@ -258,11 +276,17 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
                 disabled={!isNewEvent}
                 required
                 pattern=".{4,}"
+                aria-invalid={touched.name && !!fieldErrors.name}
+                className={touched.name && fieldErrors.name ? "border-red-500 focus-visible:ring-red-500" : ""}
                 value={internalEvent.name}
                 onChange={(ev) =>
                   updateEvent({ ...internalEvent, name: ev.target.value, slug: toKebabCase(ev.target.value) })
                 }
+                onBlur={() => markTouched("name")}
               />
+              {touched.name && fieldErrors.name && (
+                <p className="text-xs text-red-500">{fieldErrors.name}</p>
+              )}
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="eventSlug">Slug</Label>
@@ -275,14 +299,21 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
                 type="number"
                 min={1}
                 required
+                aria-invalid={touched.maxOrders && !!fieldErrors.maxOrders}
+                className={touched.maxOrders && fieldErrors.maxOrders ? "border-red-500 focus-visible:ring-red-500" : ""}
                 value={internalEvent.maxOrders}
                 onChange={(ev) =>
                   updateEvent({ ...internalEvent, maxOrders: parseInt(ev.target.value) })
                 }
+                onBlur={() => markTouched("maxOrders")}
               />
-              <p className="text-xs text-gray-400">
-                50 or more is treated as unlimited — order confirmations won&apos;t mention a daily cap.
-              </p>
+              {touched.maxOrders && fieldErrors.maxOrders ? (
+                <p className="text-xs text-red-500">{fieldErrors.maxOrders}</p>
+              ) : (
+                <p className="text-xs text-gray-400">
+                  50 or more is treated as unlimited — order confirmations won&apos;t mention a daily cap.
+                </p>
+              )}
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="leadCollection">Lead Collection</Label>
@@ -333,11 +364,15 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
               <MultiSelect
                 placeholder="Senders to be used for this event"
                 value={internalEvent.senders.map((s) => ({ label: s, value: s }))}
-                onChange={(selected) =>
-                  updateEvent({ ...internalEvent, senders: selected.map((s) => s.value) })
-                }
+                onChange={(selected) => {
+                  markTouched("senders");
+                  updateEvent({ ...internalEvent, senders: selected.map((s) => s.value) });
+                }}
                 options={options}
               />
+              {touched.senders && fieldErrors.senders && (
+                <p className="text-xs text-red-500">{fieldErrors.senders}</p>
+              )}
               {internalEvent.senders.length > 0 && (
                 <Popover>
                   <PopoverTrigger>
@@ -358,11 +393,17 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
                   placeholder="Where to find the booth"
                   required
                   pattern=".{3,}"
+                  aria-invalid={touched.pickupLocation && !!fieldErrors.pickupLocation}
+                  className={touched.pickupLocation && fieldErrors.pickupLocation ? "border-red-500 focus-visible:ring-red-500" : ""}
                   value={internalEvent.pickupLocation}
                   onChange={(ev) =>
                     updateEvent({ ...internalEvent, pickupLocation: ev.target.value })
                   }
+                  onBlur={() => markTouched("pickupLocation")}
                 />
+                {touched.pickupLocation && fieldErrors.pickupLocation && (
+                  <p className="text-xs text-red-500">{fieldErrors.pickupLocation}</p>
+                )}
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="language">Language</Label>
@@ -415,6 +456,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
               menus={config.menus}
               selection={internalEvent.selection}
               onSelectionChange={(newSelection) => {
+                markTouched("items");
                 updateEvent({ ...internalEvent, selection: newSelection });
                 if (!isNewEvent) {
                   // Debounce the save (like updateMenuItemField/
@@ -432,6 +474,9 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
                 }
               }}
             />
+            {touched.items && fieldErrors.items && (
+              <p className="text-xs text-red-500 mt-1.5">{fieldErrors.items}</p>
+            )}
           </CardContent>
         )}
       </Card>
@@ -562,35 +607,51 @@ function toKebabCase(string: string) {
     .replace(/^-+|-+$/g, "");
 }
 
+type EventFieldErrors = {
+  name?: string;
+  maxOrders?: string;
+  pickupLocation?: string;
+  senders?: string;
+  items?: string;
+};
+
+// Single source of truth for validation, shared by the per-field inline
+// messages and the Create Event button's tooltip.
+function getFieldErrors(internalEvent: Event): EventFieldErrors {
+  const errors: EventFieldErrors = {};
+
+  if (internalEvent.name?.length < 4) {
+    errors.name = "Event name must be at least 4 characters long";
+  } else if (internalEvent.name?.length > 20) {
+    errors.name = "Event name must be 20 characters long or less";
+  }
+  if (internalEvent.maxOrders < 1) {
+    errors.maxOrders = "Max orders must be at least 1";
+  }
+  if (internalEvent.pickupLocation.length < 3) {
+    errors.pickupLocation = "Pickup location must be at least 3 characters long";
+  }
+  if (internalEvent.senders?.length! < 1) {
+    errors.senders = "At least one sender must be selected";
+  }
+  if (internalEvent.selection.items?.length < 2) {
+    errors.items = "At least two menu items must be selected";
+  }
+  return errors;
+}
+
 function isFormInvalid(internalEvent: Event) {
-  return (
-    internalEvent.name?.length < 4 ||
-    internalEvent.name?.length > 20 ||
-    internalEvent.maxOrders < 1 ||
-    internalEvent.pickupLocation.length < 3 ||
-    internalEvent.senders?.length! < 1 ||
-    internalEvent.selection.items?.length < 2
-  );
+  return Object.keys(getFieldErrors(internalEvent)).length > 0;
 }
 
 function validateButtonTooltip(internalEvent: Event): string {
-  if (internalEvent.name?.length < 4) {
-    return "Event name must be at least 4 characters long";
-  }
-  if (internalEvent.name?.length > 20) {
-    return "Event name must be 20 characters long or less";
-  }
-  if (internalEvent.maxOrders < 1) {
-    return "Max orders must be at least 1";
-  }
-  if (internalEvent.pickupLocation.length < 3) {
-    return "Pickup location must be at least 3 characters long";
-  }
-  if (internalEvent.senders?.length! < 1) {
-    return "At least one sender must be selected";
-  }
-  if (internalEvent.selection.items?.length < 2) {
-    return "At least two menu items must be selected";
-  }
-  return "Create Event";
+  const errors = getFieldErrors(internalEvent);
+  return (
+    errors.name ??
+    errors.maxOrders ??
+    errors.pickupLocation ??
+    errors.senders ??
+    errors.items ??
+    "Create Event"
+  );
 }
