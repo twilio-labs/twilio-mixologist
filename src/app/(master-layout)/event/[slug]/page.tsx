@@ -280,6 +280,9 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
                   updateEvent({ ...internalEvent, maxOrders: parseInt(ev.target.value) })
                 }
               />
+              <p className="text-xs text-gray-400">
+                50 or more is treated as unlimited — order confirmations won&apos;t mention a daily cap.
+              </p>
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="leadCollection">Lead Collection</Label>
