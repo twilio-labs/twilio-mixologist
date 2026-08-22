@@ -88,6 +88,7 @@ const iconMap: { [key: string]: any } = {
   "Strawberry Lemonade Tea": CupIcon,
   "Cold Brew": CupIcon,
   Moka: FlatWhiteIcon,
+  "Espresso Chantilly": EspressoIcon,
   "Matcha Green Tea": CupIcon,
   "Cucumber Juice": CupIcon,
   Nuttello: WaffleIcon,
