@@ -73,10 +73,12 @@ export function getWelcomeMessage(
   customWelcomeMessage?: string,
   leadCollection: LeadCollection = "NONE",
   language: Language = "en",
+  pickupLocation?: string,
 ) {
+  const location = pickupLocation || (language === "pt-BR" ? "Estande da Twilio" : "Twilio Booth");
   const defaultWelcome = language === "pt-BR"
-    ? `Bem-vindo ao Estande da Twilio! Está pronto para um ${modeToBeverage(mode, language)} por nossa conta? 🎉`
-    : `Welcome to the Twilio Booth! Are you ready for a ${modeToBeverage(mode, language)} on us? 🎉`;
+    ? `Bem-vindo ao ${location}! Está pronto para um ${modeToBeverage(mode, language)} por nossa conta? 🎉`
+    : `Welcome to the ${location}! Are you ready for a ${modeToBeverage(mode, language)} on us? 🎉`;
 
   const welcomeMessage = customWelcomeMessage || defaultWelcome;
 
