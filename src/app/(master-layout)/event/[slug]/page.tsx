@@ -404,13 +404,15 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
                 {touched.pickupLocation && fieldErrors.pickupLocation && (
                   <p className="text-xs text-red-500">{fieldErrors.pickupLocation}</p>
                 )}
-                {internalEvent.pickupLocation.length >= 3 && (
-                  <p className="text-xs text-gray-400 italic">
-                    {(internalEvent.language ?? "en") === "pt-BR"
+                <p className="text-xs text-gray-400 italic">
+                  {internalEvent.pickupLocation.length >= 3
+                    ? (internalEvent.language ?? "en") === "pt-BR"
                       ? `"Bem-vindo ao ${internalEvent.pickupLocation}!"`
-                      : `"Welcome to ${internalEvent.pickupLocation}!"`}
-                  </p>
-                )}
+                      : `"Welcome to ${internalEvent.pickupLocation}!"`
+                    : (internalEvent.language ?? "en") === "pt-BR"
+                      ? `"Bem-vindo ao Estande da Twilio!"`
+                      : `"Welcome to the Twilio Booth!"`}
+                </p>
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="language">Language</Label>
