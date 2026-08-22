@@ -444,6 +444,18 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
                 }
               />
             </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="followUpMessage">Follow-up Message (after pickup)</Label>
+              <Textarea
+                id="followUpMessage"
+                placeholder="Sent after an order is picked up. Defaults to a thank-you with a link to this project's source code."
+                value={internalEvent.followUpMessage || ""}
+                onChange={(ev) =>
+                  updateEvent({ ...internalEvent, followUpMessage: ev.target.value })
+                }
+              />
+            </div>
           </CardContent>
         )}
       </Card>
