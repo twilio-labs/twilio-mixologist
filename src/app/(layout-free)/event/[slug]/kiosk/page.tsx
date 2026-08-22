@@ -31,7 +31,7 @@ export default async function KioskPage(props: {
     return (
       <div className="p-4 space-y-8 flex-1">
         <p className="text-xl md:text-4xl">
-          Order your beverage here and pick it up at the Twilio booth.
+          Order your beverage here and pick it up at {(event?.data as any)?.pickupLocation || "the Twilio booth"}.
         </p>
         {hasPermissions && (
           <OrderForm
