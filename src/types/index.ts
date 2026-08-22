@@ -72,6 +72,7 @@ export interface Event {
   pickupLocation: string;
   maxOrders: number;
   welcomeMessage: string;
+  followUpMessage?: string;
   language?: Language;
   cancelledCount?: number;
   deliveredCount?: number;

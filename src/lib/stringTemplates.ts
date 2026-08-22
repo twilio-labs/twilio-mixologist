@@ -138,6 +138,16 @@ export function getNoActiveEventsMessage(language: Language = "en") {
   return "Oh no! 😕 It seems like we are not serving at the moment. Please check back later. 🙂";
 }
 
+export function getFollowUpMessage(
+  customFollowUpMessage?: string,
+  language: Language = "en",
+) {
+  const defaultMessage = language === "pt-BR"
+    ? "Obrigado por nos visitar! 🙌 Gostou da experiência? Este projeto é open source — confira em https://github.com/twilio-labs/twilio-mixologist"
+    : "Thanks for stopping by! 🙌 Enjoyed the experience? This project is open source — check it out at https://github.com/twilio-labs/twilio-mixologist";
+  return customFollowUpMessage || defaultMessage;
+}
+
 export function getPausedEventMessage(language: Language = "en") {
   if (language === "pt-BR") {
     return "Olá! Pausamos os pedidos por enquanto. Por favor, volte mais tarde.";
