@@ -118,7 +118,7 @@ async function selectEventForCustomer(
 
     const welcomeMsg = isReturning
       ? getWelcomeBackMessage(newEvent.selection.mode, newEvent.name, newEvent.welcomeMessage, eventLang(newEvent))
-      : getWelcomeMessage(newEvent.selection.mode, newEvent.welcomeMessage, newEvent.leadCollection, eventLang(newEvent));
+      : getWelcomeMessage(newEvent.selection.mode, newEvent.welcomeMessage, newEvent.leadCollection, eventLang(newEvent), newEvent.pickupLocation);
     sendMessage(sender, welcomeMsg, undefined, undefined, from);
 
     const country = getCountryFromPhone(sender);
@@ -157,7 +157,7 @@ async function selectEventForCustomer(
     const newEvent = matches[0].data as Event;
     const welcomeMsg = isReturning
       ? getWelcomeBackMessage(newEvent.selection.mode, newEvent.name, newEvent.welcomeMessage, eventLang(newEvent))
-      : getWelcomeMessage(newEvent.selection.mode, newEvent.welcomeMessage, newEvent.leadCollection, eventLang(newEvent));
+      : getWelcomeMessage(newEvent.selection.mode, newEvent.welcomeMessage, newEvent.leadCollection, eventLang(newEvent), newEvent.pickupLocation);
     sendMessage(sender, welcomeMsg, undefined, undefined, from);
 
     const country = getCountryFromPhone(sender);
