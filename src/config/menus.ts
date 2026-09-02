@@ -96,6 +96,11 @@ export default {
         description: "Slow-steeped coffee served chilled over ice.",
       },
       {
+        shortTitle: "Long Black",
+        title: "Long Black",
+        description: "Double shot of espresso poured over hot water",
+      },
+      {
         shortTitle: "Matcha",
         title: "Matcha",
         description:
@@ -243,6 +248,7 @@ export default {
     ],
     modifiers: [
       "Decaf",
+      "Extra Shot",
       "Milk",
       "Whole Milk",
       "Soy Milk",
@@ -257,6 +263,7 @@ export default {
       "Chocolate Caramel Syrup",
       "Vanilla Syrup",
       "Chocolate Syrup",
+      "Chocolate Dusting",
       "Salted Caramel Syrup",
       "Peppermint Syrup",
       "Caramel Syrup",
@@ -271,6 +278,9 @@ export default {
       "Whipped Cream",
       "Brown Sugar Stick",
       "White Sugar Stick",
+      "Raw Sugar Stick",
+      "Equal Sweetener",
+      "Extra Hot",
     ],
   },
   smoothie: {
