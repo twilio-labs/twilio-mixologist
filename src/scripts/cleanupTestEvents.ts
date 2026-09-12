@@ -5,7 +5,7 @@ const {
   TWILIO_API_SECRET = "",
   TWILIO_ACCOUNT_SID = "",
   TWILIO_SYNC_SERVICE_SID = "",
-  NEXT_PUBLIC_EVENTS_MAP = "",
+  NEXT_PUBLIC_EVENTS_MAP = "Events",
 } = process.env;
 
 const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
@@ -75,7 +75,7 @@ const isTestEvent = (event: any): boolean => {
 
     console.log(`\n✓ Cleanup complete. Deleted ${deleted}/${testEvents.length} test events.`);
   } catch (error) {
-    console.error("Error during cleanup:", error);
-    process.exit(1);
+    console.error("Cleanup skipped (non-fatal):", error);
+    process.exit(0);
   }
 })();

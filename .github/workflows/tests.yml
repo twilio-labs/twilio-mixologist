@@ -58,6 +58,7 @@ jobs:
           KIOSK_LOGIN: ${{ vars.KIOSK_LOGIN }}
       - name: Cleanup orphaned test events
         if: always()
+        continue-on-error: true
         run: pnpm run cleanup-test-events
         env:
           TWILIO_ACCOUNT_SID: ${{ vars.TWILIO_ACCOUNT_SID_TEST || vars.TWILIO_ACCOUNT_SID }}
@@ -65,6 +66,7 @@ jobs:
           TWILIO_API_SECRET: ${{ secrets.TWILIO_API_SECRET_TEST || secrets.TWILIO_API_SECRET }}
           TWILIO_SYNC_SERVICE_SID: ${{ vars.TWILIO_SYNC_SERVICE_SID_TEST || vars.TWILIO_SYNC_SERVICE_SID }}
           NEXT_PUBLIC_ATTENDEES_MAP: ${{ vars.NEXT_PUBLIC_ATTENDEES_MAP_TEST || vars.NEXT_PUBLIC_ATTENDEES_MAP }}
+          NEXT_PUBLIC_EVENTS_MAP: ${{ vars.NEXT_PUBLIC_EVENTS_MAP_TEST || vars.NEXT_PUBLIC_EVENTS_MAP || 'Events' }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
