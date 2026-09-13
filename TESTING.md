@@ -86,10 +86,14 @@ TWILIO_SYNC_SERVICE_SID=ISxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  # Test service SID
 
 ### Manual Event Inspection
 
-List all events in your Sync map:
+List every event in your Sync map (name, slug, active flag, created date):
+
+```bash
+pnpm run list-events
+```
+
+Preview only the events that would be swept by the cleanup script (matches the test-event name/slug patterns) without deleting anything:
 
 ```bash
 pnpm run cleanup-test-events -- --dry-run
 ```
-
-This shows all events without deleting anything.

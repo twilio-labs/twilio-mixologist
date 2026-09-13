@@ -1,12 +1,27 @@
 import twilio from "twilio";
 
 const {
-  TWILIO_API_KEY = "",
-  TWILIO_API_SECRET = "",
-  TWILIO_ACCOUNT_SID = "",
-  TWILIO_SYNC_SERVICE_SID = "",
-  NEXT_PUBLIC_EVENTS_MAP = "Events",
+  TWILIO_API_KEY,
+  TWILIO_API_SECRET,
+  TWILIO_ACCOUNT_SID,
+  TWILIO_SYNC_SERVICE_SID,
+  NEXT_PUBLIC_EVENTS_MAP,
 } = process.env;
+
+const required = {
+  TWILIO_API_KEY,
+  TWILIO_API_SECRET,
+  TWILIO_ACCOUNT_SID,
+  TWILIO_SYNC_SERVICE_SID,
+  NEXT_PUBLIC_EVENTS_MAP,
+};
+const missing = Object.entries(required)
+  .filter(([, v]) => !v)
+  .map(([k]) => k);
+if (missing.length > 0) {
+  console.error(`Missing required environment variables: ${missing.join(", ")}`);
+  process.exit(1);
+}
 
 const client = twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
   accountSid: TWILIO_ACCOUNT_SID,
@@ -27,12 +42,11 @@ const isTestEvent = (event: any): boolean => {
 
 (async () => {
   try {
-    const eventPage = await client.sync.v1
-      .services(TWILIO_SYNC_SERVICE_SID)
-      .syncMaps(NEXT_PUBLIC_EVENTS_MAP)
-      .syncMapItems.page({ pageSize: 200 });
+    const allEvents = await client.sync.v1
+      .services(TWILIO_SYNC_SERVICE_SID as string)
+      .syncMaps(NEXT_PUBLIC_EVENTS_MAP as string)
+      .syncMapItems.list({ pageSize: 200 });
 
-    const allEvents = eventPage.instances;
     const testEvents = allEvents.filter((item) => isTestEvent(item.data as any));
 
     console.log(`\nTotal events in map: ${allEvents.length}`);
@@ -62,8 +76,8 @@ const isTestEvent = (event: any): boolean => {
     for (const item of testEvents) {
       try {
         await client.sync.v1
-          .services(TWILIO_SYNC_SERVICE_SID)
-          .syncMaps(NEXT_PUBLIC_EVENTS_MAP)
+          .services(TWILIO_SYNC_SERVICE_SID as string)
+          .syncMaps(NEXT_PUBLIC_EVENTS_MAP as string)
           .syncMapItems(item.key)
           .remove();
         deleted++;
@@ -75,7 +89,7 @@ const isTestEvent = (event: any): boolean => {
 
     console.log(`\n✓ Cleanup complete. Deleted ${deleted}/${testEvents.length} test events.`);
   } catch (error) {
-    console.error("Cleanup skipped (non-fatal):", error);
-    process.exit(0);
+    console.error("Error during cleanup:", error);
+    process.exit(1);
   }
 })();
