@@ -240,15 +240,11 @@ export default {
         title: "Moka",
         description: "Stovetop-brewed coffee, rich and strong",
       },
-      {
-        shortTitle: "Espresso Chantilly",
-        title: "Espresso with Chantilly",
-        description: "Espresso topped with a dollop of vanilla Chantilly cream",
-      },
     ],
     modifiers: [
       "Decaf",
       "Extra Shot",
+      "Chantilly",
       "Milk",
       "Whole Milk",
       "Soy Milk",
