@@ -434,6 +434,13 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
                   updateEvent({ ...internalEvent, welcomeMessage: ev.target.value })
                 }
               />
+              <p className="text-xs text-gray-400 italic">
+                {internalEvent.welcomeMessage.trim()
+                  ? `"${internalEvent.welcomeMessage.trim()}"`
+                  : (internalEvent.language ?? "en") === "pt-BR"
+                    ? `Default: "A Twilio te dá as boas-vindas!"`
+                    : `Default: "Twilio welcomes you!"`}
+              </p>
             </div>
           </CardContent>
         )}
