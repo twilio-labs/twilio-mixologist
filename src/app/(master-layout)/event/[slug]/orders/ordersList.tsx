@@ -17,7 +17,6 @@ import {
   getOrderReadyMessage,
   getOrderReadyReminderMessage,
 } from "@/scripts/fetchContentTemplates";
-import { getFollowUpMessage } from "@/lib/stringTemplates";
 
 export default function OrdersList({
   ordersList,
@@ -250,10 +249,9 @@ export default function OrdersList({
                     try {
                       updateOrder(index, { status: "delivered" });
                       await updateEvent({ deliveredCount: Number(event?.deliveredCount || 0) + 1 });
-                      if (!data?.manual) {
-                        const body = getFollowUpMessage(event.followUpMessage, event.language);
+                      if (!data?.manual && event.followUpMessage) {
                         const from = await pinnedFrom(data.key);
-                        sendMessage(toAddress(data), body, "", "", from);
+                        sendMessage(toAddress(data), event.followUpMessage, "", "", from);
                       }
                       toast({ title: "Order Served", description: "Order marked as delivered." });
                     } finally {
