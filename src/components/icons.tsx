@@ -2823,8 +2823,6 @@ export function EspressoMacchiatoIcon(props: any) {
   );
 }
 
-export const EspressoChantillyIcon = EspressoMacchiatoIcon;
-
 export function EspressoMachineIcon2(props: any) {
   return (
     <svg

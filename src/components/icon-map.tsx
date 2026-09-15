@@ -19,7 +19,6 @@ import {
   BerryWaffleIcon,
   WhiteWineIcon,
   SmoothieAppleIcon,
-  EspressoChantillyIcon,
 } from "@/components/icons";
 
 const iconMap: { [key: string]: any } = {
@@ -89,7 +88,6 @@ const iconMap: { [key: string]: any } = {
   "Strawberry Lemonade Tea": CupIcon,
   "Cold Brew": CupIcon,
   Moka: FlatWhiteIcon,
-  "Espresso Chantilly": EspressoChantillyIcon,
   "Matcha Green Tea": CupIcon,
   "Cucumber Juice": CupIcon,
   Nuttello: WaffleIcon,
