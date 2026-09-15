@@ -147,10 +147,20 @@ async function selectEventForCustomer(
 
   // Two or more active events — let the customer pick
   const choice = incomingMessageBody.toLowerCase().trim();
-  const matches = activeEvents.filter((e) => {
+  const substringMatches = activeEvents.filter((e) => {
     // @ts-ignore  data is typed as object but is actually an Event
     return choice.includes((e.data as Event).name.toLowerCase().trim());
   });
+  // Prefer the most specific (longest) name so "DevWeek Berlin" wins over "DevWeek".
+  const maxLen = Math.max(
+    // @ts-ignore  data is typed as object but is actually an Event
+    ...substringMatches.map((e) => (e.data as Event).name.trim().length),
+    0,
+  );
+  const matches = substringMatches.filter(
+    // @ts-ignore  data is typed as object but is actually an Event
+    (e) => (e.data as Event).name.trim().length === maxLen,
+  );
 
   if (matches.length === 1) {
     // @ts-ignore  data is typed as object but is actually an Event
