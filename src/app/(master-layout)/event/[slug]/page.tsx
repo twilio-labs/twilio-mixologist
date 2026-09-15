@@ -447,10 +447,10 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="followUpMessage">Follow-up Message (after pickup)</Label>
+              <Label htmlFor="followUpMessage">Follow-up Message (after order served)</Label>
               <Textarea
                 id="followUpMessage"
-                placeholder={`Sent after an order is picked up. Leave empty to skip.\n\nSuggested:\n${getDefaultFollowUpMessage(internalEvent.language)}`}
+                placeholder={`Sent when an order is marked as served/delivered. Leave empty to skip.\n\nSuggested:\n${getDefaultFollowUpMessage(internalEvent.language)}`}
                 value={internalEvent.followUpMessage || ""}
                 onChange={(ev) =>
                   updateEvent({ ...internalEvent, followUpMessage: ev.target.value })
