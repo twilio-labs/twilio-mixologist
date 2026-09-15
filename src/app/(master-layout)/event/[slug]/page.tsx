@@ -38,6 +38,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { Event, Language, LeadCollection } from "@/types";
+import { getDefaultFollowUpMessage } from "@/lib/stringTemplates";
 
 export type { Event };
 
@@ -441,6 +442,18 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
                     ? `Default: "A Twilio te dá as boas-vindas!"`
                     : `Default: "Twilio welcomes you!"`}
               </p>
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="followUpMessage">Follow-up Message (after order served)</Label>
+              <Textarea
+                id="followUpMessage"
+                placeholder={`Sent when an order is marked as served/delivered. Leave empty to skip.\n\nSuggested:\n${getDefaultFollowUpMessage(internalEvent.language)}`}
+                value={internalEvent.followUpMessage || ""}
+                onChange={(ev) =>
+                  updateEvent({ ...internalEvent, followUpMessage: ev.target.value })
+                }
+              />
             </div>
           </CardContent>
         )}

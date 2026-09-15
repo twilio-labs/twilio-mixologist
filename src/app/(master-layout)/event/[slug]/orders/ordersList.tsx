@@ -249,6 +249,10 @@ export default function OrdersList({
                     try {
                       updateOrder(index, { status: "delivered" });
                       await updateEvent({ deliveredCount: Number(event?.deliveredCount || 0) + 1 });
+                      if (!data?.manual && event?.followUpMessage) {
+                        const from = await pinnedFrom(data.key);
+                        sendMessage(toAddress(data), event.followUpMessage, "", "", from);
+                      }
                       toast({ title: "Order Served", description: "Order marked as delivered." });
                     } finally {
                       stopProcessing(index, "served");
