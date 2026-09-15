@@ -1,8 +1,9 @@
 import { Input } from "@/components/ui/input";
 import { PopoverContent } from "@/components/ui/popover";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import QRCode from "react-qr-code";
+import { modes } from "@/types";
 
 function getActionableLink(sender: string, ctaMessage: string) {
   if (sender.startsWith("rcs:")) {
@@ -13,8 +14,39 @@ function getActionableLink(sender: string, ctaMessage: string) {
   }
   return `smsto:${sender}:${ctaMessage}`;
 }
-export default function QrPopoverConent({ senders }: { senders: string[] }) {
-  const [ctaMessage, setCtaMessage] = useState("Send this message to order a coffee ☕️");
+
+const MODE_COPY: Record<modes, { noun: string; emoji: string }> = {
+  [modes.barista]: { noun: "coffee", emoji: "☕️" },
+  [modes.smoothie]: { noun: "smoothie", emoji: "🥤" },
+  [modes.cocktail]: { noun: "cocktail", emoji: "🍸" },
+  [modes.tea]: { noun: "tea", emoji: "🍵" },
+  [modes.waffles]: { noun: "waffle", emoji: "🧇" },
+};
+
+function buildDefaultCta(mode: modes, eventName: string) {
+  const { noun, emoji } = MODE_COPY[mode];
+  const trimmed = eventName.trim();
+  const suffix = trimmed ? ` at ${trimmed}` : "";
+  return `Send this message to order a ${noun}${suffix} ${emoji}`;
+}
+
+export default function QrPopoverConent({
+  senders,
+  eventName,
+  mode,
+}: {
+  senders: string[];
+  eventName: string;
+  mode: modes;
+}) {
+  const [ctaMessage, setCtaMessage] = useState(() => buildDefaultCta(mode, eventName));
+  const userEditedRef = useRef(false);
+
+  useEffect(() => {
+    if (!userEditedRef.current) {
+      setCtaMessage(buildDefaultCta(mode, eventName));
+    }
+  }, [mode, eventName]);
 
   const qrContainerRef = useRef<HTMLDivElement>(null);
   const downloadQR = async () => {
@@ -63,7 +95,10 @@ export default function QrPopoverConent({ senders }: { senders: string[] }) {
       <Input
         placeholder="Your CTA message"
         value={ctaMessage}
-        onChange={(event) => setCtaMessage(event.target.value)}
+        onChange={(event) => {
+          userEditedRef.current = true;
+          setCtaMessage(event.target.value);
+        }}
       />
       <div className="grid grid-cols-2" ref={qrContainerRef}>
         {senders.map((sender) => (
