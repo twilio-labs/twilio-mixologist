@@ -38,7 +38,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { Event, Language, LeadCollection } from "@/types";
-import { getDefaultFollowUpMessage } from "@/lib/stringTemplates";
 
 export type { Event };
 
@@ -450,7 +449,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
               <Label htmlFor="followUpMessage">Follow-up Message (after order served)</Label>
               <Textarea
                 id="followUpMessage"
-                placeholder={`Sent when an order is marked as served/delivered. Leave empty to skip.\n\nSuggested:\n${getDefaultFollowUpMessage(internalEvent.language)}`}
+                placeholder="Sent when an order is marked as served/delivered. Leave empty to skip."
                 value={internalEvent.followUpMessage || ""}
                 onChange={(ev) =>
                   updateEvent({ ...internalEvent, followUpMessage: ev.target.value })
