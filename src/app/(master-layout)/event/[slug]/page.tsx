@@ -380,7 +380,11 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
                       Show QR codes
                     </span>
                   </PopoverTrigger>
-                  <QrCodePopoverContent senders={internalEvent.senders} />
+                  <QrCodePopoverContent
+                    senders={internalEvent.senders}
+                    eventName={internalEvent.name}
+                    mode={internalEvent.selection.mode}
+                  />
                 </Popover>
               )}
             </div>
