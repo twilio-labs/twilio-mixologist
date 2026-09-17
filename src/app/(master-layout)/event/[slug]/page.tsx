@@ -446,6 +446,18 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
                     : `Default: "Twilio welcomes you!"`}
               </p>
             </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="followUpMessage">Follow-up Message (after order served)</Label>
+              <Textarea
+                id="followUpMessage"
+                placeholder="Sent when an order is marked as served/delivered. Leave empty to skip."
+                value={internalEvent.followUpMessage || ""}
+                onChange={(ev) =>
+                  updateEvent({ ...internalEvent, followUpMessage: ev.target.value })
+                }
+              />
+            </div>
           </CardContent>
         )}
       </Card>
