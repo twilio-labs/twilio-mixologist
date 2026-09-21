@@ -29,7 +29,7 @@ import type { Event } from "@/types";
 const NEXT_PUBLIC_ATTENDEES_MAP =
   process.env.NEXT_PUBLIC_ATTENDEES_MAP || "";
 const BADGE_API_URL =
-  "https://wad-api.wearedevelopers.com/api/partner/v1/events/16/scan";
+  "https://wad-api.wearedevelopers.com/api/partner/v1/events/18/scan";
 const BADGE_TICKET_PREFIX = "ti_";
 
 function decodeImage(image: { bitmap: { data: Buffer; width: number; height: number } }): string | null {
