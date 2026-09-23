@@ -24,14 +24,15 @@ export default async function SessionButton(
         </Link>
       </li>
       <li className={`${!loggedIn ? "hidden" : ""}`}>
-        <Link
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[#9cafc8] hover:text-white hover:bg-[#1e2d42] transition-colors text-sm focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-twilio-ink focus-visible:outline-none"
-          href="/logout"
-          prefetch={false}
-        >
-          <LogOutIcon aria-hidden="true" className="h-4 w-4" />
-          <span className="hidden md:block">Log out</span>
-        </Link>
+        <form action="/logout" method="post">
+          <button
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[#9cafc8] hover:text-white hover:bg-[#1e2d42] transition-colors text-sm focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-twilio-ink focus-visible:outline-none"
+            type="submit"
+          >
+            <LogOutIcon aria-hidden="true" className="h-4 w-4" />
+            <span className="hidden md:block">Log out</span>
+          </button>
+        </form>
       </li>
     </ul>
   );
