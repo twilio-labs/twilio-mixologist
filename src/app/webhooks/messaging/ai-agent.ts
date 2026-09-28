@@ -59,9 +59,13 @@ async function toolPlaceOrder(
 
   if (!verifyOrder(item, event, modifiers)) {
     const validItems = event.selection.items.map((i) => i.title).join(", ");
-    return language === "pt-BR"
-      ? `"${item}" não está no cardápio. Itens válidos: ${validItems}.`
-      : `"${item}" is not on the menu. Valid items: ${validItems}.`;
+    if (language === "pt-BR") {
+      return `"${item}" não está no cardápio. Itens válidos: ${validItems}.`;
+    }
+    if (language === "fr") {
+      return `"${item}" n'est pas au menu. Articles valides : ${validItems}.`;
+    }
+    return `"${item}" is not on the menu. Valid items: ${validItems}.`;
   }
 
   const { data: record } = await createSyncMapItemIfNotExists(
@@ -71,9 +75,13 @@ async function toolPlaceOrder(
 
   const lastOrder = await fetchOrder(event.slug, (record as any)?.lastOrderNumber);
   if ((lastOrder?.data as any)?.status === "queued") {
-    return language === "pt-BR"
-      ? `Você já tem um pedido ativo (#${lastOrder!.index}) de ${(lastOrder!.data as any).item}. Cancele ou altere antes de continuar.`
-      : `You already have an active order (#${lastOrder!.index}) for a ${(lastOrder!.data as any).item}. Cancel or modify it first.`;
+    if (language === "pt-BR") {
+      return `Você já tem um pedido ativo (#${lastOrder!.index}) de ${(lastOrder!.data as any).item}. Cancele ou altere antes de continuar.`;
+    }
+    if (language === "fr") {
+      return `Vous avez déjà une commande en cours (#${lastOrder!.index}) pour un(e) ${(lastOrder!.data as any).item}. Annulez-la ou modifiez-la d'abord.`;
+    }
+    return `You already have an active order (#${lastOrder!.index}) for a ${(lastOrder!.data as any).item}. Cancel or modify it first.`;
   }
 
   const today = new Date().toISOString().split("T")[0];
@@ -83,9 +91,13 @@ async function toolPlaceOrder(
   const dailyCount = isNewDay ? 0 : Number(storedCount ?? 0);
   const unlimitedOrders = (process.env.UNLIMITED_ORDERS || "").split(",");
   if (dailyCount >= event.maxOrders && !unlimitedOrders.includes(phone)) {
-    return language === "pt-BR"
-      ? `Você atingiu o limite diário de ${event.maxOrders} pedidos.`
-      : `You've reached the daily limit of ${event.maxOrders} orders.`;
+    if (language === "pt-BR") {
+      return `Você atingiu o limite diário de ${event.maxOrders} pedidos.`;
+    }
+    if (language === "fr") {
+      return `Vous avez atteint la limite quotidienne de ${event.maxOrders} commandes.`;
+    }
+    return `You've reached the daily limit of ${event.maxOrders} orders.`;
   }
 
   const channel = sender.startsWith("whatsapp:") ? "whatsapp"
@@ -118,9 +130,13 @@ async function toolPlaceOrder(
     TwoWeeksInSeconds,
   );
 
-  return language === "pt-BR"
-    ? `Pedido #${orderNumber} de ${item}${modifiers.length > 0 ? ` com ${modifiers.join(", ")}` : ""} realizado com sucesso.`
-    : `Order #${orderNumber} for a ${item}${modifiers.length > 0 ? ` with ${modifiers.join(", ")}` : ""} placed successfully.`;
+  if (language === "pt-BR") {
+    return `Pedido #${orderNumber} de ${item}${modifiers.length > 0 ? ` com ${modifiers.join(", ")}` : ""} realizado com sucesso.`;
+  }
+  if (language === "fr") {
+    return `Commande #${orderNumber} pour un(e) ${item}${modifiers.length > 0 ? ` avec ${modifiers.join(", ")}` : ""} passée avec succès.`;
+  }
+  return `Order #${orderNumber} for a ${item}${modifiers.length > 0 ? ` with ${modifiers.join(", ")}` : ""} placed successfully.`;
 }
 
 async function toolEditOrder(
@@ -141,18 +157,23 @@ async function toolEditOrder(
     if (language === "pt-BR") {
       return action === "cancel" ? "Não há pedido ativo para cancelar." : "Não há pedido ativo para alterar.";
     }
+    if (language === "fr") {
+      return action === "cancel" ? "Aucune commande active à annuler." : "Aucune commande active à modifier.";
+    }
     return action === "cancel" ? "No active order to cancel." : "No active order to edit.";
   }
 
   if (action === "cancel") {
     await cancelOrder(event, lastOrder.index, lastOrder.data as Order);
-    return language === "pt-BR" ? `Pedido #${lastOrder.index} cancelado.` : `Order #${lastOrder.index} cancelled.`;
+    if (language === "pt-BR") return `Pedido #${lastOrder.index} cancelado.`;
+    if (language === "fr") return `Commande #${lastOrder.index} annulée.`;
+    return `Order #${lastOrder.index} cancelled.`;
   }
 
   if (!verifyOrder(item, event, modifiers)) {
-    return language === "pt-BR"
-      ? `"${item}" não é um item válido do cardápio.`
-      : `"${item}" is not a valid menu item.`;
+    if (language === "pt-BR") return `"${item}" não é um item válido do cardápio.`;
+    if (language === "fr") return `"${item}" n'est pas un article valide du menu.`;
+    return `"${item}" is not a valid menu item.`;
   }
 
   await updateOrder(event.slug, lastOrder.index, {
@@ -163,9 +184,13 @@ async function toolEditOrder(
     status: "queued",
   });
 
-  return language === "pt-BR"
-    ? `Pedido #${lastOrder.index} alterado para ${item}${modifiers.length > 0 ? ` com ${modifiers.join(", ")}` : ""}.`
-    : `Order #${lastOrder.index} updated to ${item}${modifiers.length > 0 ? ` with ${modifiers.join(", ")}` : ""}.`;
+  if (language === "pt-BR") {
+    return `Pedido #${lastOrder.index} alterado para ${item}${modifiers.length > 0 ? ` com ${modifiers.join(", ")}` : ""}.`;
+  }
+  if (language === "fr") {
+    return `Commande #${lastOrder.index} modifiée en ${item}${modifiers.length > 0 ? ` avec ${modifiers.join(", ")}` : ""}.`;
+  }
+  return `Order #${lastOrder.index} updated to ${item}${modifiers.length > 0 ? ` with ${modifiers.join(", ")}` : ""}.`;
 }
 
 async function toolShowMenu(event: Event, sender: string, from: string): Promise<string> {
@@ -190,7 +215,11 @@ async function toolGetOrderStatus(event: Event, phone: string): Promise<string> 
   const lastOrderNumber = (record as any)?.lastOrderNumber as number;
   const lastOrder = await fetchOrder(event.slug, lastOrderNumber);
 
-  if (!lastOrder) return language === "pt-BR" ? "Nenhum pedido encontrado." : "No orders found.";
+  if (!lastOrder) {
+    if (language === "pt-BR") return "Nenhum pedido encontrado.";
+    if (language === "fr") return "Aucune commande trouvée.";
+    return "No orders found.";
+  }
 
   const item = (lastOrder.data as any).item;
   const status = (lastOrder.data as any)?.status;
@@ -198,6 +227,10 @@ async function toolGetOrderStatus(event: Event, phone: string): Promise<string> 
     if (language === "pt-BR") {
       const statusLabel = { ready: "pronto", delivered: "entregue", cancelled: "cancelado" }[status as string] ?? status;
       return `Seu último pedido (#${lastOrder.index}) de ${item} está com status: ${statusLabel}.`;
+    }
+    if (language === "fr") {
+      const statusLabel = { ready: "prêt", delivered: "livré", cancelled: "annulé" }[status as string] ?? status;
+      return `Votre dernière commande (#${lastOrder.index}) pour un(e) ${item} a le statut : ${statusLabel}.`;
     }
     return `Your last order (#${lastOrder.index}) for a ${item} has status: ${status}.`;
   }
@@ -207,6 +240,11 @@ async function toolGetOrderStatus(event: Event, phone: string): Promise<string> 
     return pos !== null
       ? `Seu pedido (#${lastOrder.index}) de ${item} está na posição ${pos} da fila.`
       : `Seu pedido (#${lastOrder.index}) de ${item} está sendo preparado.`;
+  }
+  if (language === "fr") {
+    return pos !== null
+      ? `Votre commande (#${lastOrder.index}) pour un(e) ${item} est en position ${pos} dans la file d'attente.`
+      : `Votre commande (#${lastOrder.index}) pour un(e) ${item} est en cours de préparation.`;
   }
   return pos !== null
     ? `Your order (#${lastOrder.index}) for a ${item} is queued at position ${pos}.`
@@ -229,9 +267,13 @@ export async function runAiAgent(
   const language = eventLang(event);
 
   if (isInjectionAttempt(message)) {
-    return language === "pt-BR"
-      ? "Só posso ajudar com pedidos de bebida, alterações ou cancelamentos. O que você gostaria?"
-      : "I can only help you order, modify, or cancel a drink. What would you like?";
+    if (language === "pt-BR") {
+      return "Só posso ajudar com pedidos de bebida, alterações ou cancelamentos. O que você gostaria?";
+    }
+    if (language === "fr") {
+      return "Je peux uniquement vous aider à commander, modifier ou annuler une boisson. Que souhaitez-vous ?";
+    }
+    return "I can only help you order, modify, or cancel a drink. What would you like?";
   }
 
   // Fetch conversation record — history stored as [{role, content}] in Sync
@@ -249,7 +291,7 @@ export async function runAiAgent(
   const modifierList = event.selection.modifiers.length > 0
     ? event.selection.modifiers.map((m) => `'${m}'`).join(", ")
     : "none";
-  const languageName = language === "pt-BR" ? "Brazilian Portuguese" : "English";
+  const languageName = language === "pt-BR" ? "Brazilian Portuguese" : language === "fr" ? "French" : "English";
   const systemPrompt = `You are a helpful barista that accepts ${event.selection.mode} orders. This is a marketing activation from Twilio used at a conference. You are free to tell the customers basic facts about Twilio but defer to the Twilio employees (Twilions) at the event if the customers have detailed questions.
 
 Menu:

@@ -68,33 +68,46 @@ function getAvailableOptions(indiciesOfFullTitles: string[], language: Language)
   if (language === "pt-BR") {
     return `O que você gostaria? As opções são:\n${indiciesOfFullTitles.join("\n")}`;
   }
+  if (language === "fr") {
+    return `Que souhaitez-vous ? Les options sont :\n${indiciesOfFullTitles.join("\n")}`;
+  }
   return `What would you like? The options are:\n${indiciesOfFullTitles.join("\n")}`;
 }
 
 function getConfirmationVerifiedEmail(language: Language) {
-  return language === "pt-BR"
-    ? `Obrigado! Seu endereço de e-mail foi verificado.`
-    : `Thank you! Your email address has been verified.`;
+  if (language === "pt-BR") return `Obrigado! Seu endereço de e-mail foi verificado.`;
+  if (language === "fr") return `Merci ! Votre adresse e-mail a été vérifiée.`;
+  return `Thank you! Your email address has been verified.`;
 }
 
 function getSampleOrder(language: Language) {
-  return language === "pt-BR"
-    ? `Ou envie uma mensagem com o seu pedido, ex: "{{1}}".`
-    : `Or send a message containing your order, e.g. "{{1}}".`;
+  if (language === "pt-BR") return `Ou envie uma mensagem com o seu pedido, ex: "{{1}}".`;
+  if (language === "fr") return `Ou envoyez un message contenant votre commande, ex : "{{1}}".`;
+  return `Or send a message containing your order, e.g. "{{1}}".`;
 }
 
 function getOrderLimitationNote(language: Language) {
-  return language === "pt-BR"
-    ? `\n\nPS: Cada participante pode pedir até {{0}} por dia.`
-    : `\n\nPS: Every attendee can get up to {{0}} per day.`;
+  if (language === "pt-BR") return `\n\nPS: Cada participante pode pedir até {{0}} por dia.`;
+  if (language === "fr") return `\n\nPS : Chaque participant peut commander jusqu'à {{0}} par jour.`;
+  return `\n\nPS: Every attendee can get up to {{0}} per day.`;
 }
 
 function getMoreDetailsButton(language: Language) {
-  return language === "pt-BR" ? "Mais Detalhes" : "More Details";
+  if (language === "pt-BR") return "Mais Detalhes";
+  if (language === "fr") return "Plus de détails";
+  return "More Details";
 }
 
 function getOrderActionLabel(language: Language) {
-  return language === "pt-BR" ? "Pedir" : "Order a";
+  if (language === "pt-BR") return "Pedir";
+  if (language === "fr") return "Commander";
+  return "Order a";
+}
+
+function langCode(language: Language) {
+  if (language === "pt-BR") return "pt_BR";
+  if (language === "fr") return "fr";
+  return "en";
 }
 
 export function getShowHelpTemplate(
@@ -123,7 +136,7 @@ export function getShowHelpTemplate(
 
   return {
     friendly_name: templateName,
-    language: language === "pt-BR" ? "pt_BR" : "en",
+    language: langCode(language),
     variables,
     types: {
       "twilio/list-picker": {
@@ -162,7 +175,7 @@ export function getReadyToOrderTemplate(
 
   return {
     friendly_name: templateName,
-    language: language === "pt-BR" ? "pt_BR" : "en",
+    language: langCode(language),
     variables,
     types: {
       "twilio/list-picker": {
@@ -199,7 +212,7 @@ export function getReadyToOrderLimitlessTemplate(
 
   return {
     friendly_name: templateName,
-    language: language === "pt-BR" ? "pt_BR" : "en",
+    language: langCode(language),
     variables,
     types: {
       "twilio/list-picker": {
@@ -237,7 +250,7 @@ export function getReadyToOrderWithoutEmailValidationTemplate(
   const body = `${getAvailableOptions(indiciesOfFullTitles, language)}\n${getSampleOrder(language)}${getOrderLimitationNote(language)}`;
   return {
     friendly_name: templateName,
-    language: language === "pt-BR" ? "pt_BR" : "en",
+    language: langCode(language),
     variables,
     types: {
       "twilio/list-picker": {
@@ -274,7 +287,7 @@ export function getReadyToOrderLimitlessWithoutEmailValidationTemplate(
 
   return {
     friendly_name: templateName,
-    language: language === "pt-BR" ? "pt_BR" : "en",
+    language: langCode(language),
     variables,
     types: {
       "twilio/list-picker": {
@@ -308,11 +321,13 @@ export function getEventRegistrationTemplate(
 
   const body = language === "pt-BR"
     ? `Em qual evento você está? Por favor, responda com o nome do seu evento abaixo. ${getAvailableOptions(indiciesOfFullTitles, language)}`
-    : `Which event are you currently at? Please reply with the name of your event below. ${getAvailableOptions(indiciesOfFullTitles, language)}`;
+    : language === "fr"
+      ? `À quel événement êtes-vous actuellement ? Veuillez répondre avec le nom de votre événement ci-dessous. ${getAvailableOptions(indiciesOfFullTitles, language)}`
+      : `Which event are you currently at? Please reply with the name of your event below. ${getAvailableOptions(indiciesOfFullTitles, language)}`;
 
   return {
     friendly_name: templateName,
-    language: language === "pt-BR" ? "pt_BR" : "en",
+    language: langCode(language),
     variables,
     types: {
       "twilio/quick-reply": {
@@ -332,11 +347,13 @@ export function getOrderCancelledTemplate(
 ): WhatsAppTemplateConfig {
   const body = language === "pt-BR"
     ? "Seu pedido de {{0}} (*#{{1}}*) foi cancelado. Por favor, fale com nossa equipe se achar que algo está errado."
-    : "Your {{0}} order (*#{{1}}*) has been cancelled. Please check with our staff if you think something is wrong.";
+    : language === "fr"
+      ? "Votre commande de {{0}} (*#{{1}}*) a été annulée. Veuillez vérifier auprès de notre équipe si vous pensez qu'il y a une erreur."
+      : "Your {{0}} order (*#{{1}}*) has been cancelled. Please check with our staff if you think something is wrong.";
 
   return {
     friendly_name: templateName,
-    language: language === "pt-BR" ? "pt_BR" : "en",
+    language: langCode(language),
     variables: {
       "0": "order item",
       "1": "order number",
@@ -356,23 +373,31 @@ export function getOrderReadyTemplate(
 ): WhatsAppTemplateConfig {
   const cardBody = language === "pt-BR"
     ? "Pule a fila e retire seu {{0}} no {{2}}. \nEsteja pronto para compartilhar o número do seu pedido no balcão."
-    : "Skip the line and collect your {{0}} at the {{2}}. \nBe ready to share your order number at the counter.";
+    : language === "fr"
+      ? "Évitez la file d'attente et récupérez votre {{0}} au {{2}}. \nSoyez prêt(e) à partager votre numéro de commande au comptoir."
+      : "Skip the line and collect your {{0}} at the {{2}}. \nBe ready to share your order number at the counter.";
 
   const cardTitle = language === "pt-BR"
     ? "Pule a fila e retire seu {{0}} no {{2}}. \n\n"
-    : "Skip the line and collect your {{0}} at the {{2}}. \n\n";
+    : language === "fr"
+      ? "Évitez la file d'attente et récupérez votre {{0}} au {{2}}. \n\n"
+      : "Skip the line and collect your {{0}} at the {{2}}. \n\n";
 
   const cardBodyShort = language === "pt-BR"
     ? "Peça pelo número do pedido *{{1}}* ao retirar."
-    : "Ask for order number *{{1}}* when you pick it up.";
+    : language === "fr"
+      ? "Demandez le numéro de commande *{{1}}* lors du retrait."
+      : "Ask for order number *{{1}}* when you pick it up.";
 
   const textBody = language === "pt-BR"
     ? "Seu {{0}} está pronto.\n\nPule a fila e retire agora no {{2}}. \n\nPeça pelo número do pedido *{{1}}* ao retirar."
-    : "Your {{0}} is ready.\n\nSkip the line and collect it at the {{2}} right away. \n\nAsk for order number *{{1}}* when you pick it up.";
+    : language === "fr"
+      ? "Votre {{0}} est prêt.\n\nÉvitez la file d'attente et récupérez-le maintenant au {{2}}. \n\nDemandez le numéro de commande *{{1}}* lors du retrait."
+      : "Your {{0}} is ready.\n\nSkip the line and collect it at the {{2}} right away. \n\nAsk for order number *{{1}}* when you pick it up.";
 
   return {
     friendly_name: templateName,
-    language: language === "pt-BR" ? "pt_BR" : "en",
+    language: langCode(language),
     variables: {
       "0": "order item",
       "1": "order number",
@@ -405,11 +430,13 @@ export function getOrderReminderTemplate(
 ): WhatsAppTemplateConfig {
   const body = language === "pt-BR"
     ? "Ei! Não esqueça seu {{0}}. Você pode pular a fila e retirá-lo em {{2}}. \n\nPeça pelo número do pedido #{{1}} ao retirar."
-    : "Heya! Don't forget your {{0}}. You can skip the queue and collect it at {{2}}. \n\nAsk for order number #{{1}} when you pick it up.";
+    : language === "fr"
+      ? "Coucou ! N'oubliez pas votre {{0}}. Vous pouvez éviter la file d'attente et le récupérer au {{2}}. \n\nDemandez le numéro de commande #{{1}} lors du retrait."
+      : "Heya! Don't forget your {{0}}. You can skip the queue and collect it at {{2}}. \n\nAsk for order number #{{1}} when you pick it up.";
 
   return {
     friendly_name: templateName,
-    language: language === "pt-BR" ? "pt_BR" : "en",
+    language: langCode(language),
     variables: {
       "0": "order item",
       "1": "order number",
@@ -430,15 +457,19 @@ export function getOrderConfirmationTemplate(
 ): WhatsAppTemplateConfig {
   const header_text = language === "pt-BR"
     ? "Seu pedido de {{0}} está confirmado!"
-    : "Your {{0}} order is confirmed!";
+    : language === "fr"
+      ? "Votre commande de {{0}} est confirmée !"
+      : "Your {{0}} order is confirmed!";
 
   const body = language === "pt-BR"
     ? `*Seu número de pedido é #{{1}}*\n\nVamos te avisar quando o pedido estiver pronto — ou envie "fila" para ver sua posição atual\n\nEnvie "alterar pedido para <novo pedido>" para alterar seu pedido ou "cancelar pedido" para cancelá-lo.`
-    : `*Your order number is #{{1}}*\n\nWe'll text you back when the order is ready -- or send "queue" to determine your current position\n\nSend  "change order to <new order>" to change your existing order or "cancel order" to cancel it.`;
+    : language === "fr"
+      ? `*Votre numéro de commande est #{{1}}*\n\nNous vous préviendrons dès que la commande sera prête — ou envoyez "file" pour connaître votre position actuelle\n\nEnvoyez "changer commande pour <nouvelle commande>" pour modifier votre commande ou "annuler commande" pour l'annuler.`
+      : `*Your order number is #{{1}}*\n\nWe'll text you back when the order is ready -- or send "queue" to determine your current position\n\nSend  "change order to <new order>" to change your existing order or "cancel order" to cancel it.`;
 
   return {
     friendly_name: templateName,
-    language: language === "pt-BR" ? "pt_BR" : "en",
+    language: langCode(language),
     variables: {
       "0": "order item",
       "1": "order number",

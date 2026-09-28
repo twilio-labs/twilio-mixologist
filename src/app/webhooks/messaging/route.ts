@@ -280,7 +280,9 @@ export async function POST(request: Request) {
       sender,
       eventLang(event) === "pt-BR"
         ? "✅ Pronto! Seus dados foram excluídos do nosso sistema."
-        : "✅ Done! Your data has been deleted from our system.",
+        : eventLang(event) === "fr"
+          ? "✅ C'est fait ! Vos données ont été supprimées de notre système."
+          : "✅ Done! Your data has been deleted from our system.",
       undefined,
       undefined,
       from,

@@ -7,7 +7,7 @@ const axios = require("axios");
 const { SERVICE_INSTANCE_PREFIX = "" } = process.env;
 const formattedServicePrefix = SERVICE_INSTANCE_PREFIX.toLowerCase();
 
-const LANG_SUFFIX: Record<Language, string> = { "en": "", "pt-BR": "_ptbr" };
+const LANG_SUFFIX: Record<Language, string> = { "en": "", "pt-BR": "_ptbr", "fr": "_fr" };
 
 function modeToBeverage(mode: modes, language: Language, plural: boolean = false) {
   if (language === "pt-BR") {
@@ -19,6 +19,17 @@ function modeToBeverage(mode: modes, language: Language, plural: boolean = false
           ? plural ? "chás" : "chá"
           : mode === "waffles"
             ? plural ? "waffles" : "waffle"
+          : plural ? "cafés" : "café";
+  }
+  if (language === "fr") {
+    return mode === "smoothie"
+      ? plural ? "smoothies" : "smoothie"
+      : mode === "cocktail"
+        ? plural ? "boissons" : "boisson"
+        : mode === "tea"
+          ? plural ? "thés" : "thé"
+          : mode === "waffles"
+            ? plural ? "gaufres" : "gaufre"
           : plural ? "cafés" : "café";
   }
   return mode === "smoothie"

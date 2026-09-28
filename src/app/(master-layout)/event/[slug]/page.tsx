@@ -423,6 +423,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
                   <SelectContent>
                     <SelectItem value="en">English</SelectItem>
                     <SelectItem value="pt-BR">Português (Brasil)</SelectItem>
+                    <SelectItem value="fr">Français</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -443,7 +444,9 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
                   ? `"${internalEvent.welcomeMessage.trim()}"`
                   : (internalEvent.language ?? "en") === "pt-BR"
                     ? `Default: "A Twilio te dá as boas-vindas!"`
-                    : `Default: "Twilio welcomes you!"`}
+                    : (internalEvent.language ?? "en") === "fr"
+                      ? `Default: "Twilio vous souhaite la bienvenue !"`
+                      : `Default: "Twilio welcomes you!"`}
               </p>
             </div>
 
