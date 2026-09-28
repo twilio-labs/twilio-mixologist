@@ -20,6 +20,7 @@ export type MixologistStats = {
   cancelledCount: number;
   attendeeCount: number;
   mode: modes;
+  lastClearedAt?: string;
 };
 
 export async function calcStatsForEvent(
@@ -124,6 +125,7 @@ export async function calcStatsForEvent(
     mode: event.selection.mode,
     cancelledCount: event.cancelledCount || 0,
     deliveredCount: event.deliveredCount || 0,
+    lastClearedAt: event.lastClearedAt,
     attendeeCount: attendees.length,
     countries: attendeeCountryCounter,
     channels: channelCounter,

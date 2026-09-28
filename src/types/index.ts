@@ -76,6 +76,7 @@ export interface Event {
   language?: Language;
   cancelledCount?: number;
   deliveredCount?: number;
+  lastClearedAt?: string;
 }
 
 export interface SegmentData {

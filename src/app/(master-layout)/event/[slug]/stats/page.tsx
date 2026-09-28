@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 
 import { Coffee, CupSoda, Globe2Icon, MessageCircleIcon, User2Icon } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
 import OrdersChart from "./ordersChart";
 import { modes } from "@/config/menus";
 import FunnelChart from "./funnelChart";
@@ -108,6 +109,14 @@ function StatsPage({ params }: { params: Promise<{ slug: string }> }) {
                     <p className="text-sm text-gray-600">
                       {stats.cancelledCount || "No"} cancelled orders
                     </p>
+                    {stats.lastClearedAt && (
+                      <p className="text-xs text-gray-500 mt-1">
+                        Last cleared{" "}
+                        {formatDistanceToNow(new Date(stats.lastClearedAt), {
+                          addSuffix: true,
+                        })}
+                      </p>
+                    )}
                   </CardContent>
                 ) : (
                   <CardContent>
