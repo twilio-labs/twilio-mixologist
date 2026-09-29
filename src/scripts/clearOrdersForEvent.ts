@@ -31,6 +31,7 @@ if (!eventName || eventName.startsWith("/") || eventName.includes("=")) {
     await updateSyncMapItem("Events", eventName, {
       cancelledCount: 0,
       deliveredCount: 0,
+      lastClearedAt: new Date().toISOString(),
     });
   } catch (e: any) {
     if (e.code === 20404) {
