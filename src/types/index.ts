@@ -76,6 +76,9 @@ export interface Event {
   language?: Language;
   cancelledCount?: number;
   deliveredCount?: number;
+  // ISO string; wheel-of-twilio stores an epoch-ms `clearedAt` for the same
+  // concept. Kept as separate fields on purpose — the CSV cleanser doesn't
+  // consume this field, so the shape divergence has no downstream effect.
   lastClearedAt?: string;
 }
 
