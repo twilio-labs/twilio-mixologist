@@ -54,6 +54,23 @@ async function getActiveEvents() {
   return findSyncMapItems(NEXT_PUBLIC_EVENTS_MAP, { state: EventState.OPEN });
 }
 
+/**
+ * Match the QR/CTA reorder phrase across the English default template and the
+ * pt-BR translation that appears in the field. Prefix-only, case- and
+ * whitespace-insensitive — trailing event name and emoji vary per event.
+ *
+ * English default (buildDefaultCta): "Send this message to order a <noun> at <event> <emoji>"
+ * pt-BR variant seen in field:       "Envie esta mensagem para pedir um <noun> no <event> <emoji>"
+ */
+const REORDER_CTA_PREFIXES = [
+  "send this message to order",
+  "envie esta mensagem para pedir",
+];
+function isReorderCta(body: string): boolean {
+  const normalized = body.trim().toLowerCase();
+  return REORDER_CTA_PREFIXES.some((p) => normalized.startsWith(p));
+}
+
 /** Send the "ready to order" sequence: menu + data policy + optional modifiers note. */
 async function sendReadyToOrderSequence(sender: string, event: Event, from: string) {
   const message = await getReadyToOrderMessage(
@@ -339,6 +356,16 @@ export async function POST(request: Request) {
   if (event.state === EventState.CLOSED) {
     const message = getPausedEventMessage(eventLang(event));
     sendMessage(sender, message, undefined, undefined, from);
+    return new Response(emptyTwiml(), { status: 200, headers: { "Content-Type": "text/xml" } });
+  }
+
+  // Returning attendees who re-tap the "Send this message to order a ..." QR/CTA
+  // link send that literal phrase into the conversation. gpt-4o-mini reads the
+  // "send this message" opening as a meta-instruction ("send this elsewhere")
+  // rather than an order intent, then refuses via log_feedback. Short-circuit
+  // deterministically: replay the ready-to-order sequence and skip the LLM.
+  if (isReorderCta(incomingMessageBody)) {
+    await sendReadyToOrderSequence(sender, event, from);
     return new Response(emptyTwiml(), { status: 200, headers: { "Content-Type": "text/xml" } });
   }
 
