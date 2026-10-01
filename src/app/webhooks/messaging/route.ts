@@ -258,9 +258,18 @@ export async function POST(request: Request) {
     if (result) return result;
   }
 
-  // "Forget me" / "Esqueça de mim" — delete all stored data for this attendee
+  // "Forget me" / "Esqueça de mim" / "Oubliez-moi" — delete all stored data for this attendee
   const lowerBody = incomingMessageBody.toLowerCase();
-  if (lowerBody.includes("forget me") || lowerBody.includes("esqueça de mim") || lowerBody.includes("esqueca de mim")) {
+  const forgetMeTriggers = [
+    "forget me",
+    "esqueça de mim",
+    "esqueca de mim",
+    "oubliez-moi",
+    "oubliez moi",
+    "oublie-moi",
+    "oublie moi",
+  ];
+  if (forgetMeTriggers.some((trigger) => lowerBody.includes(trigger))) {
     const profileId = event?.leadCollection === "WeAreDevs_QR"
       ? (attendeeRecord as any).profileId as string | undefined
       : undefined;
