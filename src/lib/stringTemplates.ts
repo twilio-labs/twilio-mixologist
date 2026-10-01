@@ -105,7 +105,7 @@ export function getWelcomeMessage(
   const defaultWelcome = language === "pt-BR"
     ? `A Twilio te dá as boas-vindas! Está pronto para um ${modeToBeverage(mode, language)} por nossa conta? 🎉`
     : language === "fr"
-      ? `Twilio vous souhaite la bienvenue ! Prêt(e) pour un(e) ${modeToBeverage(mode, language)} offert(e) par nos soins ? 🎉`
+      ? `Twilio vous souhaite la bienvenue ! Nous vous offrons votre ${modeToBeverage(mode, language)} 🎉`
       : `Twilio welcomes you! Are you ready for a ${modeToBeverage(mode, language)} on us? 🎉`;
 
   const welcomeMessage = customWelcomeMessage || defaultWelcome;
@@ -142,8 +142,8 @@ export function getWelcomeBackMessage(
   if (language === "fr") {
     const welcomeMessageSuffix =
       customWelcomeMessage ||
-      `\nPrêt(e) pour un(e) ${modeToBeverage(mode, language)} offert(e) par nos soins ?`;
-    return `Ravis de vous revoir. Vous êtes maintenant à ${event}.\n${welcomeMessageSuffix}`;
+      `\nNous vous offrons votre ${modeToBeverage(mode, language)}, envie de commander ?`;
+    return `Quel plaisir de vous revoir ! Vous êtes maintenant à ${event}.\n${welcomeMessageSuffix}`;
   }
   const welcomeMessageSuffix =
     customWelcomeMessage ||

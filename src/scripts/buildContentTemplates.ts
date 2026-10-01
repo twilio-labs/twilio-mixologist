@@ -374,7 +374,7 @@ export function getOrderReadyTemplate(
   const cardBody = language === "pt-BR"
     ? "Pule a fila e retire seu {{0}} no {{2}}. \nEsteja pronto para compartilhar o número do seu pedido no balcão."
     : language === "fr"
-      ? "Évitez la file d'attente et récupérez votre {{0}} au {{2}}. \nSoyez prêt(e) à partager votre numéro de commande au comptoir."
+      ? "Évitez la file d'attente et récupérez votre {{0}} au {{2}}. \nPensez à montrer votre numéro de commande au comptoir."
       : "Skip the line and collect your {{0}} at the {{2}}. \nBe ready to share your order number at the counter.";
 
   const cardTitle = language === "pt-BR"
@@ -392,7 +392,7 @@ export function getOrderReadyTemplate(
   const textBody = language === "pt-BR"
     ? "Seu {{0}} está pronto.\n\nPule a fila e retire agora no {{2}}. \n\nPeça pelo número do pedido *{{1}}* ao retirar."
     : language === "fr"
-      ? "Votre {{0}} est prêt.\n\nÉvitez la file d'attente et récupérez-le maintenant au {{2}}. \n\nDemandez le numéro de commande *{{1}}* lors du retrait."
+      ? "Votre commande est prête : {{0}}.\n\nÉvitez la file d'attente et récupérez-la maintenant au {{2}}. \n\nDemandez le numéro de commande *{{1}}* lors du retrait."
       : "Your {{0}} is ready.\n\nSkip the line and collect it at the {{2}} right away. \n\nAsk for order number *{{1}}* when you pick it up.";
 
   return {

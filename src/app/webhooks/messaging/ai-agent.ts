@@ -79,7 +79,7 @@ async function toolPlaceOrder(
       return `Você já tem um pedido ativo (#${lastOrder!.index}) de ${(lastOrder!.data as any).item}. Cancele ou altere antes de continuar.`;
     }
     if (language === "fr") {
-      return `Vous avez déjà une commande en cours (#${lastOrder!.index}) pour un(e) ${(lastOrder!.data as any).item}. Annulez-la ou modifiez-la d'abord.`;
+      return `Vous avez déjà une commande en cours (#${lastOrder!.index} : ${(lastOrder!.data as any).item}). Annulez-la ou modifiez-la d'abord.`;
     }
     return `You already have an active order (#${lastOrder!.index}) for a ${(lastOrder!.data as any).item}. Cancel or modify it first.`;
   }
@@ -134,7 +134,7 @@ async function toolPlaceOrder(
     return `Pedido #${orderNumber} de ${item}${modifiers.length > 0 ? ` com ${modifiers.join(", ")}` : ""} realizado com sucesso.`;
   }
   if (language === "fr") {
-    return `Commande #${orderNumber} pour un(e) ${item}${modifiers.length > 0 ? ` avec ${modifiers.join(", ")}` : ""} passée avec succès.`;
+    return `Commande #${orderNumber} (${item}${modifiers.length > 0 ? ` avec ${modifiers.join(", ")}` : ""}) passée avec succès.`;
   }
   return `Order #${orderNumber} for a ${item}${modifiers.length > 0 ? ` with ${modifiers.join(", ")}` : ""} placed successfully.`;
 }
@@ -229,8 +229,8 @@ async function toolGetOrderStatus(event: Event, phone: string): Promise<string> 
       return `Seu último pedido (#${lastOrder.index}) de ${item} está com status: ${statusLabel}.`;
     }
     if (language === "fr") {
-      const statusLabel = { ready: "prêt", delivered: "livré", cancelled: "annulé" }[status as string] ?? status;
-      return `Votre dernière commande (#${lastOrder.index}) pour un(e) ${item} a le statut : ${statusLabel}.`;
+      const statusLabel = { ready: "prête", delivered: "livrée", cancelled: "annulée" }[status as string] ?? status;
+      return `Votre dernière commande (#${lastOrder.index} : ${item}) est ${statusLabel}.`;
     }
     return `Your last order (#${lastOrder.index}) for a ${item} has status: ${status}.`;
   }
@@ -243,8 +243,8 @@ async function toolGetOrderStatus(event: Event, phone: string): Promise<string> 
   }
   if (language === "fr") {
     return pos !== null
-      ? `Votre commande (#${lastOrder.index}) pour un(e) ${item} est en position ${pos} dans la file d'attente.`
-      : `Votre commande (#${lastOrder.index}) pour un(e) ${item} est en cours de préparation.`;
+      ? `Votre commande (#${lastOrder.index} : ${item}) est en position ${pos} dans la file d'attente.`
+      : `Votre commande (#${lastOrder.index} : ${item}) est en cours de préparation.`;
   }
   return pos !== null
     ? `Your order (#${lastOrder.index}) for a ${item} is queued at position ${pos}.`
