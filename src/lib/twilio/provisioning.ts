@@ -11,10 +11,6 @@ const {
   SERVICE_INSTANCE_PREFIX = "",
 } = process.env;
 
-export async function getLookupService() {
-  return twilioClient.lookups.v2;
-}
-
 export async function createServiceInstances() {
   let output = "";
   let messagingService, syncService: ServiceInstance;

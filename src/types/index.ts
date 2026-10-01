@@ -24,7 +24,7 @@ export enum modes {
   waffles = "waffles",
 }
 
-export type Language = "en" | "pt-BR";
+export type Language = "en" | "pt-BR" | "fr";
 
 export interface MenuItem {
   shortTitle: string;

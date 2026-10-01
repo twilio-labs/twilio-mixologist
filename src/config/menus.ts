@@ -91,6 +91,11 @@ export default {
         description: "Espresso shots with cold water and ice.",
       },
       {
+        shortTitle: "Filter Coffee",
+        title: "Filter Coffee",
+        description: "Slowly filtered coffee, smooth and clean",
+      },
+      {
         shortTitle: "Cold Brew",
         title: "Cold Brew",
         description: "Slow-steeped coffee served chilled over ice.",
@@ -246,6 +251,7 @@ export default {
       "Extra Shot",
       "Chantilly",
       "Milk",
+      "Dairy Milk",
       "Whole Milk",
       "Soy Milk",
       "Almond Milk",

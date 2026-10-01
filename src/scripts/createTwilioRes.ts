@@ -25,8 +25,8 @@ const CONTENT_PREFIX = nextConfig?.env?.CONTENT_PREFIX;
 
 let { PUBLIC_BASE_URL = "", OVERRIDE_TEMPLATES } = process.env;
 
-const LANGUAGES: Language[] = ["en", "pt-BR"];
-const LANG_SUFFIX: Record<Language, string> = { "en": "", "pt-BR": "_ptbr" };
+const LANGUAGES: Language[] = ["en", "pt-BR", "fr"];
+const LANG_SUFFIX: Record<Language, string> = { "en": "", "pt-BR": "_ptbr", "fr": "_fr" };
 
 (async () => {
   await createServiceInstances();

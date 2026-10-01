@@ -1,13 +1,14 @@
 "use server";
 
 import type { modes, Event, Language } from "@/types";
+import { getSampleOrder } from "@/lib/stringTemplates";
 
 const axios = require("axios");
 
 const { SERVICE_INSTANCE_PREFIX = "" } = process.env;
 const formattedServicePrefix = SERVICE_INSTANCE_PREFIX.toLowerCase();
 
-const LANG_SUFFIX: Record<Language, string> = { "en": "", "pt-BR": "_ptbr" };
+const LANG_SUFFIX: Record<Language, string> = { "en": "", "pt-BR": "_ptbr", "fr": "_fr" };
 
 function modeToBeverage(mode: modes, language: Language, plural: boolean = false) {
   if (language === "pt-BR") {
@@ -19,6 +20,17 @@ function modeToBeverage(mode: modes, language: Language, plural: boolean = false
           ? plural ? "chás" : "chá"
           : mode === "waffles"
             ? plural ? "waffles" : "waffle"
+          : plural ? "cafés" : "café";
+  }
+  if (language === "fr") {
+    return mode === "smoothie"
+      ? plural ? "smoothies" : "smoothie"
+      : mode === "cocktail"
+        ? plural ? "boissons" : "boisson"
+        : mode === "tea"
+          ? plural ? "thés" : "thé"
+          : mode === "waffles"
+            ? plural ? "gaufres" : "gaufre"
           : plural ? "cafés" : "café";
   }
   return mode === "smoothie"
@@ -158,12 +170,9 @@ export async function getReadyToOrderMessage(
   emailValidationSuffix: boolean,
   language: Language = "en",
 ) {
-  const { mode, items, modifiers } = event.selection;
+  const { mode } = event.selection;
   const maxOrders = `${maxNumberOrders} ${modeToBeverage(mode, language, maxNumberOrders !== 1)}`;
-  let sampleOrder = items[1].title;
-  if (modifiers.length > 0) {
-    sampleOrder += ` with ${modifiers[modifiers.length - 1]}`;
-  }
+  const sampleOrder = getSampleOrder(event.selection, language);
 
   const limitess = maxNumberOrders >= 50 ? "_limitless" : "";
   const emailSuffix = emailValidationSuffix ? "_without_email" : "";

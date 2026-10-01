@@ -2,7 +2,6 @@
 
 import { fetchSegmentTraits } from "@/lib/twilio";
 
-export type { SegmentData } from "@/types";
 import type { SegmentData } from "@/types";
 
 export async function checkSegmentTraits(

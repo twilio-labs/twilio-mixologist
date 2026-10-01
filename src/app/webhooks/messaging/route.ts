@@ -31,6 +31,7 @@ import {
   getPausedEventMessage,
   getWelcomeBackMessage,
   getWelcomeMessage,
+  isForgetMeRequest,
 } from "@/lib/stringTemplates";
 import type { Event } from "@/types";
 import { handleQrMode, createQrModeMemoryClient } from "./qr-mode";
@@ -258,9 +259,8 @@ export async function POST(request: Request) {
     if (result) return result;
   }
 
-  // "Forget me" / "Esqueça de mim" — delete all stored data for this attendee
-  const lowerBody = incomingMessageBody.toLowerCase();
-  if (lowerBody.includes("forget me") || lowerBody.includes("esqueça de mim") || lowerBody.includes("esqueca de mim")) {
+  // "Forget me" / "Esqueça de mim" / "Oubliez-moi" — delete all stored data for this attendee
+  if (isForgetMeRequest(incomingMessageBody)) {
     const profileId = event?.leadCollection === "WeAreDevs_QR"
       ? (attendeeRecord as any).profileId as string | undefined
       : undefined;
@@ -280,7 +280,9 @@ export async function POST(request: Request) {
       sender,
       eventLang(event) === "pt-BR"
         ? "✅ Pronto! Seus dados foram excluídos do nosso sistema."
-        : "✅ Done! Your data has been deleted from our system.",
+        : eventLang(event) === "fr"
+          ? "✅ C'est fait\u00A0! Vos données ont été supprimées de notre système."
+          : "✅ Done! Your data has been deleted from our system.",
       undefined,
       undefined,
       from,

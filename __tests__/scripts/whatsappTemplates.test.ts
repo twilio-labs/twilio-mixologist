@@ -10,6 +10,11 @@ describe("getShowHelpTemplate", () => {
     expect(result).toHaveProperty("types");
   });
 
+  test("should map French to the 'fr' Content API language code", () => {
+    const result = getShowHelpTemplate(1, "testTemplate", "fr");
+    expect(result).toHaveProperty("language", "fr");
+  });
+
   test("should return an object with the correct number of variables", () => {
     const numOptions = 2;
     const result = getShowHelpTemplate(numOptions, "testTemplate");

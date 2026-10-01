@@ -28,4 +28,4 @@ export {
   createWhatsAppTemplate,
 } from "./content-templates";
 export { createToken } from "./auth";
-export { getLookupService, createServiceInstances } from "./provisioning";
+export { createServiceInstances } from "./provisioning";
