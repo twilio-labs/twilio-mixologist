@@ -450,38 +450,6 @@ export function getOrderReminderTemplate(
   };
 }
 
-export function getOrderConfirmationTemplate(
-  templateName: string,
-  _isBarista: boolean,
-  language: Language = "en",
-): WhatsAppTemplateConfig {
-  const header_text = language === "pt-BR"
-    ? "Seu pedido de {{0}} está confirmado!"
-    : language === "fr"
-      ? "Votre commande de {{0}} est confirmée !"
-      : "Your {{0}} order is confirmed!";
-
-  const body = language === "pt-BR"
-    ? `*Seu número de pedido é #{{1}}*\n\nVamos te avisar quando o pedido estiver pronto — ou envie "fila" para ver sua posição atual\n\nEnvie "alterar pedido para <novo pedido>" para alterar seu pedido ou "cancelar pedido" para cancelá-lo.`
-    : language === "fr"
-      ? `*Votre numéro de commande est #{{1}}*\n\nNous vous préviendrons dès que la commande sera prête — ou envoyez "file" pour connaître votre position actuelle\n\nEnvoyez "changer commande pour <nouvelle commande>" pour modifier votre commande ou "annuler commande" pour l'annuler.`
-      : `*Your order number is #{{1}}*\n\nWe'll text you back when the order is ready -- or send "queue" to determine your current position\n\nSend  "change order to <new order>" to change your existing order or "cancel order" to cancel it.`;
-
-  return {
-    friendly_name: templateName,
-    language: langCode(language),
-    variables: {
-      "0": "order item",
-      "1": "order number",
-    },
-    types: {
-      "twilio/text": {
-        body: `${header_text}\n\n${body}`,
-      },
-    },
-  };
-}
-
 export interface WhatsAppTemplateConfig {
   friendly_name: string;
   language: string;
