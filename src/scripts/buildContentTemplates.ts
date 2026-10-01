@@ -372,7 +372,7 @@ export function getOrderReadyTemplate(
   language: Language = "en",
 ): WhatsAppTemplateConfig {
   const cardBody = language === "pt-BR"
-    ? "Pule a fila e retire seu {{0}} no {{2}}. \nEsteja pronto para compartilhar o número do seu pedido no balcão."
+    ? "Pule a fila e retire seu {{0}} no {{2}}. \nTenha o número do seu pedido em mãos no balcão."
     : language === "fr"
       ? "Évitez la file d'attente et récupérez votre {{0}} au {{2}}. \nPensez à montrer votre numéro de commande au comptoir."
       : "Skip the line and collect your {{0}} at the {{2}}. \nBe ready to share your order number at the counter.";

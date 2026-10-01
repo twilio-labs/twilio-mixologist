@@ -103,7 +103,7 @@ export function getWelcomeMessage(
   language: Language = "en",
 ) {
   const defaultWelcome = language === "pt-BR"
-    ? `A Twilio te dá as boas-vindas! Está pronto para um ${modeToBeverage(mode, language)} por nossa conta? 🎉`
+    ? `A Twilio te dá as boas-vindas! Que tal um ${modeToBeverage(mode, language)} por nossa conta? 🎉`
     : language === "fr"
       ? `Twilio vous souhaite la bienvenue ! Nous vous offrons votre ${modeToBeverage(mode, language)} 🎉`
       : `Twilio welcomes you! Are you ready for a ${modeToBeverage(mode, language)} on us? 🎉`;
@@ -136,7 +136,7 @@ export function getWelcomeBackMessage(
   if (language === "pt-BR") {
     const welcomeMessageSuffix =
       customWelcomeMessage ||
-      `\nEstá pronto para um ${modeToBeverage(mode, language)} por nossa conta?`;
+      `\nQue tal um ${modeToBeverage(mode, language)} por nossa conta?`;
     return `Que bom te ver novamente. Você está agora em ${event}.\n${welcomeMessageSuffix}`;
   }
   if (language === "fr") {
@@ -168,7 +168,7 @@ export function isForgetMeRequest(message: string) {
 
 export function getDataPolicy(mode: string, language: Language = "en") {
   if (language === "pt-BR") {
-    return `Usamos seu número de telefone apenas para notificá-lo sobre nosso serviço de ${mode} e apagamos todas as mensagens e números de telefone posteriormente. Você pode solicitar a exclusão dos seus dados a qualquer momento respondendo "Esqueça de mim".`;
+    return `Usamos seu número de telefone apenas para enviar notificações sobre nosso serviço de ${mode} e apagamos todas as mensagens e números de telefone posteriormente. Você pode solicitar a exclusão dos seus dados a qualquer momento respondendo "Esqueça de mim".`;
   }
   if (language === "fr") {
     return `Nous utilisons votre numéro de téléphone uniquement pour vous informer de notre service de ${mode} et nous supprimons ensuite tous les messages et numéros de téléphone. Vous pouvez demander la suppression de vos données à tout moment en répondant « Oubliez-moi ».`;
