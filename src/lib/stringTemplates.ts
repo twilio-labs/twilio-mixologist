@@ -151,6 +151,14 @@ export function getWelcomeBackMessage(
   return `We're glad to see you again. You're now at ${event}.\n${welcomeMessageSuffix}`;
 }
 
+export function getSampleOrder(selection: Event["selection"]) {
+  const { items, modifiers } = selection;
+  const item = items[1] ?? items[0];
+  if (!item) return "";
+  if (modifiers.length === 0) return item.title;
+  return `${item.title} with ${modifiers[modifiers.length - 1]}`;
+}
+
 const FORGET_ME_TRIGGERS = [
   "forget me",
   "esqueça de mim",

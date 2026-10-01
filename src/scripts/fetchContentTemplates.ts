@@ -1,6 +1,7 @@
 "use server";
 
 import type { modes, Event, Language } from "@/types";
+import { getSampleOrder } from "@/lib/stringTemplates";
 
 const axios = require("axios");
 
@@ -169,12 +170,9 @@ export async function getReadyToOrderMessage(
   emailValidationSuffix: boolean,
   language: Language = "en",
 ) {
-  const { mode, items, modifiers } = event.selection;
+  const { mode } = event.selection;
   const maxOrders = `${maxNumberOrders} ${modeToBeverage(mode, language, maxNumberOrders !== 1)}`;
-  let sampleOrder = items[1].title;
-  if (modifiers.length > 0) {
-    sampleOrder += ` with ${modifiers[modifiers.length - 1]}`;
-  }
+  const sampleOrder = getSampleOrder(event.selection);
 
   const limitess = maxNumberOrders >= 50 ? "_limitless" : "";
   const emailSuffix = emailValidationSuffix ? "_without_email" : "";
