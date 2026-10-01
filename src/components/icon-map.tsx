@@ -41,6 +41,7 @@ const iconMap: { [key: string]: any } = {
   "Cloud Cappuccino": CappuccinoIcon,
   "Espresso Macchiato": EspressoMacchiatoIcon2,
   Coffee: CoffeeIcon,
+  "Filter Coffee": CoffeeIcon,
   Matcha: CoffeeCupIcon,
   Chocolate: CoffeeCupIcon,
   "Hot Chocolate": CoffeeCupIcon,
