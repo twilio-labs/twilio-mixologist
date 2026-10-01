@@ -408,11 +408,11 @@ export function getOrderReadyTemplate(
         actions: [],
         body: cardBody,
         media: [
-          `${baseUrl}/rcs-resources/ready.png`,
+          `${baseUrl}/rcs-resources/ready${language === "pt-BR" ? "_ptbr" : language === "fr" ? "_fr" : ""}.png`,
         ],
       },
       "twilio/card": {
-        media: [`${baseUrl}/rcs-resources/ready.png`],
+        media: [`${baseUrl}/rcs-resources/ready${language === "pt-BR" ? "_ptbr" : language === "fr" ? "_fr" : ""}.png`],
         orientation: "VERTICAL",
         title: cardTitle,
         body: cardBodyShort,
