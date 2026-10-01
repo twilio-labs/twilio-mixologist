@@ -31,6 +31,7 @@ import {
   getPausedEventMessage,
   getWelcomeBackMessage,
   getWelcomeMessage,
+  isForgetMeRequest,
 } from "@/lib/stringTemplates";
 import type { Event } from "@/types";
 import { handleQrMode, createQrModeMemoryClient } from "./qr-mode";
@@ -259,17 +260,7 @@ export async function POST(request: Request) {
   }
 
   // "Forget me" / "Esqueça de mim" / "Oubliez-moi" — delete all stored data for this attendee
-  const lowerBody = incomingMessageBody.toLowerCase();
-  const forgetMeTriggers = [
-    "forget me",
-    "esqueça de mim",
-    "esqueca de mim",
-    "oubliez-moi",
-    "oubliez moi",
-    "oublie-moi",
-    "oublie moi",
-  ];
-  if (forgetMeTriggers.some((trigger) => lowerBody.includes(trigger))) {
+  if (isForgetMeRequest(incomingMessageBody)) {
     const profileId = event?.leadCollection === "WeAreDevs_QR"
       ? (attendeeRecord as any).profileId as string | undefined
       : undefined;

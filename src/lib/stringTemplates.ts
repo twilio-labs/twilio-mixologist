@@ -151,14 +151,29 @@ export function getWelcomeBackMessage(
   return `We're glad to see you again. You're now at ${event}.\n${welcomeMessageSuffix}`;
 }
 
+const FORGET_ME_TRIGGERS = [
+  "forget me",
+  "esqueça de mim",
+  "esqueca de mim",
+  "oubliez-moi",
+  "oubliez moi",
+  "oublie-moi",
+  "oublie moi",
+];
+
+export function isForgetMeRequest(message: string) {
+  const lowerMessage = message.toLowerCase();
+  return FORGET_ME_TRIGGERS.some((trigger) => lowerMessage.includes(trigger));
+}
+
 export function getDataPolicy(mode: string, language: Language = "en") {
   if (language === "pt-BR") {
-    return `Usamos seu número de telefone apenas para notificá-lo sobre nosso serviço de ${mode} e apagamos todas as mensagens e números de telefone posteriormente.`;
+    return `Usamos seu número de telefone apenas para notificá-lo sobre nosso serviço de ${mode} e apagamos todas as mensagens e números de telefone posteriormente. Você pode solicitar a exclusão dos seus dados a qualquer momento respondendo "Esqueça de mim".`;
   }
   if (language === "fr") {
-    return `Nous utilisons votre numéro de téléphone uniquement pour vous informer de notre service de ${mode} et nous supprimons ensuite tous les messages et numéros de téléphone.`;
+    return `Nous utilisons votre numéro de téléphone uniquement pour vous informer de notre service de ${mode} et nous supprimons ensuite tous les messages et numéros de téléphone. Vous pouvez demander la suppression de vos données à tout moment en répondant « Oubliez-moi ».`;
   }
-  return `We only use your phone number to notify you about our ${mode} service and redact all the messages & phone numbers afterward.`;
+  return `We only use your phone number to notify you about our ${mode} service and redact all the messages & phone numbers afterward. You can request to delete your data at any time by replying with "Forget me".`;
 }
 
 export function getPromptForEmail(language: Language = "en") {
