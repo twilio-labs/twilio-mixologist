@@ -47,7 +47,7 @@ export function getModifiersMessage(modifiers: string[], language: Language = "e
       .join("\n")}`;
   }
   if (language === "fr") {
-    return `Vous pouvez ajouter les compléments suivants à votre commande :\n${modifiers
+    return `Vous pouvez ajouter les compléments suivants à votre commande\u00A0:\n${modifiers
       .map((m) => `- ${m}`)
       .join("\n")}`;
   }
@@ -71,7 +71,7 @@ export function getErrorDuringEmailVerificationMessage(error: string, language: 
     return `Ocorreu um erro durante a verificação do e-mail: ${error}`;
   }
   if (language === "fr") {
-    return `Une erreur est survenue lors de la vérification de l'e-mail : ${error}`;
+    return `Une erreur est survenue lors de la vérification de l'e-mail\u00A0: ${error}`;
   }
   return `An error occurred during email verification: ${error}`;
 }
@@ -105,7 +105,7 @@ export function getWelcomeMessage(
   const defaultWelcome = language === "pt-BR"
     ? `A Twilio te dá as boas-vindas! Que tal um ${modeToBeverage(mode, language)} por nossa conta? 🎉`
     : language === "fr"
-      ? `Twilio vous souhaite la bienvenue ! Nous vous offrons votre ${modeToBeverage(mode, language)} 🎉`
+      ? `Twilio vous souhaite la bienvenue\u00A0! Nous vous offrons votre ${modeToBeverage(mode, language)} 🎉`
       : `Twilio welcomes you! Are you ready for a ${modeToBeverage(mode, language)} on us? 🎉`;
 
   const welcomeMessage = customWelcomeMessage || defaultWelcome;
@@ -142,8 +142,8 @@ export function getWelcomeBackMessage(
   if (language === "fr") {
     const welcomeMessageSuffix =
       customWelcomeMessage ||
-      `\nNous vous offrons votre ${modeToBeverage(mode, language)}, envie de commander ?`;
-    return `Quel plaisir de vous revoir ! Vous êtes maintenant à ${event}.\n${welcomeMessageSuffix}`;
+      `\nNous vous offrons votre ${modeToBeverage(mode, language)}, envie de commander\u00A0?`;
+    return `Quel plaisir de vous revoir\u00A0! Vous êtes maintenant à ${event}.\n${welcomeMessageSuffix}`;
   }
   const welcomeMessageSuffix =
     customWelcomeMessage ||
@@ -181,7 +181,7 @@ export function getDataPolicy(mode: string, language: Language = "en") {
     return `Usamos seu número de telefone apenas para enviar notificações sobre nosso serviço de ${mode} e apagamos todas as mensagens e números de telefone posteriormente. Você pode solicitar a exclusão dos seus dados a qualquer momento respondendo "Esqueça de mim".`;
   }
   if (language === "fr") {
-    return `Nous utilisons votre numéro de téléphone uniquement pour vous informer de notre service de ${mode} et nous supprimons ensuite tous les messages et numéros de téléphone. Vous pouvez demander la suppression de vos données à tout moment en répondant « Oubliez-moi ».`;
+    return `Nous utilisons votre numéro de téléphone uniquement pour vous informer de notre service de ${mode} et nous supprimons ensuite tous les messages et numéros de téléphone. Vous pouvez demander la suppression de vos données à tout moment en répondant «\u00A0Oubliez-moi\u00A0».`;
   }
   return `We only use your phone number to notify you about our ${mode} service and redact all the messages & phone numbers afterward. You can request to delete your data at any time by replying with "Forget me".`;
 }
@@ -201,7 +201,7 @@ export function getNoActiveEventsMessage(language: Language = "en") {
     return "Que pena! 😕 Parece que não estamos atendendo no momento. Por favor, volte mais tarde. 🙂";
   }
   if (language === "fr") {
-    return "Oh non ! 😕 Il semble que nous ne servions pas pour le moment. Veuillez revenir plus tard. 🙂";
+    return "Oh non\u00A0! 😕 Il semble que nous ne servions pas pour le moment. Veuillez revenir plus tard. 🙂";
   }
   return "Oh no! 😕 It seems like we are not serving at the moment. Please check back later. 🙂";
 }
@@ -211,7 +211,7 @@ export function getPausedEventMessage(language: Language = "en") {
     return "Olá! Pausamos os pedidos por enquanto. Por favor, volte mais tarde.";
   }
   if (language === "fr") {
-    return "Bonjour ! Nous avons mis les commandes en pause pour l'instant. Veuillez revenir plus tard.";
+    return "Bonjour\u00A0! Nous avons mis les commandes en pause pour l'instant. Veuillez revenir plus tard.";
   }
   return "Hey there! We've paused orders for now. Please check back later.";
 }

@@ -69,26 +69,26 @@ function getAvailableOptions(indiciesOfFullTitles: string[], language: Language)
     return `O que você gostaria? As opções são:\n${indiciesOfFullTitles.join("\n")}`;
   }
   if (language === "fr") {
-    return `Que souhaitez-vous ? Les options sont :\n${indiciesOfFullTitles.join("\n")}`;
+    return `Que souhaitez-vous\u00A0? Les options sont\u00A0:\n${indiciesOfFullTitles.join("\n")}`;
   }
   return `What would you like? The options are:\n${indiciesOfFullTitles.join("\n")}`;
 }
 
 function getConfirmationVerifiedEmail(language: Language) {
   if (language === "pt-BR") return `Obrigado! Seu endereço de e-mail foi verificado.`;
-  if (language === "fr") return `Merci ! Votre adresse e-mail a été vérifiée.`;
+  if (language === "fr") return `Merci\u00A0! Votre adresse e-mail a été vérifiée.`;
   return `Thank you! Your email address has been verified.`;
 }
 
 function getSampleOrder(language: Language) {
   if (language === "pt-BR") return `Ou envie uma mensagem com o seu pedido, ex: "{{1}}".`;
-  if (language === "fr") return `Ou envoyez un message contenant votre commande, ex : "{{1}}".`;
+  if (language === "fr") return `Ou envoyez un message contenant votre commande, ex\u00A0: "{{1}}".`;
   return `Or send a message containing your order, e.g. "{{1}}".`;
 }
 
 function getOrderLimitationNote(language: Language) {
   if (language === "pt-BR") return `\n\nPS: Cada participante pode pedir até {{0}} por dia.`;
-  if (language === "fr") return `\n\nPS : Chaque participant peut commander jusqu'à {{0}} par jour.`;
+  if (language === "fr") return `\n\nPS\u00A0: Chaque participant peut commander jusqu'à {{0}} par jour.`;
   return `\n\nPS: Every attendee can get up to {{0}} per day.`;
 }
 
@@ -322,7 +322,7 @@ export function getEventRegistrationTemplate(
   const body = language === "pt-BR"
     ? `Em qual evento você está? Por favor, responda com o nome do seu evento abaixo. ${getAvailableOptions(indiciesOfFullTitles, language)}`
     : language === "fr"
-      ? `À quel événement êtes-vous actuellement ? Veuillez répondre avec le nom de votre événement ci-dessous. ${getAvailableOptions(indiciesOfFullTitles, language)}`
+      ? `À quel événement êtes-vous actuellement\u00A0? Veuillez répondre avec le nom de votre événement ci-dessous. ${getAvailableOptions(indiciesOfFullTitles, language)}`
       : `Which event are you currently at? Please reply with the name of your event below. ${getAvailableOptions(indiciesOfFullTitles, language)}`;
 
   return {
@@ -392,7 +392,7 @@ export function getOrderReadyTemplate(
   const textBody = language === "pt-BR"
     ? "Seu {{0}} está pronto.\n\nPule a fila e retire agora no {{2}}. \n\nPeça pelo número do pedido *{{1}}* ao retirar."
     : language === "fr"
-      ? "Votre commande est prête : {{0}}.\n\nÉvitez la file d'attente et récupérez-la maintenant au {{2}}. \n\nDemandez le numéro de commande *{{1}}* lors du retrait."
+      ? "Votre commande est prête\u00A0: {{0}}.\n\nÉvitez la file d'attente et récupérez-la maintenant au {{2}}. \n\nDemandez le numéro de commande *{{1}}* lors du retrait."
       : "Your {{0}} is ready.\n\nSkip the line and collect it at the {{2}} right away. \n\nAsk for order number *{{1}}* when you pick it up.";
 
   return {
@@ -431,7 +431,7 @@ export function getOrderReminderTemplate(
   const body = language === "pt-BR"
     ? "Ei! Não esqueça seu {{0}}. Você pode pular a fila e retirá-lo em {{2}}. \n\nPeça pelo número do pedido #{{1}} ao retirar."
     : language === "fr"
-      ? "Coucou ! N'oubliez pas votre {{0}}. Vous pouvez éviter la file d'attente et le récupérer au {{2}}. \n\nDemandez le numéro de commande #{{1}} lors du retrait."
+      ? "Coucou\u00A0! N'oubliez pas votre {{0}}. Vous pouvez éviter la file d'attente et le récupérer au {{2}}. \n\nDemandez le numéro de commande #{{1}} lors du retrait."
       : "Heya! Don't forget your {{0}}. You can skip the queue and collect it at {{2}}. \n\nAsk for order number #{{1}} when you pick it up.";
 
   return {

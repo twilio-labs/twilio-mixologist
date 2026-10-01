@@ -445,7 +445,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
                   : (internalEvent.language ?? "en") === "pt-BR"
                     ? `Default: "A Twilio te dá as boas-vindas!"`
                     : (internalEvent.language ?? "en") === "fr"
-                      ? `Default: "Twilio vous souhaite la bienvenue !"`
+                      ? `Default: "Twilio vous souhaite la bienvenue\u00A0!"`
                       : `Default: "Twilio welcomes you!"`}
               </p>
             </div>

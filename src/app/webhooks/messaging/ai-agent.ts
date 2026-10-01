@@ -63,7 +63,7 @@ async function toolPlaceOrder(
       return `"${item}" não está no cardápio. Itens válidos: ${validItems}.`;
     }
     if (language === "fr") {
-      return `"${item}" n'est pas au menu. Articles valides : ${validItems}.`;
+      return `"${item}" n'est pas au menu. Articles valides\u00A0: ${validItems}.`;
     }
     return `"${item}" is not on the menu. Valid items: ${validItems}.`;
   }
@@ -79,7 +79,7 @@ async function toolPlaceOrder(
       return `Você já tem um pedido ativo (#${lastOrder!.index}) de ${(lastOrder!.data as any).item}. Cancele ou altere antes de continuar.`;
     }
     if (language === "fr") {
-      return `Vous avez déjà une commande en cours (#${lastOrder!.index} : ${(lastOrder!.data as any).item}). Annulez-la ou modifiez-la d'abord.`;
+      return `Vous avez déjà une commande en cours (#${lastOrder!.index}\u00A0: ${(lastOrder!.data as any).item}). Annulez-la ou modifiez-la d'abord.`;
     }
     return `You already have an active order (#${lastOrder!.index}) for a ${(lastOrder!.data as any).item}. Cancel or modify it first.`;
   }
@@ -230,7 +230,7 @@ async function toolGetOrderStatus(event: Event, phone: string): Promise<string> 
     }
     if (language === "fr") {
       const statusLabel = { ready: "prête", delivered: "livrée", cancelled: "annulée" }[status as string] ?? status;
-      return `Votre dernière commande (#${lastOrder.index} : ${item}) est ${statusLabel}.`;
+      return `Votre dernière commande (#${lastOrder.index}\u00A0: ${item}) est ${statusLabel}.`;
     }
     return `Your last order (#${lastOrder.index}) for a ${item} has status: ${status}.`;
   }
@@ -243,8 +243,8 @@ async function toolGetOrderStatus(event: Event, phone: string): Promise<string> 
   }
   if (language === "fr") {
     return pos !== null
-      ? `Votre commande (#${lastOrder.index} : ${item}) est en position ${pos} dans la file d'attente.`
-      : `Votre commande (#${lastOrder.index} : ${item}) est en cours de préparation.`;
+      ? `Votre commande (#${lastOrder.index}\u00A0: ${item}) est en position ${pos} dans la file d'attente.`
+      : `Votre commande (#${lastOrder.index}\u00A0: ${item}) est en cours de préparation.`;
   }
   return pos !== null
     ? `Your order (#${lastOrder.index}) for a ${item} is queued at position ${pos}.`
@@ -271,7 +271,7 @@ export async function runAiAgent(
       return "Só posso ajudar com pedidos de bebida, alterações ou cancelamentos. O que você gostaria?";
     }
     if (language === "fr") {
-      return "Je peux uniquement vous aider à commander, modifier ou annuler une boisson. Que souhaitez-vous ?";
+      return "Je peux uniquement vous aider à commander, modifier ou annuler une boisson. Que souhaitez-vous\u00A0?";
     }
     return "I can only help you order, modify, or cancel a drink. What would you like?";
   }
