@@ -172,7 +172,7 @@ export async function getReadyToOrderMessage(
 ) {
   const { mode } = event.selection;
   const maxOrders = `${maxNumberOrders} ${modeToBeverage(mode, language, maxNumberOrders !== 1)}`;
-  const sampleOrder = getSampleOrder(event.selection);
+  const sampleOrder = getSampleOrder(event.selection, language);
 
   const limitess = maxNumberOrders >= 50 ? "_limitless" : "";
   const emailSuffix = emailValidationSuffix ? "_without_email" : "";

@@ -151,12 +151,14 @@ export function getWelcomeBackMessage(
   return `We're glad to see you again. You're now at ${event}.\n${welcomeMessageSuffix}`;
 }
 
-export function getSampleOrder(selection: Event["selection"]) {
+const WITH: Record<Language, string> = { en: "with", "pt-BR": "com", fr: "avec" };
+
+export function getSampleOrder(selection: Event["selection"], language: Language = "en") {
   const { items, modifiers } = selection;
   const item = items[1] ?? items[0];
   if (!item) return "";
   if (modifiers.length === 0) return item.title;
-  return `${item.title} with ${modifiers[modifiers.length - 1]}`;
+  return `${item.title} ${WITH[language]} ${modifiers[modifiers.length - 1]}`;
 }
 
 const FORGET_ME_TRIGGERS = [

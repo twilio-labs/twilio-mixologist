@@ -32,4 +32,16 @@ describe("getSampleOrder", () => {
     };
     expect(getSampleOrder(selection)).toBe("Cappuccino with Oat Milk");
   });
+
+  test.each([
+    ["pt-BR", "Cappuccino com Oat Milk"],
+    ["fr", "Cappuccino avec Oat Milk"],
+  ] as const)("joins the modifier in %s", (language, expected) => {
+    const selection = {
+      items: [item("Espresso"), item("Cappuccino")],
+      modifiers: ["Oat Milk"],
+      mode: modes.barista,
+    };
+    expect(getSampleOrder(selection, language)).toBe(expected);
+  });
 });
