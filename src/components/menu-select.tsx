@@ -10,26 +10,36 @@ export type { Selection } from "@/types";
 
 const MAX_SELECTABLE_ITEMS = 10;
 
-// Purely decorative checked-state indicator — the surrounding <button> already
+// Purely decorative selection indicator — the surrounding <button> already
 // carries the interactive/checkbox semantics, so this must never render a real
 // <button> (Radix's Checkbox does) or the browser flags a <button> nested in a <button>.
-function CheckboxIndicator({ checked, className }: { checked: boolean; className?: string }) {
+// When `index` is provided, shows the 1-based selection order the end user will
+// see; otherwise falls back to a plain check.
+function SelectionIndicator({
+  checked,
+  index,
+  className,
+}: {
+  checked: boolean;
+  index?: number;
+  className?: string;
+}) {
   return (
     <div
       aria-hidden="true"
       className={cn(
-        "flex h-4 w-4 shrink-0 items-center justify-center rounded-xs border border-primary",
+        "flex h-5 w-5 shrink-0 items-center justify-center rounded-xs border border-primary text-xs font-semibold tabular-nums",
         checked ? "bg-primary text-primary-foreground" : "bg-background",
         className,
       )}
     >
-      {checked && <Check className="h-4 w-4" />}
+      {checked && (index !== undefined ? index : <Check className="h-4 w-4" />)}
     </div>
   );
 }
 
-function menuItemIncluded(menuItem: MenuItemInterface, selection: Selection) {
-  return selection.items.some(
+function menuItemSelectionIndex(menuItem: MenuItemInterface, selection: Selection) {
+  return selection.items.findIndex(
     (item) => (item.originalTitle ?? item.shortTitle) === menuItem.shortTitle,
   );
 }
@@ -80,7 +90,8 @@ export function MenuSelect({
             {/* Items grid */}
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
               {menu.items.map((menuItem) => {
-                const checked = menuItemIncluded(menuItem, selection);
+                const selectionIndex = menuItemSelectionIndex(menuItem, selection);
+                const checked = selectionIndex !== -1;
                 return (
                   <button
                     key={`${mode}-${menuItem.shortTitle}`}
@@ -113,7 +124,10 @@ export function MenuSelect({
                     }`}
                   >
                     <div className="absolute top-2.5 right-2.5">
-                      <CheckboxIndicator checked={checked} />
+                      <SelectionIndicator
+                        checked={checked}
+                        index={checked ? selectionIndex + 1 : undefined}
+                      />
                     </div>
                     <MenuItem
                       title={menuItem.title}
@@ -161,7 +175,7 @@ export function MenuSelect({
                             : "border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50"
                         }`}
                       >
-                        <CheckboxIndicator checked={checked} className="h-3 w-3" />
+                        <SelectionIndicator checked={checked} className="h-3 w-3" />
                         {modifier}
                       </button>
                     );
