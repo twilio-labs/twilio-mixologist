@@ -34,7 +34,16 @@ export async function deleteWhatsAppTemplate(
 // twilio/list-picker — list-picker/interactive-list messages are only
 // usable within an already-open session, never as a pre-approved
 // outbound template. Submitting these always fails, so skip it.
-const RICHEST_TYPES_INELIGIBLE_FOR_APPROVAL = ["twilio/list-picker"];
+//
+// twilio/quick-reply is listed here too because every quick-reply
+// template we build (event_registration) uses templated button titles
+// ({{0}}, {{1}}, …), and WhatsApp rejects approval of button titles
+// containing [_*~{}\n]. If a future quick-reply template uses literal
+// button text, revisit this.
+const RICHEST_TYPES_INELIGIBLE_FOR_APPROVAL = [
+  "twilio/list-picker",
+  "twilio/quick-reply",
+];
 
 export async function createWhatsAppTemplate(
   template: WhatsAppTemplateConfig,
