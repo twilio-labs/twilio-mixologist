@@ -7,6 +7,7 @@ import Header from "./header";
 import { useSyncList, useSyncMap } from "@/provider/syncProvider";
 
 import { useScreenOrientation } from "@/lib/use-screen-orientation";
+import { eventLang } from "@/lib/stringTemplates";
 
 function MenuPage(props: { params: Promise<{ slug: string }> }) {
   const [params, setParams] = useState<{ slug: string } | null>(null);
@@ -40,6 +41,14 @@ function MenuPage(props: { params: Promise<{ slug: string }> }) {
     return <div>Loading...</div>;
   }
 
+  const language = eventLang(internalEvent);
+  const pendingOrdersLabel =
+    language === "pt-BR"
+      ? "Pedidos Pendentes"
+      : language === "fr"
+        ? "Commandes en attente"
+        : "Pending Orders";
+
   // Filter orders to show only pending ones (queued or ready)
   const pendingOrders = Array.isArray(ordersList)
     ? ordersList.filter(
@@ -49,21 +58,20 @@ function MenuPage(props: { params: Promise<{ slug: string }> }) {
     : [];
 
   const itemsCount = internalEvent.selection.items.length;
+  // Pick the column count that leaves the fewest empty cells in the last row,
+  // tiebreaking on fewer rows (= more columns). Keeps every row balanced for
+  // counts like 4/5/6/7/8/9 instead of a full row followed by a lonely pair.
+  const pickColumns = (candidates: number[]) =>
+    candidates.reduce((best, c) => {
+      const waste = (c - (itemsCount % c)) % c;
+      const bestWaste = (best - (itemsCount % best)) % best;
+      if (waste < bestWaste) return c;
+      if (waste === bestWaste && c > best) return c;
+      return best;
+    });
   const columns = screenOrientation.includes("landscape")
-    ? itemsCount > 8
-      ? 5
-      : itemsCount === 3
-        ? 3
-        : itemsCount <= 4
-          ? 2
-          : itemsCount % 3 === 0
-            ? 3
-            : itemsCount % 4 === 0
-              ? 4
-              : 5
-    : itemsCount % 3 === 0
-      ? 3
-      : 2;
+    ? pickColumns([3, 4, 5])
+    : pickColumns([2, 3]);
 
   return (
     <>
@@ -86,7 +94,7 @@ function MenuPage(props: { params: Promise<{ slug: string }> }) {
         {/* Pending Orders List */}
         {pendingOrders.length > 0 && (
           <div className="fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-600 p-4">
-            <h3 className="text-[2.5rem] font-semibold mb-8">Pending Orders</h3>
+            <h3 className="text-[2.5rem] font-semibold mb-8">{pendingOrdersLabel}</h3>
             <div className="flex flex-wrap gap-2 max-h-56 overflow-y-auto">
               {pendingOrders.map((order: any) => (
                 <div
