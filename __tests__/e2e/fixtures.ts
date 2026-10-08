@@ -59,25 +59,43 @@ export async function createOrder(
   status: string,
   originalText: string,
 ) {
-  return Axios.post(
-    `${baseURL}/api/order`,
-    {
-      event: slug,
-      order: {
-        status,
-        item: "Espresso",
-        key: "test-order",
-        address: "+123***123",
-        originalText,
-      },
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Basic ${btoa(process.env.ADMIN_LOGIN || ":")}`,
-      },
-    },
-  );
+  // Retry on transient 5xx — with many parallel Playwright workers each
+  // creating ~60 orders in setup, Twilio Sync's per-list write rate limit
+  // (~10/sec) surfaces as an intermittent 500 from POST /api/order. A short
+  // capped backoff smooths the burst instead of exploding the fixture.
+  const MAX_ATTEMPTS = 5;
+  let lastErr: unknown;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      return await Axios.post(
+        `${baseURL}/api/order`,
+        {
+          event: slug,
+          order: {
+            status,
+            item: "Espresso",
+            key: "test-order",
+            address: "+123***123",
+            originalText,
+          },
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Basic ${btoa(process.env.ADMIN_LOGIN || ":")}`,
+          },
+        },
+      );
+    } catch (e: any) {
+      const status = e?.response?.status;
+      const retriable = status === 429 || (status >= 500 && status < 600);
+      if (!retriable || attempt === MAX_ATTEMPTS) throw e;
+      lastErr = e;
+      const backoffMs = 250 * 2 ** (attempt - 1) + Math.floor(Math.random() * 100);
+      await new Promise((r) => setTimeout(r, backoffMs));
+    }
+  }
+  throw lastErr;
 }
 
 export type TestEvent = { slug: string; name: string };
