@@ -461,6 +461,43 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
                 }
               />
             </div>
+
+            {(internalEvent.leadCollection ?? "MANUAL") === "MANUAL" && (
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <Label htmlFor="emailPromoCode">Verification Email Promo Code</Label>
+                  <Input
+                    id="emailPromoCode"
+                    name="emailPromoCode"
+                    autoComplete="off"
+                    spellCheck={false}
+                    placeholder="e.g. wearedevs-25"
+                    value={internalEvent.emailPromoCode || ""}
+                    onChange={(ev) =>
+                      updateEvent({ ...internalEvent, emailPromoCode: ev.target.value })
+                    }
+                  />
+                  <p className="text-xs text-gray-400">
+                    Adds a $25 Twilio credit block with this code. Leave empty to hide it.
+                  </p>
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="emailShowCodeSnippet">Show Code Snippet in Email</Label>
+                  <div className="flex items-center h-10">
+                    <Switch
+                      id="emailShowCodeSnippet"
+                      checked={internalEvent.emailShowCodeSnippet !== false}
+                      onCheckedChange={(checked) =>
+                        updateEvent({ ...internalEvent, emailShowCodeSnippet: checked })
+                      }
+                    />
+                  </div>
+                  <p className="text-xs text-gray-400">
+                    The &ldquo;sent with a single line of code&rdquo; Verify snippet for developer audiences.
+                  </p>
+                </div>
+              </div>
+            )}
           </CardContent>
         )}
       </Card>

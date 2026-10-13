@@ -141,7 +141,7 @@ export async function handleProfileMode(
     const email = incomingMessageBody.match(regexForEmail)[0];
     let check;
     try {
-      check = await createVerification(email, event.name);
+      check = await createVerification(email, event);
     } catch (error: any) {
       console.error(error);
       sendMessage(
@@ -170,7 +170,7 @@ export async function handleProfileMode(
       const email = incomingMessageBody.match(regexForEmail)[0];
       let check;
       try {
-        check = await createVerification(email, event.name);
+        check = await createVerification(email, event);
       } catch (error: any) {
         console.error(error);
         sendMessage(

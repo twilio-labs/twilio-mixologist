@@ -74,6 +74,10 @@ export interface Event {
   welcomeMessage: string;
   followUpMessage?: string;
   language?: Language;
+  // Verification email content. Unset promo code hides the promo block;
+  // the code snippet shows unless explicitly set to false.
+  emailPromoCode?: string;
+  emailShowCodeSnippet?: boolean;
   cancelledCount?: number;
   deliveredCount?: number;
   // ISO string; wheel-of-twilio stores an epoch-ms `clearedAt` for the same
