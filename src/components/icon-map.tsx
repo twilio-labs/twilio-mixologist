@@ -59,6 +59,7 @@ const iconMap: { [key: string]: any } = {
   "Chai Latte": CupIcon,
   "Matcha Latte": CupIcon,
   "Espresso Martini": WhiteWineIcon,
+  "Non-Alc Espresso Martini": WhiteWineIcon,
   "Maracuia Fitzgerald": WhiteWineIcon,
   Negroni: WhiteWineIcon,
   Macunaíma: WhiteWineIcon,
