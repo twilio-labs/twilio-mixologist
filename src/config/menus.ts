@@ -245,6 +245,12 @@ export default {
         title: "Moka",
         description: "Stovetop-brewed coffee, rich and strong",
       },
+      {
+        shortTitle: "Piccolo",
+        title: "Piccolo",
+        description:
+          "Single ristretto shot topped with warm, silk, microfoam milk, in a small glass",
+      },
     ],
     modifiers: [
       "Decaf",
@@ -261,6 +267,7 @@ export default {
       "Half & Half",
       "Coconut Milk",
       "Rice Milk",
+      "Lactose-free Milk",
       "Sugar Free Vanilla Syrup",
       "Chocolate Caramel Syrup",
       "Vanilla Syrup",
