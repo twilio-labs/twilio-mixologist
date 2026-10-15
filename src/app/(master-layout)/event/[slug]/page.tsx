@@ -258,6 +258,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
               </span>
               <Switch
                 id="event-state"
+                aria-label="Event open"
                 checked={internalEvent.state === EventState.OPEN}
                 onCheckedChange={(newState) =>
                   updateEvent({ ...internalEvent, state: newState ? EventState.OPEN : EventState.ENDED })
