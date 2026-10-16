@@ -98,7 +98,7 @@ The current [Twilio Channels] are:
 
 4. Now you can manually add all the senders you need to the Messaging Services that was just created for you. This can be done in the [Twilio Console](https://twilio.com/console/messaging/services/)
 
-5. Go to the Verify service and make sure it is able to [Send Email Verifications with Verify and Twilio SendGrid](https://www.twilio.com/docs/verify/email)
+5. Go to the Verify service and make sure it is able to [Send Email Verifications with Verify and Twilio SendGrid](https://www.twilio.com/docs/verify/email). To use the branded email templates in `resources/`, see [Verification email templates](DEPLOYMENT.md#verification-email-templates-optional).
 
 6. Connect your Messaging Service to your Conversation Service in the Twilio console.
    1. Turn on 'Handle Inbound Messages with Conversations' [here](https://console.twilio.com/us1/develop/conversations/manage/defaults)

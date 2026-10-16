@@ -7,6 +7,8 @@ import type { Event, Language } from "@/types";
 
 const { TWILIO_VERIFY_SERVICE_SID = "" } = process.env;
 
+const DEFAULT_PROMO_AMOUNT = "$25";
+
 const templateIds: Record<Language, string> = {
   en: env.sendgridTemplateEn,
   "pt-BR": env.sendgridTemplatePtBr,
@@ -33,7 +35,10 @@ export async function createVerification(to: string, event: Event) {
       // must be omitted rather than sent as "false".
       substitutions: {
         "event-name": event.name,
-        ...(promoCode && { promo_code: promoCode }),
+        ...(promoCode && {
+          promo_code: promoCode,
+          promo_amount: event.emailPromoAmount?.trim() || DEFAULT_PROMO_AMOUNT,
+        }),
         ...(event.emailShowCodeSnippet !== false && { show_snippet: "true" }),
       },
     },

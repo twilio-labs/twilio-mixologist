@@ -77,6 +77,8 @@ export interface Event {
   // Verification email content. Unset promo code hides the promo block;
   // the code snippet shows unless explicitly set to false.
   emailPromoCode?: string;
+  // Free text incl. currency, e.g. "$25". Defaults to "$25" when a code is set.
+  emailPromoAmount?: string;
   emailShowCodeSnippet?: boolean;
   cancelledCount?: number;
   deliveredCount?: number;
