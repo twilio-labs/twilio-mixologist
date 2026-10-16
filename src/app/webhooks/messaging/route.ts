@@ -33,6 +33,7 @@ import {
   getWelcomeMessage,
 } from "@/lib/stringTemplates";
 import type { Event } from "@/types";
+import { isReorderCta } from "@/lib/cta";
 import { handleQrMode, createQrModeMemoryClient } from "./qr-mode";
 import { handleProfileMode } from "./profile-mode";
 import { deleteMemoryProfile } from "./memory";
@@ -52,23 +53,6 @@ function twimlResponse(status = 200) {
 
 async function getActiveEvents() {
   return findSyncMapItems(NEXT_PUBLIC_EVENTS_MAP, { state: EventState.OPEN });
-}
-
-/**
- * Match the QR/CTA reorder phrase across the English default template and the
- * pt-BR translation that appears in the field. Prefix-only, case- and
- * whitespace-insensitive — trailing event name and emoji vary per event.
- *
- * English default (buildDefaultCta): "Send this message to order a <noun> at <event> <emoji>"
- * pt-BR variant seen in field:       "Envie esta mensagem para pedir um <noun> no <event> <emoji>"
- */
-const REORDER_CTA_PREFIXES = [
-  "send this message to order",
-  "envie esta mensagem para pedir",
-];
-function isReorderCta(body: string): boolean {
-  const normalized = body.trim().toLowerCase();
-  return REORDER_CTA_PREFIXES.some((p) => normalized.startsWith(p));
 }
 
 /** Send the "ready to order" sequence: menu + data policy + optional modifiers note. */
