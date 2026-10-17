@@ -259,7 +259,7 @@ export default {
       {
         shortTitle: "Non-Alc Espresso Martini",
         title: "Non-Alcoholic Espresso Martini",
-        description: "Espresso Martini without the alcohol",
+        description: "Lyre's Coffee Originale, Espresso, Vanilla Syrup",
       },
     ],
     modifiers: [

@@ -18,6 +18,7 @@ import {
   ChocolateWaffleIcon,
   BerryWaffleIcon,
   WhiteWineIcon,
+  MartiniIcon,
   SmoothieAppleIcon,
 } from "@/components/icons";
 
@@ -58,8 +59,8 @@ const iconMap: { [key: string]: any } = {
   Chai: CupIcon,
   "Chai Latte": CupIcon,
   "Matcha Latte": CupIcon,
-  "Espresso Martini": WhiteWineIcon,
-  "Non-Alc Espresso Martini": WhiteWineIcon,
+  "Espresso Martini": MartiniIcon,
+  "Non-Alc Espresso Martini": MartiniIcon,
   "Maracuia Fitzgerald": WhiteWineIcon,
   Negroni: WhiteWineIcon,
   Macunaíma: WhiteWineIcon,
