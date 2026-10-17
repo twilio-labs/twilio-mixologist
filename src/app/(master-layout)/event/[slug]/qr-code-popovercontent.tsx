@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 import QRCode from "react-qr-code";
 import { modes } from "@/types";
+import { buildDefaultCta } from "@/lib/cta";
 
 function getActionableLink(sender: string, ctaMessage: string) {
   if (sender.startsWith("rcs:")) {
@@ -13,21 +14,6 @@ function getActionableLink(sender: string, ctaMessage: string) {
     return `https://wa.me/${sender.replace("whatsapp:", "")}?text=${encodeURIComponent(ctaMessage)}`;
   }
   return `smsto:${sender}:${ctaMessage}`;
-}
-
-const MODE_COPY: Record<modes, { noun: string; emoji: string }> = {
-  [modes.barista]: { noun: "coffee", emoji: "☕️" },
-  [modes.smoothie]: { noun: "smoothie", emoji: "🥤" },
-  [modes.cocktail]: { noun: "cocktail", emoji: "🍸" },
-  [modes.tea]: { noun: "tea", emoji: "🍵" },
-  [modes.waffles]: { noun: "waffle", emoji: "🧇" },
-};
-
-function buildDefaultCta(mode: modes, eventName: string) {
-  const { noun, emoji } = MODE_COPY[mode];
-  const trimmed = eventName.trim();
-  const suffix = trimmed ? ` at ${trimmed}` : "";
-  return `Send this message to order a ${noun}${suffix} ${emoji}`;
 }
 
 export default function QrPopoverConent({

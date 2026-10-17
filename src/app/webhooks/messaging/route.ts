@@ -34,6 +34,7 @@ import {
   isForgetMeRequest,
 } from "@/lib/stringTemplates";
 import type { Event } from "@/types";
+import { isReorderCta } from "@/lib/cta";
 import { handleQrMode, createQrModeMemoryClient } from "./qr-mode";
 import { handleProfileMode } from "./profile-mode";
 import { deleteMemoryProfile } from "./memory";
@@ -341,6 +342,16 @@ export async function POST(request: Request) {
   if (event.state === EventState.CLOSED) {
     const message = getPausedEventMessage(eventLang(event));
     sendMessage(sender, message, undefined, undefined, from);
+    return new Response(emptyTwiml(), { status: 200, headers: { "Content-Type": "text/xml" } });
+  }
+
+  // Returning attendees who re-tap the "Send this message to order a ..." QR/CTA
+  // link send that literal phrase into the conversation. gpt-4o-mini reads the
+  // "send this message" opening as a meta-instruction ("send this elsewhere")
+  // rather than an order intent, then refuses via log_feedback. Short-circuit
+  // deterministically: replay the ready-to-order sequence and skip the LLM.
+  if (isReorderCta(incomingMessageBody)) {
+    await sendReadyToOrderSequence(sender, event, from);
     return new Response(emptyTwiml(), { status: 200, headers: { "Content-Type": "text/xml" } });
   }
 
