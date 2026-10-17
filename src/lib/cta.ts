@@ -29,7 +29,9 @@ export const REORDER_CTA_PREFIXES = [
   "envoie ce message pour commander", // fr informal
 ];
 
+// Collapse runs of whitespace (incl. newlines and NBSP) so client-inserted
+// line breaks or double spaces still match.
 export function isReorderCta(body: string): boolean {
-  const normalized = body.trim().toLowerCase();
+  const normalized = body.trim().replace(/\s+/g, " ").toLowerCase();
   return REORDER_CTA_PREFIXES.some((p) => normalized.startsWith(p));
 }
