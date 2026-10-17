@@ -3353,6 +3353,28 @@ export function WhiteWineIcon(props: any) {
   );
 }
 
+export function MartiniIcon(props: any) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 100 100"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path fill="none" strokeWidth="4.4" d="M13,13H87L50,49Z" />
+      <path fill="none" strokeWidth="3" d="M23,22H77" />
+      <path fill="none" strokeWidth="3.4" d="M50,49V84" />
+      <ellipse fill="none" strokeWidth="3" cx="50" cy="86" rx="18.5" ry="3" />
+    </svg>
+  );
+}
+
 export function FlatWhiteIcon2(props: any) {
   return (
     <svg
