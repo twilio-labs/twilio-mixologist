@@ -30,6 +30,16 @@ TWILIO_MESSAGING_SERVICE_SID="MGxxxxx"
 
 The deploy script uses `.env.local` for both build-time values, such as `NEXT_PUBLIC_*`, and runtime environment variables.
 
+### Verification email templates (optional)
+
+Verification emails can use a branded SendGrid template per event language. To set them up:
+
+1. In SendGrid, create a dynamic template for each language and paste in the HTML from `resources/sendgridTemplate-en.html`, `-ptbr.html` and `-fr.html`.
+2. Copy the subject line from the comment at the top of each HTML file into that template version's **Subject** field.
+3. Set `SENDGRID_TEMPLATE_EN`, `SENDGRID_TEMPLATE_PTBR` and `SENDGRID_TEMPLATE_FR` in `.env.local` to the template IDs (`d-...`).
+
+Languages without a template ID use the Verify service's default template. The promo code, promo amount and code snippet are set per event on the event settings page.
+
 ## 2. Sign In to Azure
 
 ```sh

@@ -16,6 +16,12 @@ export const env = {
   twilioMessagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID ?? "",
   twilioMemoryStoreId: process.env.TWILIO_MEMORY_STORE_ID ?? "",
 
+  // SendGrid dynamic template IDs for Verify emails, one per event language.
+  // Unset = fall back to the Verify service's default template.
+  sendgridTemplateEn: process.env.SENDGRID_TEMPLATE_EN ?? "",
+  sendgridTemplatePtBr: process.env.SENDGRID_TEMPLATE_PTBR ?? "",
+  sendgridTemplateFr: process.env.SENDGRID_TEMPLATE_FR ?? "",
+
   // App config
   publicBaseUrl: process.env.PUBLIC_BASE_URL ?? "",
   serviceInstancePrefix: process.env.SERVICE_INSTANCE_PREFIX ?? "",

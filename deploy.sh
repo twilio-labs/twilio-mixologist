@@ -213,6 +213,10 @@ plain_keys=(
   EVENT_NAME
   SEGMENT_TRAIT_CHECK
   UNLIMITED_ORDERS
+  # Optional: SendGrid templates for Verify emails, per event language
+  SENDGRID_TEMPLATE_EN
+  SENDGRID_TEMPLATE_PTBR
+  SENDGRID_TEMPLATE_FR
 )
 
 secret_args=()
