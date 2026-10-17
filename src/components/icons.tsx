@@ -1,3 +1,5 @@
+import type { SVGProps } from "react";
+
 export function AmericanoIcon(props: any) {
   return (
     <svg
@@ -3353,7 +3355,7 @@ export function WhiteWineIcon(props: any) {
   );
 }
 
-export function MartiniIcon(props: any) {
+export function MartiniIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -3362,15 +3364,16 @@ export function MartiniIcon(props: any) {
       viewBox="0 0 100 100"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="3"
       strokeLinecap="round"
       strokeLinejoin="round"
       {...props}
     >
-      <path fill="none" strokeWidth="4.4" d="M13,13H87L50,49Z" />
-      <path fill="none" strokeWidth="3" d="M23,22H77" />
-      <path fill="none" strokeWidth="3.4" d="M50,49V84" />
-      <ellipse fill="none" strokeWidth="3" cx="50" cy="86" rx="18.5" ry="3" />
+      {/* Shapes set fill="none" because callers pass style={{ fill }} to the root svg */}
+      <path fill="none" strokeWidth="4" d="M13,13H87L50,49Z" />
+      <path fill="none" d="M23,22H77" />
+      <path fill="none" d="M50,49V84" />
+      <ellipse fill="none" cx="50" cy="86" rx="18.5" ry="3" />
     </svg>
   );
 }
