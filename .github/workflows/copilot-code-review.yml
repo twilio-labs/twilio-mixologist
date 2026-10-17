@@ -1,4 +1,4 @@
-name: Copilot setup steps
+name: Copilot code review
 on:
   workflow_dispatch:
 jobs:
