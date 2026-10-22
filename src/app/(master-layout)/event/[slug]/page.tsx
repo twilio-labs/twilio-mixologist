@@ -497,7 +497,7 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
                     }
                   />
                   <p className="text-xs text-gray-400">
-                    Shown as-is, including the currency (e.g. &quot;$25&quot; or &quot;€20&quot;). Defaults to $25.
+                    Shown as-is with currency (e.g. &quot;US$ 25&quot;, &quot;25 $&quot;). Default: &quot;$25&quot; in all languages.
                   </p>
                 </div>
                 <div className="space-y-1.5">

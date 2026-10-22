@@ -3,7 +3,11 @@ import { EventState } from "@/lib/utils";
 import { modes } from "@/types";
 import type { Event } from "@/types";
 
-const create = vi.fn().mockResolvedValue({ sid: "VE123" });
+// verify.ts reads this at module scope, so it must be set before the import below.
+const { create } = vi.hoisted(() => {
+  process.env.TWILIO_VERIFY_SERVICE_SID = "VA123";
+  return { create: vi.fn().mockResolvedValue({ sid: "VE123" }) };
+});
 
 vi.mock("@/lib/twilio/client", () => ({
   twilioClient: {
@@ -18,8 +22,6 @@ vi.mock("@/config/env", () => ({
     sendgridTemplateFr: "",
   },
 }));
-
-process.env.TWILIO_VERIFY_SERVICE_SID = "VA123";
 
 import { createVerification } from "@/lib/twilio/verify";
 
