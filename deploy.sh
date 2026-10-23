@@ -213,6 +213,19 @@ plain_keys=(
   EVENT_NAME
   SEGMENT_TRAIT_CHECK
   UNLIMITED_ORDERS
+  # Optional: SendGrid templates for Verify emails, per event language
+  SENDGRID_TEMPLATE_EN
+  SENDGRID_TEMPLATE_PTBR
+  SENDGRID_TEMPLATE_FR
+)
+
+# Optional keys that are unset on the running app when left empty here.
+# `az containerapp update --set-env-vars` keeps whatever is already set, so
+# clearing one of these in .env.local would otherwise have no effect.
+unset_when_empty_keys=(
+  SENDGRID_TEMPLATE_EN
+  SENDGRID_TEMPLATE_PTBR
+  SENDGRID_TEMPLATE_FR
 )
 
 secret_args=()
@@ -231,6 +244,13 @@ for key in "${plain_keys[@]}"; do
   value="${!key:-}"
   if [[ -n "$value" ]]; then
     plain_env_vars+=("$key=$value")
+  fi
+done
+
+unset_env_vars=()
+for key in "${unset_when_empty_keys[@]}"; do
+  if [[ -z "${!key:-}" ]]; then
+    unset_env_vars+=("$key")
   fi
 done
 
@@ -294,6 +314,10 @@ _do_update_container_app() {
 
   if [[ ${#env_vars[@]} -gt 0 ]]; then
     update_args+=(--set-env-vars "${env_vars[@]}")
+  fi
+
+  if [[ ${#unset_env_vars[@]} -gt 0 ]]; then
+    update_args+=(--remove-env-vars "${unset_env_vars[@]}")
   fi
 
   az containerapp update "${update_args[@]}" --output none

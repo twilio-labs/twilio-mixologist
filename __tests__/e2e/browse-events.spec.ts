@@ -113,7 +113,7 @@ test.describe("[admin]", () => {
       page.getByPlaceholder("Shown on first contact with"),
     ).toHaveValue("Custom Welcome");
 
-    await expect(page.getByRole("switch")).toBeChecked({ checked: true });
+    await expect(page.getByRole("switch", { name: "Event open" })).toBeChecked({ checked: true });
 
     await expect(page.getByText("Smoothie")).toBeVisible();
     await expect(page.getByText("Barista")).toBeVisible();
@@ -269,7 +269,7 @@ test.describe("[admin]", () => {
       page.getByPlaceholder("Shown on first contact with"),
     ).toHaveValue("");
 
-    await expect(page.getByRole("switch")).toBeHidden();
+    await expect(page.getByRole("switch", { name: "Event open" })).toBeHidden();
 
     await expect(page.getByText("Smoothie")).toBeVisible();
     await expect(page.getByText("Barista")).toBeVisible();
