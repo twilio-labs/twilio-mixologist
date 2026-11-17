@@ -33,7 +33,8 @@ export async function updateConfig() {
   const possibleSenders = await getPossibleSenders();
 
   await createSyncMapIfNotExists(NEXT_PUBLIC_EVENTS_MAP);
-  await createSyncMapIfNotExists(NEXT_PUBLIC_ATTENDEES_MAP);
+  // Attendee records hold PII (name, email, AI history): no anonymous read.
+  await createSyncMapIfNotExists(NEXT_PUBLIC_ATTENDEES_MAP, { publicRead: false });
 
   await createSyncListIfNotExists(NEXT_PUBLIC_FEEDBACK_LIST);
   const configDoc = await createSyncDocIfNotExists(NEXT_PUBLIC_CONFIG_DOC);
