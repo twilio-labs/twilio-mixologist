@@ -12,6 +12,7 @@
 import { headers } from "next/headers";
 import { getAuthenticatedRole, Privilege } from "@/proxy";
 import {
+  getOrderCancelledMessage as lookupOrderCancelledMessage,
   getOrderReadyMessage as lookupOrderReadyMessage,
   getOrderReadyReminderMessage as lookupOrderReadyReminderMessage,
 } from "@/scripts/fetchContentTemplates";
@@ -77,4 +78,11 @@ export async function getOrderReadyReminderMessage(
 ) {
   await requireStaff();
   return lookupOrderReadyReminderMessage(...args);
+}
+
+export async function getOrderCancelledMessage(
+  ...args: Parameters<typeof lookupOrderCancelledMessage>
+) {
+  await requireStaff();
+  return lookupOrderCancelledMessage(...args);
 }

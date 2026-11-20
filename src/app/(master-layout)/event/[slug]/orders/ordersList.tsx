@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { formatDistanceToNowStrict } from "date-fns";
 import { Privilege } from "@/proxy";
 import { getCookie } from "cookies-next";
 import {
@@ -8,6 +9,7 @@ import {
   getPinnedSender,
   getOrderReadyMessage,
   getOrderReadyReminderMessage,
+  getOrderCancelledMessage,
 } from "@/lib/actions";
 import { Badge } from "@/components/ui/badge";
 
@@ -17,7 +19,24 @@ import { useToast } from "@/components/ui/use-toast";
 
 import type { Event } from "@/types";
 
-import { Check, BellRing, UserCheck } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
+import { Check, BellRing, UserCheck, XCircle } from "lucide-react";
+
+// Icon-only on small screens (phones in portrait, < 640px); icon + text from
+// the `sm` breakpoint up. The text stays in the DOM (sr-only) so the button
+// always has an accessible name.
+const BUTTON_LABEL = "sr-only sm:not-sr-only text-sm font-medium whitespace-nowrap";
 
 export default function OrdersList({
   ordersList,
@@ -35,6 +54,13 @@ export default function OrdersList({
   const [processingOrders, setProcessingOrders] = useState<Set<string>>(
     new Set(),
   );
+
+  // One shared clock for all "x min ago" labels instead of a timer per row.
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 30_000);
+    return () => clearInterval(id);
+  }, []);
 
   function startProcessing(index: number, action: string) {
     setProcessingOrders((prev) => new Set(prev).add(`${index}-${action}`));
@@ -122,6 +148,12 @@ export default function OrdersList({
     </Tabs>
   );
 
+  function timeAgo(date: Date | string | number): string {
+    // Clamp so a slightly-ahead client clock never renders "in 0 seconds".
+    const created = Math.min(new Date(date).getTime(), now);
+    return formatDistanceToNowStrict(created, { addSuffix: true });
+  }
+
   function toAddress(data: any): string {
     if (data.channel === "whatsapp") return `whatsapp:${data.key}`;
     if (data.channel === "rcs") return `rcs:${data.key}`;
@@ -137,6 +169,11 @@ export default function OrdersList({
   function listComponent(orders: any[]) {
     return orders.map((order) => {
       const { data, index, dateUpdated } = order;
+      // Sync list items only carry dateUpdated, so the creation time is stored
+      // in the order itself. For older orders without it, dateUpdated is the
+      // creation time as long as the order is still untouched in the queue.
+      const placedAt: Date | string | undefined =
+        data?.createdAt ?? (data?.status === "queued" ? dateUpdated : undefined);
 
       const isQueued = data.status === "queued";
       const isReady = data.status === "ready";
@@ -174,6 +211,15 @@ export default function OrdersList({
               {data?.originalText && (
                 <span className="ml-1 italic">&ldquo;{data.originalText}&rdquo;</span>
               )}
+              {placedAt && (
+                <time
+                  dateTime={new Date(placedAt).toISOString()}
+                  title={new Date(placedAt).toLocaleString()}
+                  className="ml-1.5 text-gray-400 whitespace-nowrap"
+                >
+                  · {timeAgo(placedAt)}
+                </time>
+              )}
             </p>
           </div>
 
@@ -182,12 +228,12 @@ export default function OrdersList({
             <div className="flex items-center gap-2 flex-shrink-0">
               {isReady && !data?.manual && (
                 <button
-                  aria-label="Send reminder"
+                  title="Remind the customer"
                   disabled={
                     isProcessing(index, "remind") ||
                     (Date.now() - dateUpdated < 3 * 60 * 1000 && data?.reminded)
                   }
-                  className="w-10 h-10 rounded-lg border border-amber-300 bg-amber-50 text-amber-600 hover:bg-amber-100 disabled:opacity-40 flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-500 focus-visible:outline-none"
+                  className="h-10 min-w-10 px-2.5 sm:px-3 gap-2 rounded-lg border border-amber-300 bg-amber-50 text-amber-600 hover:bg-amber-100 disabled:opacity-40 flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-500 focus-visible:outline-none"
                   onClick={async () => {
                     startProcessing(index, "remind");
                     try {
@@ -206,13 +252,14 @@ export default function OrdersList({
                   }}
                 >
                   <BellRing aria-hidden="true" className="h-4 w-4" />
+                  <span className={BUTTON_LABEL}>Remind</span>
                 </button>
               )}
               {isQueued && (
                 <button
-                  aria-label="Mark order ready"
+                  title="Mark ready for pickup and notify the customer"
                   disabled={isProcessing(index, "made")}
-                  className="w-10 h-10 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 disabled:opacity-40 flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
+                  className="h-10 min-w-10 px-2.5 sm:px-3 gap-2 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 disabled:opacity-40 flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
                   onClick={async () => {
                     startProcessing(index, "made");
                     try {
@@ -238,13 +285,14 @@ export default function OrdersList({
                   }}
                 >
                   <Check aria-hidden="true" className="h-4 w-4" />
+                  <span className={BUTTON_LABEL}>Ready for pickup</span>
                 </button>
               )}
               {isReady && (
                 <button
-                  aria-label="Mark order served"
+                  title="Complete: the customer has their order"
                   disabled={isProcessing(index, "served")}
-                  className="w-10 h-10 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-40 flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-emerald-600 focus-visible:outline-none"
+                  className="h-10 min-w-10 px-2.5 sm:px-3 gap-2 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-40 flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-emerald-600 focus-visible:outline-none"
                   onClick={async () => {
                     startProcessing(index, "served");
                     try {
@@ -261,7 +309,63 @@ export default function OrdersList({
                   }}
                 >
                   <UserCheck aria-hidden="true" className="h-4 w-4" />
+                  <span className={BUTTON_LABEL}>Complete</span>
                 </button>
+              )}
+              {event?.allowBaristaCancel && (isQueued || isReady) && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <button
+                      title="Cancel this order"
+                      disabled={isProcessing(index, "cancel")}
+                      className="h-10 min-w-10 px-2.5 sm:px-3 gap-2 rounded-lg border border-red-300 bg-red-50 text-red-700 hover:bg-red-100 disabled:opacity-40 flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500 focus-visible:outline-none"
+                    >
+                      <XCircle aria-hidden="true" className="h-4 w-4" />
+                      <span className={BUTTON_LABEL}>Cancel</span>
+                    </button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Cancel order #{index}?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        {data?.manual
+                          ? "This cannot be undone. Let the customer know their order was cancelled."
+                          : "This cannot be undone. The customer will be notified that their order was cancelled."}
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Keep order</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={async () => {
+                          startProcessing(index, "cancel");
+                          try {
+                            updateOrder(index, { status: "cancelled" });
+                            await updateEvent({
+                              cancelledCount: Number(event?.cancelledCount || 0) + 1,
+                            });
+                            if (!data?.manual) {
+                              const [message, from] = await Promise.all([
+                                getOrderCancelledMessage(data.item, index, event.language),
+                                pinnedFrom(data.key),
+                              ]);
+                              sendMessage(toAddress(data), "", message.contentSid, message.contentVariables, from);
+                            }
+                            toast({
+                              title: "Order Cancelled",
+                              description: data?.manual
+                                ? "Please inform the customer that their order has been cancelled."
+                                : "Customer has been notified that their order was cancelled.",
+                            });
+                          } finally {
+                            stopProcessing(index, "cancel");
+                          }
+                        }}
+                      >
+                        Cancel order
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               )}
             </div>
           )}

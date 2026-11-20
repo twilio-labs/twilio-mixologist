@@ -120,6 +120,22 @@ export async function getOrderReadyReminderMessage(
   };
 }
 
+export async function getOrderCancelledMessage(
+  product: string,
+  orderNumber: string,
+  language: Language = "en",
+) {
+  const suffix = LANG_SUFFIX[language];
+  const template = await getTemplate(
+    `${formattedServicePrefix}_order_cancelled${suffix}`,
+  );
+
+  return {
+    contentSid: template.sid,
+    contentVariables: buildContentVariables([product, orderNumber]),
+  };
+}
+
 export async function getShowMenuMessage(
   intro: string,
   availableOptions: any[],

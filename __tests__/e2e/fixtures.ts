@@ -21,7 +21,12 @@ export async function deleteIfExists(baseURL: string, slug: string) {
   } catch (e) {}
 }
 
-export async function createEvent(baseURL: string, slug: string, name: string) {
+export async function createEvent(
+  baseURL: string,
+  slug: string,
+  name: string,
+  extra: Record<string, unknown> = {},
+) {
   return Axios.post(
     `${baseURL}/api/event`,
     {
@@ -43,6 +48,7 @@ export async function createEvent(baseURL: string, slug: string, name: string) {
       pickupLocation: "Pickup location",
       maxOrders: 1860,
       welcomeMessage: "Custom Welcome",
+      ...extra,
     },
     {
       headers: {
@@ -63,7 +69,7 @@ export async function createOrder(
   // creating ~60 orders in setup, Twilio Sync's per-list write rate limit
   // (~10/sec) surfaces as an intermittent 500 from POST /api/order. A short
   // capped backoff smooths the burst instead of exploding the fixture.
-  const MAX_ATTEMPTS = 5;
+  const MAX_ATTEMPTS = 6;
   let lastErr: unknown;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
@@ -88,7 +94,9 @@ export async function createOrder(
       );
     } catch (e: any) {
       const status = e?.response?.status;
-      const retriable = status === 429 || (status >= 500 && status < 600);
+      // 404 "Event not found": the event was just created and the Sync map
+      // query behind getEvent() can lag behind the write for a moment.
+      const retriable = status === 404 || status === 429 || (status >= 500 && status < 600);
       if (!retriable || attempt === MAX_ATTEMPTS) throw e;
       lastErr = e;
       const backoffMs = 250 * 2 ** (attempt - 1) + Math.floor(Math.random() * 100);

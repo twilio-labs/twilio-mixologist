@@ -48,6 +48,10 @@ export interface Order {
   address?: string;
   orderNumber?: number;
   originalText?: string;
+  // ISO timestamp set server-side when the order is created. Sync list items
+  // only expose dateUpdated (changes on every status update), so the creation
+  // time has to live in the data. Orders from before this field existed lack it.
+  createdAt?: string;
   status: "queued" | "cancelled" | "ready" | "delivered";
   reminded?: true;
   channel?: "rcs" | "whatsapp" | "sms" | "api" | "other";
@@ -73,6 +77,9 @@ export interface Event {
   maxOrders: number;
   welcomeMessage: string;
   followUpMessage?: string;
+  // Off unless the event admin enables it: shows a "Cancel" button on the
+  // orders screen so baristas can cancel queued/ready orders.
+  allowBaristaCancel?: boolean;
   language?: Language;
   // Verification email content. Unset promo code hides the promo block;
   // the code snippet shows unless explicitly set to false.
