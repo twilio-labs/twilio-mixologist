@@ -12,6 +12,10 @@
 import { headers } from "next/headers";
 import { getAuthenticatedRole, Privilege } from "@/proxy";
 import {
+  getOrderReadyMessage as lookupOrderReadyMessage,
+  getOrderReadyReminderMessage as lookupOrderReadyReminderMessage,
+} from "@/scripts/fetchContentTemplates";
+import {
   createToken as mintSyncToken,
   getPinnedSender as lookupPinnedSender,
   sendMessage as sendTwilioMessage,
@@ -54,4 +58,23 @@ export async function sendMessage(
 export async function getPinnedSender(attendeesMap: string, phone: string) {
   await requireStaff();
   return lookupPinnedSender(attendeesMap, phone);
+}
+
+/**
+ * Staff only: content template lookups used by the orders screen. They need
+ * the Twilio API credentials, so they must run on the server; client
+ * components may not import @/scripts/fetchContentTemplates directly.
+ */
+export async function getOrderReadyMessage(
+  ...args: Parameters<typeof lookupOrderReadyMessage>
+) {
+  await requireStaff();
+  return lookupOrderReadyMessage(...args);
+}
+
+export async function getOrderReadyReminderMessage(
+  ...args: Parameters<typeof lookupOrderReadyReminderMessage>
+) {
+  await requireStaff();
+  return lookupOrderReadyReminderMessage(...args);
 }
