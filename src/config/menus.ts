@@ -28,7 +28,7 @@ export default {
       {
         shortTitle: "Macchiato",
         title: "Macchiato",
-        description: 'Espresso "stained" with a splash of milk',
+        description: "Espresso stained with a splash of milk",
       },
       {
         shortTitle: "Double Macchiato",
@@ -161,7 +161,8 @@ export default {
         title: "Cloud Cappuccino",
         description: "Made with espresso, steamed milk and milk foam",
       },
-      { shortTitle: "Cafè Latte",
+      {
+        shortTitle: "Cafè Latte",
         title: "Caffè Latte",
         description:
           "Espresso with steamed milk and light foam"
@@ -249,7 +250,7 @@ export default {
         shortTitle: "Piccolo",
         title: "Piccolo",
         description:
-          "Single ristretto shot topped with warm, silk, microfoam milk, in a small glass",
+          "Ristretto shot topped with warm, silk, microfoam milk, in a small glass",
       },
       {
         shortTitle: "Espresso Martini",
