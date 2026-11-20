@@ -463,6 +463,22 @@ function EventPage({ params }: { params: Promise<{ slug: string }> }) {
               />
             </div>
 
+            <div className="space-y-1.5">
+              <Label htmlFor="allowBaristaCancel">Allow staff to cancel orders</Label>
+              <div className="flex items-center h-10">
+                <Switch
+                  id="allowBaristaCancel"
+                  checked={internalEvent.allowBaristaCancel === true}
+                  onCheckedChange={(checked) =>
+                    updateEvent({ ...internalEvent, allowBaristaCancel: checked })
+                  }
+                />
+              </div>
+              <p className="text-xs text-gray-400">
+                Off by default. Adds a Cancel button to the orders screen; the attendee is notified by message.
+              </p>
+            </div>
+
             {(internalEvent.leadCollection ?? "MANUAL") === "MANUAL" && (
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">

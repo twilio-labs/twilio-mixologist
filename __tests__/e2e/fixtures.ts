@@ -21,7 +21,12 @@ export async function deleteIfExists(baseURL: string, slug: string) {
   } catch (e) {}
 }
 
-export async function createEvent(baseURL: string, slug: string, name: string) {
+export async function createEvent(
+  baseURL: string,
+  slug: string,
+  name: string,
+  extra: Record<string, unknown> = {},
+) {
   return Axios.post(
     `${baseURL}/api/event`,
     {
@@ -43,6 +48,7 @@ export async function createEvent(baseURL: string, slug: string, name: string) {
       pickupLocation: "Pickup location",
       maxOrders: 1860,
       welcomeMessage: "Custom Welcome",
+      ...extra,
     },
     {
       headers: {

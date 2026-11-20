@@ -46,6 +46,8 @@ export async function POST(request: Request) {
     item = await pushToSyncList(data.event, {
       ...data.order,
       channel: "api",
+      // server time; never trust a client-supplied timestamp
+      createdAt: new Date().toISOString(),
     });
   } catch (e: any) {
     console.error(e);

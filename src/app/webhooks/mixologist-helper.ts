@@ -45,7 +45,10 @@ export async function cancelOrder(event: Event, index: number, data: Order) {
 }
 
 export async function addOrder(event: string, order: Order) {
-  const { index } = await pushToSyncList(event, order);
+  const { index } = await pushToSyncList(event, {
+    ...order,
+    createdAt: new Date().toISOString(),
+  });
   return index;
 }
 
