@@ -1,6 +1,6 @@
 import { describe, test, expect, vi, beforeEach } from "vitest";
 
-const { authHeader, sendMessage, getPinnedSender, mintToken } = vi.hoisted(() => {
+const { authHeader, sendMessage, getPinnedSender, mintToken, readyMsg, reminderMsg } = vi.hoisted(() => {
   process.env.ADMIN_LOGIN = "admin:adminpw";
   process.env.MIXOLOGIST_LOGIN = "mixo:mixopw";
   process.env.KIOSK_LOGIN = "kiosk:kioskpw";
@@ -9,6 +9,8 @@ const { authHeader, sendMessage, getPinnedSender, mintToken } = vi.hoisted(() =>
     sendMessage: vi.fn().mockResolvedValue(undefined),
     getPinnedSender: vi.fn().mockResolvedValue("+1555"),
     mintToken: vi.fn().mockResolvedValue("jwt"),
+    readyMsg: vi.fn().mockResolvedValue({ contentSid: "HX1" }),
+    reminderMsg: vi.fn().mockResolvedValue({ contentSid: "HX2" }),
   };
 });
 
@@ -19,6 +21,11 @@ vi.mock("@/lib/twilio", () => ({
   sendMessage,
   getPinnedSender,
   createToken: mintToken,
+}));
+
+vi.mock("@/scripts/fetchContentTemplates", () => ({
+  getOrderReadyMessage: readyMsg,
+  getOrderReadyReminderMessage: reminderMsg,
 }));
 
 import * as actions from "@/lib/actions";
@@ -32,7 +39,13 @@ beforeEach(() => {
 
 describe("server actions authorization", () => {
   test("only the intended actions are exported", () => {
-    expect(Object.keys(actions).sort()).toEqual(["createToken", "getPinnedSender", "sendMessage"]);
+    expect(Object.keys(actions).sort()).toEqual([
+      "createToken",
+      "getOrderReadyMessage",
+      "getOrderReadyReminderMessage",
+      "getPinnedSender",
+      "sendMessage",
+    ]);
   });
 
   test.each([
@@ -44,8 +57,12 @@ describe("server actions authorization", () => {
     authHeader.value = header;
     await expect(actions.sendMessage("+1555", "hi")).rejects.toThrow("Not authorized");
     await expect(actions.getPinnedSender("Attendees", "+1555")).rejects.toThrow("Not authorized");
+    await expect(actions.getOrderReadyMessage("Espresso", "1", "Bar")).rejects.toThrow("Not authorized");
+    await expect(actions.getOrderReadyReminderMessage("Espresso", "1", "Bar")).rejects.toThrow("Not authorized");
     expect(sendMessage).not.toHaveBeenCalled();
     expect(getPinnedSender).not.toHaveBeenCalled();
+    expect(readyMsg).not.toHaveBeenCalled();
+    expect(reminderMsg).not.toHaveBeenCalled();
   });
 
   test.each([
@@ -55,6 +72,14 @@ describe("server actions authorization", () => {
     authHeader.value = header;
     await actions.sendMessage("+1555", "hi", "", "", "from");
     expect(sendMessage).toHaveBeenCalledWith("+1555", "hi", "", "", "from");
+  });
+
+  test("template lookups pass through for staff", async () => {
+    authHeader.value = basic("mixo", "mixopw");
+    await actions.getOrderReadyMessage("Espresso", "1", "Bar", "en");
+    expect(readyMsg).toHaveBeenCalledWith("Espresso", "1", "Bar", "en");
+    await actions.getOrderReadyReminderMessage("Espresso", "1", "Bar");
+    expect(reminderMsg).toHaveBeenCalled();
   });
 
   test("createToken uses the role derived from the header, not client input", async () => {
