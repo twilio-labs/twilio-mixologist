@@ -1,4 +1,3 @@
-"use server";
 
 import { Privilege } from "@/proxy";
 import { twilioClient } from "./client";
@@ -220,7 +219,16 @@ export async function createSyncDocIfNotExists(uniqueName: string) {
   return syncDoc.fetch();
 }
 
-export async function createSyncMapIfNotExists(uniqueName: string) {
+/**
+ * @param options.publicRead whether anonymous (`unknown` role) Sync clients may
+ *   read the map. Maps that hold personal data (e.g. attendees) must pass false.
+ *   The permission is re-applied on every call, so existing maps are tightened
+ *   the next time the config script runs.
+ */
+export async function createSyncMapIfNotExists(
+  uniqueName: string,
+  { publicRead = true }: { publicRead?: boolean } = {},
+) {
   const syncService = await getSyncService();
   let syncMap;
   try {
@@ -247,7 +255,7 @@ export async function createSyncMapIfNotExists(uniqueName: string) {
 
   // @ts-ignore method exists and is documented this way, must be a bug in the TS definition
   await syncMap.syncMapPermissions(Privilege.UNKNOWN).update({
-    read: true,
+    read: publicRead,
     write: false,
     manage: false,
   });

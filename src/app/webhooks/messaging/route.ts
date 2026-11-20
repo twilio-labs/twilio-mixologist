@@ -1,6 +1,5 @@
 // Copyright (c) 2025 Twilio Inc.
 
-"use server";
 
 import {
   createSyncMapItemIfNotExists,
@@ -8,6 +7,7 @@ import {
   removeSyncMapItem,
   findSyncMapItems,
   sendMessage,
+  checkSignature,
 } from "@/lib/twilio";
 
 import {
@@ -18,6 +18,7 @@ import {
   TwoWeeksInSeconds,
 } from "@/lib/utils";
 
+import { TWILIO_AUTH_TOKEN, PUBLIC_BASE_URL } from "@/lib/twilio/client";
 import { getEvent } from "../mixologist-helper";
 import {
   getEventRegistrationMessage,
@@ -204,14 +205,13 @@ async function selectEventForCustomer(
  * Content-Type: application/x-www-form-urlencoded.
  * Fields: From, To, Body, NumMedia, MediaUrl0
  */
-async function parseWebhook(request: Request): Promise<{
+function parseWebhook(data: FormData): {
   sender: string;
   incomingMessageBody: string;
   mediaUrl: string | null;
   /** The exact Twilio-side sender address this message arrived on (pinned for replies). */
   from: string;
-}> {
-  const data = await request.formData();
+} {
   const sender = (data.get("From") as string) ?? "";
   const from = (data.get("To") as string) ?? "";
   const incomingMessageBody = (data.get("Body") as string) ?? "";
@@ -221,8 +221,36 @@ async function parseWebhook(request: Request): Promise<{
   return { sender, incomingMessageBody, mediaUrl, from };
 }
 
+/**
+ * Verify X-Twilio-Signature. Fails closed: no auth token or a bad signature
+ * means the request is rejected before any parameter is acted on.
+ */
+async function isValidTwilioRequest(request: Request, data: FormData) {
+  if (
+    process.env.NODE_ENV !== "production" &&
+    process.env.SKIP_TWILIO_SIGNATURE_CHECK === "true"
+  ) {
+    return true; // local testing with curl only; ignored in production
+  }
+  if (!TWILIO_AUTH_TOKEN) return false;
+  const signature = request.headers.get("x-twilio-signature") || "";
+  if (!signature) return false;
+
+  // Twilio signs the URL it was configured with. Behind a proxy/ingress the
+  // request URL can differ, so prefer the configured public base URL.
+  const incoming = new URL(request.url);
+  const url = PUBLIC_BASE_URL
+    ? `${PUBLIC_BASE_URL.replace(/\/$/, "")}${incoming.pathname}${incoming.search}`
+    : request.url;
+  return checkSignature(signature, url, data);
+}
+
 export async function POST(request: Request) {
-  const { sender, incomingMessageBody, mediaUrl, from: receivedOn } = await parseWebhook(request);
+  const formData = await request.formData();
+  if (!(await isValidTwilioRequest(request, formData))) {
+    return new Response("Invalid Twilio signature", { status: 403 });
+  }
+  const { sender, incomingMessageBody, mediaUrl, from: receivedOn } = parseWebhook(formData);
 
   if (!sender) {
     return new Response("Missing sender", { status: 400 });

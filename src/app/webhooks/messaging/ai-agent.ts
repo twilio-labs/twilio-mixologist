@@ -1,6 +1,5 @@
 // Copyright (c) 2025 Twilio Inc.
 
-"use server";
 
 import OpenAI from "openai";
 import {
