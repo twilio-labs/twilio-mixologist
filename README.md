@@ -74,6 +74,9 @@ The current [Twilio Channels] are:
    ACTIVE_CUSTOMERS_MAP=ActiveCustomers
    UNLIMITED_ORDERS=CommaSeparatedNumbersToWhichTheLimitDoesNotApply
 
+   # Each *_LOGIN is user:password. A role whose login is unset, or has an
+   # empty user or password, can't be logged into.
+
    # NGROK URL GOES HERE
    PUBLIC_BASE_URL=https://mobert.ngrok.io
 

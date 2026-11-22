@@ -7,11 +7,26 @@ export enum Privilege {
   UNKNOWN = "unknown",
 }
 
-const [ADMIN_USER, ADMIN_PASS] = (process.env.ADMIN_LOGIN || ":").split(":");
-const [MIXOLOGIST_USER, MIXOLOGIST_PASS] = (
-  process.env.MIXOLOGIST_LOGIN || ":"
-).split(":");
-const [KIOSK_USER, KIOSK_PASS] = (process.env.KIOSK_LOGIN || ":").split(":");
+type Credentials = { user: string; pass: string };
+
+// Splits "user:password" on the first ":", so a password may contain ":".
+// Anything without a non-empty user and password gives null.
+function parseCredentials(value: string | undefined): Credentials | null {
+  if (!value) return null;
+  const at = value.indexOf(":");
+  if (at < 0) return null;
+  const user = value.slice(0, at);
+  const pass = value.slice(at + 1);
+  return user && pass ? { user, pass } : null;
+}
+
+// A role whose *_LOGIN is unset or incomplete can't be logged into: it fails
+// closed instead of accepting empty credentials.
+const LOGINS: [Privilege, Credentials | null][] = [
+  [Privilege.ADMIN, parseCredentials(process.env.ADMIN_LOGIN)],
+  [Privilege.MIXOLOGIST, parseCredentials(process.env.MIXOLOGIST_LOGIN)],
+  [Privilege.KIOSK, parseCredentials(process.env.KIOSK_LOGIN)],
+];
 
 const REALM = 'Basic realm="Mixologist"';
 const LOGGED_OUT_COOKIE = "logged_out";
@@ -79,19 +94,17 @@ function handleLogin(req: NextRequest) {
 
 export function getAuthenticatedRole(authheader: string | null) {
   if (!authheader) return Privilege.UNKNOWN;
-  const [user, pass] = Buffer.from(authheader.split(" ")[1], "base64")
-    .toString()
-    .split(":");
+  const [scheme, encoded] = authheader.trim().split(/\s+/);
+  if (scheme?.toLowerCase() !== "basic" || !encoded) return Privilege.UNKNOWN;
+  const given = parseCredentials(Buffer.from(encoded, "base64").toString());
+  if (!given) return Privilege.UNKNOWN;
 
-  if (user === ADMIN_USER && pass === ADMIN_PASS) {
-    return Privilege.ADMIN;
-  } else if (user === MIXOLOGIST_USER && pass === MIXOLOGIST_PASS) {
-    return Privilege.MIXOLOGIST;
-  } else if (user === KIOSK_USER && pass === KIOSK_PASS) {
-    return Privilege.KIOSK;
-  } else {
-    return Privilege.UNKNOWN;
+  for (const [role, login] of LOGINS) {
+    if (login && given.user === login.user && given.pass === login.pass) {
+      return role;
+    }
   }
+  return Privilege.UNKNOWN;
 }
 
 export const config = {
