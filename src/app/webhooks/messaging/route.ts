@@ -8,6 +8,7 @@ import {
   removeSyncMapItem,
   findSyncMapItems,
   sendMessage,
+  checkSignature,
 } from "@/lib/twilio";
 
 import {
@@ -204,14 +205,13 @@ async function selectEventForCustomer(
  * Content-Type: application/x-www-form-urlencoded.
  * Fields: From, To, Body, NumMedia, MediaUrl0
  */
-async function parseWebhook(request: Request): Promise<{
+function parseWebhook(data: FormData): {
   sender: string;
   incomingMessageBody: string;
   mediaUrl: string | null;
   /** The exact Twilio-side sender address this message arrived on (pinned for replies). */
   from: string;
-}> {
-  const data = await request.formData();
+} {
   const sender = (data.get("From") as string) ?? "";
   const from = (data.get("To") as string) ?? "";
   const incomingMessageBody = (data.get("Body") as string) ?? "";
@@ -222,7 +222,16 @@ async function parseWebhook(request: Request): Promise<{
 }
 
 export async function POST(request: Request) {
-  const { sender, incomingMessageBody, mediaUrl, from: receivedOn } = await parseWebhook(request);
+  const data = await request.formData();
+
+  // Only Twilio may drive the conversation: a request without a valid
+  // X-Twilio-Signature is refused before anything is read or stored.
+  const signature = request.headers.get("X-Twilio-Signature");
+  if (!(await checkSignature(signature, request.url, data))) {
+    return new Response("Invalid Twilio signature", { status: 403 });
+  }
+
+  const { sender, incomingMessageBody, mediaUrl, from: receivedOn } = parseWebhook(data);
 
   if (!sender) {
     return new Response("Missing sender", { status: 400 });
