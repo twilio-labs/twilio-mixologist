@@ -33,6 +33,35 @@ export async function getPossibleSenders() {
   ].flat();
 }
 
+function createMessage(
+  to: string,
+  body: string,
+  contentSid: string,
+  contentVariables: string,
+  from: string,
+) {
+  return throttle(() =>
+    twilioClient.messages.create({
+      to,
+      // Pin the exact sender the recipient last messaged in on — otherwise
+      // the Messaging Service can auto-select a different sender (e.g. RCS
+      // vs WhatsApp) that may be outside that channel's 24h session window.
+      ...(from
+        ? { from }
+        : TWILIO_MESSAGING_SERVICE_SID
+          ? { messagingServiceSid: TWILIO_MESSAGING_SERVICE_SID }
+          : { from: TWILIO_MESSAGING_SERVICE_SID }),
+      ...(body ? { body } : {}),
+      ...(contentSid ? { contentSid } : {}),
+      ...(contentVariables ? { contentVariables } : {}),
+    } as any),
+  );
+}
+
+/**
+ * Fire-and-forget send used by the webhook flows and scripts: returns at once
+ * and only logs a failure.
+ */
 export async function sendMessage(
   to: string,
   body: string = "",
@@ -43,31 +72,29 @@ export async function sendMessage(
   if (to === "test-order") {
     return;
   }
+  createMessage(to, body, contentSid, contentVariables, from).catch((err) =>
+    console.error("Sending message failed", err),
+  );
+}
 
-  const defaultFrom = TWILIO_MESSAGING_SERVICE_SID;
-
-  try {
-    throttle(() => {
-      twilioClient.messages.create({
-        to,
-        // Pin the exact sender the recipient last messaged in on — otherwise
-        // the Messaging Service can auto-select a different sender (e.g. RCS
-        // vs WhatsApp) that may be outside that channel's 24h session window.
-        ...(from
-          ? { from }
-          : TWILIO_MESSAGING_SERVICE_SID
-            ? { messagingServiceSid: TWILIO_MESSAGING_SERVICE_SID }
-            : { from: defaultFrom }),
-        ...(body ? { body } : {}),
-        ...(contentSid ? { contentSid } : {}),
-        ...(contentVariables ? { contentVariables } : {}),
-      } as any);
-    });
-    return;
-  } catch (err) {
-    console.log(err);
+/**
+ * Waits until Twilio has accepted the message and throws if it didn't.
+ * Accepted is not delivered: later delivery failures only show up in
+ * Twilio's status callbacks.
+ */
+export async function sendMessageAndWait(
+  to: string,
+  body: string = "",
+  contentSid: string = "",
+  contentVariables: string = "",
+  from: string = "",
+): Promise<void> {
+  if (to === "test-order") {
     return;
   }
+  // Return nothing: the Twilio message instance isn't serializable for
+  // Server Actions.
+  await createMessage(to, body, contentSid, contentVariables, from);
 }
 
 // Returns just the plain pinned-sender string — Client Components can't

@@ -5,7 +5,6 @@ import {
   findSyncMapItems,
   pushToSyncList,
   updateSyncListItem,
-  updateSyncMapItem,
 } from "@/lib/twilio";
 import { EventState } from "@/lib/utils";
 
@@ -37,15 +36,14 @@ export async function updateOrder(event: string, index: number, data: Order) {
 }
 
 export async function cancelOrder(event: Event, index: number, data: Order) {
-  updateOrder(event.slug, index, { ...data, status: "cancelled" });
-
-  await updateSyncMapItem(NEXT_PUBLIC_EVENTS_MAP, event.slug, {
-    cancelledCount: Number(event.cancelledCount) + 1,
-  });
+  await updateOrder(event.slug, index, { ...data, status: "cancelled" });
 }
 
 export async function addOrder(event: string, order: Order) {
-  const { index } = await pushToSyncList(event, order);
+  const { index } = await pushToSyncList(event, {
+    ...order,
+    createdAt: new Date().toISOString(),
+  });
   return index;
 }
 

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { formatDistanceToNowStrict } from "date-fns";
 import { Privilege } from "@/proxy";
 import { getCookie } from "cookies-next";
 import {
@@ -8,6 +9,7 @@ import {
   getPinnedSender,
   getOrderReadyMessage,
   getOrderReadyReminderMessage,
+  getOrderCancelledMessage,
 } from "@/lib/actions";
 import { Badge } from "@/components/ui/badge";
 
@@ -17,7 +19,21 @@ import { useToast } from "@/components/ui/use-toast";
 
 import type { Event } from "@/types";
 
-import { Check, BellRing, UserCheck } from "lucide-react";
+
+import { Check, BellRing, UserCheck, XCircle, TriangleAlert } from "lucide-react";
+
+// Icon-only on small screens (phones in portrait, < 640px); icon + text from
+// the `sm` breakpoint up. The text stays in the DOM (sr-only) so the button
+// always has an accessible name.
+const BUTTON_LABEL = "sr-only sm:not-sr-only text-sm font-medium whitespace-nowrap";
+
+// A cancelled order whose customer could not be told. Staff have no other way
+// to reach attendees, so this stays on screen until the message goes out or
+// the cancel is undone.
+type UnnotifiedCancel = {
+  data: any;
+  previousStatus: "queued" | "ready";
+};
 
 export default function OrdersList({
   ordersList,
@@ -27,14 +43,30 @@ export default function OrdersList({
 }: {
   ordersList: any[];
   event: Event;
-  updateEvent: (data: any) => void;
-  updateOrder: (index: number, data: any) => void;
+  updateEvent: (data: any) => void | Promise<void>;
+  updateOrder: (index: number, data: any) => void | Promise<void>;
 }) {
   const { toast } = useToast();
   const [noOfOrdersVisible, showMore] = useState<number>(50);
   const [processingOrders, setProcessingOrders] = useState<Set<string>>(
     new Set(),
   );
+
+  const [unnotified, setUnnotified] = useState<Record<number, UnnotifiedCancel>>({});
+
+  function clearUnnotified(index: number) {
+    setUnnotified((prev) => {
+      const { [index]: _, ...rest } = prev;
+      return rest;
+    });
+  }
+
+  // One shared clock for all "x min ago" labels instead of a timer per row.
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 30_000);
+    return () => clearInterval(id);
+  }, []);
 
   function startProcessing(index: number, action: string) {
     setProcessingOrders((prev) => new Set(prev).add(`${index}-${action}`));
@@ -62,11 +94,50 @@ export default function OrdersList({
   const delivered = listComponent(
     ordersList.filter((order) => order.data.status === "delivered"),
   );
-  const cancelled = listComponent(
-    ordersList.filter((order) => order.data.status === "cancelled"),
-  );
+  const cancelledOrders = ordersList.filter((order) => order.data.status === "cancelled");
+  const cancelled = listComponent(cancelledOrders);
+
+  const unnotifiedEntries = Object.entries(unnotified);
 
   return (
+    <>
+    {isPriviledged && unnotifiedEntries.length > 0 && (
+      <div role="alert" className="mb-4 space-y-2">
+        {unnotifiedEntries.map(([key, entry]) => {
+          const index = Number(key);
+          const busy = isProcessing(index, "notify") || isProcessing(index, "undo");
+          return (
+            <div
+              key={key}
+              className="border border-red-300 bg-red-50 rounded-xl px-4 py-3 flex flex-wrap items-center gap-3"
+            >
+              <TriangleAlert aria-hidden="true" className="h-5 w-5 text-red-600 flex-shrink-0" />
+              <p className="flex-1 min-w-[12rem] text-sm text-red-800">
+                <span className="font-semibold">Order #{index} is cancelled,</span> but the
+                message to the customer didn&apos;t go out.
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  disabled={busy}
+                  onClick={() => retryNotification(index, entry)}
+                >
+                  Retry message
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={busy}
+                  onClick={() => undoCancel(index, entry)}
+                >
+                  Undo cancel
+                </Button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    )}
     <Tabs defaultValue="queue" className="w-full">
       <TabsList className="flex bg-warm border border-warm-strong rounded-lg p-1 h-auto mb-4">
         <TabsTrigger
@@ -87,9 +158,9 @@ export default function OrdersList({
           value="cancelled"
         >
           Cancelled
-          {event?.cancelledCount != undefined && event.cancelledCount > 0 && (
+          {cancelledOrders.length > 0 && (
             <span className="inline-flex items-center justify-center min-w-[1.25rem] h-5 rounded-full bg-gray-300 text-gray-700 text-xs font-bold px-1">
-              {event.cancelledCount}
+              {cancelledOrders.length}
             </span>
           )}
         </TabsTrigger>
@@ -120,7 +191,99 @@ export default function OrdersList({
       <TabsContent value="cancelled">{cancelled}</TabsContent>
       <TabsContent value="delivered">{delivered}</TabsContent>
     </Tabs>
+    </>
   );
+
+  async function notifyCancelled(index: number, data: any) {
+    const [message, from] = await Promise.all([
+      getOrderCancelledMessage(data.item, String(index), event.language),
+      pinnedFrom(data.key),
+    ]);
+    await sendMessage(toAddress(data), "", message.contentSid, message.contentVariables, from);
+  }
+
+  async function cancelOrder(index: number, data: any) {
+    startProcessing(index, "cancel");
+    try {
+      // 1. The order itself. If this fails nothing else happens.
+      try {
+        await updateOrder(index, { status: "cancelled" });
+      } catch (e) {
+        console.error("Cancelling order failed", e);
+        toast({
+          variant: "destructive",
+          title: `Couldn't cancel order #${index}`,
+          description: "Nothing changed. Try again.",
+        });
+        return;
+      }
+
+      if (data?.manual) {
+        toast({ title: `Order #${index} cancelled`, description: "Please inform the customer." });
+        return;
+      }
+
+      // 2. Tell the customer.
+      try {
+        await notifyCancelled(index, data);
+        toast({ title: `Order #${index} cancelled`, description: "The customer has been notified." });
+      } catch (e) {
+        console.error("Cancellation message failed", e);
+        setUnnotified((prev) => ({
+          ...prev,
+          [index]: { data, previousStatus: data.status },
+        }));
+      }
+    } finally {
+      stopProcessing(index, "cancel");
+    }
+  }
+
+  async function retryNotification(index: number, entry: UnnotifiedCancel) {
+    startProcessing(index, "notify");
+    try {
+      await notifyCancelled(index, entry.data);
+      clearUnnotified(index);
+      toast({ title: `Order #${index}: customer notified` });
+    } catch (e) {
+      console.error("Retrying cancellation message failed", e);
+      toast({
+        variant: "destructive",
+        title: "The message still didn't go out",
+        description: `Try again, or undo the cancel to put order #${index} back.`,
+      });
+    } finally {
+      stopProcessing(index, "notify");
+    }
+  }
+
+  async function undoCancel(index: number, entry: UnnotifiedCancel) {
+    startProcessing(index, "undo");
+    try {
+      await updateOrder(index, { status: entry.previousStatus });
+    } catch (e) {
+      console.error("Undoing cancel failed", e);
+      toast({
+        variant: "destructive",
+        title: `Couldn't undo the cancel`,
+        description: `Order #${index} is still cancelled. Try again.`,
+      });
+      stopProcessing(index, "undo");
+      return;
+    }
+    clearUnnotified(index);
+    stopProcessing(index, "undo");
+    toast({
+      title: `Order #${index} restored`,
+      description: entry.previousStatus === "ready" ? "Back to ready for pickup." : "Back in the queue.",
+    });
+  }
+
+  function timeAgo(date: Date | string | number): string {
+    // Clamp so a slightly-ahead client clock never renders "in 0 seconds".
+    const created = Math.min(new Date(date).getTime(), now);
+    return formatDistanceToNowStrict(created, { addSuffix: true });
+  }
 
   function toAddress(data: any): string {
     if (data.channel === "whatsapp") return `whatsapp:${data.key}`;
@@ -137,6 +300,11 @@ export default function OrdersList({
   function listComponent(orders: any[]) {
     return orders.map((order) => {
       const { data, index, dateUpdated } = order;
+      // Sync list items only carry dateUpdated, so the creation time is stored
+      // in the order itself. For older orders without it, dateUpdated is the
+      // creation time as long as the order is still untouched in the queue.
+      const placedAt: Date | string | undefined =
+        data?.createdAt ?? (data?.status === "queued" ? dateUpdated : undefined);
 
       const isQueued = data.status === "queued";
       const isReady = data.status === "ready";
@@ -174,6 +342,15 @@ export default function OrdersList({
               {data?.originalText && (
                 <span className="ml-1 italic">&ldquo;{data.originalText}&rdquo;</span>
               )}
+              {placedAt && (
+                <time
+                  dateTime={new Date(placedAt).toISOString()}
+                  title={new Date(placedAt).toLocaleString()}
+                  className="ml-1.5 text-gray-400 whitespace-nowrap"
+                >
+                  · {timeAgo(placedAt)}
+                </time>
+              )}
             </p>
           </div>
 
@@ -182,12 +359,12 @@ export default function OrdersList({
             <div className="flex items-center gap-2 flex-shrink-0">
               {isReady && !data?.manual && (
                 <button
-                  aria-label="Send reminder"
+                  title="Remind the customer"
                   disabled={
                     isProcessing(index, "remind") ||
                     (Date.now() - dateUpdated < 3 * 60 * 1000 && data?.reminded)
                   }
-                  className="w-10 h-10 rounded-lg border border-amber-300 bg-amber-50 text-amber-600 hover:bg-amber-100 disabled:opacity-40 flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-500 focus-visible:outline-none"
+                  className="h-10 min-w-10 px-2.5 sm:px-3 gap-2 rounded-lg border border-amber-300 bg-amber-50 text-amber-600 hover:bg-amber-100 disabled:opacity-40 flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-500 focus-visible:outline-none"
                   onClick={async () => {
                     startProcessing(index, "remind");
                     try {
@@ -206,13 +383,14 @@ export default function OrdersList({
                   }}
                 >
                   <BellRing aria-hidden="true" className="h-4 w-4" />
+                  <span className={BUTTON_LABEL}>Remind</span>
                 </button>
               )}
               {isQueued && (
                 <button
-                  aria-label="Mark order ready"
+                  title="Mark ready for pickup and notify the customer"
                   disabled={isProcessing(index, "made")}
-                  className="w-10 h-10 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 disabled:opacity-40 flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
+                  className="h-10 min-w-10 px-2.5 sm:px-3 gap-2 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 disabled:opacity-40 flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
                   onClick={async () => {
                     startProcessing(index, "made");
                     try {
@@ -238,13 +416,14 @@ export default function OrdersList({
                   }}
                 >
                   <Check aria-hidden="true" className="h-4 w-4" />
+                  <span className={BUTTON_LABEL}>Ready for pickup</span>
                 </button>
               )}
               {isReady && (
                 <button
-                  aria-label="Mark order served"
+                  title="Complete: the customer has their order"
                   disabled={isProcessing(index, "served")}
-                  className="w-10 h-10 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-40 flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-emerald-600 focus-visible:outline-none"
+                  className="h-10 min-w-10 px-2.5 sm:px-3 gap-2 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-40 flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-emerald-600 focus-visible:outline-none"
                   onClick={async () => {
                     startProcessing(index, "served");
                     try {
@@ -261,6 +440,18 @@ export default function OrdersList({
                   }}
                 >
                   <UserCheck aria-hidden="true" className="h-4 w-4" />
+                  <span className={BUTTON_LABEL}>Complete</span>
+                </button>
+              )}
+              {event?.allowBaristaCancel && (isQueued || isReady) && (
+                <button
+                  title="Cancel this order and notify the customer"
+                  disabled={isProcessing(index, "cancel")}
+                  onClick={() => cancelOrder(index, data)}
+                  className="h-10 min-w-10 px-2.5 sm:px-3 gap-2 rounded-lg border border-red-300 bg-red-50 text-red-700 hover:bg-red-100 disabled:opacity-40 flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500 focus-visible:outline-none"
+                >
+                  <XCircle aria-hidden="true" className="h-4 w-4" />
+                  <span className={BUTTON_LABEL}>Cancel</span>
                 </button>
               )}
             </div>

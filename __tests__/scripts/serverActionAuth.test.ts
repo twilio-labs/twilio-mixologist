@@ -1,6 +1,6 @@
 import { describe, test, expect, vi, beforeEach } from "vitest";
 
-const { authHeader, sendMessage, getPinnedSender, mintToken, readyMsg, reminderMsg } = vi.hoisted(() => {
+const { authHeader, sendMessage, getPinnedSender, mintToken, readyMsg, reminderMsg, cancelledMsg } = vi.hoisted(() => {
   process.env.ADMIN_LOGIN = "admin:adminpw";
   process.env.MIXOLOGIST_LOGIN = "mixo:mixopw";
   process.env.KIOSK_LOGIN = "kiosk:kioskpw";
@@ -11,6 +11,7 @@ const { authHeader, sendMessage, getPinnedSender, mintToken, readyMsg, reminderM
     mintToken: vi.fn().mockResolvedValue("jwt"),
     readyMsg: vi.fn().mockResolvedValue({ contentSid: "HX1" }),
     reminderMsg: vi.fn().mockResolvedValue({ contentSid: "HX2" }),
+    cancelledMsg: vi.fn().mockResolvedValue({ contentSid: "HX3" }),
   };
 });
 
@@ -18,7 +19,7 @@ vi.mock("next/headers", () => ({
   headers: async () => new Headers(authHeader.value ? { Authorization: authHeader.value } : {}),
 }));
 vi.mock("@/lib/twilio", () => ({
-  sendMessage,
+  sendMessageAndWait: sendMessage,
   getPinnedSender,
   createToken: mintToken,
 }));
@@ -26,6 +27,7 @@ vi.mock("@/lib/twilio", () => ({
 vi.mock("@/scripts/fetchContentTemplates", () => ({
   getOrderReadyMessage: readyMsg,
   getOrderReadyReminderMessage: reminderMsg,
+  getOrderCancelledMessage: cancelledMsg,
 }));
 
 import * as actions from "@/lib/actions";
@@ -41,6 +43,7 @@ describe("server actions authorization", () => {
   test("only the intended actions are exported", () => {
     expect(Object.keys(actions).sort()).toEqual([
       "createToken",
+      "getOrderCancelledMessage",
       "getOrderReadyMessage",
       "getOrderReadyReminderMessage",
       "getPinnedSender",
@@ -61,6 +64,8 @@ describe("server actions authorization", () => {
     await expect(actions.getOrderReadyReminderMessage("Espresso", "1", "Bar")).rejects.toThrow("Not authorized");
     expect(sendMessage).not.toHaveBeenCalled();
     expect(getPinnedSender).not.toHaveBeenCalled();
+    await expect(actions.getOrderCancelledMessage("Espresso", "1")).rejects.toThrow("Not authorized");
+    expect(cancelledMsg).not.toHaveBeenCalled();
     expect(readyMsg).not.toHaveBeenCalled();
     expect(reminderMsg).not.toHaveBeenCalled();
   });
@@ -80,6 +85,8 @@ describe("server actions authorization", () => {
     expect(readyMsg).toHaveBeenCalledWith("Espresso", "1", "Bar", "en");
     await actions.getOrderReadyReminderMessage("Espresso", "1", "Bar");
     expect(reminderMsg).toHaveBeenCalled();
+    await actions.getOrderCancelledMessage("Espresso", "1", "en");
+    expect(cancelledMsg).toHaveBeenCalledWith("Espresso", "1", "en");
   });
 
   test("createToken uses the role derived from the header, not client input", async () => {

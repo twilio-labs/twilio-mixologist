@@ -12,13 +12,14 @@
 import { headers } from "next/headers";
 import { getAuthenticatedRole, Privilege } from "@/proxy";
 import {
+  getOrderCancelledMessage as lookupOrderCancelledMessage,
   getOrderReadyMessage as lookupOrderReadyMessage,
   getOrderReadyReminderMessage as lookupOrderReadyReminderMessage,
 } from "@/scripts/fetchContentTemplates";
 import {
   createToken as mintSyncToken,
   getPinnedSender as lookupPinnedSender,
-  sendMessage as sendTwilioMessage,
+  sendMessageAndWait as sendTwilioMessage,
 } from "@/lib/twilio";
 
 async function getRole() {
@@ -42,7 +43,10 @@ export async function createToken() {
   return mintSyncToken(await getRole());
 }
 
-/** Staff only: send a message to an attendee from the orders screen. */
+/**
+ * Staff only: send a message to an attendee from the orders screen. Resolves
+ * once Twilio has accepted the message and rejects if it didn't.
+ */
 export async function sendMessage(
   to: string,
   body: string = "",
@@ -77,4 +81,11 @@ export async function getOrderReadyReminderMessage(
 ) {
   await requireStaff();
   return lookupOrderReadyReminderMessage(...args);
+}
+
+export async function getOrderCancelledMessage(
+  ...args: Parameters<typeof lookupOrderCancelledMessage>
+) {
+  await requireStaff();
+  return lookupOrderCancelledMessage(...args);
 }

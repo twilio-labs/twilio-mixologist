@@ -18,6 +18,7 @@ export {
   getMessagingService,
   getPossibleSenders,
   sendMessage,
+  sendMessageAndWait,
   getPinnedSender,
   fetchSegmentTraits,
 } from "./messaging";

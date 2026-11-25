@@ -55,7 +55,6 @@ export default function OrdersInterface({
   }
 
   async function fetchUpdateEvent(newState: {
-    cancelledCount?: number;
     state?: EventState;
     deliveredCount?: number;
   }) {
