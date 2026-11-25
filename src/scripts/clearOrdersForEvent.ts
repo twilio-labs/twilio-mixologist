@@ -29,7 +29,6 @@ if (!eventName || eventName.startsWith("/") || eventName.includes("=")) {
 (async () => {
   try {
     await updateSyncMapItem("Events", eventName, {
-      cancelledCount: 0,
       deliveredCount: 0,
       lastClearedAt: new Date().toISOString(),
     });
@@ -42,7 +41,7 @@ if (!eventName || eventName.startsWith("/") || eventName.includes("=")) {
   }
 
   console.log(
-    `Reset event stats "cancelledCount" and "deliveredCount" for ${eventName}`,
+    `Reset event stats "deliveredCount" for ${eventName}`,
   );
 
   let orderPage = await client.sync.v1

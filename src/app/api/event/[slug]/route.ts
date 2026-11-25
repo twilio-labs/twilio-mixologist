@@ -71,7 +71,7 @@ export async function PUT(
 
   const filteredData = Object.keys(unfilteredData)
     .filter((key) =>
-      ["state", "cancelledCount", "deliveredCount"].includes(key),
+      ["state", "deliveredCount"].includes(key),
     )
     .reduce((obj: any, key: string) => {
       obj[key] = unfilteredData[key];

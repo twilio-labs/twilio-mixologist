@@ -19,7 +19,7 @@ vi.mock("next/headers", () => ({
   headers: async () => new Headers(authHeader.value ? { Authorization: authHeader.value } : {}),
 }));
 vi.mock("@/lib/twilio", () => ({
-  sendMessage,
+  sendMessageAndWait: sendMessage,
   getPinnedSender,
   createToken: mintToken,
 }));

@@ -122,7 +122,7 @@ export async function calcStatsForEvent(
     mostOrderedItemCount,
     summedUpStages,
     mode: event.selection.mode,
-    cancelledCount: event.cancelledCount || 0,
+    cancelledCount: orderStatusCounter.cancelled || 0,
     deliveredCount: event.deliveredCount || 0,
     lastClearedAt: event.lastClearedAt,
     attendeeCount: attendees.length,

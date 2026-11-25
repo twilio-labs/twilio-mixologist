@@ -19,7 +19,7 @@ import {
 import {
   createToken as mintSyncToken,
   getPinnedSender as lookupPinnedSender,
-  sendMessage as sendTwilioMessage,
+  sendMessageAndWait as sendTwilioMessage,
 } from "@/lib/twilio";
 
 async function getRole() {
@@ -43,7 +43,10 @@ export async function createToken() {
   return mintSyncToken(await getRole());
 }
 
-/** Staff only: send a message to an attendee from the orders screen. */
+/**
+ * Staff only: send a message to an attendee from the orders screen. Resolves
+ * once Twilio has accepted the message and rejects if it didn't.
+ */
 export async function sendMessage(
   to: string,
   body: string = "",

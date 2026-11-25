@@ -87,7 +87,6 @@ export interface Event {
   // Free text incl. currency, e.g. "$25". Defaults to "$25" when a code is set.
   emailPromoAmount?: string;
   emailShowCodeSnippet?: boolean;
-  cancelledCount?: number;
   deliveredCount?: number;
   // ISO string; wheel-of-twilio stores an epoch-ms `clearedAt` for the same
   // concept. Kept as separate fields on purpose — the CSV cleanser doesn't

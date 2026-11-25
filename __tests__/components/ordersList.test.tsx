@@ -1,15 +1,22 @@
 import { describe, test, expect, vi, afterEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen, cleanup, fireEvent, waitFor } from "@testing-library/react";
 import type { Event } from "@/types";
 
-vi.mock("cookies-next", () => ({ getCookie: () => "mixologist" }));
-vi.mock("@/lib/actions", () => ({
-  sendMessage: vi.fn(),
-  getPinnedSender: vi.fn().mockResolvedValue(""),
-  getOrderReadyMessage: vi.fn(),
-  getOrderReadyReminderMessage: vi.fn(),
-  getOrderCancelledMessage: vi.fn(),
+const { toast, actions } = vi.hoisted(() => ({
+  toast: vi.fn(),
+  actions: {
+    sendMessage: vi.fn(),
+    getPinnedSender: vi.fn(),
+    getOrderReadyMessage: vi.fn(),
+    getOrderReadyReminderMessage: vi.fn(),
+    getOrderCancelledMessage: vi.fn(),
+  },
 }));
+
+vi.mock("cookies-next", () => ({ getCookie: () => "mixologist" }));
+vi.mock("@/components/ui/use-toast", () => ({ useToast: () => ({ toast }) }));
+vi.mock("@/lib/actions", () => actions);
+
 
 import OrdersList from "@/app/(master-layout)/event/[slug]/orders/ordersList";
 
@@ -50,7 +57,10 @@ function renderList(event: Partial<Event> = {}) {
   );
 }
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  vi.clearAllMocks();
+});
 
 describe("OrdersList action buttons", () => {
   test("buttons have text labels (hidden visually only below the sm breakpoint)", () => {
@@ -101,5 +111,154 @@ describe("OrdersList cancel button", () => {
   test("shown for queued and ready orders when the admin enables it", () => {
     renderList({ allowBaristaCancel: true });
     expect(screen.getAllByRole("button", { name: "Cancel" })).toHaveLength(4);
+  });
+});
+
+describe("OrdersList cancelled tab badge", () => {
+  test("counts cancelled orders in the list", () => {
+    const list = [
+      { index: 7, dateUpdated: minutesAgo(1), data: { key: "a", item: "Tea", status: "cancelled" } },
+      { index: 8, dateUpdated: minutesAgo(1), data: { key: "b", item: "Tea", status: "cancelled" } },
+      ...orders,
+    ];
+    render(
+      <OrdersList
+        ordersList={list}
+        event={{ slug: "e" } as Event}
+        updateEvent={vi.fn()}
+        updateOrder={vi.fn()}
+      />,
+    );
+    expect(screen.getByTestId("cancelledTab").textContent).toBe("Cancelled2");
+  });
+});
+
+describe("OrdersList cancel flow", () => {
+  const ok = async () => ({ contentSid: "HX", contentVariables: "{}" });
+  const boom = async () => {
+    throw new Error("no template");
+  };
+
+  function setup(
+    o: {
+      updateOrder?: any;
+      updateEvent?: any;
+      template?: any;
+      send?: any;
+      order?: any;
+    } = {},
+  ) {
+    const updateOrder = o.updateOrder ?? vi.fn().mockResolvedValue(undefined);
+    const updateEvent = o.updateEvent ?? vi.fn().mockResolvedValue(undefined);
+    actions.getPinnedSender.mockResolvedValue("+1000");
+    actions.sendMessage.mockImplementation(o.send ?? (async () => undefined));
+    actions.getOrderCancelledMessage.mockImplementation(o.template ?? ok);
+    const props = {
+      ordersList: [o.order ?? orders[0]],
+      updateEvent,
+      updateOrder,
+    };
+    render(<OrdersList {...props} event={{ slug: "e", allowBaristaCancel: true } as Event} />);
+    fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    return { updateOrder, updateEvent };
+  }
+
+  const banner = () => screen.queryByRole("alert");
+
+  test("send itself fails: banner, no success toast", async () => {
+    setup({ send: async () => { throw new Error("twilio 400"); } });
+    expect(await screen.findByRole("alert")).toBeTruthy();
+    expect(actions.sendMessage).toHaveBeenCalledTimes(1);
+    expect(toast).not.toHaveBeenCalled();
+  });
+
+  test("everything succeeds: cancelled, notified, success toast, no counter write", async () => {
+    const { updateOrder, updateEvent } = setup();
+    await waitFor(() => expect(toast).toHaveBeenCalled());
+    expect(updateOrder).toHaveBeenCalledWith(1, { status: "cancelled" });
+    expect(updateEvent).not.toHaveBeenCalled();
+    expect(actions.sendMessage).toHaveBeenCalledTimes(1);
+    expect(toast).toHaveBeenCalledWith(
+      expect.objectContaining({ title: "Order #1 cancelled", description: "The customer has been notified." }),
+    );
+    expect(banner()).toBeNull();
+  });
+
+  test("order save fails: nothing else happens, error toast", async () => {
+    setup({ updateOrder: vi.fn().mockRejectedValue(new Error("sync down")) });
+    await waitFor(() => expect(toast).toHaveBeenCalled());
+    expect(actions.getOrderCancelledMessage).not.toHaveBeenCalled();
+    expect(actions.sendMessage).not.toHaveBeenCalled();
+    expect(toast).toHaveBeenCalledWith(
+      expect.objectContaining({
+        variant: "destructive",
+        title: "Couldn't cancel order #1",
+        description: "Nothing changed. Try again.",
+      }),
+    );
+    expect(banner()).toBeNull();
+  });
+
+  test("message fails: order stays cancelled, banner with Retry and Undo", async () => {
+    const { updateOrder } = setup({ template: boom });
+    const alert = await screen.findByRole("alert");
+    expect(actions.getOrderCancelledMessage).toHaveBeenCalledTimes(1);
+    expect(updateOrder).toHaveBeenCalledTimes(1);
+    expect(alert.textContent).toMatch(/Order #1 is cancelled, but the message to the customer didn.t go out/);
+    expect(screen.getByRole("button", { name: "Retry message" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Undo cancel" })).toBeTruthy();
+    expect(toast).not.toHaveBeenCalled();
+  });
+
+  test("Retry message succeeds: banner goes away", async () => {
+    setup({ template: boom });
+    await screen.findByRole("alert");
+    actions.getOrderCancelledMessage.mockImplementation(ok);
+    fireEvent.click(screen.getByRole("button", { name: "Retry message" }));
+    await waitFor(() => expect(banner()).toBeNull());
+    expect(toast).toHaveBeenCalledWith(expect.objectContaining({ title: "Order #1: customer notified" }));
+  });
+
+  test("Retry message fails again: banner stays", async () => {
+    setup({ template: boom });
+    await screen.findByRole("alert");
+    fireEvent.click(screen.getByRole("button", { name: "Retry message" }));
+    await waitFor(() =>
+      expect(toast).toHaveBeenCalledWith(expect.objectContaining({ title: "The message still didn't go out" })),
+    );
+    expect(banner()).toBeTruthy();
+  });
+
+  test("Undo cancel restores the previous status", async () => {
+    const { updateOrder, updateEvent } = setup({ template: boom });
+    await screen.findByRole("alert");
+    fireEvent.click(screen.getByRole("button", { name: "Undo cancel" }));
+    await waitFor(() => expect(banner()).toBeNull());
+    expect(updateOrder).toHaveBeenLastCalledWith(1, { status: "queued" });
+    expect(updateEvent).not.toHaveBeenCalled();
+    expect(toast).toHaveBeenCalledWith(
+      expect.objectContaining({ title: "Order #1 restored", description: "Back in the queue." }),
+    );
+  });
+
+  test("Undo cancel fails: banner stays, error toast", async () => {
+    const updateOrder = vi.fn().mockResolvedValueOnce(undefined).mockRejectedValue(new Error("sync down"));
+    setup({ template: boom, updateOrder });
+    await screen.findByRole("alert");
+    fireEvent.click(screen.getByRole("button", { name: "Undo cancel" }));
+    await waitFor(() =>
+      expect(toast).toHaveBeenCalledWith(expect.objectContaining({ title: "Couldn't undo the cancel" })),
+    );
+    expect(banner()).toBeTruthy();
+  });
+
+  test("manual order: no message attempted, barista asked to inform the customer", async () => {
+    setup({ order: { ...orders[0], data: { ...orders[0].data, manual: true } } });
+    await waitFor(() => expect(toast).toHaveBeenCalled());
+    expect(actions.getOrderCancelledMessage).not.toHaveBeenCalled();
+    expect(actions.sendMessage).not.toHaveBeenCalled();
+    expect(toast).toHaveBeenCalledWith(
+      expect.objectContaining({ title: "Order #1 cancelled", description: "Please inform the customer." }),
+    );
   });
 });
