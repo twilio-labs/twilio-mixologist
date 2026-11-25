@@ -3,10 +3,19 @@ import { EventState } from "@/lib/utils";
 import { modes } from "@/types";
 import type { Event } from "@/types";
 
+// proxy.ts reads the *_LOGIN variables when it loads, so set a known kiosk
+// login before the route (and with it proxy.ts) is imported. The test must not
+// depend on CI providing KIOSK_LOGIN: an unset login can't be logged into.
+const { KIOSK_LOGIN } = vi.hoisted(() => {
+  const KIOSK_LOGIN = "kiosk-test:kiosk-test-password";
+  vi.stubEnv("KIOSK_LOGIN", KIOSK_LOGIN);
+  return { KIOSK_LOGIN };
+});
+
 // Mock next/headers before importing the route
 vi.mock("next/headers", () => ({
   headers: vi.fn().mockResolvedValue({
-    get: () => "Basic " + btoa(process.env.KIOSK_LOGIN ?? ":"),
+    get: () => "Basic " + btoa(KIOSK_LOGIN),
   }),
 }));
 
