@@ -1,6 +1,5 @@
 // Copyright (c) 2025 Twilio Inc.
 
-
 import OpenAI from "openai";
 import {
   createSyncMapItemIfNotExists,

@@ -1,4 +1,3 @@
-
 import AccessToken, { SyncGrant } from "twilio/lib/jwt/AccessToken";
 import type { Privilege } from "@/proxy";
 import { TWILIO_ACCOUNT_SID, TWILIO_API_KEY, TWILIO_API_SECRET } from "./client";

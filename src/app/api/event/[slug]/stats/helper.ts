@@ -1,4 +1,3 @@
-
 import { fetchSyncListItems, findSyncMapItems } from "@/lib/twilio";
 import type { Event, modes } from "@/types";
 import { Stages } from "@/lib/utils";

@@ -1,4 +1,3 @@
-
 import type { modes, Event, Language } from "@/types";
 import { getSampleOrder } from "@/lib/stringTemplates";
 

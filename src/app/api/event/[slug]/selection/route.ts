@@ -1,4 +1,3 @@
-
 import { updateSyncMapItem } from "@/lib/twilio";
 import { headers } from "next/headers";
 import { Privilege, getAuthenticatedRole } from "@/proxy";

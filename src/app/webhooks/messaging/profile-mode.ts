@@ -1,6 +1,5 @@
 // Copyright (c) 2025 Twilio Inc.
 
-
 import {
   sendMessage,
   updateOrCreateSyncMapItem,
