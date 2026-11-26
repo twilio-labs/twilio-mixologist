@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Privilege } from "@/proxy";
 import { getCookie } from "cookies-next";
-import { sendMessage, getPinnedSender } from "@/lib/twilio";
+import { sendMessage, getPinnedSender } from "@/lib/actions";
 import { Badge } from "@/components/ui/badge";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

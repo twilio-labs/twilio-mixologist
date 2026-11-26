@@ -1,4 +1,3 @@
-"use server";
 
 import { updateSyncMapItem } from "@/lib/twilio";
 import { revalidatePath } from "next/cache";

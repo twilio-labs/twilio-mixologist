@@ -14,6 +14,11 @@ test("should be navigable from home [admin]", async ({ page, context }) => {
       url: "http://localhost:3000",
     },
   ]);
+  // /configuration is staff-only: the middleware checks real Basic credentials,
+  // not the (client-settable) privilege cookie.
+  await context.setExtraHTTPHeaders({
+    Authorization: `Basic ${btoa(process.env.ADMIN_LOGIN || ":")}`,
+  });
   await page.goto("/");
   // Find an element with the text 'About' and click on it
   await page.click('[href*="/configuration"]');

@@ -1,4 +1,3 @@
-"use server";
 
 import { twilioClient } from "./client";
 import { env } from "@/config/env";

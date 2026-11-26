@@ -39,7 +39,41 @@ export function proxy(req: NextRequest) {
   if (req.nextUrl.pathname === "/logout") {
     return handleLogout(req);
   }
-  return handleLogin(req);
+  if (req.nextUrl.pathname === "/login") {
+    return handleLogin(req);
+  }
+  return handleStaffPage(req);
+}
+
+/**
+ * Pages that are never meant to be public. Everything else (home, the event
+ * queue/menu views) is intentionally readable by anonymous visitors; what they
+ * can read or do is enforced by Sync ACLs, the API routes and the Server
+ * Actions in src/lib/actions.ts, not by this middleware.
+ */
+const STAFF_PAGES: { pattern: RegExp; roles: Privilege[] }[] = [
+  { pattern: /^\/configuration(\/|$)/, roles: [Privilege.ADMIN, Privilege.MIXOLOGIST] },
+  { pattern: /^\/sync(\/|$)/, roles: [Privilege.ADMIN, Privilege.MIXOLOGIST] },
+  { pattern: /^\/event\/[^/]+\/stats(\/|$)/, roles: [Privilege.ADMIN] },
+];
+
+function handleStaffPage(req: NextRequest) {
+  const rule = STAFF_PAGES.find((r) => r.pattern.test(req.nextUrl.pathname));
+  if (!rule) return NextResponse.next();
+
+  const role = getAuthenticatedRole(
+    req.headers.get("authorization") || req.headers.get("Authorization"),
+  );
+  if (role === Privilege.UNKNOWN) {
+    return new NextResponse("Authentication required", {
+      status: 401,
+      headers: { "WWW-Authenticate": REALM, ...NO_STORE },
+    });
+  }
+  if (!rule.roles.includes(role)) {
+    return new NextResponse("Forbidden", { status: 403, headers: NO_STORE });
+  }
+  return NextResponse.next();
 }
 
 function handleLogout(req: NextRequest) {
@@ -108,5 +142,5 @@ export function getAuthenticatedRole(authheader: string | null) {
 }
 
 export const config = {
-  matcher: ["/login", "/logout"],
+  matcher: ["/login", "/logout", "/configuration/:path*", "/sync/:path*", "/event/:slug/stats/:path*"],
 };

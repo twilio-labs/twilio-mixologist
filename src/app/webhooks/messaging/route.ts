@@ -1,6 +1,5 @@
 // Copyright (c) 2025 Twilio Inc.
 
-"use server";
 
 import {
   createSyncMapItemIfNotExists,
@@ -221,13 +220,21 @@ function parseWebhook(data: FormData): {
   return { sender, incomingMessageBody, mediaUrl, from };
 }
 
+/** Local testing with curl only; ignored in production. */
+function skipSignatureCheck() {
+  return (
+    process.env.NODE_ENV !== "production" &&
+    process.env.SKIP_TWILIO_SIGNATURE_CHECK === "true"
+  );
+}
+
 export async function POST(request: Request) {
   const data = await request.formData();
 
   // Only Twilio may drive the conversation: a request without a valid
   // X-Twilio-Signature is refused before anything is read or stored.
   const signature = request.headers.get("X-Twilio-Signature");
-  if (!(await checkSignature(signature, request.url, data))) {
+  if (!skipSignatureCheck() && !(await checkSignature(signature, request.url, data))) {
     return new Response("Invalid Twilio signature", { status: 403 });
   }
 

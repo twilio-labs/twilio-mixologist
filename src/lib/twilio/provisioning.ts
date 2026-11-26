@@ -1,4 +1,3 @@
-"use server";
 
 import { appendFileSync } from "fs";
 import { ServiceInstance } from "twilio/lib/rest/sync/v1/service";
