@@ -1,5 +1,3 @@
-"use server";
-
 import { validateRequest } from "twilio";
 import { TWILIO_AUTH_TOKEN, PUBLIC_BASE_URL } from "./client";
 

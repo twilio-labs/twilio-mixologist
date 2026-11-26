@@ -1,5 +1,3 @@
-"use server";
-
 import { headers } from "next/headers";
 import { getAuthenticatedRole, Privilege } from "@/proxy";
 import { calcStatsForEvent } from "./helper";

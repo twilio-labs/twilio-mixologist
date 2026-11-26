@@ -1,5 +1,3 @@
-"use server";
-
 import { twilioClient } from "./client";
 import { env } from "@/config/env";
 import { eventLang } from "@/lib/stringTemplates";

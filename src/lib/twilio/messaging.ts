@@ -1,5 +1,3 @@
-"use server";
-
 import { throttledQueue } from "throttled-queue";
 import { twilioClient, TWILIO_API_KEY, TWILIO_API_SECRET } from "./client";
 import { createSyncMapItemIfNotExists } from "./sync";
@@ -25,7 +23,6 @@ export async function getMessagingService() {
 }
 
 export async function getPossibleSenders() {
-  "use server";
   const messagingService = await getMessagingService();
   const senders = await messagingService.phoneNumbers().list();
   const channelSenders = await messagingService.channelSenders().list();

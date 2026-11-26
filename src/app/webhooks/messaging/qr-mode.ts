@@ -1,7 +1,5 @@
 // Copyright (c) 2025 Twilio Inc.
 
-"use server";
-
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { Jimp } = require("jimp") as { Jimp: any };
 import { createRequire } from "module";

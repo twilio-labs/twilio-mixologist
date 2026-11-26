@@ -3,7 +3,12 @@
 import { useState } from "react";
 import { Privilege } from "@/proxy";
 import { getCookie } from "cookies-next";
-import { sendMessage, getPinnedSender } from "@/lib/twilio";
+import {
+  sendMessage,
+  getPinnedSender,
+  getOrderReadyMessage,
+  getOrderReadyReminderMessage,
+} from "@/lib/actions";
 import { Badge } from "@/components/ui/badge";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -13,10 +18,6 @@ import { useToast } from "@/components/ui/use-toast";
 import type { Event } from "@/types";
 
 import { Check, BellRing, UserCheck } from "lucide-react";
-import {
-  getOrderReadyMessage,
-  getOrderReadyReminderMessage,
-} from "@/scripts/fetchContentTemplates";
 
 export default function OrdersList({
   ordersList,

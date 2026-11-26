@@ -36,6 +36,7 @@ jobs:
           NEXT_PUBLIC_ATTENDEES_MAP: ${{ vars.NEXT_PUBLIC_ATTENDEES_MAP_TEST || vars.NEXT_PUBLIC_ATTENDEES_MAP }}
           MIXOLOGIST_LOGIN: ${{ vars.MIXOLOGIST_LOGIN }}
           ADMIN_LOGIN: ${{ vars.ADMIN_LOGIN }}
+          SERVICE_INSTANCE_PREFIX: ${{ vars.SERVICE_INSTANCE_PREFIX }}
 
       - name: Prepare standalone build for tests
         run: |
@@ -56,6 +57,8 @@ jobs:
           MIXOLOGIST_LOGIN: ${{ vars.MIXOLOGIST_LOGIN }}
           ADMIN_LOGIN: ${{ vars.ADMIN_LOGIN }}
           KIOSK_LOGIN: ${{ vars.KIOSK_LOGIN }}
+          # Content templates are looked up as "<prefix>_order_ready" etc.
+          SERVICE_INSTANCE_PREFIX: ${{ vars.SERVICE_INSTANCE_PREFIX }}
       - name: Cleanup orphaned test events
         if: always()
         continue-on-error: true
