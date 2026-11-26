@@ -25,6 +25,11 @@ import type { Event, Order } from "@/types";
 const NEXT_PUBLIC_ATTENDEES_MAP =
   process.env.NEXT_PUBLIC_ATTENDEES_MAP || "";
 
+// gpt-6-luna is cheaper than gpt-4o-mini and better at tool selection (#259).
+// Low reasoning effort keeps replies fast — the agent only picks tools.
+const AI_MODEL = "gpt-6-luna";
+const AI_REASONING = { effort: "low" } as const;
+
 // Prompt injection guard — block attempts to override the system role
 const INJECTION_PATTERNS = [
   /ignore (all |previous |prior |above |the |your )?(instructions?|prompts?|rules?|guidelines?|system)/i,
@@ -398,7 +403,8 @@ Rules:
   ];
 
   let response = await client.responses.create({
-    model: "gpt-4o-mini",
+    model: AI_MODEL,
+    reasoning: AI_REASONING,
     instructions: systemPrompt,
     input: input as any,
     tools,
@@ -442,7 +448,8 @@ Rules:
     }
 
     response = await client.responses.create({
-      model: "gpt-4o-mini",
+      model: AI_MODEL,
+      reasoning: AI_REASONING,
       instructions: systemPrompt,
       input: [
         ...input,
